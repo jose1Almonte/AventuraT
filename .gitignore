@@ -63,3 +63,7 @@ yarn-error.log
 .metro-health-check*
 
 cache/
+
+.vscode
+.yarn
+.yarnrc.yml
