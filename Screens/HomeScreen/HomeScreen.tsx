@@ -1,6 +1,5 @@
 import { ScrollView, Text, StyleSheet } from 'react-native';
 import React from 'react';
-import { LoginBackground } from '../../Layouts/Background';
 
 const HomeScreen = () => {
   return (
