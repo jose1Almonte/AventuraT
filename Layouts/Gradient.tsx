@@ -1,12 +1,31 @@
-import { View, Text } from 'react-native';
-import React from 'react';
+import { StyleSheet } from 'react-native';
+import React, { ReactNode } from 'react';
+import LinearGradient from 'react-native-linear-gradient';
 
-const Gradient = () => {
+interface GradientProps {
+    children: ReactNode;
+    colors: string[];
+    locations: number[];
+    style: any,
+}
+
+const Gradient = ({
+    children,
+    colors,
+    locations,
+    style,
+}: GradientProps) => {
     return (
-        <View>
-            <Text>Gradient</Text>
-        </View>
+        <LinearGradient colors = {colors} locations={locations} style={style}>
+            {children}
+        </LinearGradient>
     );
 };
 
 export default Gradient;
+
+const styles = StyleSheet.create({
+    linearGradient: {
+        flex: 1,
+    },
+});

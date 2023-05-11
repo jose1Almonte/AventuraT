@@ -14,11 +14,7 @@ export const Background = ({
 }: BackgroundProps) => {
   return (
     <ImageBackground source={image} resizeMode="cover" style = {style}>
-      <ScrollView>
-
         {children}
-
-      </ScrollView>
     </ImageBackground>
   );
 };
