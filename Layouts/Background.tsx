@@ -1,17 +1,17 @@
 import { ScrollView, ImageBackground, ImageSourcePropType } from 'react-native';
 import React, { ReactNode } from 'react';
 
-interface LoginBackgroundProps{
+interface BackgroundProps{
     children: ReactNode;
     style: any,
     image: ImageSourcePropType;
 }
 
-export const LoginBackground = ({
+export const Background = ({
     children,
     style,
     image,
-}: LoginBackgroundProps) => {
+}: BackgroundProps) => {
   return (
     <ImageBackground source={image} resizeMode="cover" style = {style}>
       <ScrollView>

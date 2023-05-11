@@ -6,6 +6,7 @@ const DetailsScreen = () => {
     <ScrollView style={styles.backGround}>
 
       <Text>DetailsScreen</Text>
+
     </ScrollView>
 
   );
@@ -19,3 +20,4 @@ const styles = StyleSheet.create({
     // flex: 1,
   },
 });
+

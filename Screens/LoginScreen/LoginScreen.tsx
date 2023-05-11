@@ -1,15 +1,14 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
-import { LoginBackground } from '../../Layouts/Background';
+import { Background } from '../../Layouts/Background';
 
 const LoginScreen = () => {
   return (
-    <LoginBackground image={require('../../images/loginLayout.png')} style={styles.backGround}>
-
+    <Background image={require('../../images/loginLayout.png')} style={styles.backGround}>
     <View>
       <Text>LoginScreen</Text>
     </View>
-    </LoginBackground>
+    </Background>
   );
 };
 
