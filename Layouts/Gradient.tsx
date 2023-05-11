@@ -1,4 +1,3 @@
-import { StyleSheet } from 'react-native';
 import React, { ReactNode } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -23,9 +22,3 @@ const Gradient = ({
 };
 
 export default Gradient;
-
-const styles = StyleSheet.create({
-    linearGradient: {
-        flex: 1,
-    },
-});

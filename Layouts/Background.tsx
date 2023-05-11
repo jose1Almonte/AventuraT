@@ -1,4 +1,4 @@
-import { ScrollView, ImageBackground, ImageSourcePropType } from 'react-native';
+import { ImageBackground, ImageSourcePropType } from 'react-native';
 import React, { ReactNode } from 'react';
 
 interface BackgroundProps{
