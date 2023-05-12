@@ -2,7 +2,6 @@ import { View, Text, StyleSheet, Image, Alert, TouchableOpacity  } from 'react-n
 import React from 'react';
 import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
-import RegisterEnterprise from '../../Components/registerEnterprise';
 
 // declare global {
 //   namespace JSX {
