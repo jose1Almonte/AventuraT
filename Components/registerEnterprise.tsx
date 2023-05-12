@@ -35,7 +35,7 @@ export default function RegisterEnterprise() {
     const [mostrarValores, setMostrarValores] = useState(false);
 
     const handleMostrarValores = () => {
-        Alert.alert("Alerta", "Se ha guardado sus datos")
+        Alert.alert("Alerta", "Se han guardado sus datos")
         setMostrarValores(true);
     }
     const noMostrarValores = () => {
