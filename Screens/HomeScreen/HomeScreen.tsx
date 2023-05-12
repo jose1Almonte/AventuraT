@@ -1,11 +1,13 @@
 import { ScrollView, Text, StyleSheet } from 'react-native';
 import React from 'react';
+import RegisterEnterprise from '../../Components/registerEnterprise';
 
 const HomeScreen = () => {
   return (
 
     <ScrollView style={styles.backGround}>
       <Text>HomeScreen</Text>
+      <RegisterEnterprise></RegisterEnterprise>
     </ScrollView>
   );
 };
