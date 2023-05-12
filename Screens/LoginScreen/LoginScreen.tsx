@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image, Alert, TouchableOpacity  } from 'react-n
 import React from 'react';
 import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
+import RegisterEnterprise from '../../Components/registerEnterprise';
 
 // declare global {
 //   namespace JSX {
@@ -48,11 +49,13 @@ const makingThis = () => {
 
 const LoginScreen = () => {
   return (
+
     <View style = {styles.bigBox}>
       <Background image = {require('../../images/loginLayout.png')} style={styles.backGround}>
       <Gradient colors = {['#1DB5BE', 'rgba(24, 129, 177, 0.36);', 'rgba(24, 129, 177, 0.26);', 'rgba(24, 129, 177, 0.16);', 'rgba(24, 129, 177, 0);']} locations={[0, 0.25, 0.5, 0.9, 1]} style={styles.linearGradient} >
             <View style={styles.firstBox}>
               <Text style = {styles.title}>¡Bienvenido!</Text>
+              <RegisterEnterprise></RegisterEnterprise>
               <Text style = {styles.subtitle}>Descubre grandes experiencias a tu alrededor</Text>
             </View>
 
