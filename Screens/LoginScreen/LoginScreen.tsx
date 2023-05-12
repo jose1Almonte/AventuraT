@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
 
   bigBox: {
     flex: 1,
-    backgroundColor: 'red',
+    // backgroundColor: 'red',
   },
 
   firstBox:{
