@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Alert, Pressable, Touchable, TouchableOpacity  } from 'react-native';
+import { View, Text, StyleSheet, Image, Alert, TouchableOpacity  } from 'react-native';
 import React from 'react';
 import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
@@ -35,7 +35,6 @@ const ContinueWithName = ({
       <Image source={imageSource} style = {ImageStyle} />
       <Text style={TextStyle}>{text}</Text>
       </>
-
     </TouchableOpacity>
     </>
   );
