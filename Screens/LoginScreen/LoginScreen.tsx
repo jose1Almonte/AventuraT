@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Alert, Pressable, Touchable, TouchableOpacity  } from 'react-native';
 import React from 'react';
 import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
@@ -17,6 +17,7 @@ interface ContinueWithNameProps{
   ViewStyle: any;
   ImageStyle: any;
   TextStyle: any;
+  onPress: any,
 }
 
 const ContinueWithName = ({
@@ -25,15 +26,25 @@ const ContinueWithName = ({
   imageSource,
   ImageStyle,
   TextStyle,
+  onPress,
 }: ContinueWithNameProps) => {
   return (
-
-    <View style={ViewStyle}>
-      <Image source={imageSource} style = {ImageStyle}/>
+    <>
+    <TouchableOpacity  style={ViewStyle} onPress={onPress}>
+      <>
+      <Image source={imageSource} style = {ImageStyle} />
       <Text style={TextStyle}>{text}</Text>
-    </View>
+      </>
+
+    </TouchableOpacity>
+    </>
   );
 
+};
+
+const makingThis = () => {
+  console.log('hello');
+  Alert.alert('Hello');
 };
 
 const LoginScreen = () => {
@@ -48,8 +59,8 @@ const LoginScreen = () => {
 
             <View style={styles.secondBox}>
               {/* <continueWithName text='Continuar con google' ViewStyle = {styles.continueWithGoogleBox}/> */}
-              <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle}/>
-              <ContinueWithName text = "Continuar con Facebook" ViewStyle={styles.continueWithFacebookBox} imageSource={require('../../images/FacebookLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle}/>
+              <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() => makingThis()}/>
+              <ContinueWithName text = "Continuar con Facebook" ViewStyle={styles.continueWithFacebookBox} imageSource={require('../../images/FacebookLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() => makingThis()}/>
             </View>
       </Gradient>
       </Background>
