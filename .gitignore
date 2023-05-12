@@ -67,3 +67,6 @@ cache/
 .vscode
 .yarn
 .yarnrc.yml
+*.lock
+yarn.lock
+.yarn/install-state.gz
