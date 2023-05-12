@@ -15,20 +15,22 @@ interface ContinueWithNameProps{
   imageSource: any,
   text: any;
   ViewStyle: any;
-  // ImageStyle: any;
-  // TextStyle: any;
+  ImageStyle: any;
+  TextStyle: any;
 }
 
 const ContinueWithName = ({
   text,
   ViewStyle,
   imageSource,
+  ImageStyle,
+  TextStyle,
 }: ContinueWithNameProps) => {
   return (
 
     <View style={ViewStyle}>
-      <Image source={imageSource}/>
-      <Text>{text}</Text>
+      <Image source={imageSource} style = {ImageStyle}/>
+      <Text style={TextStyle}>{text}</Text>
     </View>
   );
 
@@ -39,14 +41,15 @@ const LoginScreen = () => {
     <View style = {styles.bigBox}>
       <Background image = {require('../../images/loginLayout.png')} style={styles.backGround}>
       <Gradient colors = {['#1DB5BE', 'rgba(24, 129, 177, 0.36);', 'rgba(24, 129, 177, 0.26);', 'rgba(24, 129, 177, 0.16);', 'rgba(24, 129, 177, 0);']} locations={[0, 0.25, 0.5, 0.9, 1]} style={styles.linearGradient} >
-            <View>
-              <Text>¡Bienvenido!</Text>
-              <Text>Descubre grandes experiencias a tu alrededor</Text>
+            <View style={styles.firstBox}>
+              <Text style = {styles.title}>¡Bienvenido!</Text>
+              <Text style = {styles.subtitle}>Descubre grandes experiencias a tu alrededor</Text>
             </View>
 
-            <View>
+            <View style={styles.secondBox}>
               {/* <continueWithName text='Continuar con google' ViewStyle = {styles.continueWithGoogleBox}/> */}
-              <ContinueWithName text = 'Registrate con Google' ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')}/>
+              <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle}/>
+              <ContinueWithName text = "Continuar con Facebook" ViewStyle={styles.continueWithFacebookBox} imageSource={require('../../images/FacebookLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle}/>
             </View>
       </Gradient>
       </Background>
@@ -70,8 +73,78 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
 
-  continueWithGoogleBox:{
-    backgroundColor: 'red',
+  firstBox:{
+    flex: 2,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
+
+  secondBox:{
+    flex: 3,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+
+  continueWithGoogleBox:{
+
+    flexDirection: 'row',
+    width: '86.39%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: '10%',
+    marginBottom: '5%',
+    paddingHorizontal: '2%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+  },
+
+  continueWithFacebookBox:{
+
+    flexDirection: 'row',
+    marginBottom: '20%',
+    width: '86.39%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: '10%',
+    paddingHorizontal: '2%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+  },
+
+  title:{
+    fontFamily: 'Poppins',
+    fontStyle: 'normal',
+    fontWeight: '500',
+    fontSize: 45,
+    lineHeight: 58.5, // Calculado como 45 * 1.3
+    color: '#FFFFFF',
+  },
+
+  subtitle:{
+    fontFamily: 'Poppins',
+    fontStyle: 'normal',
+    fontWeight: '800',
+    fontSize: 18,
+    lineHeight: 27,
+    textAlign: 'center',
+    color: '#FFFFFF',
+  },
+
+  LogoStyles: {
+    marginLeft: '5%',
+  },
+
+  normalTextStyle:{
+    fontFamily: 'Poppins',
+    fontStyle: 'normal',
+    fontWeight: '500',
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'center',
+    color: '#000000',
+    paddingRight: '15%',
+  },
+
+
 
 });
