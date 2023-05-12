@@ -1,4 +1,4 @@
-import { Text, TextInput, View, StyleSheet} from 'react-native'
+import { Text, Alert, TextInput, Button ,View, StyleSheet} from 'react-native'
 import React from 'react'
 import { useState} from 'react';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -25,12 +25,27 @@ const styles = StyleSheet.create({
 });
 
 export default function RegisterEnterprise() {
-   
+
     const [empresa, setEmpresa] = useState<Empresa>({
       enterpriseName: null,
       rif: null,
       personResponsible: null,
     });
+
+    const [mostrarValores, setMostrarValores] = useState(false);
+
+    const handleMostrarValores = () => {
+        Alert.alert("Alerta", "Se ha guardado sus datos")
+        setMostrarValores(true);
+    }
+    const noMostrarValores = () => {
+        setMostrarValores(false);
+    }
+
+// Esto puede ser util mas adelante
+//<Text> {empresa.enterpriseName} </Text>
+//<Text> {empresa.rif} </Text>
+//<Text> {empresa.personResponsible} </Text>
 
     return (
         <View style = {styles.cajota}>
@@ -42,7 +57,7 @@ export default function RegisterEnterprise() {
                 placeholderTextColor="#BEBEBE"
                 value={empresa.enterpriseName ?? ''} 
                 onChangeText={(text) => setEmpresa({...empresa, enterpriseName: text})}/>
-                <Text> {empresa.enterpriseName} </Text>
+                
             </View>
             <View>
                 <Text style = {styles.texto}> RIF de la Empresa: </Text>
@@ -52,7 +67,7 @@ export default function RegisterEnterprise() {
                 placeholderTextColor="#BEBEBE"
                 value={empresa.rif ?? ''} 
                 onChangeText={(text) => setEmpresa({...empresa, rif: text})}/>
-                <Text> {empresa.rif} </Text>
+                
             </View>
             <View>
                 <Text style = {styles.texto}> Encargado de la Empresa: </Text>
@@ -62,8 +77,23 @@ export default function RegisterEnterprise() {
                 placeholderTextColor="#BEBEBE"
                 value={empresa.personResponsible ?? ''} 
                 onChangeText={(text) => setEmpresa({...empresa, personResponsible: text})}/>
-                <Text> {empresa.personResponsible} </Text>
+                
             </View>
+            <Button
+                title='mi botoncito'
+                onPress={handleMostrarValores} 
+            />
+            {mostrarValores &&
+                <View style={styles.cajita}>
+                <Text style={styles.texto}>{empresa.enterpriseName}</Text>
+                <Text style={styles.texto}>{empresa.rif}</Text>
+                <Text style={styles.texto}>{empresa.personResponsible}</Text>
+                <Button
+                    title='mi botoncito2'
+                    onPress={noMostrarValores}
+                />
+                </View>
+            }
         </View>
         
     )
