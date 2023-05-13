@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image, Alert, TouchableOpacity  } from 'react-n
 import React from 'react';
 import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
+import GmailRegister from '../../firebase/gmail';
 
 // declare global {
 //   namespace JSX {
@@ -55,6 +56,7 @@ const LoginScreen = () => {
             <View style={styles.firstBox}>
               <Text style = {styles.title}>¡Bienvenido!</Text>
               <Text style = {styles.subtitle}>Descubre grandes experiencias a tu alrededor</Text>
+              <GmailRegister/>
             </View>
 
             <View style={styles.secondBox}>
