@@ -7,7 +7,7 @@ import DetailsScreen from './Screens/DetailsScreen/DetailsScreen';
 import { AuthProvider } from './Context/UserContext';
 
 const Stack = createNativeStackNavigator();
-
+/**/
 export default function App() {
   return (
     <AuthProvider>
