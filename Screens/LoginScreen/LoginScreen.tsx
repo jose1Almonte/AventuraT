@@ -56,12 +56,11 @@ const LoginScreen = () => {
             <View style={styles.firstBox}>
               <Text style = {styles.title}>¡Bienvenido!</Text>
               <Text style = {styles.subtitle}>Descubre grandes experiencias a tu alrededor</Text>
-              <GmailRegister/>
             </View>
 
             <View style={styles.secondBox}>
-              {/* <continueWithName text='Continuar con google' ViewStyle = {styles.continueWithGoogleBox}/> */}
-              <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() => makingThis()}/>
+              <GmailRegister/>
+              {/* <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() => makingThis()}/> */}
               <ContinueWithName text = "Continuar con Facebook" ViewStyle={styles.continueWithFacebookBox} imageSource={require('../../images/FacebookLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() => makingThis()}/>
             </View>
       </Gradient>
