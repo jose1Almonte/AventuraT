@@ -13,14 +13,16 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-          {/* <Stack.Screen name="LoginScreen" component= {LoginScreen} options={{ headerShown: false }}/> */}
-          {/* <Stack.Screen name="DetailsScreen" component= {DetailsScreen} options={{ headerShown: false }}/> */}
-          {/* <Stack.Screen name="HomeScreen" component= {HomeScreen} options={{ headerShown: false }}/> */}
-          {/* <Stack.Screen name="UserProfileScreen" component= {UserProfileScreen} options={{ headerShown: false }}/> */}
-          <Stack.Screen name="BusinessProfileScreen" component= {BusinessProfileScreen} options={{ headerShown: false }}/>
-        </Stack.Navigator>
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+            <Stack.Screen name="LoginScreen" component= {LoginScreen} options={{ headerShown: false }}/>
+            <Stack.Screen name="DetailsScreen" component= {DetailsScreen} options={{ headerShown: false }}/>
+            <Stack.Screen name="HomeScreen" component= {HomeScreen} options={{ headerShown: false }}/>
+            <Stack.Screen name="UserProfileScreen" component= {UserProfileScreen} options={{ headerShown: false }}/>
+            <Stack.Screen name="BusinessProfileScreen" component= {BusinessProfileScreen} options={{ headerShown: false }}/>
+          </Stack.Navigator>
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
