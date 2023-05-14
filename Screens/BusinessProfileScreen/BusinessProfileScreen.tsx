@@ -37,7 +37,6 @@ const UserProfileScreen = () => {
             dicta est. Ad a totam ipsum. Animi, ut cupiditate. Quia, ducimus
             dolore!
           </Text>
-
           <View style={styles.location}>
             <SvgXml xml={vectorLocation} />
             <Text style={styles.nameLocation}>Ubicación</Text>
@@ -83,7 +82,6 @@ const styles = StyleSheet.create({
     margin: 35,
     alignItems: 'flex-start',
     gap: 15,
-    
   },
   bottomInfo: {
     marginTop: 15,
@@ -153,15 +151,12 @@ const styles = StyleSheet.create({
   },
   contenedorPuntaje: {
     flexDirection: 'column',
-
   },
   contenedorEstrella: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 20,
+    gap: 10,
     fontFamily: 'Poppins-Bold',
-    // justifyContent: "center",
-    alignContent: "center"
   },
   point: {
     fontSize: 18,
