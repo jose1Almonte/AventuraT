@@ -21,44 +21,44 @@ const YourSignInWithGoogleComponent = ({
 
 
     const logout = async () => {
-    await auth().signOut();
-    setUser(null);
-    setLogged(false);
-};
-
-async function login() {
-    try {
-        const isReallyLogged = await onGoogleButtonPress();
-        if (isReallyLogged){
-            setUser(currentLog());
-            setLogged(true);
-            if (user && user.displayName && user.email && user.emailVerified && user.photoURL) {
-                await checkIfUserExists(user.email);
-                await addUser(user.displayName,user.email,user.emailVerified,user.photoURL);
-            }
-            navigation.navigate(destinationNavigationComponentName);
-
-        } else {
-            logout;
-        }
-
-    } catch (e){
+        await auth().signOut();
+        setUser(null);
         setLogged(false);
-    }
-    // ...continuar con más acciones
-}
+    };
 
-return (
-    <>
-        {isLogged ? (
+    async function login() {
+        try {
+            const isReallyLogged = await onGoogleButtonPress();
+            if (isReallyLogged){
+                setUser(currentLog());
+                setLogged(true);
+                if (user && user.displayName && user.email && user.emailVerified && user.photoURL) {
+                    await checkIfUserExists(user.email);
+                    await addUser(user.displayName,user.email,user.emailVerified,user.photoURL);
+                }
+                navigation.navigate(destinationNavigationComponentName);
+
+            } else {
+                logout;
+            }
+
+        } catch (e){
+            setLogged(false);
+        }
+        // ...continuar con más acciones
+    }
+
+    return (
         <>
-            <Image source={{ uri: user?.photoURL || 'https://via.placeholder.com/150' }} style={{ width: 150, height: 150 }} />
-            <Text>{user?.displayName || ''}</Text>
-            <Button title="Logout" onPress={logout} />
+            {isLogged ? (
+            <>
+                <Image source={{ uri: user?.photoURL || 'https://via.placeholder.com/150' }} style={{ width: 150, height: 150 }} />
+                <Text>{user?.displayName || ''}</Text>
+                <Button title="Logout" onPress={logout} />
+            </>
+            ) : (
+            <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() =>{login();}}/>)}
         </>
-        ) : (
-        <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() =>{login()}}/>)}
-    </>
     );
 };
 
