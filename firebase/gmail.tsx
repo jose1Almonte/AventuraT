@@ -29,9 +29,11 @@ try {
       await checkIfUserExists(userEmail);
       await addUser(user.displayName,user.email,user.emailVerified,user.photoURL);
     }
+    return true;
 } catch (error) {
   Alert.alert('Ingreso fallido', `${error}`);
   console.log(error);
+  return false;
 }
 };
 
