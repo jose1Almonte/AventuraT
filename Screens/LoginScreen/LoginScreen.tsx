@@ -2,7 +2,8 @@ import { View, Text, StyleSheet, Image, Alert, TouchableOpacity  } from 'react-n
 import React from 'react';
 import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
-import GmailRegister from '../../firebase/gmail';
+//import GmailRegister from '../../firebase/gmail';
+import TuComponente from '../../firebase/PerfilPicture';
 
 // declare global {
 //   namespace JSX {
@@ -59,7 +60,7 @@ const LoginScreen = () => {
             </View>
 
             <View style={styles.secondBox}>
-              <GmailRegister/>
+              <TuComponente/>
               {/* <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() => makingThis()}/> */}
               <ContinueWithName text = "Continuar con Facebook" ViewStyle={styles.continueWithFacebookBox} imageSource={require('../../images/FacebookLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() => makingThis()}/>
             </View>
