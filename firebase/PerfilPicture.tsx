@@ -28,6 +28,8 @@ async function login() {
                 await addUser(user.displayName,user.email,user.emailVerified,user.photoURL);
             }
 
+        } else {
+            logout;
         }
 
     } catch (e){
