@@ -2256,6 +2256,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-firebase/firestore@npm:^17.5.0":
+  version: 17.5.0
+  resolution: "@react-native-firebase/firestore@npm:17.5.0"
+  peerDependencies:
+    "@react-native-firebase/app": 17.5.0
+  checksum: 43541e50df8369cfad377bce32cd3e1736cd178b6c36a445d669a2af09cf71c4b3d0a72d557db92253bbe54c462a19e465152ca07721c6497214cf4420e21072
+  languageName: node
+  linkType: hard
+
 "@react-native-google-signin/google-signin@npm:^9.0.2":
   version: 9.0.2
   resolution: "@react-native-google-signin/google-signin@npm:9.0.2"
@@ -2740,6 +2749,7 @@ __metadata:
     "@react-native-community/eslint-config": ^3.2.0
     "@react-native-firebase/app": ^17.5.0
     "@react-native-firebase/auth": ^17.5.0
+    "@react-native-firebase/firestore": ^17.5.0
     "@react-native-google-signin/google-signin": ^9.0.2
     "@react-navigation/native": ^6.1.6
     "@react-navigation/native-stack": ^6.9.12
