@@ -55,12 +55,12 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   info2: {
-    marginTop: 40,
+    marginTop: 30,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
     gap: 15,
-    padding: 20,
+    padding: 30,
   },
   contenedorInfo: {
     display: 'flex',
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     width: 344,
     borderBottomWidth: 1,
     borderBottomColor: "#CFD8E2",
+    padding: 2
   },
   fondo: {
     flex: 1,
