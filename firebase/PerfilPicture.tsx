@@ -5,8 +5,17 @@ import { Button, Image,Text} from 'react-native';
 import {onGoogleButtonPress} from './gmail';
 import { ContinueWithName, styles } from '../Screens/LoginScreen/LoginScreen';
 import { addUser, checkIfUserExists } from '../firebase/Firestore';
+import { NavigationProp } from '@react-navigation/native';
 
-const YourSignInWithGoogleComponent = () => {
+interface YourSignInWithGoogleComponentProps{
+    navigation: NavigationProp<Record<string, object | undefined>>,
+    destinationNavigationComponentName: string,
+}
+
+const YourSignInWithGoogleComponent = ({
+    navigation,
+    destinationNavigationComponentName,
+}:YourSignInWithGoogleComponentProps) => {
     const [user, setUser] = useState(currentLog());
     const [isLogged, setLogged] = useState(!!user);
 
@@ -27,6 +36,7 @@ async function login() {
                 await checkIfUserExists(user.email);
                 await addUser(user.displayName,user.email,user.emailVerified,user.photoURL);
             }
+            navigation.navigate(destinationNavigationComponentName);
 
         } else {
             logout;

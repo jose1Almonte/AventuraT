@@ -3,14 +3,11 @@ import React from 'react';
 import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
 import YourSignInWithGoogleComponent from '../../firebase/PerfilPicture';
+import { NavigationProp } from '@react-navigation/native';
 
-// declare global {
-//   namespace JSX {
-//     interface IntrinsicElements {
-//       continueWithName: continueWithNameProps;
-//     }
-//   }
-// }
+interface LoginScreenProps{
+  navigation: NavigationProp<Record<string, object | undefined>>,
+}
 
 interface ContinueWithNameProps{
   imageSource: any,
@@ -47,7 +44,9 @@ const makingThis = () => {
   Alert.alert('Hello');
 };
 
-const LoginScreen = () => {
+const LoginScreen = ({
+  navigation,
+}:LoginScreenProps) => {
   return (
 
     <View style = {styles.bigBox}>
@@ -60,7 +59,7 @@ const LoginScreen = () => {
 
             <View style={styles.secondBox}>
               {/* <GmailRegister ViewStyle={styles.continueWithGoogleBox}/> */}
-              <YourSignInWithGoogleComponent/>
+              <YourSignInWithGoogleComponent navigation={navigation} destinationNavigationComponentName = {'HomeScreen'}/>
               {/* <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={onGoogleButtonPress}/> */}
               <ContinueWithName text = "Continuar con Facebook" ViewStyle={styles.continueWithFacebookBox} imageSource={require('../../images/FacebookLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() => makingThis()}/>
             </View>
