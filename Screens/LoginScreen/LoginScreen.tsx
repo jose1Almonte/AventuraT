@@ -3,6 +3,7 @@ import React from 'react';
 import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
 import { onGoogleButtonPress } from '../../firebase/gmail';
+import TuComponente from '../../firebase/PerfilPicture';
 
 // declare global {
 //   namespace JSX {
@@ -21,7 +22,7 @@ interface ContinueWithNameProps{
   onPress: any,
 }
 
-const ContinueWithName = ({
+export const ContinueWithName = ({
   text,
   ViewStyle,
   imageSource,
@@ -56,6 +57,7 @@ const LoginScreen = () => {
             <View style={styles.firstBox}>
               <Text style = {styles.title}>¡Bienvenido!</Text>
               <Text style = {styles.subtitle}>Descubre grandes experiencias a tu alrededor</Text>
+              <TuComponente/>
             </View>
 
             <View style={styles.secondBox}>
@@ -71,7 +73,8 @@ const LoginScreen = () => {
 
 export default LoginScreen;
 
-const styles = StyleSheet.create({
+
+export const styles = StyleSheet.create({
   backGround:{
     flex: 1,
   },
