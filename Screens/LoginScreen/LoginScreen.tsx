@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image, Alert, TouchableOpacity  } from 'react-n
 import React from 'react';
 import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
+import { onGoogleButtonPress } from '../../firebase/gmail';
 
 // declare global {
 //   namespace JSX {
@@ -58,8 +59,8 @@ const LoginScreen = () => {
             </View>
 
             <View style={styles.secondBox}>
-              {/* <continueWithName text='Continuar con google' ViewStyle = {styles.continueWithGoogleBox}/> */}
-              <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() => makingThis()}/>
+              {/* <GmailRegister ViewStyle={styles.continueWithGoogleBox}/> */}
+              <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={onGoogleButtonPress}/>
               <ContinueWithName text = "Continuar con Facebook" ViewStyle={styles.continueWithFacebookBox} imageSource={require('../../images/FacebookLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() => makingThis()}/>
             </View>
       </Gradient>
