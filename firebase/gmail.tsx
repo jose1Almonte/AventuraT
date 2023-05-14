@@ -1,6 +1,10 @@
 import { Alert} from 'react-native';
 import { GoogleSignin} from '@react-native-google-signin/google-signin';
 import { firebase } from '@react-native-firebase/auth';
+import { addUser, checkIfUserExists } from '../firebase/Firestore';
+import auth from '@react-native-firebase/auth';
+
+const user = auth().currentUser;
 
 GoogleSignin.configure({
     webClientId: '638631763713-0on48aa795gnpfotr2v3f1odra0j4fqq.apps.googleusercontent.com',
@@ -9,6 +13,7 @@ GoogleSignin.configure({
 });
 
 export const onGoogleButtonPress = async () => {
+
 try {
     await GoogleSignin.hasPlayServices();
 
@@ -19,6 +24,11 @@ try {
     await firebase.auth().signInWithCredential(googleCredential);
     Alert.alert('¡Ingreso exitoso!', 'Haz logrado iniciar sesión con Google');
   // Si llegamos a este punto, la autenticación fue exitosa
+    const userEmail = user?.email;
+    if (userEmail && user.displayName && user.email && user.emailVerified && user.photoURL) {
+      await checkIfUserExists(userEmail);
+      await addUser(user.displayName,user.email,user.emailVerified,user.photoURL);
+    }
 } catch (error) {
   Alert.alert('Ingreso fallido', `${error}`);
   console.log(error);

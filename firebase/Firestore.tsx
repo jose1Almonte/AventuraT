@@ -3,34 +3,42 @@ import firestore from '@react-native-firebase/firestore';
 const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
 
-export const addUser = async (userData:any) => {
+export const addUser = async (displayName:string,email:string, emailVerified:boolean,photoURL:string) => {
     await usersCollection.add({
-        displayName: userData.displayName,
-        email: userData.email,
-        emailVerified: userData.emailVerified,
-        photoURL: userData.photoURL
-      });
+        displayName: displayName,
+        email: email,
+        emailVerified: emailVerified,
+        photoURL: photoURL});
 };
 
-export const updateUser = async (userId: string, userData: any) => {
-  await usersCollection.doc(userId).set({
-    displayName: userData.displayName,
-    email: userData.email,
-    emailVerified: userData.emailVerified,
-    photoURL: userData.photoURL});
+export const updateUser = async (userId: string, displayName:string,email:string, emailVerified:boolean,photoURL:string) => {
+    await usersCollection.doc(userId).set({
+        displayName: displayName,
+        email: email,
+        emailVerified: emailVerified,
+        photoURL: photoURL});
 };
 
 
-export const addEnterprise = async (enterpriseData:any) => {
+export const addEnterprise = async (enterpriseName:string, rif:string, personResponsible:string  ) => {
     await usersCollection2.add({
-        enterpriseName: enterpriseData.enterpriseName,
-        rif: enterpriseData.rif,
-        personResponsible: enterpriseData.personResponsible});
+        enterpriseName: enterpriseName,
+        rif: rif,
+        personResponsible: personResponsible});
 };
 
-export const updateEnterprise = async (enterpriseId: string, enterpriseData: any) => {
-  await usersCollection2.doc(enterpriseId).set({
-    enterpriseName: enterpriseData.enterpriseName,
-    rif: enterpriseData.rif,
-    personResponsible: enterpriseData.personResponsible});
+export const updateEnterprise = async (enterpriseId: string, enterpriseName:string, rif:string, personResponsible:string ) => {
+    await usersCollection2.doc(enterpriseId).set({
+        enterpriseName: enterpriseName,
+        rif: rif,
+        personResponsible: personResponsible});
 };
+
+export const getUser = async (userId: string) => {
+    const documentSnapshot = await usersCollection.doc(userId).get();
+    return { id: documentSnapshot.id, ...documentSnapshot.data() };
+};
+
+export const checkIfUserExists = async (email:string) => {
+    const querySnapshot = await usersCollection.where('email', '==', email).get();
+    return !querySnapshot.empty;};
