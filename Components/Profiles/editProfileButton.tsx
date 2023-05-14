@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   container: {
-    height: 45,
+    height: 40,
     width: 140,
     borderRadius: 50,
     justifyContent: 'center',
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   txt: {
     color: 'white',
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'Poppins-Medium',
   },
 });

@@ -26,14 +26,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   photoContainer: {
-    height: 120,
-    width: 120,
+    height: 100,
+    width: 100,
     borderRadius: 100,
     backgroundColor: 'white',
   },
   img: {
-    width: 120,
-    height: 120,
+    width: 100,
+    height: 100,
     borderRadius: 100,
     borderWidth: 2,
     borderColor: '#1881B1',

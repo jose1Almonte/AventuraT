@@ -1,10 +1,10 @@
 import {Text, View, StyleSheet} from 'react-native';
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
-import vectorPerfil from '../../images/vectorPerfil';
-import PhotoProfile from '../../Components/photoProfile';
-import EditProfileButton from '../../Components/editProfileButton';
-import VectorPerfilFlecha from '../../images/vectorPerfilFlecha';
+import vectorPerfil from '../../images/vectores/vectorPerfil';
+import PhotoProfile from '../../Components/Profiles/photoProfile';
+import EditProfileButton from '../../Components/Profiles/editProfileButton';
+import VectorPerfilFlecha from '../../images/vectores/vectorPerfilFlecha';
 
 const UserProfileScreen = () => {
   return (
@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
   },
   txt: {
     color: 'black',
-    fontSize: 20,
-    fontFamily: 'Poppins-Medium',
+    fontSize: 18,
+    fontFamily: 'Poppins-Regular',
   },
   title: {
     color: 'black',
