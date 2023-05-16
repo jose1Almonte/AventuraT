@@ -12,10 +12,12 @@ const{height,width} = Dimensions.get('window');
 const pixelSize2 = PixelRatio.getPixelSizeForLayoutSize(700);
 
 const HomeScreen = () => {
+
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
     return () => backHandler.remove();
   }, []);
+
   return (
     <ScrollView style={styles.backGround}>
       <View style={styles.flex}>
