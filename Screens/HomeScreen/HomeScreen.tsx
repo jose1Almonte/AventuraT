@@ -6,6 +6,7 @@ import RegisterEnterprise from '../../Components/registerEnterprise';
 import { Image } from 'react-native';
 //import UserProfileScreen from '../UserProfileScreen/UserProfileScreen';
 //import UserProfileScreen from '../BusinessProfileScreen/BusinessProfileScreen';
+import { Carrousel } from '../../Components/Carrusel';
 
 const{height,width} = Dimensions.get('window');
 
@@ -45,6 +46,9 @@ const HomeScreen = () => {
             <View style={styles.Redondos}><Image style={styles.Escalado} source={require('../../images/lol.jpg')}></Image></View>
           </View>
         </View>
+      </View>
+      <View>
+        <Carrousel/>
       </View>
       <RegisterEnterprise/>
     </ScrollView>
