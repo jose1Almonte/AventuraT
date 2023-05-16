@@ -20,7 +20,7 @@ export const updateUser = async (userId: string, displayName:string,email:string
 };
 
 
-export const addEnterprise = async (enterpriseName:string, rif:string, personResponsible:string  ) => {
+export const addEnterprise = async (enterpriseName:string, rif:string, personResponsible:string ) => {
     await usersCollection2.add({
         enterpriseName: enterpriseName,
         rif: rif,
