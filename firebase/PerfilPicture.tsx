@@ -11,18 +11,13 @@ import { NavigationProp} from '@react-navigation/native';
 
 const pixelSize = PixelRatio.getPixelSizeForLayoutSize(30);
 
-    
-
 interface YourSignInWithGoogleComponentProps{
     navigation: NavigationProp<Record<string, object | undefined>>,
     destinationNavigationComponentName: string,
 }
 
-
-
 const YourSignInWithGoogleComponent = ({
 
-    
     navigation,
     destinationNavigationComponentName,
 }:YourSignInWithGoogleComponentProps) => {
@@ -66,12 +61,10 @@ const YourSignInWithGoogleComponent = ({
                     <Button title="Logout"  onPress={()=> {
                     logout();
                     }}/>
-                    
                 </View>
             </View>
             ) : (
             <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() =>{login();}}/>)}
-            
         </>
     );
 };
