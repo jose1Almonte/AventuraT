@@ -1,5 +1,5 @@
-import { View ,ScrollView, Text, StyleSheet, PixelRatio , Dimensions} from 'react-native';
-import React from 'react';
+import { View ,ScrollView, Text, StyleSheet, PixelRatio , Dimensions, BackHandler} from 'react-native';
+import React, { useEffect } from 'react';
 //import RegisterEnterprise from '../../Components/registerEnterprise';
 import YourSignInWithGoogleComponent from '../../firebase/PerfilPicture';
 import RegisterEnterprise from '../../Components/registerEnterprise';
@@ -12,6 +12,10 @@ const{height,width} = Dimensions.get('window');
 const pixelSize2 = PixelRatio.getPixelSizeForLayoutSize(700);
 
 const HomeScreen = () => {
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
+    return () => backHandler.remove();
+  }, []);
   return (
     <ScrollView style={styles.backGround}>
       <View style={styles.flex}>

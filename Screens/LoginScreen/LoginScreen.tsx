@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet, Image, Alert, TouchableOpacity  } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
 import YourSignInWithGoogleComponent from '../../firebase/PerfilPicture';
-import { NavigationProp } from '@react-navigation/native';
+import { CommonActions, NavigationProp } from '@react-navigation/native';
+import currentLog from '../../firebase/UserData';
 
 interface LoginScreenProps{
   navigation: NavigationProp<Record<string, object | undefined>>,
@@ -47,6 +48,15 @@ const makingThis = () => {
 const LoginScreen = ({
   navigation,
 }:LoginScreenProps) => {
+
+  const isLoggedIn = currentLog();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigation.dispatch(CommonActions.navigate('HomeScreen'));
+    }
+    console.log('Here I am ma braaa');
+  }, [isLoggedIn, navigation]);
   return (
 
     <View style = {styles.bigBox}>
