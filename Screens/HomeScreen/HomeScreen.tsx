@@ -3,6 +3,7 @@ import React from 'react';
 //import RegisterEnterprise from '../../Components/registerEnterprise';
 import YourSignInWithGoogleComponent from '../../firebase/PerfilPicture';
 import RegisterEnterprise from '../../Components/registerEnterprise';
+import { Image } from 'react-native';
 //import UserProfileScreen from '../UserProfileScreen/UserProfileScreen';
 //import UserProfileScreen from '../BusinessProfileScreen/BusinessProfileScreen';
 
@@ -15,13 +16,35 @@ const HomeScreen = () => {
     <ScrollView style={styles.backGround}>
       <View style={styles.flex}>
         <View style={styles.Header}>
-          <Text style={styles.Central2}>  MENU</Text>
-          <Text style={styles.Central}>   AventuraT </Text>
-          <YourSignInWithGoogleComponent/>
+          <View style={styles.Space}>
+            <Text style={styles.Central2}>  MENU</Text>
+          </View>
+          <View style={styles.Space}>
+            <Text style={styles.Central}>   AventuraT </Text>
+          </View>
+          <View style={styles.Space}>
+            <YourSignInWithGoogleComponent/>
+          </View>
         </View>
       </View>
       <View style={styles.Maravillosa}>
         <Text style={styles.Buscador}>  </Text>
+      </View>
+      <View style={styles.Container2}>
+        <View style={styles.Caracteristicas}>
+          <View style={styles.Sepa}>
+            <View style={styles.Redondos}><Image style={styles.Escalado} source={require('../../images/tt.jpg')}></Image></View>
+          </View>
+          <View style={styles.Sepa}>
+            <View style={styles.Redondos}><Image style={styles.Escalado} source={require('../../images/mas.jpg')}></Image></View>
+          </View>
+          <View style={styles.Sepa}>
+            <View style={styles.Redondos}><Image style={styles.Escalado} source={require('../../images/para.jpg')}></Image></View>
+          </View >
+          <View style={styles.Sepa}>
+            <View style={styles.Redondos}><Image style={styles.Escalado} source={require('../../images/lol.jpg')}></Image></View>
+          </View>
+        </View>
       </View>
       <RegisterEnterprise/>
     </ScrollView>
@@ -37,16 +60,34 @@ const styles = StyleSheet.create({
     // flex: 1,
   },
 
-  onFire:{
+  Sepa:{
+    padding:4,
+  },
+  Space:{
+    padding:8,
+
+  },
+  
+
+
+  Escalado:{
+    width:width*0.14,
+    height:height*0.07,
   },
 
   flex:{
+    flex:1,
     alignItems:'center',
+
   },
 
-
+  Container2:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 30,
+    marginBottom: 10,
+  },
   Header:{
-    padding: 5,
     alignItems:'center',
     flexDirection:'row',
     justifyContent: 'space-between',
@@ -55,12 +96,30 @@ const styles = StyleSheet.create({
   Buscador:{
     backgroundColor: '#1881B1',
     borderRadius: 40,
-    height:height*0.05,
-    width: width*0.85,
+    height:height*0.07,
+    width: width*0.88,
+  },
+
+  Caracteristicas:{
+    height:height*0.07,
+    width: width*0.88,
+    flexDirection:'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  Redondos:{
+    backgroundColor: '#1881B1',
+    borderRadius: 100,
+    height: height*0.10,
+    width: height*0.10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   Maravillosa:{
     alignItems: 'center',
+    
   },
 
   Central:{
@@ -72,6 +131,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.05,
     color: '#FFFFFF',
     opacity: 0.8,
+    
 
   },
 

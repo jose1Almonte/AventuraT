@@ -61,7 +61,7 @@ const YourSignInWithGoogleComponent = ({
         <>
             {isLogged ? (
             <View style={{ width: pixelSize, height: pixelSize, alignItems: 'center'}} >
-                <Image source={{ uri: user?.photoURL || 'https://via.placeholder.com/150' }} style={{ width: 50, height: 50, borderRadius:100}} />
+                <Image source={{ uri: user?.photoURL || 'https://via.placeholder.com/150' }} style={{ width: 42, height: 42, borderRadius:100}} />
                 <View style={{ width: pixelSize-10, height: pixelSize-50}} >
                     <Button title="Logout"  onPress={()=> {
                     logout();
