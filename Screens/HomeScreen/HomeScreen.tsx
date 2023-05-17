@@ -6,18 +6,17 @@ import RegisterEnterprise from '../../Components/registerEnterprise';
 import { Image } from 'react-native';
 //import UserProfileScreen from '../UserProfileScreen/UserProfileScreen';
 //import UserProfileScreen from '../BusinessProfileScreen/BusinessProfileScreen';
+import { Carrousel } from '../../Components/Carrusel';
 
 const{height,width} = Dimensions.get('window');
 
 const pixelSize2 = PixelRatio.getPixelSizeForLayoutSize(700);
 
 const HomeScreen = () => {
-
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
     return () => backHandler.remove();
   }, []);
-
   return (
     <ScrollView style={styles.backGround}>
       <View style={styles.flex}>
@@ -51,6 +50,9 @@ const HomeScreen = () => {
             <View style={styles.Redondos}><Image style={styles.Escalado} source={require('../../images/lol.jpg')}></Image></View>
           </View>
         </View>
+      </View>
+      <View>
+        <Carrousel/>
       </View>
       <RegisterEnterprise/>
     </ScrollView>
