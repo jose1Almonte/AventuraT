@@ -1,21 +1,28 @@
-import { View, Text, StyleSheet, Image, Alert, TouchableOpacity  } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
-import { Background } from '../../Layouts/Background';
+import {Background} from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
 import YourSignInWithGoogleComponent from '../../firebase/PerfilPicture';
-import { NavigationProp } from '@react-navigation/native';
+import {NavigationProp} from '@react-navigation/native';
 
-interface LoginScreenProps{
-  navigation: NavigationProp<Record<string, object | undefined>>,
+interface LoginScreenProps {
+  navigation: NavigationProp<Record<string, object | undefined>>;
 }
 
-interface ContinueWithNameProps{
-  imageSource: any,
+interface ContinueWithNameProps {
+  imageSource: any;
   text: any;
   ViewStyle: any;
   ImageStyle: any;
   TextStyle: any;
-  onPress: any,
+  onPress: any;
 }
 
 export const ContinueWithName = ({
@@ -28,15 +35,14 @@ export const ContinueWithName = ({
 }: ContinueWithNameProps) => {
   return (
     <>
-    <TouchableOpacity  style={ViewStyle} onPress={onPress}>
-      <>
-      <Image source={imageSource} style = {ImageStyle} />
-      <Text style={TextStyle}>{text}</Text>
-      </>
-    </TouchableOpacity>
+      <TouchableOpacity style={ViewStyle} onPress={onPress}>
+        <>
+          <Image source={imageSource} style={ImageStyle} />
+          <Text style={TextStyle}>{text}</Text>
+        </>
+      </TouchableOpacity>
     </>
   );
-
 };
 
 const makingThis = () => {
@@ -44,26 +50,48 @@ const makingThis = () => {
   Alert.alert('Hello');
 };
 
-const LoginScreen = ({
-  navigation,
-}:LoginScreenProps) => {
+const LoginScreen = ({navigation}: LoginScreenProps) => {
   return (
+    <View style={styles.bigBox}>
+      <Background
+        image={require('../../images/loginLayout.png')}
+        style={styles.backGround}>
+        <Gradient
+          colors={[
+            '#1DB5BE',
+            'rgba(24, 129, 177, 0.36);',
+            'rgba(24, 129, 177, 0.26);',
+            'rgba(24, 129, 177, 0.16);',
+            'rgba(24, 129, 177, 0);',
+          ]}
+          locations={[0, 0.25, 0.5, 0.9, 1]}
+          style={styles.linearGradient}>
+          <View style={styles.firstBox}>
+            <Text style={styles.title}>¡Bienvenido!</Text>
+            <Text style={styles.subtitle}>
+              Descubre grandes experiencias a tu alrededor
+            </Text>
+          </View>
 
-    <View style = {styles.bigBox}>
-      <Background image = {require('../../images/loginLayout.png')} style={styles.backGround}>
-      <Gradient colors = {['#1DB5BE', 'rgba(24, 129, 177, 0.36);', 'rgba(24, 129, 177, 0.26);', 'rgba(24, 129, 177, 0.16);', 'rgba(24, 129, 177, 0);']} locations={[0, 0.25, 0.5, 0.9, 1]} style={styles.linearGradient} >
-            <View style={styles.firstBox}>
-              <Text style = {styles.title}>¡Bienvenido!</Text>
-              <Text style = {styles.subtitle}>Descubre grandes experiencias a tu alrededor</Text>
-            </View>
-
-            <View style={styles.secondBox}>
-              {/* <GmailRegister ViewStyle={styles.continueWithGoogleBox}/> */}
-              <YourSignInWithGoogleComponent styles = {styles} navigation={navigation} destinationNavigationComponentName = {'HomeScreen'} goToLoginScreen={false}/>
-              {/* <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={onGoogleButtonPress}/> */}
-              <ContinueWithName text = "Continuar con Facebook" ViewStyle={styles.continueWithFacebookBox} imageSource={require('../../images/FacebookLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() => makingThis()}/>
-            </View>
-      </Gradient>
+          <View style={styles.secondBox}>
+            {/* <GmailRegister ViewStyle={styles.continueWithGoogleBox}/> */}
+            <YourSignInWithGoogleComponent
+              styles={styles}
+              navigation={navigation}
+              destinationNavigationComponentName={'HomeScreen'}
+              goToLoginScreen={false}
+            />
+            {/* <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={onGoogleButtonPress}/> */}
+            <ContinueWithName
+              text="Continuar con Facebook"
+              ViewStyle={styles.continueWithFacebookBox}
+              imageSource={require('../../images/FacebookLogo.png')}
+              ImageStyle={styles.LogoStyles}
+              TextStyle={styles.normalTextStyle}
+              onPress={() => makingThis()}
+            />
+          </View>
+        </Gradient>
       </Background>
     </View>
   );
@@ -71,9 +99,8 @@ const LoginScreen = ({
 
 export default LoginScreen;
 
-
 export const styles = StyleSheet.create({
-  backGround:{
+  backGround: {
     flex: 1,
   },
 
@@ -86,23 +113,25 @@ export const styles = StyleSheet.create({
     // backgroundColor: 'red',
   },
 
-  firstBox:{
+  firstBox: {
     flex: 2,
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
 
-  secondBox:{
+  secondBox: {
     flex: 3,
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
 
-  continueWithGoogleBox:{
+  continueWithGoogleBox: {
 
+    
     flexDirection: 'row',
     width: '86.39%',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    gap: 25,
     alignItems: 'center',
     height: '10%',
     marginBottom: '5%',
@@ -111,12 +140,12 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
   },
 
-  continueWithFacebookBox:{
-
+  continueWithFacebookBox: {
     flexDirection: 'row',
     marginBottom: '20%',
     width: '86.39%',
-    justifyContent: 'space-between',
+    gap: 25, 
+    justifyContent: 'center',
     alignItems: 'center',
     height: '10%',
     paddingHorizontal: '2%',
@@ -124,7 +153,7 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
   },
 
-  title:{
+  title: {
     fontFamily: 'Poppins',
     fontStyle: 'normal',
     fontWeight: '500',
@@ -133,7 +162,7 @@ export const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
 
-  subtitle:{
+  subtitle: {
     fontFamily: 'Poppins',
     fontStyle: 'normal',
     fontWeight: '800',
@@ -147,7 +176,7 @@ export const styles = StyleSheet.create({
     marginLeft: '5%',
   },
 
-  normalTextStyle:{
+  normalTextStyle: {
     fontFamily: 'Poppins',
     fontStyle: 'normal',
     fontWeight: '500',
@@ -157,6 +186,4 @@ export const styles = StyleSheet.create({
     color: '#000000',
     paddingRight: '15%',
   },
-
-
 });
