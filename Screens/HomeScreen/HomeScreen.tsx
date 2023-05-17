@@ -7,12 +7,19 @@ import { Image } from 'react-native';
 //import UserProfileScreen from '../UserProfileScreen/UserProfileScreen';
 //import UserProfileScreen from '../BusinessProfileScreen/BusinessProfileScreen';
 import { Carrousel } from '../../Components/Carrusel';
+import { NavigationProp } from '@react-navigation/native';
+
+interface HomeScreenProps{
+  navigation: NavigationProp<Record<string, object | undefined>>,
+}
 
 const{height,width} = Dimensions.get('window');
 
 const pixelSize2 = PixelRatio.getPixelSizeForLayoutSize(700);
 
-const HomeScreen = () => {
+const HomeScreen = ({
+  navigation,
+}:HomeScreenProps) => {
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
     return () => backHandler.remove();
@@ -28,7 +35,7 @@ const HomeScreen = () => {
             <Text style={styles.Central}>   AventuraT </Text>
           </View>
           <View style={styles.Space}>
-            <YourSignInWithGoogleComponent/>
+            <YourSignInWithGoogleComponent styles = {styles} goToLoginScreen={true} destinationNavigationComponentName='LoginScreen' navigation={navigation}/>
           </View>
         </View>
       </View>
@@ -62,7 +69,7 @@ const HomeScreen = () => {
 export default HomeScreen;
 
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   backGround:{
     backgroundColor: '#1DB5BE',
     // flex: 1,
@@ -104,13 +111,13 @@ const styles = StyleSheet.create({
   Buscador:{
     backgroundColor: '#1881B1',
     borderRadius: 40,
-    height:height*0.07,
-    width: width*0.88,
+    height:height * 0.07,
+    width: width * 0.88,
   },
 
   Caracteristicas:{
-    height:height*0.07,
-    width: width*0.88,
+    height:height * 0.07,
+    width: width * 0.88,
     flexDirection:'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -119,15 +126,14 @@ const styles = StyleSheet.create({
   Redondos:{
     backgroundColor: '#1881B1',
     borderRadius: 100,
-    height: height*0.10,
-    width: height*0.10,
+    height: height * 0.10,
+    width: height * 0.10,
     justifyContent: 'center',
     alignItems: 'center',
   },
 
   Maravillosa:{
     alignItems: 'center',
-    
   },
 
   Central:{
@@ -139,8 +145,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.05,
     color: '#FFFFFF',
     opacity: 0.8,
-    
-
   },
 
   Central2:{
@@ -152,7 +156,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.05,
     color: '#FFFFFF',
     opacity: 0.8,
-
   },
 
 });

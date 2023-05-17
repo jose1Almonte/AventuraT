@@ -1,10 +1,9 @@
 import { View, Text, StyleSheet, Image, Alert, TouchableOpacity  } from 'react-native';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
 import YourSignInWithGoogleComponent from '../../firebase/PerfilPicture';
-import { CommonActions, NavigationProp } from '@react-navigation/native';
-import currentLog from '../../firebase/UserData';
+import { NavigationProp } from '@react-navigation/native';
 
 interface LoginScreenProps{
   navigation: NavigationProp<Record<string, object | undefined>>,
@@ -48,15 +47,6 @@ const makingThis = () => {
 const LoginScreen = ({
   navigation,
 }:LoginScreenProps) => {
-
-  const isLoggedIn = currentLog();
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigation.dispatch(CommonActions.navigate('HomeScreen'));
-    }
-    console.log('Here I am ma braaa');
-  }, [isLoggedIn, navigation]);
   return (
 
     <View style = {styles.bigBox}>
@@ -69,7 +59,7 @@ const LoginScreen = ({
 
             <View style={styles.secondBox}>
               {/* <GmailRegister ViewStyle={styles.continueWithGoogleBox}/> */}
-              <YourSignInWithGoogleComponent navigation={navigation} destinationNavigationComponentName = {'HomeScreen'}/>
+              <YourSignInWithGoogleComponent styles = {styles} navigation={navigation} destinationNavigationComponentName = {'HomeScreen'} goToLoginScreen={false}/>
               {/* <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={onGoogleButtonPress}/> */}
               <ContinueWithName text = "Continuar con Facebook" ViewStyle={styles.continueWithFacebookBox} imageSource={require('../../images/FacebookLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() => makingThis()}/>
             </View>
