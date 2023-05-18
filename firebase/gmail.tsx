@@ -26,7 +26,7 @@ try {
   // Si llegamos a este punto, la autenticación fue exitosa
     const userEmail = user?.email;
     if (userEmail && user.displayName && user.email && user.emailVerified && user.photoURL) {
-      if (await checkIfUserExists(userEmail)== false){
+      if (await checkIfUserExists(userEmail) === false){
         await addUser(user.displayName,user.email,user.emailVerified,user.photoURL);
       }
     }
