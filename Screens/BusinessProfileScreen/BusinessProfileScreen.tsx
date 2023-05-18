@@ -8,7 +8,7 @@ import vectorLocation from '../../images/vectores/vectorLocation';
 import EditPackageButton from '../../Components/Profiles/editPackagesButton';
 import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../images/vectores/separator';
-import start from '../../images/vectores/start';
+import star from '../../images/vectores/star';
 
 const UserProfileScreen = () => {
   return (
@@ -24,7 +24,7 @@ const UserProfileScreen = () => {
             <View style={styles.contenedorPuntaje}>
               <View style={styles.contenedorEstrella}>
                 <Text style={styles.point}>4,5</Text>
-                <SvgXml xml={start} />
+                <SvgXml xml={star} />
               </View>
 
               <Text style={styles.description}>Calificación</Text>
