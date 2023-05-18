@@ -1,6 +1,7 @@
 import { Text, Alert, TextInput, Button ,View, StyleSheet, TextStyle} from 'react-native';
 import React from 'react';
 import { useState} from 'react';
+import { addEnterprise } from '../firebase/Firestore';
 // import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 interface Enterprise {
@@ -54,8 +55,12 @@ export default function RegisterEnterprise() {
     const [showValues, setShowValues] = useState(false);
 
     const handleShowValues = () => {
-        Alert.alert('Alerta', 'Se han guardado sus datos');
-        setShowValues(true);
+        if (enterprise.enterpriseName && enterprise.rif && enterprise.personResponsible) {
+            addEnterprise(enterprise.enterpriseName, enterprise.rif, enterprise.personResponsible);
+            Alert.alert('Alerta', 'Se han guardado sus datos');
+            setShowValues(true);
+        }
+
     };
     const noShowValues = () => {
         setShowValues(false);
