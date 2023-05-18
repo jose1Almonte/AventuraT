@@ -41,8 +41,10 @@ const YourSignInWithGoogleComponent = ({
                 setUser(currentLog());
                 setLogged(true);
                 if (user && user.displayName && user.email && user.emailVerified && user.photoURL) {
-                    await checkIfUserExists(user.email);
-                    await addUser(user.displayName,user.email,user.emailVerified,user.photoURL);
+                    const userExist = await checkIfUserExists(user.email);
+                    if (!userExist){
+                        await addUser(user.displayName,user.email,user.emailVerified,user.photoURL);
+                    }
                 }
                 navigation.navigate(destinationNavigationComponentName);
 
