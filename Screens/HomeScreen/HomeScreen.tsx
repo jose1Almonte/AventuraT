@@ -58,6 +58,7 @@ const HomeScreen = ({
           </View>
         </View>
       </View>
+      <Text style={styles.MyComponent}>Destinos Populares</Text>
       <View>
         <Carrousel/>
       </View>
@@ -158,4 +159,15 @@ export const styles = StyleSheet.create({
     opacity: 0.8,
   },
 
+  MyComponent:{
+  fontFamily: 'Poppins',
+  fontStyle: 'normal',
+  fontWeight: '700',
+  fontSize: 18,
+  lineHeight: 27,
+  color: '#FFFFFF',
+  marginTop: height*0.03,
+  marginBottom: height*0.01,
+  marginLeft: width*0.10,
+},
 });

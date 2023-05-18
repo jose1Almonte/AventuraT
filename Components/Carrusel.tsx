@@ -75,9 +75,11 @@ export const Carrousel = () => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'red',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    height: screenWidth * 0.7,
   },
   contentContainer: {
     alignItems: 'center',
