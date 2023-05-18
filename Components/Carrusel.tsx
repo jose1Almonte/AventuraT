@@ -6,26 +6,26 @@ interface CarouselItem {
   id: number;
   component: React.ReactNode;
 }
+
 const screenWidth = Dimensions.get('window').width;
+const carouselItemWidth = screenWidth * 0.43; // Ancho de los componentes
 
 const carouselItems: CarouselItem[] = [
   { id: 1, component: <CustomComponent1 /> },
   { id: 2, component: <CustomComponent2 /> },
   { id: 3, component: <CustomComponent3 /> },
-  {id: 4, component:<CustomComponent4/>}
 ];
 
 export const Carrousel = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const renderItem = ({ item, index }: { item: CarouselItem; index: number }) => {
-    
-    const centerScale = 1;
-    const sideScale = 0.6;
+    const centerScale = 1.2;
+    const sideScale = 0.8;
     const inputRange = [
-      (index - 1) * screenWidth,
-      index * screenWidth,
-      (index + 1) * screenWidth,
+      (index - 1) * carouselItemWidth,
+      index * carouselItemWidth,
+      (index + 1) * carouselItemWidth,
     ];
     const outputRange = [sideScale, centerScale, sideScale];
     const transformScale = scrollX.interpolate({
@@ -34,19 +34,25 @@ export const Carrousel = () => {
       extrapolate: 'clamp',
     });
 
+    const itemStyle = {
+      transform: [{ scale: transformScale }],
+      width: carouselItemWidth,
+      height: Dimensions.get('window').height * 0.6,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginLeft: index === 0 ? (screenWidth - carouselItemWidth) / 2 : 0,
+      marginRight: index === carouselItems.length - 1 ? (screenWidth - carouselItemWidth) / 2 : 0,
+    };
+
     return (
       <TouchableOpacity style={styles.contenedor}>
-        <Animated.View style={[styles.carouselItem, { transform: [{ scale: transformScale }] }]}>
-          {item.component}
-        </Animated.View>
+        <Animated.View style={[styles.carouselItem, itemStyle]}>{item.component}</Animated.View>
       </TouchableOpacity>
     );
   };
 
-  const itemWidth = Dimensions.get('window').width * 0.8;
-
   return (
-    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+    <View style={styles.container}>
       <Animated.FlatList
         data={carouselItems}
         renderItem={renderItem}
@@ -54,26 +60,31 @@ export const Carrousel = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
         pagingEnabled
-        snapToInterval={itemWidth}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: true }
-        )}
-        contentContainerStyle={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: screenWidth*0.10}}
+        snapToInterval={carouselItemWidth}
+        snapToAlignment="start"
+        decelerationRate="fast"
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+          useNativeDriver: true,
+        })}
+        contentContainerStyle={styles.contentContainer}
+        contentInsetAdjustmentBehavior="automatic"
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  carouselItem: {
-    width: Dimensions.get('window').width * 0.8,
-    height: Dimensions.get('window').height * 0.6,
+  container: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    height: screenWidth * 0.6,
   },
-
-  contenedor:{
+  contentContainer: {
+    alignItems: 'center',
+  },
+  carouselItem: {},
+  contenedor: {
     justifyContent: 'center',
     alignItems: 'center',
   },

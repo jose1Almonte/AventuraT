@@ -7,6 +7,7 @@ import DetailsScreen from './Screens/DetailsScreen/DetailsScreen';
 import UserProfileScreen from './Screens/UserProfileScreen/UserProfileScreen';
 import BusinessProfileScreen from './Screens/BusinessProfileScreen/BusinessProfileScreen';
 import NavbarScreen from './Screens/NavbarScreen/NavbarScreen';
+import SearchScreen from './Screens/SearchScreen/SearchScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,11 @@ export default function App() {
         <Stack.Screen
           name="NavbarScreen"
           component={NavbarScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SearchScreen"
+          component={SearchScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
