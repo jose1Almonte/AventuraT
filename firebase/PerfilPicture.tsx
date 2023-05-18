@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import currentLog from './UserData';
 import auth from '@react-native-firebase/auth';
-import { Image, PixelRatio, TouchableOpacity} from 'react-native';
+import { Image, PixelRatio, TouchableOpacity, Dimensions} from 'react-native';
 import {onGoogleButtonPress} from './gmail';
 import { ContinueWithName } from '../Screens/LoginScreen/LoginScreen';
 import { addUser, checkIfUserExists } from '../firebase/Firestore';
@@ -66,12 +66,7 @@ const YourSignInWithGoogleComponent = ({
                 <>
                 {goToLoginScreen ? (
                     <TouchableOpacity style={{ width: pixelSize, height: pixelSize, alignItems: 'center'}}  onPress={() => {logout();}}>
-                        <Image source={{ uri: user?.photoURL || 'https://via.placeholder.com/150' }} style={{ width: 42, height: 42, borderRadius:100}} />
-                        {/* <View style={{ width: pixelSize-10, height: pixelSize-50}} >
-                            <Button title="Logout"  onPress={()=> {
-                                logout();
-                            }}/>
-                        </View> */}
+                        <Image source={{ uri: user?.photoURL || 'https://via.placeholder.com/150' }} style={{ width: 42, height: 42, borderRadius:100, marginTop: Dimensions.get('window').height*0.02}} />
                     </TouchableOpacity>
 
                 ) : (
@@ -82,15 +77,8 @@ const YourSignInWithGoogleComponent = ({
                 <>
                 {goToLoginScreen ? (
                     <TouchableOpacity style={{ width: pixelSize, height: pixelSize, alignItems: 'center'}}  onPress={() => {navigation.navigate('LoginScreen')}}>
-                        <Image source={{ uri: user?.photoURL || 'https://via.placeholder.com/150' }} style={{ width: 42, height: 42, borderRadius:100}} />
-                        {/* <View style={{ width: pixelSize-10, height: pixelSize-50}} >
-                            <Button title="Logout"  onPress={()=> {
-                                logout();
-                            }}/>
-                        </View> */}
+                        <Image source={{ uri: user?.photoURL || 'https://via.placeholder.com/150' }} style={{ width: 42, height: 42, borderRadius:100 , marginTop: Dimensions.get('window').height*0.02}} />
                     </TouchableOpacity>
-
-                    // <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() =>{goLogin();}}/>
                 ) : (
                     <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() =>{login();}}/>
                 )}

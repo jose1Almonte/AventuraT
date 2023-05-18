@@ -26,7 +26,6 @@ interface HomeScreenProps {
 
 const {height, width} = Dimensions.get('window');
 
-const pixelSize2 = PixelRatio.getPixelSizeForLayoutSize(700);
 
 const HomeScreen = ({navigation}: HomeScreenProps) => {
   useEffect(() => {
@@ -51,44 +50,31 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
             />
           </View>
         </View>
-
-        <InputSearch />
-        <View style={styles.Container2}>
-          <View style={styles.Caracteristicas}>
-            <View style={styles.Sepa}>
-              <View style={styles.Redondos}>
-                <Image
-                  style={styles.Escalado}
-                  source={require('../../images/tt.jpg')}></Image>
-              </View>
-            </View>
-            <View style={styles.Sepa}>
-              <View style={styles.Redondos}>
-                <Image
-                  style={styles.Escalado}
-                  source={require('../../images/mas.jpg')}></Image>
-              </View>
-            </View>
-            <View style={styles.Sepa}>
-              <View style={styles.Redondos}>
-                <Image
-                  style={styles.Escalado}
-                  source={require('../../images/para.jpg')}></Image>
-              </View>
-            </View>
-            <View style={styles.Sepa}>
-              <View style={styles.Redondos}>
-                <Image
-                  style={styles.Escalado}
-                  source={require('../../images/lol.jpg')}></Image>
-              </View>
-            </View>
+      </View>
+      <InputSearch/>
+      <View style={styles.Container2}>
+        <View style={styles.Caracteristicas}>
+          <View style={styles.Sepa}>
+            <View style={styles.Redondos}><Image style={styles.Escalado} source={require('../../images/tt.jpg')}></Image></View>
+            <Text style={styles.letritas}>Montaña</Text>
+          </View>
+          <View style={styles.Sepa}>
+            <View style={styles.Redondos}><Image style={styles.Escalado} source={require('../../images/mas.jpg')}></Image></View>
+            <Text style={styles.letritas3}>Playa</Text>
+          </View>
+          <View style={styles.Sepa}>
+            <View style={styles.Redondos}><Image style={styles.Escalado} source={require('../../images/para.jpg')}></Image></View>
+            <Text style={styles.letritas2}>Full-Day</Text>
+          </View >
+          <View style={styles.Sepa}>
+            <View style={styles.Redondos}><Image style={styles.Escalado} source={require('../../images/lol.jpg')}></Image></View>
+            <Text style={styles.letritas}>Camping</Text>
           </View>
         </View>
-        <View>
-          <Carrousel />
-        </View>
-        <RegisterEnterprise />
+      </View>
+      <Text style={styles.MyComponent}>Destinos Populares</Text>
+      <View>
+        <Carrousel/>
       </View>
     </ScrollView>
   );
@@ -149,6 +135,7 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.05,
     color: '#FFFFFF',
     opacity: 0.8,
+    height: height*0.13
   },
   Central2: {
     fontFamily: 'Sansation',
@@ -160,4 +147,43 @@ export const styles = StyleSheet.create({
     color: '#FFFFFF',
     opacity: 0.8,
   },
+
+  MyComponent:{
+  fontFamily: 'Poppins',
+  fontStyle: 'normal',
+  fontWeight: '700',
+  fontSize: 18,
+  lineHeight: 27,
+  color: '#FFFFFF',
+  marginTop: height*0.03,
+  marginBottom: height*0.01,
+  marginLeft: width*0.10,
+},
+
+letritas:{
+  fontFamily: 'Poppins',
+    fontStyle: 'normal',
+    fontWeight: '600',
+    color: '#FFFDFD',
+    marginLeft: width*0.025,
+},
+
+letritas2:{
+  fontFamily: 'Poppins',
+    fontStyle: 'normal',
+    fontWeight: '600',
+    color: '#FFFDFD',
+    marginLeft: width*0.03,
+
+},
+
+letritas3:{
+  fontFamily: 'Poppins',
+    fontStyle: 'normal',
+    fontWeight: '600',
+    color: '#FFFDFD',
+    marginLeft: width*0.055,
+
+},
+
 });
