@@ -67,11 +67,6 @@ const YourSignInWithGoogleComponent = ({
                 {goToLoginScreen ? (
                     <TouchableOpacity style={{ width: pixelSize, height: pixelSize, alignItems: 'center'}}  onPress={() => {logout();}}>
                         <Image source={{ uri: user?.photoURL || 'https://via.placeholder.com/150' }} style={{ width: 42, height: 42, borderRadius:100}} />
-                        {/* <View style={{ width: pixelSize-10, height: pixelSize-50}} >
-                            <Button title="Logout"  onPress={()=> {
-                                logout();
-                            }}/>
-                        </View> */}
                     </TouchableOpacity>
 
                 ) : (
@@ -83,14 +78,7 @@ const YourSignInWithGoogleComponent = ({
                 {goToLoginScreen ? (
                     <TouchableOpacity style={{ width: pixelSize, height: pixelSize, alignItems: 'center'}}  onPress={() => {navigation.navigate('LoginScreen')}}>
                         <Image source={{ uri: user?.photoURL || 'https://via.placeholder.com/150' }} style={{ width: 42, height: 42, borderRadius:100}} />
-                        {/* <View style={{ width: pixelSize-10, height: pixelSize-50}} >
-                            <Button title="Logout"  onPress={()=> {
-                                logout();
-                            }}/>
-                        </View> */}
                     </TouchableOpacity>
-
-                    // <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() =>{goLogin();}}/>
                 ) : (
                     <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={() =>{login();}}/>
                 )}
