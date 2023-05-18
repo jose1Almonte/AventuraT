@@ -8,14 +8,15 @@ import UserProfileScreen from './Screens/UserProfileScreen/UserProfileScreen';
 import BusinessProfileScreen from './Screens/BusinessProfileScreen/BusinessProfileScreen';
 import NavbarScreen from './Screens/NavbarScreen/NavbarScreen';
 import SearchScreen from './Screens/SearchScreen/SearchScreen';
+import CreatePackageScreen from './Screens/CreatePackageScreen/CreatePackageScreen';
 
 const Stack = createNativeStackNavigator();
-/**/
+
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
           options={{headerShown: false}}
@@ -48,6 +49,11 @@ export default function App() {
         <Stack.Screen
           name="SearchScreen"
           component={SearchScreen}
+          options={{headerShown: false}}
+        /> */}
+        <Stack.Screen
+          name="CreatePackageScreen"
+          component={CreatePackageScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
