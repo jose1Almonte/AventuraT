@@ -15,7 +15,6 @@ interface HomeScreenProps{
 
 const{height,width} = Dimensions.get('window');
 
-const pixelSize2 = PixelRatio.getPixelSizeForLayoutSize(700);
 
 const HomeScreen = ({
   navigation,

@@ -8,7 +8,7 @@ interface CarouselItem {
 }
 
 const screenWidth = Dimensions.get('window').width;
-const carouselItemWidth = screenWidth * 0.7; // Ancho de cada elemento en el carrusel
+const carouselItemWidth = screenWidth * 0.43; // Ancho de los componentes
 
 const carouselItems: CarouselItem[] = [
   { id: 1, component: <CustomComponent1 /> },
@@ -75,7 +75,6 @@ export const Carrousel = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'red',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

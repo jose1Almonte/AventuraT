@@ -144,6 +144,7 @@ export const styles = StyleSheet.create({
   },
 
   LogoStyles: {
+    marginLeft: '5%',
   },
 
   normalTextStyle:{

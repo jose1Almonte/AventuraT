@@ -1,24 +1,23 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet,Dimensions } from 'react-native';
+
+const{height,width} = Dimensions.get('window');
 
 export const CustomComponent1 = () => (
   <View style={styles.contenedor}>
-    <Text>Componente 1</Text>
-    <Image source={require('../images/mas.jpg')}></Image>
+    <Image style={styles.reescala} source={require('../images/eee.jpg')}></Image>
   </View>
 );
 
 export const CustomComponent2 = () => (
     <View style={styles.contenedor}>
-      <Text>Componente 2</Text>
-      <Image source={require('../images/mas.jpg')}></Image>
+      <Image style={styles.reescala} source={require('../images/bonito.jpeg')}></Image>
     </View>
   );
 
   export const CustomComponent3 = () => (
     <View style={styles.contenedor}>
-      <Text>Componente 3</Text>
-      <Image source={require('../images/mas.jpg')}></Image>
+      <Image style={styles.reescala} source={require('../images/mas.jpg') }></Image>
     </View>
   );
 
@@ -32,9 +31,6 @@ export const CustomComponent2 = () => (
     contenedor: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 200,
-        height: 200,
-        backgroundColor: 'red',
     },
     contenedor2: {
         justifyContent: 'center',
@@ -43,5 +39,10 @@ export const CustomComponent2 = () => (
         height: 1,
     },
 
+    reescala:{
+      width:width*0.4,
+      height:height*0.23,
+      borderRadius:30,
+    },
 });
 
