@@ -18,6 +18,7 @@ import {Carrousel} from '../../Components/Carrusel';
 import {NavigationProp} from '@react-navigation/native';
 import menuBar from '../../images/vectores/menuBar';
 import {SvgXml} from 'react-native-svg';
+import InputSearch from '../../Components/InputSearch';
 
 interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -37,16 +38,11 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
   }, []);
   return (
     <ScrollView style={styles.backGround}>
-      <View style={styles.flex}>
-        <View style={styles.Header}>
-          <View style={styles.Space}>
-            {/* <Text style={styles.Central2}>  MENU</Text> */}
-            <SvgXml xml={menuBar} />
-          </View>
-          <View style={styles.Space}>
-            <Text style={styles.Central}> AventuraT </Text>
-          </View>
-          <View style={styles.Space}>
+      <View style={styles.container}>
+        <View style={styles.flex}>
+          <SvgXml xml={menuBar} />
+          <Text style={styles.Central}>AventuraT</Text>
+          <View>
             <YourSignInWithGoogleComponent
               styles={styles}
               goToLoginScreen={true}
@@ -55,46 +51,45 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
             />
           </View>
         </View>
-      </View>
-      <View style={styles.Maravillosa}>
-        <Text style={styles.Buscador}> </Text>
-      </View>
-      <View style={styles.Container2}>
-        <View style={styles.Caracteristicas}>
-          <View style={styles.Sepa}>
-            <View style={styles.Redondos}>
-              <Image
-                style={styles.Escalado}
-                source={require('../../images/tt.jpg')}></Image>
+
+        <InputSearch />
+        <View style={styles.Container2}>
+          <View style={styles.Caracteristicas}>
+            <View style={styles.Sepa}>
+              <View style={styles.Redondos}>
+                <Image
+                  style={styles.Escalado}
+                  source={require('../../images/tt.jpg')}></Image>
+              </View>
             </View>
-          </View>
-          <View style={styles.Sepa}>
-            <View style={styles.Redondos}>
-              <Image
-                style={styles.Escalado}
-                source={require('../../images/mas.jpg')}></Image>
+            <View style={styles.Sepa}>
+              <View style={styles.Redondos}>
+                <Image
+                  style={styles.Escalado}
+                  source={require('../../images/mas.jpg')}></Image>
+              </View>
             </View>
-          </View>
-          <View style={styles.Sepa}>
-            <View style={styles.Redondos}>
-              <Image
-                style={styles.Escalado}
-                source={require('../../images/para.jpg')}></Image>
+            <View style={styles.Sepa}>
+              <View style={styles.Redondos}>
+                <Image
+                  style={styles.Escalado}
+                  source={require('../../images/para.jpg')}></Image>
+              </View>
             </View>
-          </View>
-          <View style={styles.Sepa}>
-            <View style={styles.Redondos}>
-              <Image
-                style={styles.Escalado}
-                source={require('../../images/lol.jpg')}></Image>
+            <View style={styles.Sepa}>
+              <View style={styles.Redondos}>
+                <Image
+                  style={styles.Escalado}
+                  source={require('../../images/lol.jpg')}></Image>
+              </View>
             </View>
           </View>
         </View>
+        <View>
+          <Carrousel />
+        </View>
+        <RegisterEnterprise />
       </View>
-      <View>
-        <Carrousel />
-      </View>
-      <RegisterEnterprise />
     </ScrollView>
   );
 };
@@ -109,45 +104,27 @@ export const styles = StyleSheet.create({
   Sepa: {
     padding: 4,
   },
-  Space: {
-    padding: 8,
-  },
   Escalado: {
     width: width * 0.14,
     height: height * 0.07,
   },
-
   flex: {
-    flex: 1,
-    alignItems: 'center',
-    // backgroundColor: 'black',
-    // justifyContent: 'space-between',
-  },
-
-  Container2: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 30,
-    marginBottom: 10,
-  },
-  Header: {
-    width: "90%",
-    // padding: 20,
+    width: '100%',
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // backgroundColor: 'red',
-    // gap: 20
-    // margin: 25
+    marginBottom: 20,
   },
-
-  Buscador: {
-    backgroundColor: '#1881B1',
-    borderRadius: 40,
-    height: height * 0.07,
-    width: width * 0.88,
+  container: {
+    flex: 1,
+    margin: 25,
   },
-
+  Container2: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+    marginBottom: 10,
+  },
   Caracteristicas: {
     height: height * 0.07,
     width: width * 0.88,
@@ -155,7 +132,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   Redondos: {
     backgroundColor: '#1881B1',
     borderRadius: 100,
@@ -164,22 +140,16 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
-  Maravillosa: {
-    alignItems: 'center',
-  },
-
   Central: {
     fontFamily: 'Sansation',
     fontStyle: 'normal',
     fontWeight: '700',
     fontSize: 30,
-    lineHeight: 100,
+    lineHeight: 70,
     letterSpacing: 0.05,
     color: '#FFFFFF',
     opacity: 0.8,
   },
-
   Central2: {
     fontFamily: 'Sansation',
     fontStyle: 'normal',
