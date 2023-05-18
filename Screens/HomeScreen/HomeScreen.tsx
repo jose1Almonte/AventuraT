@@ -46,15 +46,19 @@ const HomeScreen = ({
         <View style={styles.Caracteristicas}>
           <View style={styles.Sepa}>
             <View style={styles.Redondos}><Image style={styles.Escalado} source={require('../../images/tt.jpg')}></Image></View>
+            <Text style={styles.letritas}>Montaña</Text>
           </View>
           <View style={styles.Sepa}>
             <View style={styles.Redondos}><Image style={styles.Escalado} source={require('../../images/mas.jpg')}></Image></View>
+            <Text style={styles.letritas3}>Playa</Text>
           </View>
           <View style={styles.Sepa}>
             <View style={styles.Redondos}><Image style={styles.Escalado} source={require('../../images/para.jpg')}></Image></View>
+            <Text style={styles.letritas2}>Full-Day</Text>
           </View >
           <View style={styles.Sepa}>
             <View style={styles.Redondos}><Image style={styles.Escalado} source={require('../../images/lol.jpg')}></Image></View>
+            <Text style={styles.letritas}>Camping</Text>
           </View>
         </View>
       </View>
@@ -73,6 +77,7 @@ export default HomeScreen;
 export const styles = StyleSheet.create({
   backGround:{
     backgroundColor: '#1DB5BE',
+
     // flex: 1,
   },
 
@@ -81,7 +86,6 @@ export const styles = StyleSheet.create({
   },
   Space:{
     padding:8,
-
   },
   
 
@@ -92,9 +96,9 @@ export const styles = StyleSheet.create({
   },
 
   flex:{
-    flex:1,
     alignItems:'center',
-
+    width:width,
+    height: height*0.12
   },
 
   Container2:{
@@ -135,6 +139,7 @@ export const styles = StyleSheet.create({
 
   Maravillosa:{
     alignItems: 'center',
+    marginBottom: width*0.02,
   },
 
   Central:{
@@ -146,6 +151,7 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.05,
     color: '#FFFFFF',
     opacity: 0.8,
+    height: height*0.13
   },
 
   Central2:{
@@ -170,4 +176,31 @@ export const styles = StyleSheet.create({
   marginBottom: height*0.01,
   marginLeft: width*0.10,
 },
+
+letritas:{
+  fontFamily: 'Poppins',
+    fontStyle: 'normal',
+    fontWeight: '600',
+    color: '#FFFDFD',
+    marginLeft: width*0.025,
+},
+
+letritas2:{
+  fontFamily: 'Poppins',
+    fontStyle: 'normal',
+    fontWeight: '600',
+    color: '#FFFDFD',
+    marginLeft: width*0.03,
+
+},
+
+letritas3:{
+  fontFamily: 'Poppins',
+    fontStyle: 'normal',
+    fontWeight: '600',
+    color: '#FFFDFD',
+    marginLeft: width*0.055,
+
+},
+
 });
