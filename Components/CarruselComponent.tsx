@@ -5,7 +5,7 @@ const{height,width} = Dimensions.get('window');
 
 export const CustomComponent1 = () => (
   <View style={styles.contenedor}>
-    <ImageBackground style={styles.reescala} source={require('../images/eee.jpg')}>
+    <ImageBackground borderRadius={30} style={styles.reescala} source={require('../images/eee.jpg')}>
         <Text style={styles.texto}>Titulo</Text>
         <Text style={styles.texto2}>Texto dentro de la imagen</Text>
       </ImageBackground>
@@ -14,7 +14,7 @@ export const CustomComponent1 = () => (
 
 export const CustomComponent2 = () => (
     <View style={styles.contenedor}>
-      <ImageBackground style={styles.reescala} source={require('../images/bonito.jpeg')}>
+      <ImageBackground borderRadius={30} style={styles.reescala} source={require('../images/bonito.jpeg')}>
         <Text style={styles.texto}>Titulo</Text>
         <Text style={styles.texto2}>Texto dentro de la imagen</Text>
       </ImageBackground>
@@ -23,7 +23,7 @@ export const CustomComponent2 = () => (
 
   export const CustomComponent3 = () => (
     <View style={styles.contenedor}>
-      <ImageBackground style={styles.reescala} source={require('../images/mas.jpg')}>
+      <ImageBackground borderRadius={30} style={styles.reescala} source={require('../images/mas.jpg')}>
         <Text style={styles.texto}>Titulo</Text>
         <Text style={styles.texto2}>Texto dentro de la imagen</Text>
       </ImageBackground>
@@ -50,8 +50,7 @@ export const CustomComponent2 = () => (
 
     reescala:{
       width:width*0.4,
-      height:height*0.23,
-      borderRadius: width*0.05,
+      height:height*0.23
     },
 
     texto: {
