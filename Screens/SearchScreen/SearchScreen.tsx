@@ -64,7 +64,7 @@ const SearchScreen = () => {
         <View style={styles.contenedorServicios}>
           <Text style={styles.title}>Servicios incluidos</Text>
           <View style={styles.contenedorInfo}>
-            <Text style={styles.txtInfo}>Full-day</Text>
+            <Text style={styles.txtInfo}>Transporte privado</Text>
             <SvgXml xml={options} />
           </View>
           <View style={styles.contenedorInfo}>
@@ -181,10 +181,11 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   contenedorEscala: {
+    justifyContent: "center",
     display: 'flex',
     borderRadius: 4,
     width: 90,
-    height: 30,
+    height: 35,
     borderColor: '#1881B1',
     borderWidth: 1
   },
