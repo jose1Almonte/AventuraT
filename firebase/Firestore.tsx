@@ -2,6 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 
 const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
+const usersCollection3 = firestore().collection('package');
 
 export const addUser = async (displayName:string,email:string, emailVerified:boolean,photoURL:string) => {
     await usersCollection.add({
@@ -41,4 +42,18 @@ export const getUser = async (userId: string) => {
 
 export const checkIfUserExists = async (email:string) => {
     const querySnapshot = await usersCollection.where('email', '==', email).get();
-    return !querySnapshot.empty;};
+    return !querySnapshot.empty;
+};
+    
+export const addPackage = async (name: string, availability: string, price: string) => {
+    await usersCollection3.add({
+        name: name,
+        availability: availability,
+        price: price,
+    })
+}
+
+export const checkPackage = async (name: string) => {
+    const documentSnapshot = await usersCollection3.where('name', '==', name).get()
+    return !documentSnapshot.empty
+}

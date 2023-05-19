@@ -1,13 +1,18 @@
-import { ScrollView, Text, StyleSheet } from 'react-native';
+import { ScrollView, Text, StyleSheet, View } from 'react-native';
 import React from 'react';
+import CreateForm from '../../Components/CreateForm';
+import { Background } from '../../Layouts/Background';
 
 const CreatePackageScreen = () => {
     return (
+
         <ScrollView style={styles.backGround}>
-
-        <Text>CreatePackageScreen</Text>
-
+            <Text>CreatePackageScreen</Text>
+            <View style={styles.container}>
+                <CreateForm />
+            </View>
         </ScrollView>
+
 
     );
 };
@@ -19,4 +24,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#1DB5BE',
         // flex: 1,
     },
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        backgroundColor: 'white',
+    }
 });
