@@ -1,5 +1,5 @@
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import {SvgXml} from 'react-native-svg';
 import vectorPerfil from '../../images/vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -7,6 +7,8 @@ import EditProfileButton from '../../Components/Profiles/editProfileButton';
 import VectorPerfilFlecha from '../../images/vectores/vectorPerfilFlecha';
 import auth from '@react-native-firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
+import currentLog from '../../firebase/UserData';
+import { UserContext, useUser } from '../../Context/UserContext';
 
 
 interface UserProfileScreenProps{
@@ -21,10 +23,14 @@ const UserProfileScreen = ({
   navigation,
 }:UserProfileScreenProps) => {
 
+    const { user, setUser, isLogged, setLogged } = useUser();
+    
     const logout = async (): Promise<void> => {
         await auth().signOut();
-        navigation.navigate('HomeScreen');
+        setUser(null);
+        setLogged(false);
     };
+
 
   return (
     <View style={styles.container}>
@@ -47,7 +53,7 @@ const UserProfileScreen = ({
             <Text style={styles.txtInfo}>Opciones de pago</Text>
             <SvgXml xml={VectorPerfilFlecha} />
           </View>
-          <TouchableOpacity style={styles.contenedorInfo}  onPress={() => {logout();}}>
+            <TouchableOpacity style={styles.contenedorInfo}  onPress={() => {logout(); navigation.navigate('HomeScreen')}}>
             <Text style={styles.txtInfo1}>Cerrar sesión</Text>
             <SvgXml xml={VectorPerfilFlecha} />
           </TouchableOpacity>

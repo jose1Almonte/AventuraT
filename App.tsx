@@ -8,11 +8,13 @@ import UserProfileScreen from './Screens/UserProfileScreen/UserProfileScreen';
 import BusinessProfileScreen from './Screens/BusinessProfileScreen/BusinessProfileScreen';
 import NavbarScreen from './Screens/NavbarScreen/NavbarScreen';
 import SearchScreen from './Screens/SearchScreen/SearchScreen';
+import { UserProvider } from './Context/UserContext';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+    <UserProvider>
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
@@ -52,5 +54,6 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    </UserProvider>
   );
 }
