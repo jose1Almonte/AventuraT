@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import React, {useEffect} from 'react';
 //import RegisterEnterprise from '../../Components/registerEnterprise';
-import YourSignInWithGoogleComponent from '../../firebase/PerfilPicture';
+import YourSignInWithGoogleComponent, { ProfilePicture } from '../../firebase/PerfilPicture';
 import RegisterEnterprise from '../../Components/registerEnterprise';
 import {Image} from 'react-native';
 //import UserProfileScreen from '../UserProfileScreen/UserProfileScreen';
@@ -26,7 +26,9 @@ interface HomeScreenProps {
 
 const {height, width} = Dimensions.get('window');
 
-const HomeScreen = ({navigation}: HomeScreenProps) => {
+const HomeScreen = ({
+  navigation,
+}: HomeScreenProps) => {
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -42,12 +44,13 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
         <SvgXml xml={menuBar} />
         <Text style={styles.Central}>AventuraT</Text>
         <View>
-          <YourSignInWithGoogleComponent
+          {/* <YourSignInWithGoogleComponent
             styles={styles}
             goToLoginScreen={true}
-            destinationNavigationComponentName="LoginScreen"
+            destinationNavigationComponentName = "LoginScreen"
             navigation={navigation}
-          />
+          /> */}
+          <ProfilePicture navigation={navigation} styles={styles} destinationNavigationComponentName="UserProfileScreen"/>
         </View>
       </View>
 
