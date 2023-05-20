@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput, Alert } from 'react-native';
 import React, { useState } from 'react';
-import { useUser } from '../../Context/UserContext';
+// import { useUser } from '../../Context/UserContext';
 
 interface MobilePayment{
     // user: any;
