@@ -1,7 +1,19 @@
-import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput } from 'react-native';
-import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { useUser } from '../../Context/UserContext';
+
+interface MobilePayment{
+    // user: any;
+    mobilePaymentRef: string;
+}
 
 const MobilePaymentScreen = () => {
+
+    const [mobilePayment, setMobilePayment] = useState<MobilePayment>({
+        // user: useUser(),
+        mobilePaymentRef: '',
+    });
+
     return (
         <View style={styles.giantBox}>
             <View style={styles.firstBigBox}>
@@ -19,12 +31,14 @@ const MobilePaymentScreen = () => {
                 </View>
             </View>
             <View style={styles.fourthBigBox}>
-                <TextInput style={styles.inputReferenceNumber} placeholder = "Ingrese nro. de referencia"/>
+                <TextInput style={styles.inputReferenceNumber} placeholder = "Ingrese nro. de referencia" onChangeText={(text) => setMobilePayment({...mobilePayment, mobilePaymentRef: text})}/>
                 {/* <Text style = {styles.buttonNumberReferenceText} >Ingrese nro. de referencia</Text> */}
             </View>
             <View style={styles.fifthBigBox}>
-                <TouchableOpacity style = {styles.buttonIPaid}>
+                <TouchableOpacity style = {styles.buttonIPaid} onPress={() => {console.log(mobilePayment); Alert.alert(mobilePayment.mobilePaymentRef);}}>
+                    <>
                     <Text style={styles.textIPaid}> Ya pagué c: </Text>
+                    </>
                 </TouchableOpacity>
             </View>
         </View>
