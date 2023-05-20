@@ -19,9 +19,9 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
 
+        <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}}/>
         <Stack.Screen name="MobilePaymentScreen" component={MobilePaymentScreen} options={{headerShown: false}}/>
 
-        <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}}/>
 
         <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}}/>
 
@@ -30,6 +30,7 @@ export default function App() {
         <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} options={{headerShown: false}}/>
 
         <Stack.Screen name="BusinessProfileScreen" component={BusinessProfileScreen} options={{headerShown: false}}/>
+        
         <Stack.Screen
           name="NavbarScreen"
           component={NavbarScreen}
