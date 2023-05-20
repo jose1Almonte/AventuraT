@@ -1,20 +1,30 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import search from '../images/vectores/search';
 import settings from '../images/vectores/settings';
+import SearchBar from './Buscador/SearchBar';
 
 class InputSearch extends Component {
   render() {
     return (
       <View style={styles.contenedor}>
-        <View style={styles.Buscador}>
-          <SvgXml xml={search} />
-          <Text style={styles.txt}>Buscar destinos</Text>
-          <View style={styles.settings}>
-          <SvgXml xml={settings} />
+
+        <View style={styles.buscador}>
+
+          <View style={styles.barSizes}>
+
+            <SvgXml xml={search}  />
+
+            <View style={styles.settings}>
+              <SearchBar/>
+              <SvgXml xml={settings} />
+            </View>
           </View>
+
+
         </View>
+
       </View>
     );
   }
@@ -23,28 +33,43 @@ class InputSearch extends Component {
 const styles = StyleSheet.create({
   contenedor: {
     alignItems: 'center',
+    alignContent:'center',
+    height: '10%',
+    zIndex: 999,
   },
-  Buscador: {
+  buscador: {
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     flexDirection: 'row',
     backgroundColor: '#1881B1',
+    // backgroundColor: 'pink',
     borderRadius: 25,
     width: 350,
     height: 60,
     gap: 20,
-    padding: 20,
+    padding: '3.5%',
   },
+
+  barSizes: {
+    // backgroundColor: 'black',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+
   txt: {
     color: 'white',
     fontFamily: 'Poppins-medium',
     fontSize: 16,
   },
   settings:{
-    width: "80%",
+    width: '80%',
+    height: '100%',
     alignItems: 'center',
-    justifyContent: "center"
-  }
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    // backgroundColor: 'green',
+  },
 });
 
 export default InputSearch;

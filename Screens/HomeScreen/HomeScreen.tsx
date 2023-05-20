@@ -3,16 +3,13 @@ import {
   ScrollView,
   Text,
   StyleSheet,
-  PixelRatio,
   Dimensions,
   BackHandler,
 } from 'react-native';
 import React, {useEffect} from 'react';
 //import RegisterEnterprise from '../../Components/registerEnterprise';
-import YourSignInWithGoogleComponent, {
-  ProfilePicture,
-} from '../../firebase/PerfilPicture';
-import RegisterEnterprise from '../../Components/registerEnterprise';
+import { ProfilePicture } from '../../firebase/PerfilPicture';
+// import RegisterEnterprise from '../../Components/registerEnterprise';
 import {Image} from 'react-native';
 //import UserProfileScreen from '../UserProfileScreen/UserProfileScreen';
 //import UserProfileScreen from '../BusinessProfileScreen/BusinessProfileScreen';
