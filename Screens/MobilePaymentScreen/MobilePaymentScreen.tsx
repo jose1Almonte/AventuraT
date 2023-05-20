@@ -1,18 +1,32 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput, Alert } from 'react-native';
 import React, { useState } from 'react';
 // import { useUser } from '../../Context/UserContext';
+import {NavigationProp} from '@react-navigation/native';
+
+// interface MobilePaymentScreenProps {
+//   navigation: NavigationProp<Record<string, object | undefined>>;
+// }
 
 interface MobilePayment{
     // user: any;
     mobilePaymentRef: string;
 }
 
-const MobilePaymentScreen = () => {
+const MobilePaymentScreen = ({navigation}: { navigation: NavigationProp<Record<string, object | undefined>> }) => {
 
     const [mobilePayment, setMobilePayment] = useState<MobilePayment>({
         // user: useUser(),
         mobilePaymentRef: '',
     });
+
+    async function upToFirebase() {
+        if (mobilePayment.mobilePaymentRef === ''){
+            Alert.alert('Blank Space Not Allowed','You have to write your reference code');
+        } else {
+            Alert.alert('Your Reference Code Was Send', mobilePayment.mobilePaymentRef);
+            navigation.navigate('HomeScreen');
+        }
+    }
 
     return (
         <View style={styles.giantBox}>
@@ -35,14 +49,14 @@ const MobilePaymentScreen = () => {
                 {/* <Text style = {styles.buttonNumberReferenceText} >Ingrese nro. de referencia</Text> */}
             </View>
             <View style={styles.fifthBigBox}>
-                <TouchableOpacity style = {styles.buttonIPaid} onPress={() => {console.log(mobilePayment); Alert.alert(mobilePayment.mobilePaymentRef);}}>
+                <TouchableOpacity style = {styles.buttonIPaid} onPress={() => {upToFirebase();}}>
                     <>
                     <Text style={styles.textIPaid}> Ya pagué c: </Text>
                     </>
                 </TouchableOpacity>
             </View>
         </View>
-  );
+    );
 };
 
 export default MobilePaymentScreen;
