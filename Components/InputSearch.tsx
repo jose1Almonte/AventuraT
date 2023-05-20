@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent:'center',
     height: '10%',
+    zIndex: 999,
   },
   buscador: {
     alignItems: 'center',
