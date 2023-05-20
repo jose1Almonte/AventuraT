@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import search from '../images/vectores/search';
 import settings from '../images/vectores/settings';
@@ -9,13 +9,22 @@ class InputSearch extends Component {
   render() {
     return (
       <View style={styles.contenedor}>
-        <SearchBar/>
-        <View style={styles.Buscador}>
-          <SvgXml xml={search} />
-          <View style={styles.settings}>
-          <SvgXml xml={settings} />
+
+        <View style={styles.buscador}>
+
+          <View style={styles.barSizes}>
+
+            <SvgXml xml={search}  />
+
+            <View style={styles.settings}>
+              <SearchBar/>
+              <SvgXml xml={settings} />
+            </View>
           </View>
+
+
         </View>
+
       </View>
     );
   }
@@ -25,27 +34,41 @@ const styles = StyleSheet.create({
   contenedor: {
     alignItems: 'center',
     alignContent:'center',
+    height: '10%',
   },
-  Buscador: {
+  buscador: {
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     flexDirection: 'row',
     backgroundColor: '#1881B1',
+    // backgroundColor: 'pink',
     borderRadius: 25,
     width: 360,
-    height: 60,
+    // height: 60,
+    height: '100%',
     gap: 20,
-    padding: 20,
+    padding: '3.5%',
   },
+
+  barSizes: {
+    // backgroundColor: 'black',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+
   txt: {
     color: 'white',
     fontFamily: 'Poppins-medium',
     fontSize: 16,
   },
   settings:{
-    width: "80%",
+    width: '80%',
+    height: '100%',
     alignItems: 'center',
-    justifyContent: "center"
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    // backgroundColor: 'green',
   },
 });
 

@@ -3,14 +3,13 @@ import {
   ScrollView,
   Text,
   StyleSheet,
-  PixelRatio,
   Dimensions,
   BackHandler,
 } from 'react-native';
 import React, {useEffect} from 'react';
 //import RegisterEnterprise from '../../Components/registerEnterprise';
-import YourSignInWithGoogleComponent, { ProfilePicture } from '../../firebase/PerfilPicture';
-import RegisterEnterprise from '../../Components/registerEnterprise';
+import { ProfilePicture } from '../../firebase/PerfilPicture';
+// import RegisterEnterprise from '../../Components/registerEnterprise';
 import {Image} from 'react-native';
 //import UserProfileScreen from '../UserProfileScreen/UserProfileScreen';
 //import UserProfileScreen from '../BusinessProfileScreen/BusinessProfileScreen';
@@ -19,7 +18,7 @@ import {NavigationProp} from '@react-navigation/native';
 import menuBar from '../../images/vectores/menuBar';
 import {SvgXml} from 'react-native-svg';
 import InputSearch from '../../Components/InputSearch';
-import SearchBar from '../../Components/Buscador/SearchBar';
+// import SearchBar from '../../Components/Buscador/SearchBar';
 
 interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -39,9 +38,7 @@ const HomeScreen = ({
   }, []);
   return (
     <ScrollView style={styles.backGround}>
-      
       <View style={styles.flex}>
-      
         <SvgXml xml={menuBar} />
         <Text style={styles.Central}>AventuraT</Text>
         <View>
@@ -54,7 +51,6 @@ const HomeScreen = ({
           <ProfilePicture navigation={navigation} styles={styles} destinationNavigationComponentName="UserProfileScreen"/>
         </View>
       </View>
-      
       {/* <View style={styles.container}>
 
       </View> */}

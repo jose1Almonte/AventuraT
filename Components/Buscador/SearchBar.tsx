@@ -82,12 +82,15 @@ const SearchBar: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
+    height: '100%',
+    width: '70%',
+    // backgroundColor: 'red',
   },
   txt: {
     color: 'white',
     fontFamily: 'Poppins-medium',
-    fontSize: 16,
+    fontSize: 13,
     zIndex: 999,
   },
   resultsContainer: {
