@@ -8,8 +8,8 @@ import VectorPerfilFlecha from '../../images/vectores/vectorPerfilFlecha';
 import auth from '@react-native-firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
-import { UserContext, useUser } from '../../Context/UserContext';
-
+import {  useUser } from '../../Context/UserContext';
+// UserContext,
 
 interface UserProfileScreenProps{
   navigation: NavigationProp<Record<string, object | undefined>>,

@@ -32,11 +32,11 @@ export default function App() {
           component={DetailsScreen}
           options={{headerShown: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="UserProfileScreen"
           component={UserProfileScreen}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name="BusinessProfileScreen"
           component={BusinessProfileScreen}

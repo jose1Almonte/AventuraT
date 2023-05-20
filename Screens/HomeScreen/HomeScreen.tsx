@@ -9,7 +9,9 @@ import {
 } from 'react-native';
 import React, {useEffect} from 'react';
 //import RegisterEnterprise from '../../Components/registerEnterprise';
-import YourSignInWithGoogleComponent, { ProfilePicture } from '../../firebase/PerfilPicture';
+import YourSignInWithGoogleComponent, {
+  ProfilePicture,
+} from '../../firebase/PerfilPicture';
 import RegisterEnterprise from '../../Components/registerEnterprise';
 import {Image} from 'react-native';
 //import UserProfileScreen from '../UserProfileScreen/UserProfileScreen';
@@ -19,6 +21,8 @@ import {NavigationProp} from '@react-navigation/native';
 import menuBar from '../../images/vectores/menuBar';
 import {SvgXml} from 'react-native-svg';
 import InputSearch from '../../Components/InputSearch';
+import Califications from '../../Components/califications';
+import PopularPackages from '../../Components/PopularPackages';
 
 interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -26,9 +30,7 @@ interface HomeScreenProps {
 
 const {height, width} = Dimensions.get('window');
 
-const HomeScreen = ({
-  navigation,
-}: HomeScreenProps) => {
+const HomeScreen = ({navigation}: HomeScreenProps) => {
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -38,66 +40,66 @@ const HomeScreen = ({
   }, []);
   return (
     <ScrollView style={styles.backGround}>
-      <View style={styles.flex}>
+     
+        <View style={styles.flex}>
+          <SvgXml xml={menuBar} />
+          <Text style={styles.Central}>AventuraT</Text>
 
-      
-        <SvgXml xml={menuBar} />
-        <Text style={styles.Central}>AventuraT</Text>
-        <View>
-          {/* <YourSignInWithGoogleComponent
-            styles={styles}
-            goToLoginScreen={true}
-            destinationNavigationComponentName = "LoginScreen"
+          <ProfilePicture
             navigation={navigation}
-          /> */}
-          <ProfilePicture navigation={navigation} styles={styles} destinationNavigationComponentName="UserProfileScreen"/>
+            styles={styles}
+            destinationNavigationComponentName="UserProfileScreen"
+          />
         </View>
-      </View>
-
-      {/* <View style={styles.container}>
-        
-      </View> */}
-      <InputSearch />
-      <View style={styles.Container2}>
-        <View style={styles.Caracteristicas}>
-          <View style={styles.Sepa}>
-            <View style={styles.Redondos}>
-              <Image
-                style={styles.Escalado}
-                source={require('../../images/tt.jpg')}></Image>
+        <InputSearch />
+        <View style={styles.Container2}>
+          <View style={styles.Caracteristicas}>
+            <View style={styles.Sepa}>
+              <View style={styles.Redondos}>
+                <Image
+                  style={styles.Escalado}
+                  source={require('../../images/tt.jpg')}></Image>
+              </View>
+              <Text style={styles.letras}>Montaña</Text>
             </View>
-            <Text style={styles.letritas}>Montaña</Text>
-          </View>
-          <View style={styles.Sepa}>
-            <View style={styles.Redondos}>
-              <Image
-                style={styles.Escalado}
-                source={require('../../images/mas.jpg')}></Image>
+            <View style={styles.Sepa}>
+              <View style={styles.Redondos}>
+                <Image
+                  style={styles.Escalado}
+                  source={require('../../images/mas.jpg')}></Image>
+              </View>
+              <Text style={styles.letras}>Playa</Text>
             </View>
-            <Text style={styles.letritas3}>Playa</Text>
-          </View>
-          <View style={styles.Sepa}>
-            <View style={styles.Redondos}>
-              <Image
-                style={styles.Escalado}
-                source={require('../../images/para.jpg')}></Image>
+            <View style={styles.Sepa}>
+              <View style={styles.Redondos}>
+                <Image
+                  style={styles.Escalado}
+                  source={require('../../images/para.jpg')}></Image>
+              </View>
+              <Text style={styles.letras}>Full-Day</Text>
             </View>
-            <Text style={styles.letritas2}>Full-Day</Text>
-          </View>
-          <View style={styles.Sepa}>
-            <View style={styles.Redondos}>
-              <Image
-                style={styles.Escalado}
-                source={require('../../images/lol.jpg')}></Image>
+            <View style={styles.Sepa}>
+              <View style={styles.Redondos}>
+                <Image
+                  style={styles.Escalado}
+                  source={require('../../images/lol.jpg')}></Image>
+              </View>
+              <Text style={styles.letras}>Camping</Text>
             </View>
-            <Text style={styles.letritas}>Camping</Text>
           </View>
         </View>
-      </View>
-      <Text style={styles.MyComponent}>Destinos Populares</Text>
-      <View>
-        <Carrousel />
-      </View>
+        <View style={styles.MyComponent}>
+          <Text style={styles.title1}>Destinos Populares</Text>
+          <Carrousel />
+        </View>
+        <View style={styles.Container3}>
+          <Text style={styles.title}>Paquetes Populares</Text>
+          <View style={styles.ContainerPackages}><PopularPackages/>
+          <PopularPackages/>
+          <PopularPackages/>
+          </View>
+          
+        </View>
     </ScrollView>
   );
 };
@@ -109,42 +111,15 @@ export const styles = StyleSheet.create({
     backgroundColor: '#1DB5BE',
     flex: 1,
   },
-  Sepa: {
-    padding: 4,
-  },
-  Escalado: {
-    width: width * 0.14,
-    height: height * 0.07,
-  },
   flex: {
-    alignItems: 'center',
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 15,
     marginBottom: 15,
     marginLeft: 30,
     marginRight: 30,
-  },
-  Container2: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 50,
-    marginBottom: 10,
-  },
-  Caracteristicas: {
-    height: height * 0.07,
-    width: width * 0.88,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  Redondos: {
-    backgroundColor: '#1881B1',
-    borderRadius: 100,
-    height: height * 0.1,
-    width: height * 0.1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: 350,
   },
   Central: {
     fontFamily: 'Sansation',
@@ -157,6 +132,37 @@ export const styles = StyleSheet.create({
     opacity: 0.8,
     height: height * 0.13,
   },
+  Container2: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+    marginBottom: 10,
+  },
+  Caracteristicas: {
+    height: height * 0.07,
+    marginTop: 15,
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  Sepa: {
+    padding: 5,
+    alignItems: 'center',
+  },
+  Redondos: {
+    backgroundColor: '#1881B1',
+    borderRadius: 100,
+    height: 78,
+    width: 78,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  Escalado: {
+    borderRadius: 100,
+    width: 54,
+    height: 54,
+  },
   Central2: {
     fontFamily: 'Sansation',
     fontStyle: 'normal',
@@ -167,40 +173,36 @@ export const styles = StyleSheet.create({
     color: '#FFFFFF',
     opacity: 0.8,
   },
-
   MyComponent: {
-    fontFamily: 'Poppins',
-    fontStyle: 'normal',
-    fontWeight: '700',
-    fontSize: 18,
-    lineHeight: 27,
-    color: '#FFFFFF',
     marginTop: height * 0.03,
     marginBottom: height * 0.01,
-    marginLeft: width * 0.1,
   },
-
-  letritas: {
-    fontFamily: 'Poppins',
-    fontStyle: 'normal',
-    fontWeight: '600',
-    color: '#FFFDFD',
-    marginLeft: width * 0.025,
+  Container3: {
+    marginTop: height * 0.03,
+    marginBottom: height * 0.01,
+    margin: 30,
   },
-
-  letritas2: {
-    fontFamily: 'Poppins',
-    fontStyle: 'normal',
-    fontWeight: '600',
-    color: '#FFFDFD',
-    marginLeft: width * 0.03,
+  ContainerPackages:{
+    gap: 7,
+    flexDirection: "row",
   },
-
-  letritas3: {
-    fontFamily: 'Poppins',
-    fontStyle: 'normal',
-    fontWeight: '600',
-    color: '#FFFDFD',
-    marginLeft: width * 0.055,
+  title: {
+    marginBottom: 15,
+    fontFamily: 'Poppins-Bold',
+    fontSize: 18,
+    color: 'white',
+  },
+  title1:{
+    marginBottom: 15,
+    marginLeft: 30,
+    fontFamily: 'Poppins-Bold',
+    fontSize: 18,
+    color: 'white',
+  },
+  letras: {
+    color: 'white',
+    marginTop: 10,
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
   },
 });

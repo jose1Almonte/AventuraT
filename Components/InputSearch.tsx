@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#1881B1',
     borderRadius: 25,
-    width: 360,
+    width: 350,
     height: 60,
     gap: 20,
     padding: 20,
