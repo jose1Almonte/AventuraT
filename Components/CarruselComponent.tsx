@@ -6,7 +6,8 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
-import Califications from './califications';
+import Califications from '../Components/Califications';
+import {ButtonLikes} from './ButtonLikes';
 
 const {height, width} = Dimensions.get('window');
 
@@ -17,8 +18,12 @@ export const CustomComponent1 = () => (
       style={styles.reescala}
       source={require('../images/eee.jpg')}>
       <View style={styles.contenedor3}>
+        <View style={styles.ContainerLikes}>
+          <ButtonLikes />
+        </View>
         <Califications />
       </View>
+
       <View style={styles.textContainer}>
         <Text style={styles.texto}>Titulo</Text>
         <Text style={styles.texto2}>Texto dentro de la imagen</Text>
@@ -33,7 +38,10 @@ export const CustomComponent2 = () => (
       borderRadius={30}
       style={styles.reescala}
       source={require('../images/bonito.jpeg')}>
-        <View style={styles.contenedor3}>
+      <View style={styles.contenedor3}>
+      <View style={styles.ContainerLikes}>
+          <ButtonLikes />
+        </View>
         <Califications />
       </View>
       <View style={styles.textContainer}>
@@ -50,7 +58,10 @@ export const CustomComponent3 = () => (
       borderRadius={30}
       style={styles.reescala}
       source={require('../images/mas.jpg')}>
-        <View style={styles.contenedor3}>
+      <View style={styles.contenedor3}>
+      <View style={styles.ContainerLikes}>
+          <ButtonLikes />
+        </View>
         <Califications />
       </View>
       <View style={styles.textContainer}>
@@ -81,8 +92,9 @@ const styles = StyleSheet.create({
   contenedor3: {
     justifyContent: 'center',
     alignItems: 'flex-end',
-    marginRight: 10,
-    marginTop: 10,
+    marginTop: 12,
+    flexDirection: 'row',
+    gap: 60,
   },
   reescala: {
     width: width * 0.4,
@@ -99,6 +111,14 @@ const styles = StyleSheet.create({
       'linear-gradient(359.78deg, rgba(0, 0, 0, 0.8) 4.2%, rgba(13, 13, 13, 0) 118.3%)',
     borderBottomStartRadius: 30,
     borderBottomEndRadius: 30,
+  },
+  ContainerLikes: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    width: 26,
+    height: 26,
+    padding: 5,
   },
   texto: {
     fontFamily: 'Poppins-SemiBold',

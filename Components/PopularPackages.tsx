@@ -2,12 +2,16 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import vectorLocation from '../images/vectores/vectorLocation';
+import {ButtonLikes} from './ButtonLikes';
 
 class PopularPackages extends Component {
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.container1}>
+          <View style={styles.ContainerLikes}>
+            <ButtonLikes />
+          </View>
           <Image
             style={styles.img}
             source={{
@@ -16,14 +20,12 @@ class PopularPackages extends Component {
             alt="photo"
           />
         </View>
-
         <View style={styles.ContainerText}>
           <Text style={styles.textPack}>Full-Day Bahia de Cata</Text>
           <View style={styles.ContainerLocation}>
-          <SvgXml xml={vectorLocation} height={12} width={12}/>
-          <Text style={styles.textLocation}>Aragua</Text>
+            <SvgXml xml={vectorLocation} height={12} width={12} />
+            <Text style={styles.textLocation}>Aragua</Text>
           </View>
-          
         </View>
       </View>
     );
@@ -33,7 +35,7 @@ class PopularPackages extends Component {
 const styles = StyleSheet.create({
   container: {
     width: 115,
-    height: 200,
+    height: "100%",
     backgroundColor: '#ffffff',
     borderRadius: 15,
   },
@@ -53,29 +55,45 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
   },
   ContainerText: {
-    marginTop: 3,
+    marginTop: 80,
     display: 'flex',
     justifyContent: 'center',
+    alignContent: "flex-end",
+    alignSelf: "flex-end",
     alignItems: 'flex-start',
+    // zIndex: 1,
+    // backgroundColor: "green"
   },
   img: {
     marginTop: 3,
     width: '95%',
     height: 120,
     borderRadius: 15,
+    position: "absolute"
   },
-  ContainerLocation:{
-    flexDirection: "row",
+  ContainerLocation: {
+    flexDirection: 'row',
     display: 'flex',
-    alignItems: "center",
+    alignItems: 'center',
     gap: 3,
     marginLeft: 12,
   },
-  textLocation:{
+  ContainerLikes: {
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    display: 'flex',
+    width: 26,
+    height: 26,
+    // backgroundColor: 'blue',
+    padding: 10,
+    marginTop: 10,
+    zIndex: 1,
+  },
+  textLocation: {
     color: 'rgba(0, 0, 0, 0.74)',
-    fontFamily: "Poppins-Regular",
-    fontSize: 10
-  }
+    fontFamily: 'Poppins-Regular',
+    fontSize: 10,
+  },
 });
 
 export default PopularPackages;

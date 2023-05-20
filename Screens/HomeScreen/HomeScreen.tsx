@@ -21,7 +21,6 @@ import {NavigationProp} from '@react-navigation/native';
 import menuBar from '../../images/vectores/menuBar';
 import {SvgXml} from 'react-native-svg';
 import InputSearch from '../../Components/InputSearch';
-import Califications from '../../Components/califications';
 import PopularPackages from '../../Components/PopularPackages';
 
 interface HomeScreenProps {
@@ -98,7 +97,6 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
           <PopularPackages/>
           <PopularPackages/>
           </View>
-          
         </View>
     </ScrollView>
   );
