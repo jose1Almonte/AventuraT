@@ -1,5 +1,5 @@
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import {SvgXml} from 'react-native-svg';
 import vectorPerfil from '../../images/vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -7,24 +7,24 @@ import EditProfileButton from '../../Components/Profiles/editProfileButton';
 import VectorPerfilFlecha from '../../images/vectores/vectorPerfilFlecha';
 import auth from '@react-native-firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
-import currentLog from '../../firebase/UserData';
-import { UserContext, useUser } from '../../Context/UserContext';
+// import currentLog from '../../firebase/UserData';
+import { useUser } from '../../Context/UserContext';
 
 
 interface UserProfileScreenProps{
   navigation: NavigationProp<Record<string, object | undefined>>,
-  destinationNavigationComponentName: string,
-  goToLoginScreen: boolean,
-  styles: any,
+  // destinationNavigationComponentName: string,
+  // goToLoginScreen: boolean,
+  // styles: any,
 }
 
 
-const UserProfileScreen = ({
+
+export const UserProfileScreen = ({
   navigation,
 }:UserProfileScreenProps) => {
 
-    const { user, setUser, isLogged, setLogged } = useUser();
-    
+    const {  setUser, setLogged } = useUser();
     const logout = async (): Promise<void> => {
         await auth().signOut();
         setUser(null);
@@ -53,7 +53,7 @@ const UserProfileScreen = ({
             <Text style={styles.txtInfo}>Opciones de pago</Text>
             <SvgXml xml={VectorPerfilFlecha} />
           </View>
-            <TouchableOpacity style={styles.contenedorInfo}  onPress={() => {logout(); navigation.navigate('HomeScreen')}}>
+            <TouchableOpacity style={styles.contenedorInfo}  onPress={() => {logout(); navigation.navigate('HomeScreen');}}>
             <Text style={styles.txtInfo1}>Cerrar sesión</Text>
             <SvgXml xml={VectorPerfilFlecha} />
           </TouchableOpacity>
@@ -63,7 +63,6 @@ const UserProfileScreen = ({
   );
 };
 
-export default UserProfileScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -94,8 +93,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: 344,
     borderBottomWidth: 1,
-    borderBottomColor: "#CFD8E2",
-    padding: 2
+    borderBottomColor: '#CFD8E2',
+    padding: 2,
   },
   fondo: {
     flex: 1,
