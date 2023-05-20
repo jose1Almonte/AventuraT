@@ -1,11 +1,29 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, ImageBackground } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  ImageBackground,
+} from 'react-native';
+import Califications from '../Components/Califications';
+import {ButtonLikes} from './ButtonLikes';
 
-const { height, width } = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 export const CustomComponent1 = () => (
   <View style={styles.contenedor}>
-    <ImageBackground borderRadius={30} style={styles.reescala} source={require('../images/eee.jpg')}>
+    <ImageBackground
+      borderRadius={30}
+      style={styles.reescala}
+      source={require('../images/eee.jpg')}>
+      <View style={styles.contenedor3}>
+        <View style={styles.ContainerLikes}>
+          <ButtonLikes />
+        </View>
+        <Califications />
+      </View>
+
       <View style={styles.textContainer}>
         <Text style={styles.texto}>Titulo</Text>
         <Text style={styles.texto2}>Texto dentro de la imagen</Text>
@@ -16,7 +34,16 @@ export const CustomComponent1 = () => (
 
 export const CustomComponent2 = () => (
   <View style={styles.contenedor}>
-    <ImageBackground borderRadius={30} style={styles.reescala} source={require('../images/bonito.jpeg')}>
+    <ImageBackground
+      borderRadius={30}
+      style={styles.reescala}
+      source={require('../images/bonito.jpeg')}>
+      <View style={styles.contenedor3}>
+      <View style={styles.ContainerLikes}>
+          <ButtonLikes />
+        </View>
+        <Califications />
+      </View>
       <View style={styles.textContainer}>
         <Text style={styles.texto}>Titulo</Text>
         <Text style={styles.texto2}>Texto dentro de la imagen</Text>
@@ -27,7 +54,16 @@ export const CustomComponent2 = () => (
 
 export const CustomComponent3 = () => (
   <View style={styles.contenedor}>
-    <ImageBackground borderRadius={30} style={styles.reescala} source={require('../images/mas.jpg')}>
+    <ImageBackground
+      borderRadius={30}
+      style={styles.reescala}
+      source={require('../images/mas.jpg')}>
+      <View style={styles.contenedor3}>
+      <View style={styles.ContainerLikes}>
+          <ButtonLikes />
+        </View>
+        <Califications />
+      </View>
       <View style={styles.textContainer}>
         <Text style={styles.texto}>Titulo</Text>
         <Text style={styles.texto2}>Texto dentro de la imagen</Text>
@@ -53,36 +89,49 @@ const styles = StyleSheet.create({
     width: 1,
     height: 1,
   },
-
+  contenedor3: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    marginTop: 12,
+    flexDirection: 'row',
+    gap: 60,
+  },
   reescala: {
     width: width * 0.4,
     height: height * 0.23,
   },
-
   textContainer: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
+    height: 80,
+    gap: 5,
+    backgroundColor:
+      'linear-gradient(359.78deg, rgba(0, 0, 0, 0.8) 4.2%, rgba(13, 13, 13, 0) 118.3%)',
+    borderBottomStartRadius: 30,
+    borderBottomEndRadius: 30,
   },
-
+  ContainerLikes: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    width: 26,
+    height: 26,
+    padding: 5,
+  },
   texto: {
-    fontFamily: 'Sansation',
-    fontStyle: 'normal',
-    fontWeight: '700',
-    fontSize: 16,
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 15,
     lineHeight: 18,
     letterSpacing: 0.05,
     color: '#FFFFFF',
     textAlign: 'center',
   },
-
   texto2: {
-    fontFamily: 'Montserrat',
-    fontStyle: 'normal',
-    fontWeight: '500',
-    fontSize: width * 0.04,
-    lineHeight: width * 0.048,
+    fontFamily: 'Poppins-Medium',
+    fontSize: 11,
+    lineHeight: 18,
     textAlign: 'center',
     color: '#FFFFFF',
     opacity: 0.8,
