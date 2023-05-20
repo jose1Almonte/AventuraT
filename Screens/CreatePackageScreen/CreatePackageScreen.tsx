@@ -7,7 +7,6 @@ const CreatePackageScreen = () => {
     return (
 
         <ScrollView style={styles.backGround}>
-            <Text>CreatePackageScreen</Text>
             <View style={styles.container}>
                 <CreateForm />
             </View>

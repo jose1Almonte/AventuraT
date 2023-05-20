@@ -1,8 +1,10 @@
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage'
 
 const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
 const usersCollection3 = firestore().collection('package');
+const storageRef = storage().ref()
 
 export const addUser = async (displayName:string,email:string, emailVerified:boolean,photoURL:string) => {
     await usersCollection.add({
@@ -45,16 +47,33 @@ export const checkIfUserExists = async (email:string) => {
     return !querySnapshot.empty;
 };
     
-export const addPackage = async (name: string, availability: string, price: string, description: string) => {
+export const addPackage = async (name: string, availability: string, price: string, description: string, url: string | null) => {
     await usersCollection3.add({
         name: name,
         availability: availability,
         price: price,
         description: description,
+        mainImageUrl: url,
     })
 }
 
 export const checkPackage = async (name: string) => {
     const documentSnapshot = await usersCollection3.where('name', '==', name).get()
     return !documentSnapshot.empty
+}
+
+export const uploadImage = async (uploadUri: string, filename: string) => {
+    const task = storageRef.child(`images/${filename}`).putFile(uploadUri);
+
+    task.on('state_changed', taskSnapshot => {
+        console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
+    });
+    
+    task.then(async () => {
+        const downloadURL = await storageRef.child(`images/${filename}`).getDownloadURL();
+        console.log('Image uploaded to the bucket!', downloadURL);
+        return downloadURL
+    });
+
+    return null;
 }
