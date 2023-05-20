@@ -7,8 +7,6 @@ import EditProfileButton from '../../Components/Profiles/editProfileButton';
 import VectorPerfilFlecha from '../../images/vectores/vectorPerfilFlecha';
 import auth from '@react-native-firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
-import currentLog from '../../firebase/UserData';
-import { UserContext, useUser } from '../../Context/UserContext';
 
 
 interface UserProfileScreenProps{

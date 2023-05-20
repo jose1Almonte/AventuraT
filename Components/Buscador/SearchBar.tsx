@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 interface Item {
@@ -8,7 +8,6 @@ interface Item {
   description: string;
 }
 
-const { height, width } = Dimensions.get('window');
 
 const SearchBar: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
@@ -45,10 +44,6 @@ const SearchBar: React.FC = () => {
     setSearchKeyword(text);
   };
 
-  const handleScroll = (event: any) => {
-    const offsetY = event.nativeEvent.contentOffset.y;
-    setResultOffset(offsetY);
-  };
 
   return (
     <View style={styles.container}>
