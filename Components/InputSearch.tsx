@@ -4,6 +4,7 @@ import {SvgXml} from 'react-native-svg';
 import search from '../images/vectores/search';
 import settings from '../images/vectores/settings';
 import SearchBar from './Buscador/SearchBar';
+import FilterButton from './Buscador/Filter';
 
 class InputSearch extends Component {
   render() {
@@ -14,7 +15,7 @@ class InputSearch extends Component {
             <SvgXml xml={search}  />
             <View style={styles.settings}>
               <SearchBar/>
-              <SvgXml xml={settings} />
+              <FilterButton/>
             </View>
           </View>
         </View>
