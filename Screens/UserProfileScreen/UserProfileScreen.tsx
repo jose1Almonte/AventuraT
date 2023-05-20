@@ -1,10 +1,10 @@
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
-import vectorPerfil from '../../images/vectores/vectorPerfil';
+import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import EditProfileButton from '../../Components/Profiles/editProfileButton';
-import VectorPerfilFlecha from '../../images/vectores/vectorPerfilFlecha';
+import VectorPerfilFlecha from '../../vectores/vectorPerfilFlecha';
 import auth from '@react-native-firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
 // import currentLog from '../../firebase/UserData';
