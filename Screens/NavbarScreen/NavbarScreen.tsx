@@ -3,12 +3,12 @@ import React from 'react';
 import {SvgXml} from 'react-native-svg';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import {Svg} from 'react-native-svg';
-import home from '../../images/vectores/home';
-import favorites from '../../images/vectores/favorites';
-import profile from '../../images/vectores/profile';
-import historial from '../../images/vectores/historial';
-import helpdesk from '../../images/vectores/helpdesk';
-import business from '../../images/vectores/business';
+import home from '../../vectores/home';
+import favorites from '../../vectores/favorites';
+import profile from '../../vectores/profile';
+import historial from '../../vectores/historial';
+import helpdesk from '../../vectores/helpdesk';
+import business from '../../vectores/business';
 
 const NavbarScreen = () => {
   return (

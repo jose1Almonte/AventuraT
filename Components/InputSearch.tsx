@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {SvgXml} from 'react-native-svg';
-import search from '../images/vectores/search';
-import settings from '../images/vectores/settings';
+import search from '../vectores/search';
+import settings from '../vectores/settings';
 import SearchBar from './Buscador/SearchBar';
 
 class InputSearch extends Component {

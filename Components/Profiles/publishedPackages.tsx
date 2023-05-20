@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
-import calendar from '../../images/vectores/calendar';
+import calendar from '../../vectores/calendar';
 import {SvgXml} from 'react-native-svg';
 
 class PublishedPackages extends Component {

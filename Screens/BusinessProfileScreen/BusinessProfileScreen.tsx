@@ -1,14 +1,14 @@
 import {Text, View, StyleSheet} from 'react-native';
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
-import vectorPerfil from '../../images/vectores/vectorPerfil';
+import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import EditProfileButton from '../../Components/Profiles/editProfileButton';
-import vectorLocation from '../../images/vectores/vectorLocation';
+import vectorLocation from '../../vectores/vectorLocation';
 import EditPackageButton from '../../Components/Profiles/editPackagesButton';
 import PublishedPackages from '../../Components/Profiles/publishedPackages';
-import separator from '../../images/vectores/separator';
-import star from '../../images/vectores/star';
+import separator from '../../vectores/separator';
+import star from '../../vectores/star';
 
 const UserProfileScreen = () => {
   return (

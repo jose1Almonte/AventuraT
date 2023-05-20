@@ -1,12 +1,12 @@
 import {Text, View, StyleSheet} from 'react-native';
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
-import vectorPerfil from '../../images/vectores/vectorPerfil';
+import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import EditProfileButton from '../../Components/Profiles/editProfileButton';
-import VectorPerfilFlecha from '../../images/vectores/vectorPerfilFlecha';
+import VectorPerfilFlecha from '../../vectores/vectorPerfilFlecha';
 import InputSearch from '../../Components/InputSearch';
-import options from '../../images/vectores/options';
+import options from '../../vectores/options';
 
 const SearchScreen = () => {
   return (
