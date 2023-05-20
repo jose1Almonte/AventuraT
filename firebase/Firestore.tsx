@@ -45,11 +45,12 @@ export const checkIfUserExists = async (email:string) => {
     return !querySnapshot.empty;
 };
     
-export const addPackage = async (name: string, availability: string, price: string) => {
+export const addPackage = async (name: string, availability: string, price: string, description: string) => {
     await usersCollection3.add({
         name: name,
         availability: availability,
         price: price,
+        description: description,
     })
 }
 
