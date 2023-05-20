@@ -9,22 +9,15 @@ class InputSearch extends Component {
   render() {
     return (
       <View style={styles.contenedor}>
-
         <View style={styles.buscador}>
-
           <View style={styles.barSizes}>
-
             <SvgXml xml={search}  />
-
             <View style={styles.settings}>
               <SearchBar/>
               <SvgXml xml={settings} />
             </View>
           </View>
-
-
         </View>
-
       </View>
     );
   }
@@ -34,7 +27,6 @@ const styles = StyleSheet.create({
   contenedor: {
     alignItems: 'center',
     alignContent:'center',
-    height: '10%',
     zIndex: 999,
   },
   buscador: {
@@ -42,33 +34,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     backgroundColor: '#1881B1',
-    // backgroundColor: 'pink',
     borderRadius: 25,
     width: 350,
     height: 60,
     gap: 20,
-    padding: '3.5%',
   },
-
   barSizes: {
-    // backgroundColor: 'black',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
     flexDirection: 'row',
+    gap:10,
   },
-
   txt: {
     color: 'white',
     fontFamily: 'Poppins-medium',
     fontSize: 16,
   },
   settings:{
-    width: '80%',
     height: '100%',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    // backgroundColor: 'green',
   },
 });
 

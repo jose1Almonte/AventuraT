@@ -54,6 +54,7 @@ const SearchBar: React.FC = () => {
     <View style={styles.container}>
       <TextInput
         placeholder="Ingrese una palabra clave"
+        placeholderTextColor="white" 
         value={searchKeyword}
         onChangeText={handleSearchKeywordChange}
         style={styles.txt}
@@ -82,15 +83,14 @@ const SearchBar: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     height: '100%',
-    width: '70%',
-    // backgroundColor: 'red',
+    width: '75%',
   },
   txt: {
-    color: 'white',
-    fontFamily: 'Poppins-medium',
-    fontSize: 13,
+    width: '130%',
+    color: "white",
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
     zIndex: 999,
   },
   resultsContainer: {
@@ -115,5 +115,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
 export default SearchBar;
