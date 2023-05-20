@@ -19,6 +19,7 @@ import {NavigationProp} from '@react-navigation/native';
 import menuBar from '../../images/vectores/menuBar';
 import {SvgXml} from 'react-native-svg';
 import InputSearch from '../../Components/InputSearch';
+import SearchBar from '../../Components/Buscador/SearchBar';
 
 interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -38,8 +39,8 @@ const HomeScreen = ({
   }, []);
   return (
     <ScrollView style={styles.backGround}>
+      
       <View style={styles.flex}>
-
       
         <SvgXml xml={menuBar} />
         <Text style={styles.Central}>AventuraT</Text>
@@ -53,11 +54,12 @@ const HomeScreen = ({
           <ProfilePicture navigation={navigation} styles={styles} destinationNavigationComponentName="UserProfileScreen"/>
         </View>
       </View>
-
+      
       {/* <View style={styles.container}>
-        
+
       </View> */}
-      <InputSearch />
+        <InputSearch />
+
       <View style={styles.Container2}>
         <View style={styles.Caracteristicas}>
           <View style={styles.Sepa}>

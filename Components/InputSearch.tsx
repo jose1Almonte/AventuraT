@@ -3,14 +3,15 @@ import {View, StyleSheet, Text} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import search from '../images/vectores/search';
 import settings from '../images/vectores/settings';
+import SearchBar from './Buscador/SearchBar';
 
 class InputSearch extends Component {
   render() {
     return (
       <View style={styles.contenedor}>
+        <SearchBar/>
         <View style={styles.Buscador}>
           <SvgXml xml={search} />
-          <Text style={styles.txt}>Buscar destinos</Text>
           <View style={styles.settings}>
           <SvgXml xml={settings} />
           </View>
@@ -23,6 +24,7 @@ class InputSearch extends Component {
 const styles = StyleSheet.create({
   contenedor: {
     alignItems: 'center',
+    alignContent:'center',
   },
   Buscador: {
     alignItems: 'center',
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
     width: "80%",
     alignItems: 'center',
     justifyContent: "center"
-  }
+  },
 });
 
 export default InputSearch;
