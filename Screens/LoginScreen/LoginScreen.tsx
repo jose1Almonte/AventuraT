@@ -126,8 +126,6 @@ export const styles = StyleSheet.create({
   },
 
   continueWithGoogleBox: {
-
-    
     flexDirection: 'row',
     width: '86.39%',
     justifyContent: 'center',
@@ -144,7 +142,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: '20%',
     width: '86.39%',
-    gap: 25, 
+    gap: 25,
     justifyContent: 'center',
     alignItems: 'center',
     height: '10%',

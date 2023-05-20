@@ -15,7 +15,7 @@ import {Image} from 'react-native';
 //import UserProfileScreen from '../BusinessProfileScreen/BusinessProfileScreen';
 import {Carrousel} from '../../Components/Carrusel';
 import {NavigationProp} from '@react-navigation/native';
-import menuBar from '../../images/vectores/menuBar';
+import menuBar from '../../vectores/menuBar';
 import {SvgXml} from 'react-native-svg';
 import InputSearch from '../../Components/InputSearch';
 import PopularPackages from '../../Components/PopularPackages';
