@@ -47,13 +47,14 @@ export const checkIfUserExists = async (email:string) => {
     return !querySnapshot.empty;
 };
     
-export const addPackage = async (name: string, availability: string, price: string, description: string, url: string | null) => {
+export const addPackage = async (name: string, availability: string, price: string, description: string, url: string | null, location: string) => {
     await usersCollection3.add({
         name: name,
         availability: availability,
         price: price,
         description: description,
         mainImageUrl: url,
+        location: location,
     })
 }
 
