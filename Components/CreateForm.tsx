@@ -4,20 +4,25 @@ import { addPackage, checkPackage, uploadImage } from '../firebase/Firestore';
 import { launchImageLibrary } from 'react-native-image-picker';
 
 
-
+interface CreateFormData{
+    nombre: string,
+    disponibilidad: string,
+    precio: string,
+    descripcion: string,
+    ubicacion: string,
+}
     
 const CreateForm = () => {
 
     const [resourcePath, setResourcePath] = useState("")
     const [filename, setFileName] = useState("")
-
-    const data = {
+    const [data, setData] = useState < CreateFormData > ({
         nombre: "",
         disponibilidad: "",
         precio: "",
         descripcion: "",
         ubicacion: "",
-    }
+    })
 
     const submit = async () => {
         if (resourcePath === "") {
@@ -25,14 +30,15 @@ const CreateForm = () => {
             addPackage(data.nombre, data.disponibilidad, data.precio, data.descripcion, "", data.ubicacion)
         } else {
             const url =  await uploadImage(resourcePath, filename)
+            console.log(url)
             console.warn(data)
-            addPackage(data.nombre, data.disponibilidad, data.precio, data.descripcion, url, data.ubicacion)
+            await addPackage(data.nombre, data.disponibilidad, data.precio, data.descripcion, url, data.ubicacion)
         }
         
         
     }
 
-    const selectImage = () => {
+    const selectImage = (nombre: string, descripcion: string, disponibilidad: string, precio: string, ubicacion: string) => {
 
         launchImageLibrary({ mediaType: "photo" }, response => {
 
@@ -42,32 +48,34 @@ const CreateForm = () => {
                 console.warn('ImagePicker Error: ', response.errorCode);
             } else {
                 // Aquí se procesa la imagen seleccionada
-                setResourcePath(response.assets[0].uri);
-                setFileName(resourcePath.substring(resourcePath.lastIndexOf('/') + 1));
+                const selectedAsset = response.assets && response.assets[0]
+                if (selectedAsset) {
+                    setResourcePath(response.assets[0].uri);
+                    setFileName(resourcePath.substring(resourcePath.lastIndexOf('/') + 1));
+                }
             }
-                
         })
     }
 
     return <>
     <View style={styles.contenedor}>
         <Text style={styles.label}>Ingrese el nombre del paquete:</Text>
-        <TextInput style={styles.textInput} placeholder='Nombre del paquete' onChangeText={(text) => { data.nombre = text }}></TextInput>
+        <TextInput style={styles.textInput} placeholder='Nombre del paquete' onChangeText={(text) => { setData({...data, nombre:text})}}></TextInput>
 
         <Text style={styles.label}>Ingrese la disponibilidad:</Text>
-        <TextInput style={styles.textInput} placeholder='Disponibilidad' onChangeText={(text) => { data.disponibilidad = text }}></TextInput>
+        <TextInput style={styles.textInput} placeholder='Disponibilidad' onChangeText={(text) => { setData({...data, disponibilidad:text})}}></TextInput>
 
         <Text style={styles.label}>Ingrese el precio:</Text>
-        <TextInput style={styles.textInput} placeholder='Precio en $ <3' onChangeText={(text) => { data.precio = text }}></TextInput>
+        <TextInput style={styles.textInput} placeholder='Precio en $ <3' onChangeText={(text) => { setData({...data, precio:text})}}></TextInput>
 
         <Text style={styles.label}>Descripción:</Text>
-            <TextInput style={styles.textInput} placeholder='Descripcion' onChangeText={(text) => { data.descripcion = text }}></TextInput>
+            <TextInput style={styles.textInput} placeholder='Descripcion' onChangeText={(text) => { setData({...data, descripcion:text})}}></TextInput>
             
         <Text style={styles.label}>Ubicación:</Text>
-        <TextInput style={styles.textInput} placeholder='Ubicación' onChangeText={(text) => { data.ubicacion = text }}></TextInput>
+        <TextInput style={styles.textInput} placeholder='Ubicación' onChangeText={(text) => { setData({...data, ubicacion:text})}}></TextInput>
 
-        <TouchableOpacity style={styles.button} onPress={() => { selectImage() }}>
-            <Text style={styles.buttonText}>Subir imagen principal (opcional)</Text>
+        <TouchableOpacity style={styles.button} onPress={() => { selectImage(data.nombre, data.descripcion, data.disponibilidad, data.precio, data.ubicacion) }}>
+            <Text style={styles.buttonText}>Subir imagen principal</Text>
         </TouchableOpacity>
 
             
@@ -92,7 +100,7 @@ const CreateForm = () => {
 const styles = StyleSheet.create({
     contenedor: {
         alignItems: 'center',
-        backgroundColor: '#1DB5BE',
+        backgroundColor: 'white',
         flex:1,
     },
     textInput: {
@@ -109,7 +117,7 @@ const styles = StyleSheet.create({
     },
 
     label: {
-        color: 'white',
+        color: '#1881B1',
         fontFamily: 'Poppins-medium',
         fontSize: 16,
         marginTop: 20,
@@ -123,7 +131,8 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         justifyContent: 'center',
         backgroundColor: '#1881B1',
-        marginTop: 30,
+        marginTop: 20,
+        marginBottom: 30,
         
     },
     buttonText: {

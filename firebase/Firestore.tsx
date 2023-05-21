@@ -63,18 +63,23 @@ export const checkPackage = async (name: string) => {
     return !documentSnapshot.empty
 }
 
+
 export const uploadImage = async (uploadUri: string, filename: string) => {
-    const task = storageRef.child(`images/${filename}`).putFile(uploadUri);
+    return new Promise<string>((resolve, reject) => {
+        const task = storageRef.child(`images/${filename}`).putFile(uploadUri);
 
-    task.on('state_changed', taskSnapshot => {
+        task.on('state_changed', taskSnapshot => {
         console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
-    });
-    
-    task.then(async () => {
-        const downloadURL = await storageRef.child(`images/${filename}`).getDownloadURL();
-        console.log('Image uploaded to the bucket!', downloadURL);
-        return downloadURL
-    });
+        });
 
-    return null;
-}
+        task.then(async () => {
+            const downloadURL = await storageRef.child(`images/${filename}`).getDownloadURL();
+            console.log('Image uploaded to the bucket!', downloadURL);
+            resolve(downloadURL);
+        }).catch(error => {
+
+            reject(error);
+            
+        });
+    });
+};
