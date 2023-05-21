@@ -1,24 +1,20 @@
 import React from 'react';
-import { ScrollView, Text, StyleSheet, View, Image } from 'react-native';
-import { SvgXml } from 'react-native-svg';
+import {ScrollView, Text, StyleSheet, View, Image} from 'react-native';
+import {SvgXml} from 'react-native-svg';
 import star from '../../vectores/star';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import vectorSalida from '../../vectores/vectorSalida';
 import vectorRetorno from '../../vectores/vectorRetorno';
 import vectorPrecio from '../../vectores/vectorPrecio';
-import { ButtonLikes } from '../../Components/ButtonLikes';
+import {ButtonLikes} from '../../Components/ButtonLikes';
 
-const DetailsScreen = () => {
+const DetailsScreenBusiness = () => {
   return (
     <ScrollView style={styles.background}>
       <View style={styles.container}>
         <View style={styles.containerPack}>
           <View style={styles.containerText}>
             <Text style={styles.textPack}>Nombre paquete</Text>
-            <View style={styles.containerCalification}>
-              <Text style={styles.ratingText}>4.6</Text>
-              <SvgXml xml={star} width={22} height={22} />
-            </View>
           </View>
           <Image
             style={styles.containerPhotoPack}
@@ -58,7 +54,7 @@ const DetailsScreen = () => {
           <Text style={styles.subtitulo}>$</Text>
         </View>
       </View>
-      
+
       <View style={styles.infoServicios}>
         <Text style={styles.titulo}>Incluye</Text>
         <Text style={styles.subtitulo}>Transporte privado</Text>
@@ -66,20 +62,17 @@ const DetailsScreen = () => {
         <Text style={styles.subtitulo}>Desayuno</Text>
         <Text style={styles.subtitulo}>Atención personalizada</Text>
       </View>
-      
+
       <View style={styles.reserva}>
-        <View style={styles.contenedorLikes}>
-          <ButtonLikes/>
-        </View>
         <View style={styles.buttonReserva}>
-          <Text style={styles.titulo}>Reservar</Text>
+          <Text style={styles.titulo}>Editar paquete</Text>
         </View>
       </View>
     </ScrollView>
   );
 };
 
-export default DetailsScreen;
+export default DetailsScreenBusiness;
 
 const styles = StyleSheet.create({
   background: {
@@ -114,18 +107,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Poppins-Medium',
     width: 290,
-  },
-  containerCalification: {
-    width: 70,
-    height: 30,
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
-    borderRadius: 8,
-    justifyContent: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginTop: 10,
-    marginRight: 20,
   },
   ratingText: {
     marginLeft: 5,
@@ -188,7 +169,7 @@ const styles = StyleSheet.create({
     gap: 5,
     marginTop: 30,
     marginLeft: 40,
-    borderTopColor: "white",
+    borderTopColor: 'white',
     borderTopWidth: 1,
   },
   contenedorLikes: {
