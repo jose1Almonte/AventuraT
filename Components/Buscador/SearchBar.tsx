@@ -12,6 +12,9 @@ interface Item {
   price: string;
   type: string;
 }
+
+const {height, width} = Dimensions.get('window');
+
 const SearchBar: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [searchKeyword, setSearchKeyword] = useState('');
