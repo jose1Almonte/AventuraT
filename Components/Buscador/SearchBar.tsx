@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import settings from '../../vectores/settings';
+import {SvgXml} from 'react-native-svg';
 
 interface Item {
   id: string;
   name: string;
   description: string;
+  location: string;
+  price: string;
+  type: string;
 }
 
 const { height, width } = Dimensions.get('window');
@@ -14,6 +19,7 @@ const SearchBar: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [resultOffset, setResultOffset] = useState(0);
+  const [type, setType] = useState("name")
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,9 +29,9 @@ const SearchBar: React.FC = () => {
       }
 
       const snapshot = await firestore()
-        .collection('prueba')
-        .where('name', '>=', searchKeyword)
-        .where('name', '<=', searchKeyword + '\uf8ff')
+        .collection('package')
+        .where(type, '>=', searchKeyword)
+        .where(type, '<=', searchKeyword + '\uf8ff')
         .get();
 
       const data: Item[] = snapshot.docs.map((doc) => ({
@@ -51,33 +57,55 @@ const SearchBar: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        placeholder="Ingrese una palabra clave"
-        value={searchKeyword}
-        onChangeText={handleSearchKeywordChange}
-        style={styles.txt}
-      />
-      {searchKeyword.trim() !== '' && (
-        <View style={styles.resultsContainer}>
-          <View style={{ height: resultOffset }} />
-          {items.map((item, index) => (
-            <View
-              key={item.id}
-              style={[
-                styles.resultItem,
-                { top: index * 30 }, // Espaciado vertical entre resultados
-              ]}
-            >
-              <Text numberOfLines={1} style={styles.itemText}>
-                {item.name}
-              </Text>
-            </View>
-          ))}
-        </View>
-      )}
-    </View>
+    <>
+      <View style={styles.Container2}>
+        <TouchableOpacity style={styles.Redondos} onPress={() => { setType("name"); console.warn(type)}}>
+            <Text>Nombre</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.Redondos} onPress={() => {setType("description"); console.warn(type)}}>
+          <Text>Descripcion</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.Redondos} onPress={() => {setType("location"); console.warn(type)}}>
+          <Text>Location</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.Redondos} onPress={() => {setType("price"); console.warn(type)}}>
+          <Text>price</Text>
+        </TouchableOpacity>
+      </View>
+      
+      <View style={styles.container}>
+
+        <TextInput
+          placeholder="Ingrese una palabra clave"
+          value={searchKeyword}
+          onChangeText={handleSearchKeywordChange}
+          style={styles.txt}
+        />
+        {searchKeyword.trim() !== '' && (
+          <View style={styles.resultsContainer}>
+            <View style={{ height: resultOffset }} />
+            {items.map((item, index) => (
+              <View
+                key={item.id}
+                style={[
+                  styles.resultItem,
+                  { top: index * 30 }, // Espaciado vertical entre resultados
+                ]}
+              >
+                <Text numberOfLines={1} style={styles.itemText}>
+                  {item.name}
+                </Text>
+              </View>
+            ))}
+          </View>
+        )}
+      </View>
+    </>
   );
+  
 };
 
 const styles = StyleSheet.create({
@@ -113,6 +141,22 @@ const styles = StyleSheet.create({
   itemText: {
     color: 'white',
     fontSize: 16,
+  },
+  Redondos: {
+    backgroundColor: '#1881B1',
+    borderRadius: 100,
+    height: height * 0.1,
+    width: height * 0.1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  Container2: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 150,
+
+    display: "flex",
+    flexDirection: "row",
   },
 });
 
