@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import settings from '../../vectores/settings';
-import {Svg, SvgXml} from 'react-native-svg';
+import {SvgXml} from 'react-native-svg';
 
 interface Item {
   id: string;
@@ -13,17 +13,44 @@ interface Item {
   type: string;
 }
 
-const {height, width} = Dimensions.get('window');
+interface FilterOptionsProps{
+  setType: any,
+  toggleMenu: any
+}
+
+const FilterOptions = ({setType, toggleMenu}: FilterOptionsProps) => {
+  return (
+    <View style = {styles.filterOptionsBox}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => {setType('name'); toggleMenu();}}>
+                <Text>Nombre</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.optionsPills} onPress={() => {setType('description'); toggleMenu();}}>
+              <Text>Descripcion</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.optionsPills} onPress={() => {setType('location');  toggleMenu();}}>
+              <Text>Location</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.optionsPills} onPress={() => {setType('price');  toggleMenu();}}>
+              <Text>price</Text>
+            </TouchableOpacity>
+    </View>
+  );
+};
+
+// const {height} = Dimensions.get('window');
 
 const SearchBar: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [resultOffset, setResultOffset] = useState(0);
-  const [type, setType] = useState("name");
-  const [isOpen, setIsOpen] = useState(false)
+  const [type, setType] = useState('name');
+  const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,60 +79,40 @@ const SearchBar: React.FC = () => {
 
   return (
     <>
-      <View>
-        {isOpen && (
-          <View>
-            <TouchableOpacity style={styles.Redondos} onPress={() => { setType("name"); toggleMenu(); console.warn(type)}}>
-                <Text>Nombre</Text>
-            </TouchableOpacity>
+{isOpen ? (
+            <FilterOptions setType={setType} toggleMenu={toggleMenu}/>
+          ) : (
+          <>
+            <View style={styles.container}>
+              <TextInput placeholder="Ingrese una palabra clave" value={searchKeyword} onChangeText={handleSearchKeywordChange} style={styles.txt}/>
 
-            <TouchableOpacity style={styles.Redondos} onPress={() => {setType("description"); toggleMenu(); console.warn(type)}}>
-              <Text>Descripcion</Text>
-            </TouchableOpacity>
+              {searchKeyword.trim() !== '' && (
+                <View style={styles.resultsContainer}>
+                  <View style={{ height: resultOffset }} />
+                  {items.map((item, index) => (
+                    <View
+                      key={item.id}
+                      style={[
+                        styles.resultItem,
+                        { top: index * 30 }, // Espaciado vertical entre resultados
+                      ]}
+                    >
+                      <Text numberOfLines={1} style={styles.itemText}>
+                        {item.name}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+              )}
+            </View>
 
-            <TouchableOpacity style={styles.Redondos} onPress={() => {setType("location");  toggleMenu(); console.warn(type)}}>
-              <Text>Location</Text>
+            <TouchableOpacity onPress={() =>{toggleMenu()}}>
+              <SvgXml xml={settings}/>  
             </TouchableOpacity>
-
-            <TouchableOpacity style={styles.Redondos} onPress={() => {setType("price");  toggleMenu(); console.warn(type)}}>
-              <Text>price</Text>
-            </TouchableOpacity>
-          </View>
+          </>
         )}
 
-      </View>
-      
-      <View style={styles.container}>
-
-        <TextInput
-          placeholder="Ingrese una palabra clave"
-          value={searchKeyword}
-          onChangeText={handleSearchKeywordChange}
-          style={styles.txt}
-        />
-        {searchKeyword.trim() !== '' && (
-          <View style={styles.resultsContainer}>
-            <View style={{ height: resultOffset }} />
-            {items.map((item, index) => (
-              <View
-                key={item.id}
-                style={[
-                  styles.resultItem,
-                  { top: index * 30 }, // Espaciado vertical entre resultados
-                ]}
-              >
-                <Text numberOfLines={1} style={styles.itemText}>
-                  {item.name}
-                </Text>
-              </View>
-            ))}
-          </View>
-        )}
-      </View>
-        <TouchableOpacity onPress={() =>{toggleMenu()}}>
-          <SvgXml xml={settings}/>  
-        </TouchableOpacity>
-    </>
+        </>
   );
   
 };
@@ -136,24 +143,40 @@ const styles = StyleSheet.create({
     height: 30, // Altura de cada resultado
     paddingHorizontal: 10,
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    // backgroundColor: 'red',
     justifyContent: 'center',
   },
   itemText: {
     color: 'white',
     fontSize: 16,
   },
-  Redondos: {
-    backgroundColor: '#1881B1',
-    borderRadius: 100,
-    height: height * 0.1,
-    width: height * 0.1,
+  optionsPills: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 5,
+    marginBottom: '7%',
+    height: '40%',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    width: '70%',
   },
-  Container2: {
-    justifyContent: 'center',
+  // Container2: {
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   marginTop: 150,
+  //   width: '100%',
+  // },
+
+  filterOptionsBox:{
+    position: 'relative',
+    // height: 90,
+    // backgroundColor: 'red',
+    // marginLeft: '80%',
+    // paddingTop: 160,
+    width: '75%',
+    // zIndex: 999,
+    justifyContent:'center',
     alignItems: 'center',
-    marginTop: 150,
+    // backgroundColor: 'red',
   },
 });
 export default SearchBar;
