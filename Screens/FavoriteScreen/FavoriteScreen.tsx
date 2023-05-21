@@ -13,9 +13,6 @@ const FavoriteScreen = () => {
     return (
         <ScrollView>
             <View style={styles.container}>
-                {/* <View style={styles.fondo}>
-
-      </View> */}
                 <View style={styles.info}>
                     <View style={styles.topInfo}>
                         <Text style={styles.txt}>Paquetes Favoritos</Text>
