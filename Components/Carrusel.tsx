@@ -28,50 +28,37 @@ export const Carrousel = () => {
   useEffect(() => {
     const fetchCarouselData = async () => {
       try {
-        const snapshot = await firestore().collection('carouselItems').get();
-
-        const items: CarouselItem[] = snapshot.docs.map((doc) => {
+        const snapshot = await firestore().collection('package').get();
+  
+        const firebaseItems: CarouselItem[] = snapshot.docs.map((doc) => {
           const data = doc.data();
           const { name, description, mainImageUrl } = data;
-
-          // Verifica si solo existe la imagen principal
-          if (mainImageUrl) {
-            return {
-              id: doc.id,
-              component: <Image source={{ uri: mainImageUrl }} style={styles.image} />,
-            };
-          }
-
-          // Crea tu componente personalizado utilizando name y description
+  
+          // Crea tu componente personalizado utilizando name, description y mainImageUrl
           const customComponent = (
-
-          <View style={styles.contenedor2}>
-            <ImageBackground
-              borderRadius={30}
-              style={styles.reescala}
-              source={require('../images/bonito.jpeg')}>
-              <View style={styles.contenedor3}>
-              <View style={styles.ContainerLikes}>
-                  <ButtonLikes />
+            <View style={styles.contenedor2}>
+              <ImageBackground borderRadius={30} style={styles.reescala} source={{ uri: mainImageUrl }}>
+                <View style={styles.contenedor3}>
+                  <View style={styles.ContainerLikes}>
+                    <ButtonLikes />
+                  </View>
+                  <Califications />
                 </View>
-                <Califications />
-              </View>
-              <View style={styles.textContainer}>
-                <Text style={styles.texto}>{name}</Text>
-                <Text style={styles.texto2}>{description}</Text>
-              </View>
-            </ImageBackground>
-          </View>
-
+                <View style={styles.textContainer}>
+                  <Text style={styles.texto}>{name}</Text>
+                  <Text style={styles.texto2}>{description}</Text>
+                </View>
+              </ImageBackground>
+            </View>
           );
-
+  
           return {
             id: doc.id,
             component: customComponent,
           };
         });
-
-        setCarouselItems(items);
+  
+        setCarouselItems((prevItems) => [...prevItems, ...firebaseItems]);
       } catch (error) {
         console.log('Error fetching carousel data from Firebase:', error);
       }
@@ -203,7 +190,7 @@ const styles = StyleSheet.create({
     },
 
     carouselItem: {},
-  contenedor2: {
+  contenedor4: {
     justifyContent: 'center',
     alignItems: 'center',
   },

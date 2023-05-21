@@ -6,11 +6,11 @@ import { launchImageLibrary } from 'react-native-image-picker';
 
 interface CreateFormData {
   id: number;
-  nombre: string;
-  disponibilidad: string;
-  precio: string;
-  descripcion: string;
-  ubicacion: string;
+  name: string;
+  availability: string;
+  price: string;
+  description: string;
+  location: string;
 }
 
 const CreateForm = () => {
@@ -18,11 +18,11 @@ const CreateForm = () => {
   const [filename, setFileName] = useState('');
   const [data, setData] = useState<CreateFormData>({
     id: 0, // Inicializa el ID en 0
-    nombre: '',
-    disponibilidad: '',
-    precio: '',
-    descripcion: '',
-    ubicacion: '',
+    name: '',
+    availability: '',
+    price: '',
+    description: '',
+    location: '',
   });
 
   useEffect(() => {
@@ -38,12 +38,12 @@ const CreateForm = () => {
   const submit = async () => {
     if (resourcePath === '') {
       console.warn(data);
-      addPackage(data.id, data.nombre, data.disponibilidad, data.precio, data.descripcion, '', data.ubicacion);
+      addPackage(data.id, data.name, data.availability, data.price, data.description, '', data.location);
     } else {
       const url = await uploadImage(resourcePath, filename);
       console.log(url);
       console.warn(data);
-      await addPackage(data.id, data.nombre, data.disponibilidad, data.precio, data.descripcion, url, data.ubicacion);
+      await addPackage(data.id, data.name, data.availability, data.price, data.description, url, data.location);
     }
     loadLastId(); // Carga el nuevo último ID después de crear el paquete
   };
@@ -67,21 +67,21 @@ const CreateForm = () => {
   return (
     <View style={styles.contenedor}>
       <Text style={styles.label}>Ingrese el nombre del paquete:</Text>
-      <TextInput style={styles.textInput} placeholder="Nombre del paquete" onChangeText={(text) => setData((prevData) => ({ ...prevData, nombre: text }))} />
+      <TextInput style={styles.textInput} placeholder="Nombre del paquete" onChangeText={(text) => setData((prevData) => ({ ...prevData, name: text }))} />
 
       <Text style={styles.label}>Ingrese la disponibilidad:</Text>
-      <TextInput style={styles.textInput} placeholder="Disponibilidad" onChangeText={(text) => setData((prevData) => ({ ...prevData, disponibilidad: text }))} />
+      <TextInput style={styles.textInput} placeholder="Disponibilidad" onChangeText={(text) => setData((prevData) => ({ ...prevData, availability: text }))} />
 
       <Text style={styles.label}>Ingrese el precio:</Text>
-      <TextInput style={styles.textInput} placeholder="Precio en $ <3" onChangeText={(text) => setData((prevData) => ({ ...prevData, precio: text }))} />
+      <TextInput style={styles.textInput} placeholder="Precio en $ <3" onChangeText={(text) => setData((prevData) => ({ ...prevData, price: text }))} />
 
       <Text style={styles.label}>Descripción:</Text>
-      <TextInput style={styles.textInput} placeholder="Descripcion" onChangeText={(text) => setData((prevData) => ({ ...prevData, descripcion: text }))} />
+      <TextInput style={styles.textInput} placeholder="Descripcion" onChangeText={(text) => setData((prevData) => ({ ...prevData, description: text }))} />
 
       <Text style={styles.label}>Ubicación:</Text>
-      <TextInput style={styles.textInput} placeholder="Ubicación" onChangeText={(text) => setData((prevData) => ({ ...prevData, ubicacion: text }))} />
+      <TextInput style={styles.textInput} placeholder="Ubicación" onChangeText={(text) => setData((prevData) => ({ ...prevData, location: text }))} />
 
-      <TouchableOpacity style={styles.button} onPress={() => selectImage(data.nombre, data.descripcion, data.disponibilidad, data.precio, data.ubicacion)}>
+      <TouchableOpacity style={styles.button} onPress={() => selectImage(data.name, data.description, data.availability, data.price, data.location)}>
         <Text style={styles.buttonText}>Subir imagen principal</Text>
       </TouchableOpacity>
 
