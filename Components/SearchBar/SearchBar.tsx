@@ -53,15 +53,12 @@ const SearchBar: React.FC = () => {
   return (
     <>
       <View>
-        <TouchableOpacity onPress={() =>{toggleMenu()}}>
-          <SvgXml xml={settings}/>  
-        </TouchableOpacity>
         {isOpen && (
           <View>
             <TouchableOpacity style={styles.Redondos} onPress={() => { setType("name"); toggleMenu(); console.warn(type)}}>
                 <Text>Nombre</Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity style={styles.Redondos} onPress={() => {setType("description"); toggleMenu(); console.warn(type)}}>
               <Text>Descripcion</Text>
             </TouchableOpacity>
@@ -105,6 +102,9 @@ const SearchBar: React.FC = () => {
           </View>
         )}
       </View>
+        <TouchableOpacity onPress={() =>{toggleMenu()}}>
+          <SvgXml xml={settings}/>  
+        </TouchableOpacity>
     </>
   );
   

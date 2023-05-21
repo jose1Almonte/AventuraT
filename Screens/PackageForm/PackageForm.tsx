@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import { addPackage, checkPackage, uploadImage, getLastPackageId } from '../firebase/Firestore'; // Importa la función getLastPackageId
 
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -37,12 +37,12 @@ const CreateForm = () => {
 
   const submit = async () => {
     if (resourcePath === '') {
-      console.warn(data);
+      // console.warn(data);
       addPackage(data.id, data.name, data.availability, data.price, data.description, '', data.location);
     } else {
       const url = await uploadImage(resourcePath, filename);
-      console.log(url);
-      console.warn(data);
+      // console.log(url);
+      // console.warn(data);
       await addPackage(data.id, data.name, data.availability, data.price, data.description, url, data.location);
     }
     loadLastId(); // Carga el nuevo último ID después de crear el paquete
@@ -51,9 +51,11 @@ const CreateForm = () => {
   const selectImage = (nombre: string, descripcion: string, disponibilidad: string, precio: string, ubicacion: string) => {
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
       if (response.didCancel) {
-        console.warn('No se ha elegido una imagen');
+        Alert.alert('Not Image', 'No se ha elegido una imagen');
+        // console.warn('No se ha elegido una imagen');
       } else if (response.errorCode) {
-        console.warn('ImagePicker Error: ', response.errorCode);
+        Alert.alert('ImagePicker Error: ', 'error');
+        // console.warn('ImagePicker Error: ', response.errorCode);
       } else {
         const selectedAsset = response.assets && response.assets[0];
         if (selectedAsset) {

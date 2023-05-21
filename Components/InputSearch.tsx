@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import search from '../vectores/search';
 import settings from '../vectores/settings';
-import SearchBar from './Buscador/SearchBar';
+import SearchBar from './SearchBar/SearchBar';
 
 class InputSearch extends Component {
   render() {
@@ -14,7 +14,7 @@ class InputSearch extends Component {
             <SvgXml xml={search}  />
             <View style={styles.settings}>
               <SearchBar/>
-              <SvgXml xml={settings} />
+              {/* <SvgXml xml={settings} /> */}
             </View>
           </View>
         </View>
