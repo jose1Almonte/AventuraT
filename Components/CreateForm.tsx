@@ -79,8 +79,8 @@ const CreateForm = () => {
       console.log(url);
       console.log(data);
       await addPackage(data.id, data.name, data.availability, data.price, data.description, url, data.location, data.date);
-      // Alert.alert('Veamos la fecha (postData, ya se envió)', data.date);
     }
+    Alert.alert('Ya se subió');
     loadLastId(); // Carga el nuevo último ID después de crear el paquete
   };
 
@@ -95,9 +95,11 @@ const CreateForm = () => {
         if (selectedAsset) {
           setResourcePath(selectedAsset.uri);
           setFileName(selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1));
+          Alert.alert('Ya se subió la foto');
         }
       }
     });
+
   };
 
   return (

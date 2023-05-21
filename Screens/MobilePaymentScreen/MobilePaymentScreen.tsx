@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // import { useUser } from '../../Context/UserContext';
 import {NavigationProp} from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
-import { deleteDocumentByUserId } from '../../firebase/DeletePackage';
+// import { deleteDocumentByUserId } from '../../firebase/DeletePackage';
 // import { deleteDocumentByUserId } from '../../firebase/DeletePackage';
 
 // interface MobilePaymentScreenProps {
@@ -60,8 +60,8 @@ const MobilePaymentScreen = ({navigation}: { navigation: NavigationProp<Record<s
                 {/* <Text style = {styles.buttonNumberReferenceText} >Ingrese nro. de referencia</Text> */}
             </View>
             <View style={styles.fifthBigBox}>
-                {/* <TouchableOpacity style = {styles.buttonIPaid} onPress={() => {upToFirebase();}}> */}
-                <TouchableOpacity style = {styles.buttonIPaid} onPress={() => {deleteDocumentByUserId()}}>
+                <TouchableOpacity style = {styles.buttonIPaid} onPress={() => {upToFirebase();}}>
+                {/* <TouchableOpacity style = {styles.buttonIPaid} onPress={() => {deleteDocumentByUserId()}}> */}
                     <>
                     <Text style={styles.textIPaid}> Ya pagué c: </Text>
                     </>
