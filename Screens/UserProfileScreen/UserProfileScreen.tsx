@@ -52,6 +52,11 @@ export const UserProfileScreen = ({
             <Text style={styles.txtInfo}>Información personal</Text>
             <SvgXml xml={VectorPerfilFlecha} />
           </View>
+          <TouchableOpacity style={styles.contenedorInfo} onPress={() =>navigation.navigate('FavoriteScreen')}>
+            <Text style={styles.txtInfo}>Favoritos</Text>
+            <SvgXml xml={VectorPerfilFlecha} />
+          </TouchableOpacity>
+
           <View style={styles.contenedorInfo}>
             <Text style={styles.txtInfo}>Opciones de pago</Text>
             <SvgXml xml={VectorPerfilFlecha} />
