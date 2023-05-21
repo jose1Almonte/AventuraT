@@ -1,16 +1,22 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import {View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 
-class PhotoProfile extends Component {
+interface PhotoProfileProps {
+  size?: number;
+  imageSource: ImageSourcePropType;
+}
+
+class PhotoProfile extends Component<PhotoProfileProps> {
   render() {
+    const { size, imageSource } = this.props;
+    const containerSize = size || 100;
+    const imgSize = containerSize;
     return (
-      <View style={styles.container}>
-        <View style={styles.photoContainer}>
-          <Image
-            style={styles.img}
-            source={{
-              uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg',
-            }}
+      <View style={[styles.container, { width: containerSize, height: containerSize }]}>
+        <View style={[styles.photoContainer, { width: containerSize, height: containerSize }]}>
+        <Image
+            style={[styles.img, { width: imgSize, height: imgSize, borderRadius: imgSize / 2 }]}
+            source={imageSource}
             alt="photo"
           />
         </View>
