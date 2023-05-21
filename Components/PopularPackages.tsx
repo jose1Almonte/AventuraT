@@ -61,8 +61,6 @@ const styles = StyleSheet.create({
     alignContent: "flex-end",
     alignSelf: "flex-end",
     alignItems: 'flex-start',
-    // zIndex: 1,
-    // backgroundColor: "green"
   },
   img: {
     marginTop: 3,
@@ -84,7 +82,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     width: 26,
     height: 26,
-    // backgroundColor: 'blue',
     padding: 10,
     marginTop: 10,
     zIndex: 1,

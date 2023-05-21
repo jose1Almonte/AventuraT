@@ -7,9 +7,9 @@ class Califications extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.container1}>
-        <Text style={styles.textPack}>4.6</Text>
-        <SvgXml xml={star} width={12} height={12}/>
+        <View style={styles.content}>
+          <Text style={styles.ratingText}>4.6</Text>
+          <SvgXml xml={star} width={14} height={14} />
         </View>
       </View>
     );
@@ -20,34 +20,25 @@ const styles = StyleSheet.create({
   container: {
     width: 54,
     height: 25,
-    backgroundColor: " rgba(255, 255, 255, 0.25)",
-    borderRadius: 8
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    borderRadius: 8,
+    justifyContent: 'center',
   },
-  container1:{
+  content: {
     flexDirection: 'row',
-    gap: 6,
-    alignItems: "center"
+    alignItems: 'center',
+    paddingHorizontal: 6,
   },
-  star:{
+  starIcon: {
     width: 12,
-    height: 12
+    height: 12,
   },
-  textPack: {
+  ratingText: {
     marginLeft: 5,
     padding: 3,
     color: 'white',
     fontSize: 12,
     fontFamily: 'Poppins-Medium',
-  },
-  containerText: {
-    // display: 'flex',
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-    borderBottomStartRadius: 20,
-    borderBottomEndRadius: 20,
-    width: 161,
-    height: 60,
-    // gap: 5,
-    // zIndex: 1,
   },
 });
 
