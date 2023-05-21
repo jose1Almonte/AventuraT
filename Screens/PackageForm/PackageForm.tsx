@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import { addPackage, checkPackage, uploadImage, getLastPackageId } from '../firebase/Firestore'; // Importa la función getLastPackageId
-
 import { launchImageLibrary } from 'react-native-image-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface CreateFormData {
   id: number;
@@ -11,9 +11,43 @@ interface CreateFormData {
   price: string;
   description: string;
   location: string;
+  date: any,
 }
 
+const DatePickerBox = ({ writingDate, date, setDate}: { writingDate: boolean; date: Date; setDate: (value: Date) => void;}) => {
+
+  const tempDate = new Date();
+  if (writingDate) {
+
+      return <DateTimePicker
+      style={styles.label}
+      value={new Date()}
+      mode="date"
+      onChange={(event, selectedDate) => {
+          const currentDate = selectedDate || tempDate;
+          // console.log('---------------------------------------------');
+          // console.log('Date de la variable: ', currentDate);
+          // console.log('Date actual: ', tempDate);
+          // console.log('Year === 18?: ', tempDate.getFullYear() - currentDate.getFullYear() === 18);
+          // const cond1 = !(currentDate.getDay() === tempDate.getDay() && currentDate.getMonth() === tempDate.getMonth() && currentDate.getFullYear() === tempDate.getFullYear());
+          // const cond2 = ((((tempDate.getFullYear() - currentDate.getFullYear()) > 21)) || (((tempDate.getFullYear() - currentDate.getFullYear()) === 21)  && (tempDate.getMonth() > currentDate.getMonth())) || (((tempDate.getFullYear() - currentDate.getFullYear()) === 21)  && (tempDate.getMonth() === currentDate.getMonth()) && (tempDate.getDay() > currentDate.getDay())) );
+
+          setDate(currentDate);
+          writingDate = false;
+      }}
+      />;
+  }
+  return (
+    <>
+        <Text>{date.toDateString()}</Text>
+    </>
+  );
+
+  // return null;
+};
+
 const CreateForm = () => {
+  const [date, setDate] = useState(new Date());
   const [resourcePath, setResourcePath] = useState('');
   const [filename, setFileName] = useState('');
   const [data, setData] = useState<CreateFormData>({
@@ -23,6 +57,7 @@ const CreateForm = () => {
     price: '',
     description: '',
     location: '',
+    date: null,
   });
 
   useEffect(() => {
@@ -38,12 +73,12 @@ const CreateForm = () => {
   const submit = async () => {
     if (resourcePath === '') {
       // console.warn(data);
-      addPackage(data.id, data.name, data.availability, data.price, data.description, '', data.location);
+      addPackage(data.id, data.name, data.availability, data.price, data.description, '', data.location, data.date);
     } else {
       const url = await uploadImage(resourcePath, filename);
       // console.log(url);
       // console.warn(data);
-      await addPackage(data.id, data.name, data.availability, data.price, data.description, url, data.location);
+      await addPackage(data.id, data.name, data.availability, data.price, data.description, url, data.location, data.date);
     }
     loadLastId(); // Carga el nuevo último ID después de crear el paquete
   };
@@ -82,6 +117,9 @@ const CreateForm = () => {
 
       <Text style={styles.label}>Ubicación:</Text>
       <TextInput style={styles.textInput} placeholder="Ubicación" onChangeText={(text) => setData((prevData) => ({ ...prevData, location: text }))} />
+      
+      <Text>Hola que tal, deberia estar aqui bro</Text>
+      <DatePickerBox writingDate={true} date={date} setDate={setDate}/>
 
       <TouchableOpacity style={styles.button} onPress={() => selectImage(data.name, data.description, data.availability, data.price, data.location)}>
         <Text style={styles.buttonText}>Subir imagen principal</Text>

@@ -1,8 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import { addPackage, checkPackage, uploadImage, getLastPackageId } from '../firebase/Firestore'; // Importa la función getLastPackageId
-
 import { launchImageLibrary } from 'react-native-image-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+
+const DatePickerBox = ({ writingDate, setWritingDate, date, setDate, data, setData}: { writingDate: boolean; date: Date; setWritingDate: (value: boolean) => void; setDate: (value: Date) => void; data: any; setData: any}) => {
+
+  // const tempDate = new Date();
+
+  const handleDateChange = async (event: any, selectedDate: any) => {
+    const currentDate = selectedDate || date;
+    setDate(currentDate);
+    setWritingDate(false);
+  };
+
+  if (writingDate) {
+      return <DateTimePicker
+      style={styles.label}
+      value={new Date()}
+      mode="date"
+      onChange={(event, selectedDate) => {handleDateChange(event, selectedDate);}}
+      />;
+    }
+
+  return (
+      <>
+      <Text style={styles.textColor}>{date.toDateString()}</Text>
+      </>
+    );
+};
 
 interface CreateFormData {
   id: number;
@@ -11,11 +38,16 @@ interface CreateFormData {
   price: string;
   description: string;
   location: string;
+  date: any,
 }
 
 const CreateForm = () => {
   const [resourcePath, setResourcePath] = useState('');
   const [filename, setFileName] = useState('');
+
+  const [date, setDate] = useState(new Date());
+  const [writtingDate, setWritingDate] = useState(false);
+
   const [data, setData] = useState<CreateFormData>({
     id: 0, // Inicializa el ID en 0
     name: '',
@@ -23,6 +55,7 @@ const CreateForm = () => {
     price: '',
     description: '',
     location: '',
+    date: date.toDateString(),
   });
 
   useEffect(() => {
@@ -36,14 +69,17 @@ const CreateForm = () => {
   };
 
   const submit = async () => {
+    data.date = date.toDateString();
     if (resourcePath === '') {
-      console.warn(data);
-      addPackage(data.id, data.name, data.availability, data.price, data.description, '', data.location);
+      console.log(data);
+      addPackage(data.id, data.name, data.availability, data.price, data.description, '', data.location, data.date);
+      Alert.alert('Veamos la fecha (postData, ya se envió)', data.date);
     } else {
       const url = await uploadImage(resourcePath, filename);
       console.log(url);
-      console.warn(data);
-      await addPackage(data.id, data.name, data.availability, data.price, data.description, url, data.location);
+      console.log(data);
+      await addPackage(data.id, data.name, data.availability, data.price, data.description, url, data.location, data.date);
+      Alert.alert('Veamos la fecha (postData, ya se envió)', data.date);
     }
     loadLastId(); // Carga el nuevo último ID después de crear el paquete
   };
@@ -51,9 +87,9 @@ const CreateForm = () => {
   const selectImage = (nombre: string, descripcion: string, disponibilidad: string, precio: string, ubicacion: string) => {
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
       if (response.didCancel) {
-        console.warn('No se ha elegido una imagen');
+        console.log('No se ha elegido una imagen');
       } else if (response.errorCode) {
-        console.warn('ImagePicker Error: ', response.errorCode);
+        console.log('ImagePicker Error: ', response.errorCode);
       } else {
         const selectedAsset = response.assets && response.assets[0];
         if (selectedAsset) {
@@ -80,6 +116,9 @@ const CreateForm = () => {
 
       <Text style={styles.label}>Ubicación:</Text>
       <TextInput style={styles.textInput} placeholder="Ubicación" onChangeText={(text) => setData((prevData) => ({ ...prevData, location: text }))} />
+      <TouchableOpacity onPress={() => {setWritingDate(true);}} style={styles.label}>
+        <DatePickerBox writingDate = {writtingDate} setWritingDate = {setWritingDate}  date={date} setDate={setDate} />
+      </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={() => selectImage(data.name, data.description, data.availability, data.price, data.location)}>
         <Text style={styles.buttonText}>Subir imagen principal</Text>
@@ -142,6 +181,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Poppins-Medium',
     textAlign: 'center',
+  },
+  textColor:{
+    color: 'black',
   },
 });
 

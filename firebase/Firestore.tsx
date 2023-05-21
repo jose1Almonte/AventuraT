@@ -45,7 +45,7 @@ export const checkIfUserExists = async (email:string) => {
     const querySnapshot = await usersCollection.where('email', '==', email).get();
     return !querySnapshot.empty;};
 
-export const addPackage = async (id, name, availability, price, description, mainImageUrl, location) => {
+export const addPackage = async (id, name, availability, price, description, mainImageUrl, location, date) => {
         try {
           const packageData = {
             id,
@@ -55,6 +55,7 @@ export const addPackage = async (id, name, availability, price, description, mai
             description,
             mainImageUrl,
             location,
+            date,
           };
       
           await packagesCollection.doc(id.toString()).set(packageData);
