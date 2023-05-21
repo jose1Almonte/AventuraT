@@ -64,8 +64,8 @@ export const checkPackage = async (name: string) => {
 }
 
 
-export const uploadImage = async (uploadUri: string, filename: string) => {
-    return new Promise<string>((resolve, reject) => {
+export const uploadImage = (uploadUri: string, filename: string) => {
+    return new Promise((resolve, reject) => {
         const task = storageRef.child(`images/${filename}`).putFile(uploadUri);
 
         task.on('state_changed', taskSnapshot => {
@@ -73,13 +73,17 @@ export const uploadImage = async (uploadUri: string, filename: string) => {
         });
 
         task.then(async () => {
+        try {
             const downloadURL = await storageRef.child(`images/${filename}`).getDownloadURL();
             console.log('Image uploaded to the bucket!', downloadURL);
             resolve(downloadURL);
-        }).catch(error => {
-
+        } catch (error) {
+            console.error('Error al obtener la URL de descarga:', error);
             reject(error);
-            
+        }
+        }).catch(error => {
+        console.error('Error al cargar la imagen:', error);
+        reject(error);
         });
     });
 };
