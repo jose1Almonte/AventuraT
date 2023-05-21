@@ -39,7 +39,10 @@ export const UserProfileScreen = ({
       </View>
       <View style={styles.info}>
         <View style={styles.topInfo}>
-          <PhotoProfile />
+          <PhotoProfile size={90}
+            imageSource={{
+              uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg',
+            }}/>
           <Text style={styles.txt}>correo electrónico</Text>
           <EditProfileButton />
         </View>

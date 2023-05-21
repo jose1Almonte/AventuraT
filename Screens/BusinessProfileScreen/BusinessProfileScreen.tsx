@@ -19,7 +19,10 @@ const UserProfileScreen = () => {
       <View style={styles.info}>
         <View style={styles.topInfo}>
           <View style={styles.top}>
-            <PhotoProfile />
+            <PhotoProfile size={90}
+            imageSource={{
+              uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg',
+            }}/>
             <SvgXml xml={separator} />
             <View style={styles.contenedorPuntaje}>
               <View style={styles.contenedorEstrella}>
