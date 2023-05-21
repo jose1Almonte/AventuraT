@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
 import {SvgXml} from 'react-native-svg';
-import vectorLocation from '../images/vectores/vectorLocation';
+import vectorLocation from '../vectores/vectorLocation';
 import {ButtonLikes} from './ButtonLikes';
 
 class PopularPackages extends Component {

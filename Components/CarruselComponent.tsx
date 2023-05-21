@@ -7,7 +7,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import Califications from '../Components/Califications';
-import {ButtonLikes} from './ButtonLikes';
+import {ButtonLikes} from '../Components/ButtonLikes';
 
 const {height, width} = Dimensions.get('window');
 

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {SvgXml} from 'react-native-svg';
-import favorites from '../images/vectores/favorites';
+import favorites from '../vectores/favorites';
 
 export function ButtonLikes() {
   const [isClicked, setIsClicked] = useState(false); // Estado para rastrear si se ha hecho clic en el botón

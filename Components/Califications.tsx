@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import {SvgXml} from 'react-native-svg';
-import star from '../images/vectores/star';
+import star from '../vectores/star';
 
 class Califications extends Component {
   render() {
