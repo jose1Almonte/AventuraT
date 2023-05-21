@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
-import { addPackage, checkPackage, uploadImage, getLastPackageId } from '../firebase/Firestore'; // Importa la función getLastPackageId
+import { addPackage, uploadImage, getLastPackageId } from '../firebase/Firestore'; // Importa la función getLastPackageId
 import { launchImageLibrary } from 'react-native-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 
-const DatePickerBox = ({ writingDate, setWritingDate, date, setDate, data, setData}: { writingDate: boolean; date: Date; setWritingDate: (value: boolean) => void; setDate: (value: Date) => void; data: any; setData: any}) => {
+const DatePickerBox = ({ writingDate, setWritingDate, date, setDate}: { writingDate: boolean; date: Date; setWritingDate: (value: boolean) => void; setDate: (value: Date) => void;}) => {
 
   // const tempDate = new Date();
 
@@ -84,7 +84,7 @@ const CreateForm = () => {
     loadLastId(); // Carga el nuevo último ID después de crear el paquete
   };
 
-  const selectImage = (nombre: string, descripcion: string, disponibilidad: string, precio: string, ubicacion: string) => {
+  const selectImage = () => {
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
       if (response.didCancel) {
         console.log('No se ha elegido una imagen');
