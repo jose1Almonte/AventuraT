@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import {Background} from '../../Layouts/Background';
+import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
 import YourSignInWithGoogleComponent from '../../firebase/PerfilPicture';
-import {NavigationProp} from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 
 interface LoginScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -50,7 +50,7 @@ const makingThis = () => {
   Alert.alert('Hello');
 };
 
-const LoginScreen = ({navigation}: LoginScreenProps) => {
+const LoginScreen = ({ navigation }: LoginScreenProps) => {
   return (
     <View style={styles.bigBox}>
       <Background
@@ -79,6 +79,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
               styles={styles}
               navigation={navigation}
               destinationNavigationComponentName={'HomeScreen'}
+              //destinationNavigationComponentName={'SearchResultScreen'}
               goToLoginScreen={false}
             />
             {/* <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={onGoogleButtonPress}/> */}
