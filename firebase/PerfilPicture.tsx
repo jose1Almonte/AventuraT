@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import currentLog from './UserData';
 import auth from '@react-native-firebase/auth';
 import { Image, PixelRatio, TouchableOpacity, Dimensions} from 'react-native';
@@ -18,10 +18,8 @@ interface ProfilePictureProps{
 
 export const ProfilePicture = ({
     navigation,
-    destinationNavigationComponentName,
-    styles,
 }: ProfilePictureProps) => {
-    const { user, setUser, isLogged, setLogged } = useUser();
+    const { user,isLogged } = useUser();
 
     // const logout = async (): Promise<void> => {
     //     await auth().signOut();
@@ -73,7 +71,7 @@ export const ProfilePicture = ({
             )}
         </>
     );
-}
+};
 
 interface YourSignInWithGoogleComponentProps{
     navigation: NavigationProp<Record<string, object | undefined>>,
@@ -87,10 +85,9 @@ const YourSignInWithGoogleComponent = ({
 
     navigation,
     destinationNavigationComponentName,
-    goToLoginScreen,
     styles,
 }:YourSignInWithGoogleComponentProps) => {
-    const { user, setUser, isLogged, setLogged } = useUser();
+    const { user, setUser, setLogged } = useUser();
 
     const logout = async (): Promise<void> => {
         await auth().signOut();

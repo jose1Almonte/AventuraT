@@ -5,8 +5,9 @@ import {
   StyleSheet,
   Dimensions,
   BackHandler,
+  TouchableOpacity,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 //import RegisterEnterprise from '../../Components/registerEnterprise';
 import { ProfilePicture } from '../../firebase/PerfilPicture';
 // import RegisterEnterprise from '../../Components/registerEnterprise';
@@ -19,14 +20,22 @@ import menuBar from '../../vectores/menuBar';
 import {SvgXml} from 'react-native-svg';
 import InputSearch from '../../Components/InputSearch';
 import PopularPackages from '../../Components/PopularPackages';
+import CreateForm from '../../Components/CreateForm';
 
 interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
 }
 
-const {height, width} = Dimensions.get('window');
+const {height} = Dimensions.get('window');
+
+
 
 const HomeScreen = ({navigation}: HomeScreenProps) => {
+  const [showForm, setShowForm] = useState(false);
+
+  const handleOpenForm = () => {
+    setShowForm(true);
+  };
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -36,7 +45,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
   }, []);
   return (
     <ScrollView style={styles.backGround}>
-     
+
         <View style={styles.flex}>
           <SvgXml xml={menuBar} />
           <Text style={styles.Central}>AventuraT</Text>
@@ -95,6 +104,15 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
           <PopularPackages/>
           </View>
         </View>
+
+        <View style={styles.container4}>
+      <TouchableOpacity style={styles.button4} onPress={handleOpenForm}>
+        <Text style={styles.buttonText4}>Abrir formulario</Text>
+      </TouchableOpacity>
+
+      {showForm && <CreateForm />}
+    </View>
+
     </ScrollView>
   );
 };
@@ -200,4 +218,36 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Poppins-Medium',
   },
+container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: '#1881B1',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
+  container4: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button4: {
+    backgroundColor: '#1881B1',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText4: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
 });
