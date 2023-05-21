@@ -8,7 +8,7 @@ import vectorRetorno from '../../vectores/vectorRetorno';
 import vectorPrecio from '../../vectores/vectorPrecio';
 import { ButtonLikes } from '../../Components/ButtonLikes';
 
-const DetailsScreen = () => {
+const DetailsScreenUser = () => {
   return (
     <ScrollView style={styles.background}>
       <View style={styles.container}>
@@ -79,7 +79,7 @@ const DetailsScreen = () => {
   );
 };
 
-export default DetailsScreen;
+export default DetailsScreenUser;
 
 const styles = StyleSheet.create({
   background: {
