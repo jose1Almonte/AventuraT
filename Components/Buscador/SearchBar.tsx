@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import settings from '../../vectores/settings';
-import {SvgXml} from 'react-native-svg';
+import {Svg, SvgXml} from 'react-native-svg';
 
 interface Item {
   id: string;
@@ -19,7 +19,11 @@ const SearchBar: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [resultOffset, setResultOffset] = useState(0);
-  const [type, setType] = useState("name")
+  const [type, setType] = useState("name");
+  const [isOpen, setIsOpen] = useState(false)
+  const toggleMenu = () => {
+    setIsOpen(!isOpen)
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,22 +62,30 @@ const SearchBar: React.FC = () => {
 
   return (
     <>
-      <View style={styles.Container2}>
-        <TouchableOpacity style={styles.Redondos} onPress={() => { setType("name"); console.warn(type)}}>
-            <Text>Nombre</Text>
+      <View>
+        <TouchableOpacity onPress={() =>{toggleMenu()}}>
+          <SvgXml xml={settings}/>  
         </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.Redondos} onPress={() => {setType("description"); console.warn(type)}}>
-          <Text>Descripcion</Text>
-        </TouchableOpacity>
+        {isOpen && (
+          <View>
+            <TouchableOpacity style={styles.Redondos} onPress={() => { setType("name"); toggleMenu(); console.warn(type)}}>
+                <Text>Nombre</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.Redondos} onPress={() => {setType("description"); toggleMenu(); console.warn(type)}}>
+              <Text>Descripcion</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.Redondos} onPress={() => {setType("location"); console.warn(type)}}>
-          <Text>Location</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.Redondos} onPress={() => {setType("location");  toggleMenu(); console.warn(type)}}>
+              <Text>Location</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.Redondos} onPress={() => {setType("price"); console.warn(type)}}>
-          <Text>price</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.Redondos} onPress={() => {setType("price");  toggleMenu(); console.warn(type)}}>
+              <Text>price</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
       </View>
       
       <View style={styles.container}>
@@ -154,9 +166,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 150,
-
-    display: "flex",
-    flexDirection: "row",
   },
 });
 
