@@ -24,16 +24,14 @@ import firestore, {db, doc, deleteDoc} from '@react-native-firebase/firestore';
 
 const usersCollection3 = firestore().collection('package');
 
-export const deleteDocumentByUserId = async (packageId) => {
-    const querySnapshot = await usersCollection3.where('Name', '==', "team").get();
-    firestore()
-        .collection('package')
-        // .where('id', '==', 2).get();
-        .doc(packageId).delete();
+export const deleteDocumentByUserId = async () => {
 
-    // await deleteDoc(doc(db, 'package', 'nbMDHMyb6y6GuIuNDPET'));
+    const querySnapshot = ((await usersCollection3.where('date', '<', new Date()).get()));
+    querySnapshot.forEach((doc) => {
+        firestore().collection('package').doc(doc.id).delete();
+            console.log('Se borró el documento con el id = ', doc.id);
+        });
     // console.log(querySnapshot);
-    // const res = await db.collection('package').doc('nbMDHMyb6y6GuIuNDPET').delete();
+    // const snapshot = await firestore().collection('package').get();
 
-    // console.log(querySnapshot.docs[0]);
 };

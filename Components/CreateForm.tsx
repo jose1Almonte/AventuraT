@@ -55,7 +55,7 @@ const CreateForm = () => {
     price: '',
     description: '',
     location: '',
-    date: date.toDateString(),
+    date: date,
   });
 
   useEffect(() => {
@@ -69,17 +69,17 @@ const CreateForm = () => {
   };
 
   const submit = async () => {
-    data.date = date.toDateString();
+    data.date = date;
     if (resourcePath === '') {
       console.log(data);
       addPackage(data.id, data.name, data.availability, data.price, data.description, '', data.location, data.date);
-      Alert.alert('Veamos la fecha (postData, ya se envió)', data.date);
+      // Alert.alert('Veamos la fecha (postData, ya se envió)', data.date);
     } else {
       const url = await uploadImage(resourcePath, filename);
       console.log(url);
       console.log(data);
       await addPackage(data.id, data.name, data.availability, data.price, data.description, url, data.location, data.date);
-      Alert.alert('Veamos la fecha (postData, ya se envió)', data.date);
+      // Alert.alert('Veamos la fecha (postData, ya se envió)', data.date);
     }
     loadLastId(); // Carga el nuevo último ID después de crear el paquete
   };
