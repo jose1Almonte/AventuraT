@@ -29,11 +29,11 @@ export const Carrousel = () => {
     const fetchCarouselData = async () => {
       try {
         const snapshot = await firestore().collection('package').get();
-  
+
         const firebaseItems: CarouselItem[] = snapshot.docs.map((doc) => {
           const data = doc.data();
           const { name, description, mainImageUrl } = data;
-  
+
           // Crea tu componente personalizado utilizando name, description y mainImageUrl
           const customComponent = (
             <View style={styles.contenedor2}>
