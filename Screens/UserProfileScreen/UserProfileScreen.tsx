@@ -9,6 +9,7 @@ import auth from '@react-native-firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
 // import currentLog from '../../firebase/UserData';
 import { useUser } from '../../Context/UserContext';
+import { deleteExpiredDocuments } from '../../firebase/DeletePackage';
 
 
 interface UserProfileScreenProps{
@@ -58,6 +59,10 @@ export const UserProfileScreen = ({
           </View>
             <TouchableOpacity style={styles.contenedorInfo}  onPress={() => {logout(); navigation.navigate('HomeScreen');}}>
             <Text style={styles.txtInfo1}>Cerrar sesión</Text>
+            <SvgXml xml={VectorPerfilFlecha} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.contenedorInfo} onPress={deleteExpiredDocuments}>
+            <Text style={styles.txtInfo1}>Borrar paquetes caducados</Text>
             <SvgXml xml={VectorPerfilFlecha} />
           </TouchableOpacity>
         </View>
