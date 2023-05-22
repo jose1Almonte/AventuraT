@@ -28,7 +28,15 @@ export function ButtonLikes({packageDetails}:ButtonLikesProps) {
   
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
-        const newFavorites = [...userData.favorites, packageDetails.id];
+        let newFavorites = [...userData.favorites];
+  
+        if (isClicked) {
+          // Remove package from favorites
+          newFavorites = newFavorites.filter((id) => id !== packageDetails.id);
+        } else {
+          // Add package to favorites
+          newFavorites.push(packageDetails.id);
+        }
   
         firestore()
           .collection('users')
