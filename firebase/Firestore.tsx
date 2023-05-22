@@ -5,19 +5,21 @@ const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
 const packagesCollection = firestore().collection('package');
 
-export const addUser = async (displayName:string,email:string, emailVerified:boolean,photoURL:string) => {
+export const addUser = async (array:string[],displayName:string,email:string, emailVerified:boolean,photoURL:string) => {
     await usersCollection.add({
         displayName: displayName,
         email: email,
         emailVerified: emailVerified,
+        favorites:array,
         photoURL: photoURL});
 };
 
-export const updateUser = async (userId: string, displayName:string,email:string, emailVerified:boolean,photoURL:string) => {
+export const updateUser = async (array:string[],userId: string, displayName:string,email:string, emailVerified:boolean,photoURL:string) => {
     await usersCollection.doc(userId).set({
         displayName: displayName,
         email: email,
         emailVerified: emailVerified,
+        favorites:array,
         photoURL: photoURL});
 };
 

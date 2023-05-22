@@ -9,6 +9,12 @@ import InputSearch from '../../Components/InputSearch';
 import PackagesSearch from '../../Components/packagesSearch';
 import options from '../../vectores/options';
 
+interface FavoriteScreenProp {
+    id: number;
+    component: React.ReactNode;
+  }
+
+
 const FavoriteScreen = () => {
     return (
         <ScrollView>
