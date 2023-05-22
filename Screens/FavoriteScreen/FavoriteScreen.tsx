@@ -149,3 +149,61 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Regular',
     },
 });
+
+// import React, { useEffect, useState } from 'react';
+// import { View, Text } from 'react-native';
+// import firestore from '@react-native-firebase/firestore';
+// import auth from '@react-native-firebase/auth';
+// import { useUser, UserProvider } from "../../Context/UserContext"
+// import { getFavorites } from '../../firebase/Firestore';
+
+
+
+// const FavoriteScreen = () => {
+//   const [favorites, setFavorites] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const { user, islogged } = useUser();
+
+//   const conseguirFavoritos = async () => {
+
+//     const email = await user.email;
+//     const fav = await getFavorites(email);
+//     await setFavorites(fav);
+//     console.log(favorites);
+//     setLoading(false);
+
+//   };
+
+//   useEffect(() => {
+
+//     conseguirFavoritos();
+
+//   },[loading])
+
+
+
+//   return (<View style={styles.container}>
+//       <Text>FavoriteScreen</Text>
+//     <>
+//       {favorites.map((item, idx) => {
+//         if (idx === 0) {
+
+//         } else {
+//           return (
+//           <View>
+//             <Text>Name: { item }</Text>
+//           </View>);
+//         }
+//       })}
+//     </>
+//     </View>
+//   );
+// };
+
+// const styles = {
+//   container: {
+//     backgroundColor: '#1DB5BE',
+//     flex: 1,
+//   },
+// };
+// export default FavoriteScreen;

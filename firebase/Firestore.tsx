@@ -102,3 +102,10 @@ export const getLastPackageId = async () => {
       
         return 0; // Si no hay paquetes, devuelve 0 como último ID
 };
+
+export const getFavorites = async (email: string) => {
+  const snapshot = await usersCollection.where("email", "==", email).limit(1).get()
+  return snapshot.docs[0].data().favorites
+
+  
+}
