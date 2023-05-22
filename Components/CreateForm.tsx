@@ -4,7 +4,6 @@ import { addPackage, uploadImage, getLastPackageId } from '../firebase/Firestore
 import { launchImageLibrary } from 'react-native-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-
 const DatePickerBox = ({ writingDate, setWritingDate, date, setDate}: { writingDate: boolean; date: Date; setWritingDate: (value: boolean) => void; setDate: (value: Date) => void;}) => {
 
   // const tempDate = new Date();
@@ -17,7 +16,7 @@ const DatePickerBox = ({ writingDate, setWritingDate, date, setDate}: { writingD
 
   if (writingDate) {
       return <DateTimePicker
-      style={styles.label}
+      // style={styles.label}
       value={new Date()}
       mode="date"
       onChange={(event, selectedDate) => {handleDateChange(event, selectedDate);}}
@@ -26,10 +25,14 @@ const DatePickerBox = ({ writingDate, setWritingDate, date, setDate}: { writingD
 
   return (
       <>
-      <Text style={styles.textColor}>{date.toDateString()}</Text>
+      <Text style={styles.textColor}> El paquete caduca: {date.toDateString()}</Text>
       </>
     );
 };
+
+interface CreateFormProps {
+  navigation: any,
+}
 
 interface CreateFormData {
   id: number;
@@ -41,7 +44,7 @@ interface CreateFormData {
   date: any,
 }
 
-const CreateForm = () => {
+const CreateForm = ({navigation}: CreateFormProps) => {
   const [resourcePath, setResourcePath] = useState('');
   const [filename, setFileName] = useState('');
 
@@ -72,7 +75,7 @@ const CreateForm = () => {
     data.date = date;
     if (resourcePath === '') {
       console.log(data);
-      addPackage(data.id, data.name, data.availability, data.price, data.description, '', data.location, data.date);
+      await addPackage(data.id, data.name, data.availability, data.price, data.description, '', data.location, data.date);
       // Alert.alert('Veamos la fecha (postData, ya se envió)', data.date);
     } else {
       const url = await uploadImage(resourcePath, filename);
@@ -80,8 +83,9 @@ const CreateForm = () => {
       console.log(data);
       await addPackage(data.id, data.name, data.availability, data.price, data.description, url, data.location, data.date);
     }
-    Alert.alert('Ya se subió');
-    loadLastId(); // Carga el nuevo último ID después de crear el paquete
+    await loadLastId(); // Carga el nuevo último ID después de crear el paquete
+    Alert.alert('Ya se subió el paquete a la base de datos');
+    navigation.navigate('HomeScreen');
   };
 
   const selectImage = () => {
@@ -103,76 +107,129 @@ const CreateForm = () => {
   };
 
   return (
-    <View style={styles.contenedor}>
-      <Text style={styles.label}>Ingrese el nombre del paquete:</Text>
-      <TextInput style={styles.textInput} placeholder="Nombre del paquete" onChangeText={(text) => setData((prevData) => ({ ...prevData, name: text }))} />
+    <View style={styles.giantBox}>
 
-      <Text style={styles.label}>Ingrese la disponibilidad:</Text>
-      <TextInput style={styles.textInput} placeholder="Disponibilidad" onChangeText={(text) => setData((prevData) => ({ ...prevData, availability: text }))} />
+      <View style={styles.firstBox}>
+        <Text style= {styles.title}>¡Agrega tu paquete con AventuraT!</Text>
+      </View>
 
-      <Text style={styles.label}>Ingrese el precio:</Text>
-      <TextInput style={styles.textInput} placeholder="Precio en $ <3" onChangeText={(text) => setData((prevData) => ({ ...prevData, price: text }))} />
+      <View style={styles.secondBox}>
 
-      <Text style={styles.label}>Descripción:</Text>
-      <TextInput style={styles.textInput} placeholder="Descripcion" onChangeText={(text) => setData((prevData) => ({ ...prevData, description: text }))} />
+      <View style={styles.secondBoxMiniBox}>
+      {/* <Text style={styles.label}>Ingrese el nombre del paquete:</Text> */}
+      <TextInput style={styles.textInput} placeholder="Ingrese el nombre del paquete" placeholderTextColor={'#323F4B'} onChangeText={(text) => setData((prevData) => ({ ...prevData, name: text }))} />
+      </View>
 
-      <Text style={styles.label}>Ubicación:</Text>
-      <TextInput style={styles.textInput} placeholder="Ubicación" onChangeText={(text) => setData((prevData) => ({ ...prevData, location: text }))} />
-      <TouchableOpacity onPress={() => {setWritingDate(true);}} style={styles.label}>
+      <View style={styles.secondBoxMiniBox}>
+      {/* <Text style={styles.label}>Ingrese la disponibilidad:</Text> */}
+      <TextInput style={styles.textInput} placeholder="Nro de cupos disponibles" placeholderTextColor={'#323F4B'} onChangeText={(text) => setData((prevData) => ({ ...prevData, availability: text }))} />
+      </View>
+
+      <View style={styles.secondBoxMiniBox}>
+      {/* <Text style={styles.label}>Ingrese el precio:</Text> */}
+      <TextInput style={styles.textInput} placeholder="Precio en Bs." placeholderTextColor={'#323F4B'} onChangeText={(text) => setData((prevData) => ({ ...prevData, price: text }))} />
+      </View>
+
+      <View style={styles.secondBoxMiniBox}>
+      {/* <Text style={styles.label}>Descripción:</Text> */}
+      <TextInput style={styles.textInput} placeholder="Ingrese una breve descrip. del paq." placeholderTextColor={'#323F4B'} onChangeText={(text) => setData((prevData) => ({ ...prevData, description: text }))} />
+      </View>
+
+      <View style={styles.secondBoxMiniBox}>
+      {/* <Text style={styles.label}>Ubicación:</Text> */}
+      <TextInput style={styles.textInput} placeholder="Ubicación" placeholderTextColor={'#323F4B'} onChangeText={(text) => setData((prevData) => ({ ...prevData, location: text }))} />
+      </View>
+
+      <TouchableOpacity onPress={() => {setWritingDate(true);}} style={styles.secondBoxMiniBox}>
         <DatePickerBox writingDate = {writtingDate} setWritingDate = {setWritingDate}  date={date} setDate={setDate} />
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={() => selectImage(data.name, data.description, data.availability, data.price, data.location)}>
-        <Text style={styles.buttonText}>Subir imagen principal</Text>
+        <Text style={styles.buttonText}>Subir imagen/logo principal</Text>
       </TouchableOpacity>
 
       {resourcePath === '' ? (
         <></>
-      ) : (
-        <View>
+        ) : (
+          <View>
           <Image source={{ uri: resourcePath }} />
         </View>
       )}
+      </View>
 
-      <TouchableOpacity style={styles.button} onPress={submit}>
+      <View style={styles.thirdBox}>
+      <TouchableOpacity style={styles.button} onPress={() => {submit();}}>
         <Text style={styles.buttonText}>Crear Paquete</Text>
       </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  contenedor: {
+  giantBox: {
     alignItems: 'center',
-    backgroundColor: 'white',
-    flex: 1,
-  },
-  textInput: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    backgroundColor: '#1881B1',
-    borderRadius: 25,
-    width: 360,
-    height: 60,
-    gap: 20,
-    padding: 20,
+    backgroundColor: '#1DB5BE',
     flex: 1,
   },
 
-  label: {
-    color: '#1881B1',
-    fontFamily: 'Poppins-medium',
-    fontSize: 16,
-    marginTop: 20,
-    marginBottom: 5,
+  firstBox:{
+    flex: 20.625,
+    // backgroundColor: 'red',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
+  secondBox:{
+    flex: 65.875,
+    // backgroundColor: 'green',
+    width: '100%',
+    alignItems: 'center',
+  },
+  thirdBox:{
+    flex: 13.5,
+    // backgroundColor: 'black',
+    width: '100%',
+    alignItems: 'center',
+  },
+
+  secondBoxMiniBox:{
+    height: '10.882%',
+    width: '80.278%',
+    // backgroundColor: 'grey',
+    justifyContent: 'center',
+    marginTop: '1%',
+    marginBottom: '2%',
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+  },
+
+  title: {
+    fontWeight: '600',
+    fontSize: 24,
+    lineHeight: 36,
+    textAlign: 'center',
+    color: '#FFFFFF',
+    width: '90%',
+    // backgroundColor: 'black',
+    marginBottom: '3%',
+  },
+
+  textInput:{
+    // fontFamily: 'Poppins',
+    // fontStyle: 'normal',
+    fontWeight: '400',
+    fontSize: 16,
+    lineHeight: 24,
+    color: 'white',
+  },
+
   button: {
     display: 'flex',
     alignItems: 'center',
     height: 40,
     width: 200,
-    borderRadius: 50,
+    borderRadius: 5,
     justifyContent: 'center',
     backgroundColor: '#1881B1',
     marginTop: 20,

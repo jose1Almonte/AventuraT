@@ -26,7 +26,7 @@ import storage, {deleteObject, ref} from '@react-native-firebase/storage';
 
 const usersCollection3 = firestore().collection('package');
 
-export const deleteDocumentByUserId = async () => {
+export const deleteExpiredDocuments = async () => {
 
     const querySnapshot = ((await usersCollection3.where('date', '<', new Date()).get()));
 
@@ -36,8 +36,8 @@ export const deleteDocumentByUserId = async () => {
 
         const imageRef = firebase.storage().refFromURL(image);
 
-        console.log(image);
-        console.log(imageRef);
+        // console.log(image);
+        console.log('imageRef: ', imageRef);
         imageRef.delete().then(() => {console.log("La imagen se ha borrado correctamente.");}).catch((error) => {console.error("Error al borrar la imagen:", error);});
 
         firestore().collection('package').doc(doc.id).delete();
