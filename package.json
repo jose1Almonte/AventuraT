@@ -16,6 +16,7 @@
     "@react-native-firebase/storage": "^17.5.0",
     "@react-native-google-signin/google-signin": "^9.0.2",
     "@react-native/assets": "^1.0.0",
+    "@react-navigation/drawer": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "add": "^2.0.6",

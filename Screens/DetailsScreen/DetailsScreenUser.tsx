@@ -1,5 +1,5 @@
-import React from 'react';
-import { ScrollView, Text, StyleSheet, View, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, Text, StyleSheet, View, Image, BackHandler, Pressable, Alert } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import star from '../../vectores/star';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -7,23 +7,36 @@ import vectorSalida from '../../vectores/vectorSalida';
 import vectorRetorno from '../../vectores/vectorRetorno';
 import vectorPrecio from '../../vectores/vectorPrecio';
 import { ButtonLikes } from '../../Components/ButtonLikes';
+import { PackageI } from '../../models/package.interface';
+import { NavigationProp } from '@react-navigation/native';
+import { useUser } from '../../Context/UserContext';
 
-const DetailsScreenUser = () => {
+interface detailProps {
+  navigation: NavigationProp<Record<string, object | undefined>>;
+  route?: any;
+  data?: PackageI;
+}
+
+
+
+const DetailsScreenUser = ({ navigation, data, route }: detailProps) => {
+  let { isLogged } = useUser();
+  let packageIn: PackageI = route.params.data;
   return (
     <ScrollView style={styles.background}>
       <View style={styles.container}>
         <View style={styles.containerPack}>
           <View style={styles.containerText}>
-            <Text style={styles.textPack}>Nombre paquete</Text>
+            <Text style={styles.textPack}>{packageIn.name}</Text>
             <View style={styles.containerCalification}>
-              <Text style={styles.ratingText}>4.6</Text>
+              <Text style={styles.ratingText}>{packageIn.raiting}</Text>
               <SvgXml xml={star} width={22} height={22} />
             </View>
           </View>
           <Image
             style={styles.containerPhotoPack}
             source={{
-              uri: 'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
+              uri: packageIn.mainImageUrl //'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
             }}
           />
         </View>
@@ -37,7 +50,7 @@ const DetailsScreenUser = () => {
               uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg',
             }}
           />
-          <Text style={styles.text}>Nombre empresa</Text>
+          <Text style={styles.text}>{packageIn.nameEnterprice}</Text>
         </View>
       </View>
 
@@ -45,20 +58,20 @@ const DetailsScreenUser = () => {
         <View style={styles.contenedorInformacion}>
           <SvgXml xml={vectorSalida} />
           <Text style={styles.titulo}>Salida</Text>
-          <Text style={styles.subtitulo}>Fecha</Text>
+          <Text style={styles.subtitulo}>{packageIn.start}</Text>
         </View>
         <View style={styles.contenedorInformacion}>
           <SvgXml xml={vectorRetorno} />
           <Text style={styles.titulo}>Retorno</Text>
-          <Text style={styles.subtitulo}>Fecha</Text>
+          <Text style={styles.subtitulo}>{packageIn.end}</Text>
         </View>
         <View style={styles.contenedorInformacion}>
           <SvgXml xml={vectorPrecio} />
           <Text style={styles.titulo}>Precio</Text>
-          <Text style={styles.subtitulo}>$</Text>
+          <Text style={styles.subtitulo}>${packageIn.price}</Text>
         </View>
       </View>
-      
+
       <View style={styles.infoServicios}>
         <Text style={styles.titulo}>Incluye</Text>
         <Text style={styles.subtitulo}>Transporte privado</Text>
@@ -66,14 +79,23 @@ const DetailsScreenUser = () => {
         <Text style={styles.subtitulo}>Desayuno</Text>
         <Text style={styles.subtitulo}>Atención personalizada</Text>
       </View>
-      
+
       <View style={styles.reserva}>
         <View style={styles.contenedorLikes}>
-          <ButtonLikes/>
+          <ButtonLikes />
         </View>
-        <View style={styles.buttonReserva}>
-          <Text style={styles.titulo}>Reservar</Text>
-        </View>
+        <Pressable onPress={() => {
+          if (isLogged) {
+            navigation.navigate('MobilePaymentScreen');
+          } else {
+            Alert.alert('Inicie sesión', 'Para reservar debe iniciar sesión');
+            navigation.navigate('LoginScreen');
+          }
+        }}>
+          <View style={styles.buttonReserva}>
+            <Text style={styles.titulo}>Reservar</Text>
+          </View>
+        </Pressable>
       </View>
     </ScrollView>
   );

@@ -1,25 +1,30 @@
-import {Text, View, StyleSheet} from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import React from 'react';
-import {SvgXml} from 'react-native-svg';
+import { SvgXml } from 'react-native-svg';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
-import {Svg} from 'react-native-svg';
+import { Svg } from 'react-native-svg';
 import home from '../../vectores/home';
 import favorites from '../../vectores/favorites';
 import profile from '../../vectores/profile';
 import historial from '../../vectores/historial';
 import helpdesk from '../../vectores/helpdesk';
 import business from '../../vectores/business';
+import { NavigationProp } from '@react-navigation/native';
 
-const NavbarScreen = () => {
+interface navigationProps {
+  navigation: NavigationProp<Record<string, object | undefined>>;
+}
+
+const NavbarScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
       <View style={styles.fondo}>
         <View style={styles.info}>
           <View style={styles.topInfo}>
             <PhotoProfile size={90}
-            imageSource={{
-              uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg',
-            }}/>
+              imageSource={{
+                uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg',
+              }} />
             <Text style={styles.txt}>nombre usuario</Text>
           </View>
           <View style={styles.bottomInfo}>

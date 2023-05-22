@@ -57,7 +57,9 @@ const CreateForm = () => {
       } else {
         const selectedAsset = response.assets && response.assets[0];
         if (selectedAsset) {
+          // @ts-ignore
           setResourcePath(selectedAsset.uri);
+          // @ts-ignore
           setFileName(selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1));
         }
       }

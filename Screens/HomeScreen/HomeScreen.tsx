@@ -6,18 +6,19 @@ import {
   Dimensions,
   BackHandler,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 //import RegisterEnterprise from '../../Components/registerEnterprise';
 import { ProfilePicture } from '../../firebase/PerfilPicture';
 // import RegisterEnterprise from '../../Components/registerEnterprise';
-import {Image} from 'react-native';
+import { Image } from 'react-native';
 //import UserProfileScreen from '../UserProfileScreen/UserProfileScreen';
 //import UserProfileScreen from '../BusinessProfileScreen/BusinessProfileScreen';
-import {Carrousel} from '../../Components/Carrusel';
-import {NavigationProp} from '@react-navigation/native';
+import { Carrousel } from '../../Components/Carrusel';
+import { NavigationProp } from '@react-navigation/native';
 import menuBar from '../../vectores/menuBar';
-import {SvgXml} from 'react-native-svg';
+import { SvgXml } from 'react-native-svg';
 import InputSearch from '../../Components/InputSearch';
 import PopularPackages from '../../Components/PopularPackages';
 import CreateForm from '../../Components/CreateForm';
@@ -26,11 +27,11 @@ interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
 }
 
-const {height} = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 
 
-const HomeScreen = ({navigation}: HomeScreenProps) => {
+const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const [showForm, setShowForm] = useState(false);
 
   const handleOpenForm = () => {
@@ -46,72 +47,87 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
   return (
     <ScrollView style={styles.backGround}>
 
-        <View style={styles.flex}>
+      <View style={styles.flex}>
+        <Pressable onPress={() => { navigation.navigate('NavbarScreen') }}>
           <SvgXml xml={menuBar} />
-          <Text style={styles.Central}>AventuraT</Text>
+        </Pressable>
+        <Text style={styles.Central}>AventuraT</Text>
 
-          <ProfilePicture
-            navigation={navigation}
-            styles={styles}
-            destinationNavigationComponentName="UserProfileScreen"
-          />
-        </View>
-        <InputSearch />
-        <View style={styles.Container2}>
-          <View style={styles.Caracteristicas}>
-            <View style={styles.Sepa}>
-              <View style={styles.Redondos}>
-                <Image
-                  style={styles.Escalado}
-                  source={require('../../images/tt.jpg')}></Image>
-              </View>
-              <Text style={styles.letras}>Montaña</Text>
+        <ProfilePicture
+          navigation={navigation}
+          styles={styles}
+          destinationNavigationComponentName="UserProfileScreen"
+        />
+      </View>
+      <InputSearch />
+      <View style={styles.Container2}>
+        <View style={styles.Caracteristicas}>
+          <View style={styles.Sepa}>
+            <View style={styles.Redondos}>
+              <Image
+                style={styles.Escalado}
+                source={require('../../images/tt.jpg')}></Image>
             </View>
-            <View style={styles.Sepa}>
-              <View style={styles.Redondos}>
-                <Image
-                  style={styles.Escalado}
-                  source={require('../../images/mas.jpg')}></Image>
-              </View>
-              <Text style={styles.letras}>Playa</Text>
+            <Text style={styles.letras}>Montaña</Text>
+          </View>
+          <View style={styles.Sepa}>
+            <View style={styles.Redondos}>
+              <Image
+                style={styles.Escalado}
+                source={require('../../images/mas.jpg')}></Image>
             </View>
-            <View style={styles.Sepa}>
-              <View style={styles.Redondos}>
-                <Image
-                  style={styles.Escalado}
-                  source={require('../../images/para.jpg')}></Image>
-              </View>
-              <Text style={styles.letras}>Full-Day</Text>
+            <Text style={styles.letras}>Playa</Text>
+          </View>
+          <View style={styles.Sepa}>
+            <View style={styles.Redondos}>
+              <Image
+                style={styles.Escalado}
+                source={require('../../images/para.jpg')}></Image>
             </View>
-            <View style={styles.Sepa}>
-              <View style={styles.Redondos}>
-                <Image
-                  style={styles.Escalado}
-                  source={require('../../images/lol.jpg')}></Image>
-              </View>
-              <Text style={styles.letras}>Camping</Text>
+            <Text style={styles.letras}>Full-Day</Text>
+          </View>
+          <View style={styles.Sepa}>
+            <View style={styles.Redondos}>
+              <Image
+                style={styles.Escalado}
+                source={require('../../images/lol.jpg')}></Image>
             </View>
+            <Text style={styles.letras}>Camping</Text>
           </View>
         </View>
-        <View style={styles.MyComponent}>
-          <Text style={styles.title1}>Destinos Populares</Text>
-          <Carrousel />
+      </View>
+      <View style={styles.MyComponent}>
+        <Text style={styles.title1}>Destinos Populares</Text>
+        <Carrousel navigation={navigation} />
+      </View>
+      <View style={styles.Container3}>
+        <Text style={styles.title}>Paquetes Populares</Text>
+        <View style={styles.ContainerPackages}>
+          <Pressable onPress={() => {
+            console.log('PAQUETE 1 PRECIONADO')
+          }}>
+            <PopularPackages />
+          </Pressable>
+          <Pressable onPress={() => {
+            console.log('PAQUETE 2 PRECIONADO')
+          }}>
+            <PopularPackages />
+          </Pressable>
+          <Pressable onPress={() => {
+            console.log('PAQUETE 3 PRECIONADO')
+          }}>
+            <PopularPackages />
+          </Pressable>
         </View>
-        <View style={styles.Container3}>
-          <Text style={styles.title}>Paquetes Populares</Text>
-          <View style={styles.ContainerPackages}><PopularPackages/>
-          <PopularPackages/>
-          <PopularPackages/>
-          </View>
-        </View>
+      </View>
 
-        <View style={styles.container4}>
-      <TouchableOpacity style={styles.button4} onPress={handleOpenForm}>
-        <Text style={styles.buttonText4}>Abrir formulario</Text>
-      </TouchableOpacity>
+      <View style={styles.container4}>
+        <TouchableOpacity style={styles.button4} onPress={handleOpenForm}>
+          <Text style={styles.buttonText4}>Abrir formulario</Text>
+        </TouchableOpacity>
 
-      {showForm && <CreateForm />}
-    </View>
+        {showForm && <CreateForm />}
+      </View>
 
     </ScrollView>
   );
@@ -195,7 +211,7 @@ export const styles = StyleSheet.create({
     marginBottom: height * 0.01,
     margin: 30,
   },
-  ContainerPackages:{
+  ContainerPackages: {
     gap: 7,
     flexDirection: "row",
   },
@@ -205,7 +221,7 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     color: 'white',
   },
-  title1:{
+  title1: {
     marginBottom: 15,
     marginLeft: 30,
     fontFamily: 'Poppins-Bold',
@@ -218,7 +234,7 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Poppins-Medium',
   },
-container: {
+  container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
