@@ -18,23 +18,34 @@ export function ButtonLikes({packageDetails}:ButtonLikesProps) {
     setIsClicked(!isClicked); // Invertir el estado de isClicked al hacer clic
   };
 
-  const handleToggled = async()=>{
-    const querySnapshot = ((await firestore().collection('users').where('email', '==',user?.email).get()));
-    querySnapshot.forEach((doc) => {
-      const userData = doc.data();
-      
-      const newFavorites = [...userData.favorites, packageDetails.id];
-      firestore().collection('users').doc(doc.id).update({
-        favorites: newFavorites,
-      })
-      .then(() => {
-        console.log('Datos actualizados con éxito en Firestore del usuario');
-      })
-      .catch((error) => {
-        console.error('Error al actualizar datos en Firestore del usuario:', error);
+  const handleToggled = async () => {
+    const user = auth().currentUser;
+    if (user) {
+      const querySnapshot = await firestore()
+        .collection('users')
+        .where('email', '==', user.email)
+        .get();
+  
+      querySnapshot.forEach((doc) => {
+        const userData = doc.data();
+        const newFavorites = [...userData.favorites, packageDetails.id];
+  
+        firestore()
+          .collection('users')
+          .doc(doc.id)
+          .update({
+            favorites: newFavorites,
+          })
+          .then(() => {
+            console.log('Data updated successfully in Firestore for the user');
+          })
+          .catch((error) => {
+            console.error('Error updating data in Firestore for the user:', error);
+          });
       });
-    });
+    }
   };
+  
 
   const heartColor = isClicked ? '#FF3D00' : 'white'; // Establecer el color del ícono de corazón según el estado
 
