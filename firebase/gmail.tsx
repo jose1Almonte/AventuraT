@@ -4,7 +4,7 @@ import { firebase } from '@react-native-firebase/auth';
 import { addUser, checkIfUserExists } from '../firebase/Firestore';
 import auth from '@react-native-firebase/auth';
 
-const user = auth().currentUser;
+export const user = auth().currentUser;
 
 GoogleSignin.configure({
     webClientId: '638631763713-0on48aa795gnpfotr2v3f1odra0j4fqq.apps.googleusercontent.com',
