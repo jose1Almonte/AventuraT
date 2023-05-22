@@ -13,6 +13,7 @@ import FavoriteScreen from './Screens/FavoriteScreen/FavoriteScreen';
 import SearchResultScreen from './Screens/SearchResultScreen/SearchResultScreen';
 import { UserProvider } from './Context/UserContext';
 import MobilePaymentScreen from './Screens/MobilePaymentScreen/MobilePaymentScreen';
+import CreatePackageFormScreen from './Screens/CreatePackageFormScreen/CreatePackageFormScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="CreatePackageFormScreen" component={CreatePackageFormScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} options={{ headerShown: false }} />
           <Stack.Screen name="MobilePaymentScreen" component={MobilePaymentScreen} options={{ headerShown: false }} />
           <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />

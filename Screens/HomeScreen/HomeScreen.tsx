@@ -106,7 +106,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
         </View>
 
         <View style={styles.container4}>
-      <TouchableOpacity style={styles.button4} onPress={handleOpenForm}>
+      <TouchableOpacity style={styles.button4} onPress={() => {navigation.navigate('CreatePackageFormScreen');}}>
         <Text style={styles.buttonText4}>Abrir formulario</Text>
       </TouchableOpacity>
 
