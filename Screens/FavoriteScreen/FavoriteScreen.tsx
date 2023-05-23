@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import InputSearch from '../../Components/InputSearch';
+import PackagesSearch from '../../Components/packagesSearch';
 
 interface FavoriteItem {
-  nombre: number;
+  nombre: string;
   numero: string; // Cambiar a tipo string
 }
 
@@ -12,7 +14,7 @@ interface PackageItem {
   // Agrega aquí los campos adicionales de tu colección "packages"
 }
 
-const FavoriteScreen: React.FC = () => {
+const FavoriteScreen = () => {
   const [favoriteArray, setFavoriteArray] = useState<FavoriteItem[]>([]);
   const [packageArray, setPackageArray] = useState<PackageItem[]>([]);
 
@@ -54,128 +56,197 @@ const FavoriteScreen: React.FC = () => {
     }
   }, [favoriteArray]);
 
+  const renderItem = ({ item }: any) => {
+    console.log(item);
+    return (<PackagesSearch item={item} />)
+  }
+  // return (<View style={styles.container}>
+  //   <Text>FavoriteScreen</Text>
+  //   <>
+  //     {favoriteArray.map((item, idx) => {
+  //       if (idx === 0) {
+
+  //       } else {
+  //         return (
+  //           <View>
+  //             <Text>Name: {item.nombre}</Text>
+  //           </View>);
+  //       }
+  //     })}
+  //   </>
+  // </View>
+  // );
   return (
-    <View>
-      {packageArray.map((item, index) => (
-        <Text key={index}>{item.nombre}</Text>
-      ))}
-    </View>
+    // <ScrollView>
+    //   <View style={styles.container}>
+    //     <View style={styles.info}>
+    //       <View style={styles.topInfo}>
+    //         <Text style={styles.txt}>Paquetes Favoritos</Text>
+    //         <InputSearch />
+
+    //         <FlatList
+    //           data={favoriteArray}
+    //           renderItem={renderItem}
+    //         >
+
+    //         </FlatList>
+
+    //         {/* <PackagesSearch />
+    //         <PackagesSearch />
+    //         <PackagesSearch />
+    //         <PackagesSearch />
+    //         <PackagesSearch />
+    //         <PackagesSearch />
+    //         <PackagesSearch />
+    //         <PackagesSearch /> */}
+    //       </View>
+    //     </View>
+    //   </View>
+    // </ScrollView>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.info}>
+          <View style={styles.topInfo}>
+            <Text style={styles.txt}>Paquetes Favoritos</Text>
+            <InputSearch />
+
+            <View>
+              {favoriteArray.map((item, index) => (
+                <Text key={index}>{item.nombre}</Text>
+              ))}
+            </View>
+
+            {/* <PackagesSearch />
+            <PackagesSearch />
+            <PackagesSearch />
+            <PackagesSearch />
+            <PackagesSearch />
+            <PackagesSearch />
+            <PackagesSearch />
+            <PackagesSearch /> */}
+          </View>
+        </View>
+      </View>
+    </ScrollView>
+
   );
-
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'white',
-    },
-    info: {
-      flex: 1,
-      display: 'flex',
-      margin: 5
-    },
-    topInfo: {
-      marginTop: 80,
-      alignItems: 'center',
-      gap: 15,
-    },
-    info2: {
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-      marginLeft: 15,
-      gap: 6,
-      padding: 20,
-    },
-    info3: {
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 6,
-      padding: 20,
-      marginLeft: 15,
-    },
-    contenedorInfoTop: {
-      marginTop: 15,
-      flexDirection: 'row',
-      justifyContent: 'center',
-    },
-    contenedorInfo: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    contenedorServicios: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 6,
-      paddingLeft: 20,
-      paddingRight: 20,
-      marginLeft: 15,
-    },
-    contenedorPrecio: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 6,
-      paddingLeft: 20,
-      marginLeft: 15,
-      marginTop: 15,
-    },
-    contenedorPrecios: {
-      display: 'flex',
-      flexDirection: 'row',
-      gap: 12,
-    },
-    contenedorEscala: {
-      justifyContent: "center",
-      display: 'flex',
-      borderRadius: 4,
-      width: 90,
-      height: 35,
-      borderColor: '#1881B1',
-      borderWidth: 1
-    },
-    containerButton: {
-      display: 'flex',
-      alignItems: 'center',
-    },
-    container2: {
-      marginTop: 20,
-      height: 42,
-      width: 300,
-      borderRadius: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#1881B1',
-    },
-    txt: {
-      color: 'black',
-      fontSize: 20,
-      fontFamily: 'Poppins-SemiBold',
-    },
-    title: {
-      color: 'black',
-      fontSize: 16,
-      fontFamily: 'Poppins-Medium',
-    },
-    txtInfo: {
-      color: '#323F4B',
-      fontSize: 15,
-      fontFamily: 'Poppins-Regular',
-    },
-    txtInfo1: {
-      color: 'white',
-      fontSize: 16,
-      fontFamily: 'Poppins-Bold',
-    },
-    txtInfo2: {
-      marginLeft: 10,
-      color: '#323F4B',
-      fontSize: 15,
-      fontFamily: 'Poppins-Regular',
-    },
-  });
 }
+
+export default FavoriteScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  info: {
+    flex: 1,
+    display: 'flex',
+    margin: 5
+  },
+  topInfo: {
+    marginTop: 80,
+    alignItems: 'center',
+    gap: 15,
+  },
+  info2: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    marginLeft: 15,
+    gap: 6,
+    padding: 20,
+  },
+  info3: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 6,
+    padding: 20,
+    marginLeft: 15,
+  },
+  contenedorInfoTop: {
+    marginTop: 15,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  contenedorInfo: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  contenedorServicios: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 6,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginLeft: 15,
+  },
+  contenedorPrecio: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 6,
+    paddingLeft: 20,
+    marginLeft: 15,
+    marginTop: 15,
+  },
+  contenedorPrecios: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 12,
+  },
+  contenedorEscala: {
+    justifyContent: "center",
+    display: 'flex',
+    borderRadius: 4,
+    width: 90,
+    height: 35,
+    borderColor: '#1881B1',
+    borderWidth: 1
+  },
+  containerButton: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  container2: {
+    marginTop: 20,
+    height: 42,
+    width: 300,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1881B1',
+  },
+  txt: {
+    color: 'black',
+    fontSize: 20,
+    fontFamily: 'Poppins-SemiBold',
+  },
+  title: {
+    color: 'black',
+    fontSize: 16,
+    fontFamily: 'Poppins-Medium',
+  },
+  txtInfo: {
+    color: '#323F4B',
+    fontSize: 15,
+    fontFamily: 'Poppins-Regular',
+  },
+  txtInfo1: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Poppins-Bold',
+  },
+  txtInfo2: {
+    marginLeft: 10,
+    color: '#323F4B',
+    fontSize: 15,
+    fontFamily: 'Poppins-Regular',
+  },
+});
+
 // import React, { useEffect, useState } from 'react';
 // import { View, Text } from 'react-native';
 // import firestore from '@react-native-firebase/firestore';

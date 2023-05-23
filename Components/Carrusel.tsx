@@ -65,7 +65,7 @@ export const Carrousel = ({ navigation }: carruselProps) => {
                     <View style={styles.ContainerLikes}>
                       <ButtonLikes packageDetails={data} />
                     </View>
-                    <Califications />
+                    <Califications calification={data.raiting} />
                   </View>
                   <View style={styles.textContainer}>
                     <Text style={styles.texto}>{data.name}</Text>

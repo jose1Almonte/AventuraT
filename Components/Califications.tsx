@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
-import {SvgXml} from 'react-native-svg';
+import React, { Component } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 import star from '../vectores/star';
 
 interface calificationsProps {
-  calification: string;
+  calification: string | undefined;
 }
 
-const Califications = ({calification}: calificationsProps) => {
+const Califications = ({ calification }: calificationsProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>

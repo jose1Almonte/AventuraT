@@ -4,31 +4,35 @@ import calendar from '../vectores/calendar';
 import { SvgXml } from 'react-native-svg';
 import { ButtonLikesFav } from './ButtonLikesFav';
 
-class PackagesSearch extends Component {
-    render() {
-        return (
-            <View style={styles.container}>
-                <View style={styles.containerPack}>
-                    <View style={styles.containerText}>
-                        <Text style={styles.textPack}>Cayo Sal</Text>
-                        <Text style={styles.textPack2}>Aladdins Tours</Text>
-                        <View style={styles.contenedorCalendario}>
-                            <ButtonLikesFav />
-                            <SvgXml xml={calendar} />
-                            <Text style={styles.date}>Mayo, 15</Text>
-                        </View>
+interface packageProps {
+    name: string;
+    enterprice: string;
+    date: string;
+}
+
+const PackagesSearch = ({ name, enterprice, date }: any) => {
+    return (
+        <View style={styles.container}>
+            <View style={styles.containerPack}>
+                <View style={styles.containerText}>
+                    <Text style={styles.textPack}>{name}</Text>
+                    <Text style={styles.textPack2}>{enterprice}</Text>
+                    <View style={styles.contenedorCalendario}>
+                        <ButtonLikesFav />
+                        <SvgXml xml={calendar} />
+                        <Text style={styles.date}>{date}</Text>
                     </View>
-                    <Image
-                        style={styles.img}
-                        source={{
-                            uri: 'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
-                        }}
-                        alt="photo"
-                    />
                 </View>
+                <Image
+                    style={styles.img}
+                    source={{
+                        uri: 'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
+                    }}
+                    alt="photo"
+                />
             </View>
-        );
-    }
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
