@@ -11,6 +11,7 @@ import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import PerfilPictureNav from '../../firebase/PerfilPictureNav';
 import currentLog from '../../firebase/UserData';
+import { deleteExpiredDocuments } from '../../firebase/DeletePackage';
 
 
 interface UserProfileScreenProps {
@@ -56,12 +57,21 @@ export const UserProfileScreen = ({
             <Text style={styles.txtInfo}>Información personal</Text>
             <SvgXml xml={VectorPerfilFlecha} />
           </View>
+          <TouchableOpacity style={styles.contenedorInfo} onPress={() => navigation.navigate('FavoriteScreen')}>
+            <Text style={styles.txtInfo}>Favoritos</Text>
+            <SvgXml xml={VectorPerfilFlecha} />
+          </TouchableOpacity>
+
           <View style={styles.contenedorInfo}>
             <Text style={styles.txtInfo}>Opciones de pago</Text>
             <SvgXml xml={VectorPerfilFlecha} />
           </View>
           <TouchableOpacity style={styles.contenedorInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
             <Text style={styles.txtInfo1}>Cerrar sesión</Text>
+            <SvgXml xml={VectorPerfilFlecha} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.contenedorInfo} onPress={deleteExpiredDocuments}>
+            <Text style={styles.txtInfo1}>Borrar paquetes caducados</Text>
             <SvgXml xml={VectorPerfilFlecha} />
           </TouchableOpacity>
         </View>

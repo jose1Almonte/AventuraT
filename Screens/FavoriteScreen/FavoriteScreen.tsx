@@ -1,38 +1,66 @@
-import { Text, View, StyleSheet, ScrollView, } from 'react-native';
-import React from 'react';
-import { SvgXml } from 'react-native-svg';
-import vectorPerfil from '../../vectores/vectorPerfil';
-import PhotoProfile from '../../Components/Profiles/photoProfile';
-import EditProfileButton from '../../Components/Profiles/editProfileButton';
-import VectorPerfilFlecha from '../../vectores/vectorPerfilFlecha';
-import InputSearch from '../../Components/InputSearch';
-import PackagesSearch from '../../Components/packagesSearch';
-import options from '../../vectores/options';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 
-const FavoriteScreen = () => {
-    return (
-        <ScrollView>
-            <View style={styles.container}>
-                {/* <View style={styles.fondo}>
+interface FavoriteItem {
+  nombre: num;
+  numero: string; // Cambiar a tipo string
+}
 
-      </View> */}
-                <View style={styles.info}>
-                    <View style={styles.topInfo}>
-                        <Text style={styles.txt}>Paquetes Favoritos</Text>
-                        <InputSearch />
-                        <PackagesSearch />
-                        <PackagesSearch />
-                        <PackagesSearch />
-                        <PackagesSearch />
-                        <PackagesSearch />
-                        <PackagesSearch />
-                        <PackagesSearch />
-                        <PackagesSearch />
-                    </View>
-                </View>
-            </View>
-        </ScrollView>
-    );
+interface PackageItem {
+  nombre: string;
+  // Agrega aquí los campos adicionales de tu colección "packages"
+}
+
+const FavoriteScreen: React.FC = () => {
+  const [favoriteArray, setFavoriteArray] = useState<FavoriteItem[]>([]);
+  const [packageArray, setPackageArray] = useState<PackageItem[]>([]);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const snapshot = await firestore().collection('favorites').get();
+        const favorites: FavoriteItem[] = snapshot.docs.map((doc) => {
+          const data = doc.data() as FavoriteItem;
+          // Convertir el número a string
+          return { ...data, numero: data.numero.toString() };
+        });
+        setFavoriteArray(favorites);
+      } catch (error) {
+        console.error('Error al obtener la colección de favoritos:', error);
+      }
+    };
+
+    fetchFavorites();
+  }, []);
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const numerosFavoritos = favoriteArray.map((favorite) => favorite.numero);
+        const snapshot = await firestore()
+          .collection('packages')
+          .where('numero', 'in', numerosFavoritos)
+          .get();
+        const packages: PackageItem[] = snapshot.docs.map((doc) => doc.data() as PackageItem);
+        setPackageArray(packages);
+      } catch (error) {
+        console.error('Error al obtener la colección de paquetes:', error);
+      }
+    };
+
+    if (favoriteArray.length > 0) {
+      fetchPackages();
+    }
+  }, [favoriteArray]);
+
+  return (
+    <View>
+      {packageArray.map((item, index) => (
+        <Text key={index}>{item.nombre}</Text>
+      ))}
+    </View>
+  );
 };
 
 export default FavoriteScreen;
@@ -149,3 +177,61 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Regular',
     },
 });
+
+// import React, { useEffect, useState } from 'react';
+// import { View, Text } from 'react-native';
+// import firestore from '@react-native-firebase/firestore';
+// import auth from '@react-native-firebase/auth';
+// import { useUser, UserProvider } from "../../Context/UserContext"
+// import { getFavorites } from '../../firebase/Firestore';
+
+
+
+// const FavoriteScreen = () => {
+//   const [favorites, setFavorites] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const { user, islogged } = useUser();
+
+//   const conseguirFavoritos = async () => {
+
+//     const email = await user.email;
+//     const fav = await getFavorites(email);
+//     await setFavorites(fav);
+//     console.log(favorites);
+//     setLoading(false);
+
+//   };
+
+//   useEffect(() => {
+
+//     conseguirFavoritos();
+
+//   },[loading])
+
+
+
+//   return (<View style={styles.container}>
+//       <Text>FavoriteScreen</Text>
+//     <>
+//       {favorites.map((item, idx) => {
+//         if (idx === 0) {
+
+//         } else {
+//           return (
+//           <View>
+//             <Text>Name: { item }</Text>
+//           </View>);
+//         }
+//       })}
+//     </>
+//     </View>
+//   );
+// };
+
+// const styles = {
+//   container: {
+//     backgroundColor: '#1DB5BE',
+//     flex: 1,
+//   },
+// };
+// export default FavoriteScreen;

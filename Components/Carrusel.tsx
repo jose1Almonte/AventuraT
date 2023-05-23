@@ -63,7 +63,7 @@ export const Carrousel = ({ navigation }: carruselProps) => {
                 <ImageBackground borderRadius={30} style={styles.reescala} source={{ uri: data.mainImageUrl }}>
                   <View style={styles.contenedor3}>
                     <View style={styles.ContainerLikes}>
-                      <ButtonLikes />
+                      <ButtonLikes packageDetails={data} />
                     </View>
                     <Califications />
                   </View>

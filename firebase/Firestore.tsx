@@ -5,19 +5,21 @@ const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
 const packagesCollection = firestore().collection('package');
 
-export const addUser = async (displayName:string,email:string, emailVerified:boolean,photoURL:string) => {
+export const addUser = async (array:string[],displayName:string,email:string, emailVerified:boolean,photoURL:string) => {
     await usersCollection.add({
         displayName: displayName,
         email: email,
         emailVerified: emailVerified,
+        favorites:array,
         photoURL: photoURL});
 };
 
-export const updateUser = async (userId: string, displayName:string,email:string, emailVerified:boolean,photoURL:string) => {
+export const updateUser = async (array:string[],userId: string, displayName:string,email:string, emailVerified:boolean,photoURL:string) => {
     await usersCollection.doc(userId).set({
         displayName: displayName,
         email: email,
         emailVerified: emailVerified,
+        favorites:array,
         photoURL: photoURL});
 };
 
@@ -45,7 +47,7 @@ export const checkIfUserExists = async (email:string) => {
     const querySnapshot = await usersCollection.where('email', '==', email).get();
     return !querySnapshot.empty;};
 
-export const addPackage = async (id, name, availability, price, description, mainImageUrl, location) => {
+export const addPackage = async (id, name, availability, price, description, mainImageUrl, location, date) => {
         try {
           const packageData = {
             id,
@@ -55,6 +57,7 @@ export const addPackage = async (id, name, availability, price, description, mai
             description,
             mainImageUrl,
             location,
+            date,
           };
       
           await packagesCollection.doc(id.toString()).set(packageData);
@@ -101,3 +104,10 @@ export const getLastPackageId = async () => {
       
         return 0; // Si no hay paquetes, devuelve 0 como último ID
 };
+
+export const getFavorites = async (email: string) => {
+  const snapshot = await usersCollection.where("email", "==", email).limit(1).get()
+  return snapshot.docs[0].data().favorites
+
+  
+}
