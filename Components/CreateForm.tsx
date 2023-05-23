@@ -35,7 +35,7 @@ const DatePickerBox = ({
     return (
       <DateTimePicker
         // style={styles.label}
-        value={new Date()}
+        value={date}
         mode="date"
         onChange={(event, selectedDate) => {
           handleDateChange(event, selectedDate);
