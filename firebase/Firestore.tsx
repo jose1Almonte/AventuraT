@@ -45,6 +45,7 @@ export const checkIfUserExists = async (email:string) => {
     const querySnapshot = await usersCollection.where('email', '==', email).get();
     return !querySnapshot.empty;};
 
+    // @ts-ignore
 export const addPackage = async (id, name, availability, price, description, mainImageUrl, location, date) => {
         try {
           const packageData = {
@@ -64,8 +65,8 @@ export const addPackage = async (id, name, availability, price, description, mai
           console.error('Error al añadir el paquete a Firestore:', error);
         }
       };
-
-export const checkPackage = async (id) => {
+      // @ts-ignore
+      export const checkPackage = async (id) => {
         try {
           const packageDoc = await packagesCollection.doc(id.toString()).get();
           return packageDoc.exists;
@@ -74,7 +75,7 @@ export const checkPackage = async (id) => {
           return false;
         }
       };
-
+      // @ts-ignore
       export const uploadImage = async (imagePath, filename) => {
         try {
           const response = await fetch(imagePath);

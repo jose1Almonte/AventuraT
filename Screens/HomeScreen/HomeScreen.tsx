@@ -6,6 +6,7 @@ import {
   Dimensions,
   BackHandler,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 //import RegisterEnterprise from '../../Components/registerEnterprise';
@@ -53,7 +54,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
           <ProfilePicture
             navigation={navigation}
             styles={styles}
-            destinationNavigationComponentName="UserProfileScreen"
+            destinationNavigationComponentName="BusinessProfileScreen"
           />
         </View>
         <InputSearch />
@@ -65,7 +66,11 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
                   style={styles.Escalado}
                   source={require('../../images/tt.jpg')}></Image>
               </View>
-              <Text style={styles.letras}>Montaña</Text>
+              <Pressable onPress={() => {
+                navigation.navigate('RatingsScreen');
+              }}>
+                <Text style={styles.letras}>Montaña</Text>
+              </Pressable>
             </View>
             <View style={styles.Sepa}>
               <View style={styles.Redondos}>

@@ -20,6 +20,7 @@ const UserProfileScreen = () => {
         <View style={styles.topInfo}>
           <View style={styles.top}>
             <PhotoProfile size={90}
+            // @ts-ignore
             imageSource={{
               uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg',
             }}/>

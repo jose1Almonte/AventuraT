@@ -63,6 +63,7 @@ const SearchBar: React.FC = () => {
         .where(type, '>=', searchKeyword)
         .where(type, '<=', searchKeyword + '\uf8ff')
         .get();
+      // @ts-ignore
       const data: Item[] = snapshot.docs.map((doc) => ({
         id: doc.id,
         name: doc.data().name,
