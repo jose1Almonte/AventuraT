@@ -79,7 +79,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
               styles={styles}
               navigation={navigation}
               destinationNavigationComponentName={'HomeScreen'}
-              //destinationNavigationComponentName={'SearchResultScreen'}
+              //destinationNavigationComponentName={'FeedbackScreen'}
               goToLoginScreen={false}
             />
             {/* <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={onGoogleButtonPress}/> */}
