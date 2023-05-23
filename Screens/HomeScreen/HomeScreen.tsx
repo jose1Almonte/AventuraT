@@ -121,12 +121,6 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         </View>
       </View>
 
-      <View style={styles.container4}>
-        <TouchableOpacity style={styles.button4} onPress={handleOpenForm}>
-          <Text style={styles.buttonText4}>Abrir formulario</Text>
-        </TouchableOpacity>
-      </View>
-
     </ScrollView>
   );
 };
