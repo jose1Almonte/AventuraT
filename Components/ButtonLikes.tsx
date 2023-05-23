@@ -33,11 +33,11 @@ export function ButtonLikes({ packageDetails }: ButtonLikesProps) {
 
         if (isClicked) {
           // Remove package from favorites
-          newFavorites = newFavorites.filter((id) => id !== packageDetails.id);
+          newFavorites = newFavorites.filter((id) => id !== packageDetails.id.toString());
         } else {
           // Add package to favorites if it's not already present
-          if (!newFavorites.includes(packageDetails.id)) {
-            newFavorites.push(packageDetails.id);
+          if (!newFavorites.includes(packageDetails.id.toString())) {
+            newFavorites.push(packageDetails.id.toString());
           }
         }
 
