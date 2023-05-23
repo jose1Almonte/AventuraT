@@ -2,6 +2,9 @@ import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput, Alert } fro
 import React, { useState } from 'react';
 // import { useUser } from '../../Context/UserContext';
 import {NavigationProp} from '@react-navigation/native';
+import { useUser } from '../../Context/UserContext';
+// import { deleteDocumentByUserId } from '../../firebase/DeletePackage';
+// import { deleteDocumentByUserId } from '../../firebase/DeletePackage';
 
 // interface MobilePaymentScreenProps {
 //   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -14,17 +17,25 @@ interface MobilePayment{
 
 const MobilePaymentScreen = ({navigation}: { navigation: NavigationProp<Record<string, object | undefined>> }) => {
 
+    const {isLogged} = useUser();
+
     const [mobilePayment, setMobilePayment] = useState<MobilePayment>({
         // user: useUser(),
         mobilePaymentRef: '',
     });
 
     async function upToFirebase() {
-        if (mobilePayment.mobilePaymentRef === ''){
-            Alert.alert('Blank Space Not Allowed','You have to write your reference code');
+        if (isLogged){
+            if (mobilePayment.mobilePaymentRef === ''){
+                Alert.alert('Blank Space Not Allowed','You have to write your reference code');
+            } else {
+                Alert.alert('Your Reference Code Was Send', mobilePayment.mobilePaymentRef);
+                navigation.navigate('HomeScreen');
+            }
+
         } else {
-            Alert.alert('Your Reference Code Was Send', mobilePayment.mobilePaymentRef);
-            navigation.navigate('HomeScreen');
+            Alert.alert('You have to Sing in to continue', 'Please, Login');
+            navigation.navigate('LoginScreen');
         }
     }
 
@@ -50,6 +61,7 @@ const MobilePaymentScreen = ({navigation}: { navigation: NavigationProp<Record<s
             </View>
             <View style={styles.fifthBigBox}>
                 <TouchableOpacity style = {styles.buttonIPaid} onPress={() => {upToFirebase();}}>
+                {/* <TouchableOpacity style = {styles.buttonIPaid} onPress={() => {deleteDocumentByUserId()}}> */}
                     <>
                     <Text style={styles.textIPaid}> Ya pagué c: </Text>
                     </>
