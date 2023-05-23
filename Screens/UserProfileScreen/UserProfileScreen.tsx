@@ -74,6 +74,10 @@ export const UserProfileScreen = ({
             <Text style={styles.txtInfo1}>Cerrar sesión</Text>
             <SvgXml xml={VectorPerfilFlecha} />
           </TouchableOpacity>
+          <TouchableOpacity style={styles.contenedorInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen') }}>
+            <Text style={styles.txtInfo1}>Abrir formulario</Text>
+            <SvgXml xml={VectorPerfilFlecha} />
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -136,5 +140,22 @@ const styles = StyleSheet.create({
     color: '#1881B1',
     fontSize: 16,
     fontFamily: 'Poppins-Regular',
+  },
+
+
+  container4: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button4: {
+    backgroundColor: '#1881B1',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText4: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
