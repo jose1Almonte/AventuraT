@@ -27,7 +27,9 @@ const FavoriteScreen = () => {
       const packageData: Record<string, any> = {}; // Tipo de datos para 'packageData'
       for (const item of favorites) {
         const packageInfo = await getPackage(item);
-        packageData[item] = packageInfo;
+        if (packageInfo) {
+          packageData[item] = packageInfo;
+        }
       }
       setPackages(packageData);
     };
@@ -41,10 +43,10 @@ const FavoriteScreen = () => {
       {favorites.map((esteitem, idx) => (
         <View key={esteitem}> 
           {idx !== 0 && packages[String(esteitem)] && (
-            <View >
-              <Text >Nombre: {packages[String(esteitem)]?.name}</Text>
-              <Text >descripcion: {packages[String(esteitem)]?.description}</Text>
-              <Text >Precio: {packages[String(esteitem)]?.price}</Text>
+            <View style={styles.card}>
+              <Text style={styles.name}>Nombre: {packages[String(esteitem)]?.name}</Text>
+              <Text style={styles.description}>Descripción: {packages[String(esteitem)]?.description}</Text>
+              <Text style={styles.price}>Precio: {packages[String(esteitem)]?.price}</Text>
             </View>
           )}
         </View>
@@ -53,7 +55,6 @@ const FavoriteScreen = () => {
   );
 
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -87,6 +88,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
 
 export default FavoriteScreen;
