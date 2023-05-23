@@ -9,8 +9,7 @@ interface feedbackProps {
     item: RaitingI
 }
 
-const FeedbackCard = ({item}: feedbackProps) => {
-    console.log(item);
+const FeedbackCard = ({ item }: feedbackProps) => {
     return (
         <View style={styles.container}>
             <View style={styles.containerPack}>
@@ -24,7 +23,7 @@ const FeedbackCard = ({item}: feedbackProps) => {
                             alt="photo"
                         />
                         <Text style={styles.textPack}>{item.idUser}</Text>
-                        <Califications calification={item.raiting}/>
+                        <Califications calification={item.raiting} />
                     </View>
                     <Text style={styles.textPack2}>{item.comment}</Text>
                 </View>
@@ -37,10 +36,10 @@ const styles = StyleSheet.create({
     contain: {
         display: 'flex',
         flexDirection: 'row',
-        marginTop:20,
+        marginTop: 20,
     },
     containerPack: {
-       /* height: 130,*/
+        /* height: 130,*/
         width: 330,
         borderRadius: 20,
         backgroundColor: '#1881B1',
@@ -55,11 +54,11 @@ const styles = StyleSheet.create({
         marginTop: 15,
     },
     textPack: {
-        marginHorizontal:30,
+        marginHorizontal: 30,
         color: 'white',
         fontSize: 18,
         fontFamily: 'Poppins-Medium',
-        marginBottom:5,
+        marginBottom: 5,
     },
     textPack2: {
         marginHorizontal: 15,
@@ -73,7 +72,7 @@ const styles = StyleSheet.create({
         height: 35,
         borderRadius: 20,
         marginLeft: 20,
-        marginBottom:5,
+        marginBottom: 5,
     }
 });
 

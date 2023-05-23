@@ -7,6 +7,7 @@ import {
   BackHandler,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 //import RegisterEnterprise from '../../Components/registerEnterprise';
@@ -104,17 +105,17 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         <Text style={styles.title}>Paquetes Populares</Text>
         <View style={styles.ContainerPackages}>
           <Pressable onPress={() => {
-            console.log('PAQUETE 1 PRECIONADO')
+            Alert.alert('Funcionalidad en desarrollo');
           }}>
             <PopularPackages />
           </Pressable>
           <Pressable onPress={() => {
-            console.log('PAQUETE 2 PRECIONADO')
+            Alert.alert('Funcionalidad en desarrollo');
           }}>
             <PopularPackages />
           </Pressable>
           <Pressable onPress={() => {
-            console.log('PAQUETE 3 PRECIONADO')
+            Alert.alert('Funcionalidad en desarrollo');
           }}>
             <PopularPackages />
           </Pressable>

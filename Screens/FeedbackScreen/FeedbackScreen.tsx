@@ -1,15 +1,19 @@
 import { Text, View, StyleSheet, } from 'react-native';
 import React from 'react';
 import FeedbackForm from '../../Components/FeedbackForm';
+import { NavigationProp } from '@react-navigation/native';
 
+interface FeedbackScreenProps {
+    navigation: NavigationProp<Record<string, object | undefined>>;
+}
 
-const FeedbackScreen = () => {
+const FeedbackScreen = ({ navigation }: FeedbackScreenProps) => {
     return (
         <View style={styles.container}>
             <View style={styles.info}>
                 <View style={styles.topInfo}>
                     <Text style={styles.txt}>Comenta tu experiencia</Text>
-                    <FeedbackForm/>
+                    <FeedbackForm navigation={navigation} />
                 </View>
             </View>
         </View>

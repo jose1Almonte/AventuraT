@@ -54,7 +54,13 @@ const NavbarScreen = ({ navigation }: any) => {
               </View>
               <View style={styles.contenedorLinks}>
                 <SvgXml xml={favorites} />
-                <Pressable onPress={() => { navigation.navigate('FavoriteScreen') }}>
+                <Pressable onPress={() => {
+                  if (isLogged) {
+                    navigation.navigate('FavoriteScreen')
+                  } else {
+                    navigation.navigate('LoginScreen');
+                  }
+                }}>
                   <Text style={styles.txtInfo}>Mis favoritos</Text>
                 </Pressable>
               </View>

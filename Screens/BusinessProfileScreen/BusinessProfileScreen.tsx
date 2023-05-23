@@ -1,6 +1,6 @@
-import {Text, View, StyleSheet} from 'react-native';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
 import React from 'react';
-import {SvgXml} from 'react-native-svg';
+import { SvgXml } from 'react-native-svg';
 import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import EditProfileButton from '../../Components/Profiles/editProfileButton';
@@ -9,8 +9,13 @@ import EditPackageButton from '../../Components/Profiles/editPackagesButton';
 import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../vectores/separator';
 import star from '../../vectores/star';
+import { NavigationProp } from '@react-navigation/native';
 
-const UserProfileScreen = () => {
+interface businessProfileProps {
+  navigation: NavigationProp<Record<string, object | undefined>>;
+}
+
+const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.fondo}>
@@ -20,10 +25,10 @@ const UserProfileScreen = () => {
         <View style={styles.topInfo}>
           <View style={styles.top}>
             <PhotoProfile size={90}
-            // @ts-ignore
-            imageSource={{
-              uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg',
-            }}/>
+              // @ts-ignore
+              imageSource={{
+                uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg',
+              }} />
             <SvgXml xml={separator} />
             <View style={styles.contenedorPuntaje}>
               <View style={styles.contenedorEstrella}>
@@ -33,6 +38,27 @@ const UserProfileScreen = () => {
 
               <Text style={styles.description}>Calificación</Text>
             </View>
+
+          </View>
+          <View style={stylesBtn.positionContainer}>
+            <Pressable onPress={() => {
+              navigation.navigate('RatingsScreen');
+            }}>
+              <View style={stylesBtn.containerButton}>
+                <View style={stylesBtn.container}>
+                  <Text style={stylesBtn.txt}>Ver calificaciones</Text>
+                </View>
+              </View>
+            </Pressable>
+            <Pressable onPress={() => {
+              navigation.navigate('FeedbackScreen');
+            }}>
+              <View style={stylesBtn.containerButton}>
+                <View style={stylesBtn.container}>
+                  <Text style={stylesBtn.txt}>¡Calificanos!</Text>
+                </View>
+              </View>
+            </Pressable>
           </View>
           <Text style={styles.txt}>nombre usuario</Text>
           <Text style={styles.description}>
@@ -56,13 +82,38 @@ const UserProfileScreen = () => {
               <PublishedPackages />
             </View>
           </View>
+
         </View>
       </View>
     </View>
   );
 };
 
-export default UserProfileScreen;
+export default BusinessProfileScreen;
+
+const stylesBtn = StyleSheet.create({
+  containerButton: {
+    display: 'flex',
+    alignItems: "center",
+    marginVertical: 5
+  },
+  positionContainer: {
+    paddingStart: 220
+  },
+  container: {
+    height: 40,
+    width: 140,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1881B1',
+  },
+  txt: {
+    color: 'white',
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+  },
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -121,6 +172,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
   },
   description: {
+    color: 'black',
     textAlign: 'justify',
     fontSize: 12,
     fontFamily: 'Poppins-Regular',

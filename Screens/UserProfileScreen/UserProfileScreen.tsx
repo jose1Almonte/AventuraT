@@ -66,12 +66,12 @@ export const UserProfileScreen = ({
             <Text style={styles.txtInfo}>Opciones de pago</Text>
             <SvgXml xml={VectorPerfilFlecha} />
           </View>
-          <TouchableOpacity style={styles.contenedorInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
-            <Text style={styles.txtInfo1}>Cerrar sesión</Text>
-            <SvgXml xml={VectorPerfilFlecha} />
-          </TouchableOpacity>
           <TouchableOpacity style={styles.contenedorInfo} onPress={deleteExpiredDocuments}>
             <Text style={styles.txtInfo1}>Borrar paquetes caducados</Text>
+            <SvgXml xml={VectorPerfilFlecha} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.contenedorInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
+            <Text style={styles.txtInfo1}>Cerrar sesión</Text>
             <SvgXml xml={VectorPerfilFlecha} />
           </TouchableOpacity>
         </View>
