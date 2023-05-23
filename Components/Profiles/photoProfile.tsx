@@ -4,11 +4,7 @@ import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 
 interface PhotoProfileProps {
   size?: number;
-  imageSource: string | undefined;
-}
-
-interface UserData {
-  photoURL?: string;
+  imageSource?: string | undefined;
 }
 
 interface PhotoProfileState {

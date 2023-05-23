@@ -54,10 +54,6 @@ export const ProfilePicture = ({
     //     // ...continuar con más acciones
     // }
 
-    if (isLogged && userOn?.email == 'jenderson55555@gmail.com') {
-        route = 'BusinessProfileScreen'
-    }
-
     return (
         <>
             {isLogged ? (
