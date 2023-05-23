@@ -109,5 +109,27 @@ export const getFavorites = async (email: string) => {
   const snapshot = await usersCollection.where("email", "==", email).limit(1).get()
   return snapshot.docs[0].data().favorites
 
-  
-}
+
+};
+
+
+export const getPackage = async (itemId) => {
+  try {
+    const documentSnapshot = await firestore()
+      .collection('package')
+      .doc(itemId)
+      .get();
+
+    if (documentSnapshot.exists) {
+      const data = documentSnapshot.data();
+      // Aquí puedes realizar cualquier transformación o ajuste necesario en los datos obtenidos
+      return data;
+    } else {
+      throw new Error(`Package with ID ${itemId} does not exist.`);
+    }
+  } catch (error) {
+    console.log(error);
+    return null; // Si ocurre un error al obtener el paquete, puedes retornar null o un valor predeterminado adecuado.
+  }
+
+};
