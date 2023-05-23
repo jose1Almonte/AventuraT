@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
+import React, { Component } from 'react';
+import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 
 interface PhotoProfileProps {
   size?: number;
-  imageSource: ImageSourcePropType;
+  imageSource: string | undefined;
 }
 
 class PhotoProfile extends Component<PhotoProfileProps> {
@@ -14,9 +14,9 @@ class PhotoProfile extends Component<PhotoProfileProps> {
     return (
       <View style={[styles.container, { width: containerSize, height: containerSize }]}>
         <View style={[styles.photoContainer, { width: containerSize, height: containerSize }]}>
-        <Image
+          <Image
             style={[styles.img, { width: imgSize, height: imgSize, borderRadius: imgSize / 2 }]}
-            source={imageSource}
+            source={{ uri: imageSource }}
             alt="photo"
           />
         </View>

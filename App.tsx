@@ -13,17 +13,12 @@ import FavoriteScreen from './Screens/FavoriteScreen/FavoriteScreen';
 import SearchResultScreen from './Screens/SearchResultScreen/SearchResultScreen';
 import { UserProvider } from './Context/UserContext';
 import MobilePaymentScreen from './Screens/MobilePaymentScreen/MobilePaymentScreen';
-// import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const Stack = createNativeStackNavigator();
-// const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
     <UserProvider>
-
-
-
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />

@@ -46,9 +46,7 @@ const DetailsScreenUser = ({ navigation, data, route }: detailProps) => {
         <View style={styles.info}>
           <PhotoProfile
             size={40}
-            imageSource={{
-              uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg',
-            }}
+            imageSource={'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'}
           />
           <Text style={styles.text}>{packageIn.nameEnterprice}</Text>
         </View>

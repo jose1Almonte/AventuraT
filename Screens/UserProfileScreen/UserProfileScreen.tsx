@@ -1,6 +1,6 @@
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
-import {SvgXml} from 'react-native-svg';
+import { SvgXml } from 'react-native-svg';
 import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import EditProfileButton from '../../Components/Profiles/editProfileButton';
@@ -9,9 +9,11 @@ import auth from '@react-native-firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
 // import currentLog from '../../firebase/UserData';
 import { useUser } from '../../Context/UserContext';
+import PerfilPictureNav from '../../firebase/PerfilPictureNav';
+import currentLog from '../../firebase/UserData';
 
 
-interface UserProfileScreenProps{
+interface UserProfileScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>,
   // destinationNavigationComponentName: string,
   // goToLoginScreen: boolean,
@@ -22,14 +24,16 @@ interface UserProfileScreenProps{
 
 export const UserProfileScreen = ({
   navigation,
-}:UserProfileScreenProps) => {
+}: UserProfileScreenProps) => {
 
-    const {  setUser, setLogged } = useUser();
-    const logout = async (): Promise<void> => {
-        await auth().signOut();
-        setUser(null);
-        setLogged(false);
-    };
+  const { setUser, setLogged } = useUser();
+  const logout = async (): Promise<void> => {
+    await auth().signOut();
+    setUser(null);
+    setLogged(false);
+  };
+
+  const user = currentLog();
 
 
   return (
@@ -40,10 +44,10 @@ export const UserProfileScreen = ({
       <View style={styles.info}>
         <View style={styles.topInfo}>
           <PhotoProfile size={90}
-            imageSource={{
-              uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg',
-            }}/>
-          <Text style={styles.txt}>correo electrónico</Text>
+            // @ts-ignore
+            imageSource={user?.photoURL} />
+          <Text style={styles.txt}>{user?.displayName}</Text>
+          <Text style={styles.txt}>{user?.email}</Text>
           <EditProfileButton />
         </View>
         <View style={styles.info2}>
@@ -56,7 +60,7 @@ export const UserProfileScreen = ({
             <Text style={styles.txtInfo}>Opciones de pago</Text>
             <SvgXml xml={VectorPerfilFlecha} />
           </View>
-            <TouchableOpacity style={styles.contenedorInfo}  onPress={() => {logout(); navigation.navigate('HomeScreen');}}>
+          <TouchableOpacity style={styles.contenedorInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
             <Text style={styles.txtInfo1}>Cerrar sesión</Text>
             <SvgXml xml={VectorPerfilFlecha} />
           </TouchableOpacity>
