@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -8,8 +8,8 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import {addPackage, uploadImage, getLastPackageId} from '../firebase/Firestore'; // Importa la función getLastPackageId
-import {launchImageLibrary} from 'react-native-image-picker';
+import { addPackage, uploadImage, getLastPackageId } from '../firebase/Firestore'; // Importa la función getLastPackageId
+import { launchImageLibrary } from 'react-native-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const DatePickerBox = ({
@@ -68,7 +68,7 @@ interface CreateFormData {
   date: any;
 }
 
-const CreateForm = ({navigation}: CreateFormProps) => {
+const CreateForm = ({ navigation }: CreateFormProps) => {
   const [resourcePath, setResourcePath] = useState('');
   const [filename, setFileName] = useState('');
 
@@ -92,7 +92,7 @@ const CreateForm = ({navigation}: CreateFormProps) => {
 
   const loadLastId = async () => {
     const lastId = await getLastPackageId(); // Obtén el último ID de Firebase
-    setData(prevData => ({...prevData, id: lastId + 1})); // Incrementa el ID en 1 para el siguiente paquete
+    setData(prevData => ({ ...prevData, id: lastId + 1 })); // Incrementa el ID en 1 para el siguiente paquete
   };
 
   const submit = async () => {
@@ -131,7 +131,7 @@ const CreateForm = ({navigation}: CreateFormProps) => {
   };
 
   const selectImage = () => {
-    launchImageLibrary({mediaType: 'photo'}, response => {
+    launchImageLibrary({ mediaType: 'photo' }, response => {
       if (response.didCancel) {
         console.log('No se ha elegido una imagen');
       } else if (response.errorCode) {
@@ -139,8 +139,10 @@ const CreateForm = ({navigation}: CreateFormProps) => {
       } else {
         const selectedAsset = response.assets && response.assets[0];
         if (selectedAsset) {
+          // @ts-ignore
           setResourcePath(selectedAsset.uri);
           setFileName(
+            // @ts-ignore
             selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1),
           );
           Alert.alert('Ya se subió la foto');
@@ -216,11 +218,11 @@ const CreateForm = ({navigation}: CreateFormProps) => {
           style={styles.button}
           onPress={() =>
             selectImage(
-              data.name,
-              data.description,
-              data.availability,
-              data.price,
-              data.location
+              // data.name,
+              // data.description,
+              // data.availability,
+              // data.price,
+              // data.location
             )
           }>
           <Text style={styles.buttonText}>Subir imagen/logo principal</Text>
@@ -240,7 +242,7 @@ const CreateForm = ({navigation}: CreateFormProps) => {
       </View>
     </View>
   );
-}  
+}
 
 const styles = StyleSheet.create({
   container: {

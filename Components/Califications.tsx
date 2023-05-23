@@ -1,19 +1,21 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
-import {SvgXml} from 'react-native-svg';
+import React, { Component } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 import star from '../vectores/star';
 
-class Califications extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.content}>
-          <Text style={styles.ratingText}>4.6</Text>
-          <SvgXml xml={star} width={14} height={14} />
-        </View>
+interface calificationsProps {
+  calification: string | undefined;
+}
+
+const Califications = ({ calification }: calificationsProps) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.content}>
+        <Text style={styles.ratingText}>{calification}</Text>
+        <SvgXml xml={star} width={14} height={14} />
       </View>
-    );
-  }
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

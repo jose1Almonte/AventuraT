@@ -11,6 +11,9 @@ import NavbarScreen from './Screens/NavbarScreen/NavbarScreen';
 import SearchScreen from './Screens/SearchScreen/SearchScreen';
 import FavoriteScreen from './Screens/FavoriteScreen/FavoriteScreen';
 import SearchResultScreen from './Screens/SearchResultScreen/SearchResultScreen';
+import RatingsScreen from './Screens/RatingsScreen/RatingsScreen';
+import FeedbackScreen from './Screens/FeedbackScreen/FeedbackScreen';
+
 import { UserProvider } from './Context/UserContext';
 import MobilePaymentScreen from './Screens/MobilePaymentScreen/MobilePaymentScreen';
 import CreatePackageFormScreen from './Screens/CreatePackageFormScreen/CreatePackageFormScreen';
@@ -35,6 +38,8 @@ export default function App() {
           <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerShown: false }} />
           <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} options={{ headerShown: false }} />
           <Stack.Screen name="SearchResultScreen" component={SearchResultScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="RatingsScreen" component={RatingsScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="FeedbackScreen" component={FeedbackScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

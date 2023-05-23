@@ -1,61 +1,104 @@
-import {Text, View, StyleSheet} from 'react-native';
+import { Text, View, StyleSheet, Pressable, Alert } from 'react-native';
 import React from 'react';
-import {SvgXml} from 'react-native-svg';
-import PhotoProfile from '../../Components/Profiles/photoProfile';
-import {Svg} from 'react-native-svg';
+import { SvgXml } from 'react-native-svg';
+import { Svg } from 'react-native-svg';
 import home from '../../vectores/home';
 import favorites from '../../vectores/favorites';
 import profile from '../../vectores/profile';
 import historial from '../../vectores/historial';
 import helpdesk from '../../vectores/helpdesk';
 import business from '../../vectores/business';
+import { NavigationProp } from '@react-navigation/native';
+import { useUser } from '../../Context/UserContext';
+import auth from '@react-native-firebase/auth';
+import { PerfilPictureNav } from '../../firebase/PerfilPictureNav';
+import UserData from '../../firebase/UserData';
+import currentLog from '../../firebase/UserData';
 
-const NavbarScreen = () => {
+interface navigationProps {
+  navigation: NavigationProp<Record<string, object | undefined>>;
+}
+
+const NavbarScreen = ({ navigation }: any) => {
+
+  const { setUser, setLogged } = useUser();
+  const logout = async (): Promise<void> => {
+    await auth().signOut();
+    setUser(null);
+    setLogged(false);
+  };
+
+  let { isLogged } = useUser();
+  const user = currentLog()
+
+
   return (
     <View style={styles.container}>
       <View style={styles.fondo}>
         <View style={styles.info}>
           <View style={styles.topInfo}>
-            <PhotoProfile size={90}
-            imageSource={{
-              uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg',
-            }}/>
-            <Text style={styles.txt}>nombre usuario</Text>
+            <PerfilPictureNav
+              navigation={navigation}
+              styles={styles}
+              destinationNavigationComponentName="LoginScreen"
+            />
+            <Text style={styles.txt}>{user?.displayName}</Text>
           </View>
           <View style={styles.bottomInfo}>
             <View style={styles.linksInfo}>
               <View style={styles.contenedorLinks}>
                 <SvgXml xml={home} />
-                <Text style={styles.txtInfo}>Inicio</Text>
+                <Pressable onPress={() => { navigation.navigate('HomeScreen') }}>
+                  <Text style={styles.txtInfo}>Inicio</Text>
+                </Pressable>
               </View>
               <View style={styles.contenedorLinks}>
                 <SvgXml xml={favorites} />
-                <Text style={styles.txtInfo}>Mis favoritos</Text>
+                <Pressable onPress={() => { navigation.navigate('FavoriteScreen') }}>
+                  <Text style={styles.txtInfo}>Mis favoritos</Text>
+                </Pressable>
               </View>
               <View style={styles.contenedorLinks}>
                 <SvgXml xml={profile} />
-                <Text style={styles.txtInfo}>Mi perfil</Text>
+                <Pressable onPress={() => {
+                  if (isLogged) {
+                    navigation.navigate('UserProfileScreen')
+                  } else {
+                    navigation.navigate('LoginScreen');
+                  }
+
+                }}>
+                  <Text style={styles.txtInfo}>Mi perfil</Text>
+                </Pressable>
               </View>
               <View style={styles.contenedorLinks}>
                 <SvgXml xml={historial} />
-                <Text style={styles.txtInfo}>Mi historial</Text>
+                <Pressable onPress={() => { navigation.navigate('HomeScreen') }}>
+                  <Text style={styles.txtInfo}>Mi historial</Text>
+                </Pressable>
               </View>
               <View style={styles.contenedorLinks}>
                 <SvgXml xml={helpdesk} />
-                <Text style={styles.txtInfo}>Atención al cliente</Text>
+                <Pressable onPress={() => { navigation.navigate('HomeScreen') }}>
+                  <Text style={styles.txtInfo}>Atención al cliente</Text>
+                </Pressable>
               </View>
               <View style={styles.contenedorLinks}>
                 <SvgXml xml={business} />
-                <Text style={styles.txtInfo}>Registrar empresa</Text>
+                <Pressable onPress={() => { navigation.navigate('BusinessProfileScreen') }}>
+                  <Text style={styles.txtInfo}>Registrar empresa</Text>
+                </Pressable>
               </View>
             </View>
           </View>
           <View style={styles.logout}>
-            <Text style={styles.title}>Cerrar sesión</Text>
+            <Pressable onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
+              <Text style={styles.title}>Cerrar sesión</Text>
+            </Pressable>
           </View>
         </View>
       </View>
-    </View>
+    </View >
   );
 };
 

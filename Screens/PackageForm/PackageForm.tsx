@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
-import { addPackage, checkPackage, uploadImage, getLastPackageId } from '../firebase/Firestore'; // Importa la función getLastPackageId
+import { addPackage, uploadImage, getLastPackageId } from '../../firebase/Firestore'; // Importa la función getLastPackageId
 import { launchImageLibrary } from 'react-native-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -94,7 +94,9 @@ const CreateForm = () => {
       } else {
         const selectedAsset = response.assets && response.assets[0];
         if (selectedAsset) {
+          // @ts-ignore
           setResourcePath(selectedAsset.uri);
+          // @ts-ignore
           setFileName(selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1));
         }
       }

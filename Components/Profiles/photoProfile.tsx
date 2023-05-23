@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 
 interface PhotoProfileProps {
   size?: number;
+  imageSource: string | undefined;
 }
 
 interface UserData {
@@ -42,15 +43,11 @@ class PhotoProfile extends Component<PhotoProfileProps, PhotoProfileState> {
     return (
       <View style={[styles.container, { width: containerSize, height: containerSize }]}>
         <View style={[styles.photoContainer, { width: containerSize, height: containerSize }]}>
-          {photoURL ? (
-            <Image
-              style={[styles.img, { width: imgSize, height: imgSize, borderRadius: imgSize / 2 }]}
-              source={{ uri: photoURL }}
-              alt="photo"
-            />
-          ) : (
-            <View style={[styles.img, { width: imgSize, height: imgSize, borderRadius: imgSize / 2, backgroundColor: '#1881B1' }]} />
-          )}
+          <Image
+            style={[styles.img, { width: imgSize, height: imgSize, borderRadius: imgSize / 2 }]}
+            source={{ uri: photoURL }}
+            alt="photo"
+          />
         </View>
       </View>
     );
