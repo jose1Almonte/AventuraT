@@ -61,16 +61,17 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
         <View style={styles.Container2}>
           <View style={styles.Caracteristicas}>
             <View style={styles.Sepa}>
-              <View style={styles.Redondos}>
+            <Pressable onPress={() => {
+                navigation.navigate('FeedbackScreen');
+              }}>
+                <View style={styles.Redondos}>
                 <Image
                   style={styles.Escalado}
                   source={require('../../images/tt.jpg')}></Image>
               </View>
-              <Pressable onPress={() => {
-                navigation.navigate('RatingsScreen');
-              }}>
-                <Text style={styles.letras}>Montaña</Text>
               </Pressable>
+              
+                <Text style={styles.letras}>Montaña</Text>
             </View>
             <View style={styles.Sepa}>
               <View style={styles.Redondos}>

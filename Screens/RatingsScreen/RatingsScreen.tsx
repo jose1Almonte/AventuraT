@@ -1,5 +1,5 @@
-import { Text, View, StyleSheet, ScrollView, } from 'react-native';
-import React from 'react';
+import { Text, View, StyleSheet, ScrollView, FlatList, } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -7,22 +7,47 @@ import EditProfileButton from '../../Components/Profiles/editProfileButton';
 import VectorPerfilFlecha from '../../vectores/vectorPerfilFlecha';
 import options from '../../vectores/options';
 import FeedbackCard from '../../Components/FeedbackCard';
+import { RaitingI } from '../../models/raiting.interface';
+import firestore from '@react-native-firebase/firestore';
 
 const FeedbackScreen = () => {
+    
+    const [data, setData] = useState();
+
+    let loadData = async () => {
+        try {
+            let snapshot = await firestore().collection('raiting').get();
+            // @ts-ignore
+            setData(snapshot.docs);
+        } catch (error: any) {
+            console.error(error);
+        }
+        
+    }
+
+    useEffect(() => {
+        loadData();
+    }, []);
+
+    const renderItem = ({item}: any) => {
+        return (<FeedbackCard item={item.data()}/>)
+    }
+
     return (
         <ScrollView>
             <View style={styles.container}>
                 <View style={styles.info}>
                     <View style={styles.topInfo}>
                         <Text style={styles.txt}>Calificaciones</Text>
-                        <FeedbackCard />
-                        <FeedbackCard />
-                        <FeedbackCard />
-                        <FeedbackCard />
-                        <FeedbackCard />
-                        <FeedbackCard />
-                        <FeedbackCard />
-                        <FeedbackCard />
+                        <FlatList
+                        data = {data}
+                        renderItem={renderItem}
+                        
+                        >
+
+                        </FlatList>
+                        {/* <FeedbackCard item={raitingItems[0]}/> */}
+                        {/* {raitingItems.map( (data) => <FeedbackCard item={data}/>)} */}
                     </View>
                 </View>
             </View>

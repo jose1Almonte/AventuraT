@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet, Text, Image, TextInput } from 'react-native';
 import calendar from '../vectores/calendar';
 import { SvgXml } from 'react-native-svg';
 import InputFeedback from './InputFeedback';
@@ -22,7 +22,18 @@ class FeedbackForm extends Component {
                             
                         </View>
                         <Text style={styles.textPack3}>Añade una puntuación</Text>
-                        <Text style={styles.textPack2}>Añade una breve descripción</Text>
+                        <TextInput style={styles.textPack2}  keyboardType="numeric" />
+                        <TextInput 
+                        style={styles.textPack2} 
+                        accessibilityHint='Añade una breve descripción'
+                        multiline={true}
+                        numberOfLines={15}
+                        />
+                        <View style={styles.containerButton}>
+                            <View style={styles.containerBtn}>
+                            <Text style={styles.txtBtn}>Enviar</Text>
+                            </View>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -31,6 +42,23 @@ class FeedbackForm extends Component {
 }
 
 const styles = StyleSheet.create({
+    containerButton: {
+        display: 'flex',
+        alignItems: "center"
+      },
+      containerBtn: {
+        height: 40,
+        width: 140,
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#1881B1',
+      },
+      txtBtn: {
+        color: 'white',
+        fontSize: 12,
+        fontFamily: 'Poppins-Medium',
+      },
     contain: {
         display: 'flex',
         flexDirection: 'row',
@@ -59,11 +87,13 @@ const styles = StyleSheet.create({
         marginBottom:5,
     },
     textPack2: {
+        marginVertical: 10,
         marginHorizontal: 15,
         padding: 10,
-        color: 'white',
+        color: 'black',
         fontSize: 15,
         fontFamily: 'Poppins-Medium',
+        backgroundColor: 'white'
     },
     textPack3: {
         marginHorizontal: 15,

@@ -2,6 +2,7 @@ import { Text, View, StyleSheet, } from 'react-native';
 import React from 'react';
 import FeedbackForm from '../../Components/FeedbackForm';
 
+
 const FeedbackScreen = () => {
     return (
         <View style={styles.container}>

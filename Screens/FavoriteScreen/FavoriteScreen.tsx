@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, ScrollView, } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SvgXml } from 'react-native-svg';
 import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -10,7 +10,7 @@ import PackagesSearch from '../../Components/packagesSearch';
 import options from '../../vectores/options';
 
 const FavoriteScreen = () => {
-    return (
+        return (
         <ScrollView>
             <View style={styles.container}>
                 <View style={styles.info}>
@@ -146,3 +146,4 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Regular',
     },
 });
+
