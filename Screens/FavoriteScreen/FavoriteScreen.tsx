@@ -32,6 +32,7 @@ const FavoriteScreen = () => {
         }
       }
       setPackages(packageData);
+      console.log(packages["11"]["name"])
     };
 
     fetchPackages();
@@ -41,12 +42,12 @@ const FavoriteScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>FavoriteScreen</Text>
       {favorites.map((esteitem, idx) => (
-        <View key={esteitem}> 
+        <View key={esteitem}>
           {idx !== 0 && packages[String(esteitem)] && (
             <View style={styles.card}>
-              <Text style={styles.name}>Nombre: {packages[String(esteitem)]?.name}</Text>
-              <Text style={styles.description}>Descripción: {packages[String(esteitem)]?.description}</Text>
-              <Text style={styles.price}>Precio: {packages[String(esteitem)]?.price}</Text>
+              <Text style={styles.name}>Nombre: {packages[esteitem]["name"]}</Text>
+              <Text style={styles.description}>Descripción: {packages[esteitem]["description"]}</Text>
+              <Text style={styles.price}>Precio: {packages[esteitem]["price"]}</Text>
             </View>
           )}
         </View>
@@ -78,14 +79,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
+    color:"black",
   },
   description: {
     fontSize: 16,
     marginBottom: 8,
+    color:"black",
   },
   price: {
     fontSize: 16,
     fontWeight: 'bold',
+    color:"black",
   },
 });
 
