@@ -41,7 +41,7 @@ const FavoriteScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>FavoriteScreen</Text>
       {favorites.map((esteitem, idx) => (
-        <View key={esteitem}> 
+        <View key={esteitem}>
           {idx !== 0 && packages[String(esteitem)] && (
             <View style={styles.card}>
               <Text style={styles.name}>Nombre: {packages[String(esteitem)]?.name}</Text>
@@ -78,14 +78,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: 'black',
   },
   description: {
     fontSize: 16,
     marginBottom: 8,
+    color: 'black',
   },
   price: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: 'black',
   },
 });
 
