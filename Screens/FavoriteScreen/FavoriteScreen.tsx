@@ -79,17 +79,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
-    color:"black",
+    color: 'black',
   },
   description: {
     fontSize: 16,
     marginBottom: 8,
-    color:"black",
+    color: 'black',
   },
   price: {
     fontSize: 16,
     fontWeight: 'bold',
-    color:"black",
+    color: 'black',
   },
 });
 
