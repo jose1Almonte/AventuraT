@@ -1,10 +1,10 @@
-import { Text, View, StyleSheet, ScrollView, FlatList, } from 'react-native';
+import { Text, View, StyleSheet, FlatList, } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import FeedbackCard from '../../Components/FeedbackCard';
 import firestore from '@react-native-firebase/firestore';
 
 const FeedbackScreen = () => {
-    
+
     const [data, setData] = useState();
 
     let loadData = async () => {
@@ -15,20 +15,19 @@ const FeedbackScreen = () => {
         } catch (error: any) {
             console.error(error);
         }
-        
-    }
+    };
 
     useEffect(() => {
         loadData();
     }, []);
 
     const renderItem = ({item}: any) => {
-        return (<FeedbackCard item={item.data()}/>)
-    }
+        return (<FeedbackCard item={item.data()}/>);
+    };
 
     return (
             <View style={styles.container}>
-                <View style={styles.info}>
+                {/* <View style={styles.info}> */}
                     <View style={styles.topInfo}>
                         <Text style={styles.txt}>Calificaciones</Text>
                         <FlatList
@@ -38,7 +37,7 @@ const FeedbackScreen = () => {
                         {/* <FeedbackCard item={raitingItems[0]}/> */}
                         {/* {raitingItems.map( (data) => <FeedbackCard item={data}/>)} */}
                     </View>
-                </View>
+                {/* </View> */}
             </View>
     );
 };
@@ -48,17 +47,23 @@ export default FeedbackScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
+        // backgroundColor: 'green',
     },
-    info: {
-        flex: 1,
-        display: 'flex',
-        margin: 5
-    },
-    topInfo: {
-        marginTop: 80,
-        alignItems: 'center',
-        gap: 15,
+    // info: {
+        //     flex: 1,
+        //     display: 'flex',
+        //     margin: 5,
+        //     backgroundColor: 'blue',
+        // },
+        topInfo: {
+            flex: 1,
+            marginTop: '20%',
+            // marginBottom: '15%',
+            alignItems: 'center',
+            // gap: 15,
+            // backgroundColor: 'blue',
+        // backgroundColor: 'red',
     },
     info2: {
         flex: 1,
@@ -109,13 +114,13 @@ const styles = StyleSheet.create({
         gap: 12,
     },
     contenedorEscala: {
-        justifyContent: "center",
+        justifyContent: 'center',
         display: 'flex',
         borderRadius: 4,
         width: 90,
         height: 35,
         borderColor: '#1881B1',
-        borderWidth: 1
+        borderWidth: 1,
     },
     containerButton: {
         display: 'flex',
