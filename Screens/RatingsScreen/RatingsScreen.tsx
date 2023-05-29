@@ -1,13 +1,6 @@
 import { Text, View, StyleSheet, ScrollView, FlatList, } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { SvgXml } from 'react-native-svg';
-import vectorPerfil from '../../vectores/vectorPerfil';
-import PhotoProfile from '../../Components/Profiles/photoProfile';
-import EditProfileButton from '../../Components/Profiles/editProfileButton';
-import VectorPerfilFlecha from '../../vectores/vectorPerfilFlecha';
-import options from '../../vectores/options';
 import FeedbackCard from '../../Components/FeedbackCard';
-import { RaitingI } from '../../models/raiting.interface';
 import firestore from '@react-native-firebase/firestore';
 
 const FeedbackScreen = () => {
@@ -34,7 +27,6 @@ const FeedbackScreen = () => {
     }
 
     return (
-        <ScrollView>
             <View style={styles.container}>
                 <View style={styles.info}>
                     <View style={styles.topInfo}>
@@ -42,16 +34,12 @@ const FeedbackScreen = () => {
                         <FlatList
                         data = {data}
                         renderItem={renderItem}
-                        
-                        >
-
-                        </FlatList>
+                        />
                         {/* <FeedbackCard item={raitingItems[0]}/> */}
                         {/* {raitingItems.map( (data) => <FeedbackCard item={data}/>)} */}
                     </View>
                 </View>
             </View>
-        </ScrollView>
     );
 };
 

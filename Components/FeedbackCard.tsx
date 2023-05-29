@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
-import calendar from '../vectores/calendar';
-import { SvgXml } from 'react-native-svg';
 import Califications from './Califications';
 import { RaitingI } from '../models/raiting.interface';
 
