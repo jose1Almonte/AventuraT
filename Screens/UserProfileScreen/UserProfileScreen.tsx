@@ -1,19 +1,24 @@
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { SvgXml } from 'react-native-svg';
-import profileVector from '../../vectores/vectorPerfil';
+import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import EditProfileButton from '../../Components/Profiles/editProfileButton';
-import profileArrowVector from '../../vectores/vectorPerfilFlecha';
+import VectorPerfilFlecha from '../../vectores/vectorPerfilFlecha';
 import auth from '@react-native-firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
+// import currentLog from '../../firebase/UserData';
 import { useUser } from '../../Context/UserContext';
+import PerfilPictureNav from '../../firebase/PerfilPictureNav';
 import currentLog from '../../firebase/UserData';
 import { deleteExpiredDocuments } from '../../firebase/DeletePackage';
 
 
 interface UserProfileScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>,
+  // destinationNavigationComponentName: string,
+  // goToLoginScreen: boolean,
+  // styles: any,
 }
 
 
@@ -34,43 +39,44 @@ export const UserProfileScreen = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.backGround}>
-        <SvgXml xml={profileVector} />
+      <View style={styles.fondo}>
+        <SvgXml xml={vectorPerfil} />
       </View>
       <View style={styles.info}>
         <View style={styles.topInfo}>
           <PhotoProfile size={90}
-            imageSource = {user?.photoURL} />
+            // @ts-ignore
+            imageSource={user?.photoURL} />
           <Text style={styles.txt}>{user?.displayName}</Text>
           <Text style={styles.txt}>{user?.email}</Text>
           <EditProfileButton />
         </View>
         <View style={styles.info2}>
           <Text style={styles.title}>Configuración</Text>
-          <View style={styles.containerInfo}>
+          <View style={styles.contenedorInfo}>
             <Text style={styles.txtInfo}>Información personal</Text>
-            <SvgXml xml={profileArrowVector} />
+            <SvgXml xml={VectorPerfilFlecha} />
           </View>
-          <TouchableOpacity style={styles.containerInfo} onPress={() => navigation.navigate('FavoriteScreen')}>
+          <TouchableOpacity style={styles.contenedorInfo} onPress={() => navigation.navigate('FavoriteScreen')}>
             <Text style={styles.txtInfo}>Favoritos</Text>
-            <SvgXml xml={profileArrowVector} />
+            <SvgXml xml={VectorPerfilFlecha} />
           </TouchableOpacity>
 
-          <View style={styles.containerInfo}>
+          <View style={styles.contenedorInfo}>
             <Text style={styles.txtInfo}>Opciones de pago</Text>
-            <SvgXml xml={profileArrowVector} />
+            <SvgXml xml={VectorPerfilFlecha} />
           </View>
-          <TouchableOpacity style={styles.containerInfo} onPress={deleteExpiredDocuments}>
+          <TouchableOpacity style={styles.contenedorInfo} onPress={deleteExpiredDocuments}>
             <Text style={styles.txtInfo1}>Borrar paquetes caducados</Text>
-            <SvgXml xml={profileArrowVector} />
+            <SvgXml xml={VectorPerfilFlecha} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
+          <TouchableOpacity style={styles.contenedorInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
             <Text style={styles.txtInfo1}>Cerrar sesión</Text>
-            <SvgXml xml={profileArrowVector} />
+            <SvgXml xml={VectorPerfilFlecha} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen');}}>
+          <TouchableOpacity style={styles.contenedorInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen') }}>
             <Text style={styles.txtInfo1}>Abrir formulario</Text>
-            <SvgXml xml={profileArrowVector} />
+            <SvgXml xml={VectorPerfilFlecha} />
           </TouchableOpacity>
         </View>
       </View>
@@ -101,7 +107,7 @@ const styles = StyleSheet.create({
     gap: 15,
     padding: 30,
   },
-  containerInfo: {
+  contenedorInfo: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -111,8 +117,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#CFD8E2',
     padding: 2,
   },
-
-  backGround: {
+  fondo: {
     flex: 1,
     display: 'flex',
   },

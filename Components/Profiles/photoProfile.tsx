@@ -1,44 +1,54 @@
-import React, { useEffect, useState } from 'react';
+import React, { Component } from 'react';
 import auth from '@react-native-firebase/auth';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 
 interface PhotoProfileProps {
   size?: number;
   imageSource?: string | undefined;
 }
 
-const PhotoProfile: React.FC<PhotoProfileProps> = ({ size, imageSource }) => {
-  const [photoURL, setPhotoURL] = useState<string | undefined>(undefined);
+interface PhotoProfileState {
+  photoURL: string | undefined;
+}
 
-  useEffect(() => {
-    fetchUserPhoto();
-  }, []);
+class PhotoProfile extends Component<PhotoProfileProps, PhotoProfileState> {
+  state: PhotoProfileState = {
+    photoURL: undefined,
+  };
 
-  const fetchUserPhoto = () => {
+  componentDidMount() {
+    this.fetchUserPhoto();
+  }
+
+  fetchUserPhoto = () => {
     const currentUser = auth().currentUser;
     if (currentUser) {
-      const { photoURL: userPhotoURL } = currentUser;
-      if (userPhotoURL) {
-        setPhotoURL(userPhotoURL);
+      const { photoURL } = currentUser;
+      if (photoURL) {
+        this.setState({ photoURL });
       }
     }
   };
 
-  const containerSize = size || 100;
-  const imgSize = containerSize;
+  render() {
+    const { size } = this.props;
+    const { photoURL } = this.state;
+    const containerSize = size || 100;
+    const imgSize = containerSize;
 
-  return (
-    <View style={[styles.container, { width: containerSize, height: containerSize }]}>
-      <View style={[styles.photoContainer, { width: containerSize, height: containerSize }]}>
-        <Image
-          style={[styles.img, { width: imgSize, height: imgSize, borderRadius: imgSize / 2 }]}
-          source={{ uri: imageSource || photoURL || '' }}
-          alt="photo"
-        />
+    return (
+      <View style={[styles.container, { width: containerSize, height: containerSize }]}>
+        <View style={[styles.photoContainer, { width: containerSize, height: containerSize }]}>
+          <Image
+            style={[styles.img, { width: imgSize, height: imgSize, borderRadius: imgSize / 2 }]}
+            source={{ uri: photoURL }}
+            alt="photo"
+          />
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -62,4 +72,3 @@ const styles = StyleSheet.create({
 });
 
 export default PhotoProfile;
-
