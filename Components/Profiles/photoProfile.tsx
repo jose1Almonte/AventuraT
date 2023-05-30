@@ -4,10 +4,10 @@ import { View, StyleSheet, Image } from 'react-native';
 
 interface PhotoProfileProps {
   size?: number;
-  imageSource?: string | undefined;
+  imageSource?: string | null | undefined;
 }
 
-const PhotoProfile: React.FC<PhotoProfileProps> = ({ size, imageSource }) => {
+const PhotoProfile = ({ size, imageSource }: PhotoProfileProps) => {
   const [photoURL, setPhotoURL] = useState<string | undefined>(undefined);
 
   useEffect(() => {

@@ -24,11 +24,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
       <View style={styles.info}>
         <View style={styles.topInfo}>
           <View style={styles.top}>
-            <PhotoProfile size={90}
-              // @ts-ignore
-              imageSource={{
-                uri: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg',
-              }} />
+            <PhotoProfile size={90} imageSource={'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'} />
             <SvgXml xml={separator} />
             <View style={styles.contenedorPuntaje}>
               <View style={styles.contenedorEstrella}>
@@ -94,11 +90,11 @@ export default BusinessProfileScreen;
 const stylesBtn = StyleSheet.create({
   containerButton: {
     display: 'flex',
-    alignItems: "center",
-    marginVertical: 5
+    alignItems: 'center',
+    marginVertical: 5,
   },
   positionContainer: {
-    paddingStart: 220
+    paddingStart: 220,
   },
   container: {
     height: 40,

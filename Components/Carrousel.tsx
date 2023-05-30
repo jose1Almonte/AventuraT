@@ -45,13 +45,12 @@ export const Carrousel = ({ navigation }: carruselProps) => {
             raiting: doc.data().raiting,
             nameEnterprice: doc.data().nameEnterprice,
             start: doc.data().start,
-            end: doc.data().end
-          }
+            end: doc.data().end,
+          };
 
           listPackage.push(packageTemp);
         });
 
-        // @ts-ignore
         const firebaseItems: CarouselItem[] = listPackage.map((data: PackageI) => {
 
           // Crea tu componente personalizado utilizando name, description y mainImageUrl

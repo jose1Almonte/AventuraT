@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Dimensions,
   BackHandler,
-  TouchableOpacity,
   Pressable,
   Alert,
 } from 'react-native';
@@ -16,13 +15,13 @@ import { ProfilePicture } from '../../firebase/PerfilPicture';
 import { Image } from 'react-native';
 //import UserProfileScreen from '../UserProfileScreen/UserProfileScreen';
 //import UserProfileScreen from '../BusinessProfileScreen/BusinessProfileScreen';
-import { Carrousel } from '../../Components/Carrusel';
+import { Carrousel } from '../../Components/Carrousel';
 import { NavigationProp } from '@react-navigation/native';
 import menuBar from '../../vectores/menuBar';
 import { SvgXml } from 'react-native-svg';
 import InputSearch from '../../Components/InputSearch';
 import PopularPackages from '../../Components/PopularPackages';
-import CreateForm from '../../Components/CreateForm';
+
 
 interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;

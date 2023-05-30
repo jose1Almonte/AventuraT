@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, Text, StyleSheet, View, Image, BackHandler, Pressable, Alert } from 'react-native';
+import React from 'react';
+import { ScrollView, Text, StyleSheet, View, Image, Pressable, Alert } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import star from '../../vectores/star';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -19,7 +19,7 @@ interface detailProps {
 
 
 
-const DetailsScreenUser = ({ navigation, data, route }: detailProps) => {
+const DetailsScreenUser = ({ navigation, route }: detailProps) => {
   let { isLogged } = useUser();
   let packageIn: PackageI = route.params.data;
   return (
@@ -36,7 +36,7 @@ const DetailsScreenUser = ({ navigation, data, route }: detailProps) => {
           <Image
             style={styles.containerPhotoPack}
             source={{
-              uri: packageIn.mainImageUrl //'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
+              uri: packageIn.mainImageUrl, //'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
             }}
           />
         </View>
@@ -48,7 +48,7 @@ const DetailsScreenUser = ({ navigation, data, route }: detailProps) => {
             size={40}
             imageSource={'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'}
           />
-          <Pressable onPress={() => { navigation.navigate('BusinessProfileScreen') }}>
+          <Pressable onPress={() => { navigation.navigate('BusinessProfileScreen');}}>
             <Text style={styles.text}>{packageIn.nameEnterprice}</Text>
           </Pressable>
         </View>
@@ -106,6 +106,7 @@ export default DetailsScreenUser;
 const styles = StyleSheet.create({
   background: {
     backgroundColor: '#1DB5BE',
+    // backgroundColor: 'red',
   },
   container: {
     flex: 1,
