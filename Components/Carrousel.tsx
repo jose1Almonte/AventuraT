@@ -42,10 +42,11 @@ export const Carrousel = ({ navigation }: carruselProps) => {
             mainImageUrl: doc.data().mainImageUrl,
             name: doc.data().name,
             price: doc.data().price,
-            raiting: doc.data().raiting,
+            rating: doc.data().rating,
             nameEnterprise: doc.data().nameEnterprise,
             startDate: doc.data().startDate,
             endDate: doc.data().endDate,
+            emailEnterprise: doc.data().emailEnterprise,
           };
 
           listPackage.push(packageTemp);
@@ -64,7 +65,7 @@ export const Carrousel = ({ navigation }: carruselProps) => {
                     <View style={styles.ContainerLikes}>
                       <ButtonLikes packageDetails={data} />
                     </View>
-                    <Califications calification={data.raiting} />
+                    <Califications calification={data.rating} />
                   </View>
                   <View style={styles.textContainer}>
                     <Text style={styles.texto}>{data.name}</Text>

@@ -40,7 +40,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
           <View style={styles.containerText}>
             <Text style={styles.textPack}>{packageIn.name}</Text>
             <View style={styles.containerCalification}>
-              <Text style={styles.ratingText}>{packageIn.raiting}</Text>
+              <Text style={styles.ratingText}>{packageIn.rating}</Text>
               <SvgXml xml={star} width={22} height={22} />
             </View>
           </View>

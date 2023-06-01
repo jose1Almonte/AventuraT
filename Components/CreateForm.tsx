@@ -55,6 +55,7 @@ interface CreateFormData {
   startDate: Date;
   emailEnterprise: string;
   nameEnterprise: string;
+  rating: number;
 }
 
 const CreateForm = ({ navigation }: CreateFormProps) => {
@@ -82,6 +83,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
     startDate: startDate,
     emailEnterprise: userEmail,
     nameEnterprise: '',
+    rating: 0,
   });
 
   useEffect(() => {
@@ -100,8 +102,8 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
 
     querySnapshot.forEach((doc) => {
       setNameEnterprise(doc.data().displayName.toString());
-      console.log('Try again', doc.data().displayName);
-      console.log('Try again', nameEnterprise);
+      // console.log('Try again', doc.data().displayName);
+      // console.log('Try again', nameEnterprise);
       data.nameEnterprise = doc.data().displayName;
     });
 
@@ -123,6 +125,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
         data.startDate,
         data.emailEnterprise,
         data.nameEnterprise,
+        data.rating,
         );
         // Alert.alert('Veamos la fecha (postData, ya se envió)', data.date);
       } else {
@@ -141,8 +144,9 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
           data.startDate,
           data.emailEnterprise,
           data.nameEnterprise,
-      );
-    }
+          data.rating,
+          );
+        }
     await loadLastId(); // Carga el nuevo último ID después de crear el paquete
     Alert.alert('Ya se subió el paquete a la base de datos');
     navigation.navigate('HomeScreen');

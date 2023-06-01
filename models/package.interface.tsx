@@ -6,8 +6,9 @@ export interface PackageI {
     mainImageUrl?: string;
     name?: string;
     price?: string;
-    raiting?: string;
+    rating?: string;
     startDate?: any;
     endDate?: any;
     nameEnterprise?: string;
+    emailEnterprise?: string;
 }
