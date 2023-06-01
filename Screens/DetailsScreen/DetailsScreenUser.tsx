@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Text, StyleSheet, View, Image, Pressable, Alert } from 'react-native';
+import { ScrollView, Text, StyleSheet, View, Image, Pressable, Alert, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import star from '../../vectores/star';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -22,6 +22,17 @@ interface detailProps {
 const DetailsScreenUser = ({ navigation, route }: detailProps) => {
   let { isLogged } = useUser();
   let packageIn: PackageI = route.params.data;
+
+  const startDate = packageIn.startDate.toDate();
+  const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
+  const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
+  const startYear = startDate.getFullYear();
+
+  const endDate = packageIn.endDate.toDate();
+  const endDay = endDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
+  const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
+  const endYear = endDate.getFullYear();
+
   return (
     <ScrollView style={styles.background}>
       <View style={styles.container}>
@@ -48,9 +59,9 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
             size={40}
             imageSource={'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'}
           />
-          <Pressable onPress={() => { navigation.navigate('BusinessProfileScreen');}}>
-            <Text style={styles.text}>{packageIn.nameEnterprice}</Text>
-          </Pressable>
+          <TouchableOpacity onPress={() => { navigation.navigate('BusinessProfileScreen');}}>
+            <Text style={styles.text}>{packageIn.nameEnterprise}</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -58,12 +69,12 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         <View style={styles.contenedorInformacion}>
           <SvgXml xml={vectorSalida} />
           <Text style={styles.titulo}>Salida</Text>
-          <Text style={styles.subtitulo}>{packageIn.start}</Text>
+          <Text style={styles.subtitulo}>{startDay}/{startMonth}/{startYear}</Text>
         </View>
         <View style={styles.contenedorInformacion}>
           <SvgXml xml={vectorRetorno} />
           <Text style={styles.titulo}>Retorno</Text>
-          <Text style={styles.subtitulo}>{packageIn.end}</Text>
+          <Text style={styles.subtitulo}>{endDay}/{endMonth}/{endYear}</Text>
         </View>
         <View style={styles.contenedorInformacion}>
           <SvgXml xml={vectorPrecio} />
@@ -211,7 +222,7 @@ const styles = StyleSheet.create({
     gap: 5,
     marginTop: 30,
     marginLeft: 40,
-    borderTopColor: "white",
+    borderTopColor: 'white',
     borderTopWidth: 1,
   },
   contenedorLikes: {

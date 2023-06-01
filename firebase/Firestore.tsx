@@ -47,7 +47,7 @@ export const checkIfUserExists = async (email:string) => {
     const querySnapshot = await usersCollection.where('email', '==', email).get();
     return !querySnapshot.empty;};
 
-export const addPackage = async (id, name, availability, price, description, mainImageUrl, location, date) => {
+export const addPackage = async (id, name, availability, price, description, mainImageUrl, location, endDate, startDate, emailEnterprise, nameEnterprise) => {
         try {
           const packageData = {
             id,
@@ -57,9 +57,12 @@ export const addPackage = async (id, name, availability, price, description, mai
             description,
             mainImageUrl,
             location,
-            date,
+            endDate,
+            startDate,
+            emailEnterprise,
+            nameEnterprise,
           };
-      
+
           await packagesCollection.doc(id.toString()).set(packageData);
           console.log('Paquete añadido exitosamente a Firestore');
         } catch (error) {

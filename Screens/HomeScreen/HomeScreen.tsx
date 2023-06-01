@@ -34,9 +34,9 @@ const { height } = Dimensions.get('window');
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const [showForm, setShowForm] = useState(false);
 
-  const handleOpenForm = () => {
-    setShowForm(true);
-  };
+  // const handleOpenForm = () => {
+  //   setShowForm(true);
+  // };
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -48,7 +48,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     <ScrollView style={styles.backGround}>
 
       <View style={styles.flex}>
-        <Pressable onPress={() => { navigation.navigate('NavbarScreen') }}>
+        <Pressable onPress={() => { navigation.navigate('NavbarScreen');}}>
           <SvgXml xml={menuBar} />
         </Pressable>
         <Text style={styles.Central}>AventuraT</Text>
@@ -64,33 +64,25 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         <View style={styles.Caracteristicas}>
           <View style={styles.Sepa}>
             <View style={styles.Redondos}>
-              <Image
-                style={styles.Escalado}
-                source={require('../../images/tt.jpg')}></Image>
+              <Image style={styles.Escalado} source={require('../../images/tt.jpg')}/>
             </View>
             <Text style={styles.letras}>Montaña</Text>
           </View>
           <View style={styles.Sepa}>
             <View style={styles.Redondos}>
-              <Image
-                style={styles.Escalado}
-                source={require('../../images/mas.jpg')}></Image>
+              <Image style={styles.Escalado} source={require('../../images/mas.jpg')}/>
             </View>
             <Text style={styles.letras}>Playa</Text>
           </View>
           <View style={styles.Sepa}>
             <View style={styles.Redondos}>
-              <Image
-                style={styles.Escalado}
-                source={require('../../images/para.jpg')}></Image>
+              <Image style={styles.Escalado} source={require('../../images/para.jpg')}/>
             </View>
             <Text style={styles.letras}>Full-Day</Text>
           </View>
           <View style={styles.Sepa}>
             <View style={styles.Redondos}>
-              <Image
-                style={styles.Escalado}
-                source={require('../../images/lol.jpg')}></Image>
+              <Image style={styles.Escalado} source={require('../../images/lol.jpg')}/>
             </View>
             <Text style={styles.letras}>Camping</Text>
           </View>

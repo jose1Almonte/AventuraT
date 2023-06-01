@@ -20,39 +20,8 @@ export const ProfilePicture = ({
     navigation,
 }: ProfilePictureProps) => {
     const { user, isLogged } = useUser();
-    const userOn = currentLog();
-    let route: string = 'UserProfileScreen'
-    // const logout = async (): Promise<void> => {
-    //     await auth().signOut();
-    //     setUser(null);
-    //     setLogged(false);
-    // };
-
-    // async function login() {
-    //     try {
-    //         const isReallyLogged = await onGoogleButtonPress();
-    //         if (isReallyLogged){
-    //             setUser(currentLog());
-    //             setLogged(true);
-    //             if (user && user.displayName && user.email && user.emailVerified && user.photoURL) {
-    //                 const userExist = await checkIfUserExists(user.email);
-    //                 if (!userExist){
-    //                     await addUser(user.displayName,user.email,user.emailVerified,user.photoURL);
-    //                 }
-    //             }
-    //             navigation.navigate(destinationNavigationComponentName);
-
-    //         } else {
-    //             logout;
-    //             navigation.navigate('HomeScreen');
-    //         }
-
-    //     } catch (e){
-    //         logout;
-    //         navigation.navigate('HomeScreen');
-    //     }
-    //     // ...continuar con más acciones
-    // }
+    // const userOn = currentLog();
+    let route: string = 'UserProfileScreen';
 
     return (
         <>

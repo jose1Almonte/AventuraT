@@ -7,7 +7,7 @@ export interface PackageI {
     name?: string;
     price?: string;
     raiting?: string;
-    start?: string;
-    end?: string;
-    nameEnterprice?: string;
+    startDate?: any;
+    endDate?: any;
+    nameEnterprise?: string;
 }

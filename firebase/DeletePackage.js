@@ -28,7 +28,7 @@ const usersCollection3 = firestore().collection('package');
 
 export const deleteExpiredDocuments = async () => {
 
-    const querySnapshot = ((await usersCollection3.where('date', '<', new Date()).get()));
+    const querySnapshot = ((await usersCollection3.where('endDate', '<', new Date()).get()));
 
     querySnapshot.forEach((doc) => {
 

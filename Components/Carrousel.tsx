@@ -43,9 +43,9 @@ export const Carrousel = ({ navigation }: carruselProps) => {
             name: doc.data().name,
             price: doc.data().price,
             raiting: doc.data().raiting,
-            nameEnterprice: doc.data().nameEnterprice,
-            start: doc.data().start,
-            end: doc.data().end,
+            nameEnterprise: doc.data().nameEnterprise,
+            startDate: doc.data().startDate,
+            endDate: doc.data().endDate,
           };
 
           listPackage.push(packageTemp);
