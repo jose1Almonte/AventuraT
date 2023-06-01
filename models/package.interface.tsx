@@ -9,6 +9,7 @@ export interface PackageI {
     rating?: string;
     startDate?: any;
     endDate?: any;
-    nameEnterprise?: string;
+    // nameEnterprise?: string;
     emailEnterprise?: string;
+    expireDate?: any;
 }

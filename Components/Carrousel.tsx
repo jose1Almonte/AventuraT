@@ -1,15 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Image, StyleSheet, Dimensions, TouchableOpacity, FlatList, Animated, ImageBackground, Text, Pressable } from 'react-native';
+import { View, StyleSheet, Dimensions, TouchableOpacity, Animated, ImageBackground, Text, Pressable } from 'react-native';
 // import { CustomComponent1, CustomComponent2, CustomComponent3, CustomComponent4 } from './CarruselComponent';
 import firestore from '@react-native-firebase/firestore';
 import { ButtonLikes } from './ButtonLikes';
 import Califications from './Califications';
 import { PackageI } from '../models/package.interface';
-import DetailsScreenUser from '../Screens/DetailsScreen/DetailsScreenUser';
 import { NavigationProp } from '@react-navigation/native';
 
 const { height, width } = Dimensions.get('window');
-let navigation: NavigationProp<Record<string, object | undefined>>;
+// let navigation: NavigationProp<Record<string, object | undefined>>;
 
 interface CarouselItem {
   id: number;
@@ -43,10 +42,11 @@ export const Carrousel = ({ navigation }: carruselProps) => {
             name: doc.data().name,
             price: doc.data().price,
             rating: doc.data().rating,
-            nameEnterprise: doc.data().nameEnterprise,
+            // nameEnterprise: doc.data().nameEnterprise,
             startDate: doc.data().startDate,
             endDate: doc.data().endDate,
             emailEnterprise: doc.data().emailEnterprise,
+            expireDate: doc.data().expireDate,
           };
 
           listPackage.push(packageTemp);

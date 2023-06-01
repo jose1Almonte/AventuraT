@@ -8,7 +8,7 @@ import {
   Pressable,
   Alert,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 //import RegisterEnterprise from '../../Components/registerEnterprise';
 import { ProfilePicture } from '../../firebase/PerfilPicture';
 // import RegisterEnterprise from '../../Components/registerEnterprise';
@@ -32,7 +32,7 @@ const { height } = Dimensions.get('window');
 
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
-  const [showForm, setShowForm] = useState(false);
+  // const [showForm, setShowForm] = useState(false);
 
   // const handleOpenForm = () => {
   //   setShowForm(true);

@@ -34,19 +34,35 @@ export const UserProfileScreen = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.backGround}>
-        <SvgXml xml={profileVector} />
-      </View>
-      <View style={styles.info}>
-        <View style={styles.topInfo}>
-          <PhotoProfile size={90}
-            imageSource = {user?.photoURL} />
-          <Text style={styles.txt}>{user?.displayName}</Text>
-          <Text style={styles.txt}>{user?.email}</Text>
-          <EditProfileButton />
+
+        <View style={styles.backGround}>
+          <SvgXml xml={profileVector} />
+          {/* <Text>Helloooo</Text> */}
         </View>
+
+      <View style={styles.info}>
+
+
+        <View style={styles.topInfo}>
+          <View style={styles.photoBox}>
+            <PhotoProfile size={90} imageSource={user?.photoURL ? user.photoURL : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'}/>
+          </View>
+
+          <View style = {styles.detailsUserBox}>
+            <Text style={styles.txt}>{user?.displayName}</Text>
+            <Text style={styles.txt}>{user?.email}</Text>
+          </View>
+
+          <View style = {styles.editProfileButtonBox}>
+            <EditProfileButton />
+          </View>
+
+        </View>
+
         <View style={styles.info2}>
+
           <Text style={styles.title}>Configuración</Text>
+
           <View style={styles.containerInfo}>
             <Text style={styles.txtInfo}>Información personal</Text>
             <SvgXml xml={profileArrowVector} />
@@ -73,6 +89,7 @@ export const UserProfileScreen = ({
             <SvgXml xml={profileArrowVector} />
           </TouchableOpacity>
         </View>
+
       </View>
     </View>
   );
@@ -83,17 +100,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1DB5BE',
+    // backgroundColor: 'green',
   },
   info: {
     flex: 1,
     display: 'flex',
-    marginBottom: 650,
+    // marginBottom: 650,
+    // backgroundColor: 'red',
   },
   topInfo: {
+    flex: 3.6,
     alignItems: 'center',
-    gap: 15,
+    // gap: 15,
+    // backgroundColor: 'black',
   },
   info2: {
+    flex: 5,
+    // backgroundColor: 'red',
     marginTop: 30,
     display: 'flex',
     flexDirection: 'column',
@@ -101,6 +124,31 @@ const styles = StyleSheet.create({
     gap: 15,
     padding: 30,
   },
+
+  photoBox: {
+    flex: 2,
+    // backgroundColor: 'blue',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  detailsUserBox: {
+    flex: 0.5,
+    // backgroundColor: 'white',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  editProfileButtonBox: {
+    flex: 0.5,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+  },
+
   containerInfo: {
     display: 'flex',
     flexDirection: 'row',
@@ -113,8 +161,14 @@ const styles = StyleSheet.create({
   },
 
   backGround: {
-    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 0,
     display: 'flex',
+    // backgroundColor: '#1DB5BE',
   },
   txt: {
     color: 'black',

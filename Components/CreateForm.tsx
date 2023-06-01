@@ -4,7 +4,7 @@ import { addPackage, uploadImage, getLastPackageId } from '../firebase/Firestore
 import { launchImageLibrary } from 'react-native-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useUser } from '../Context/UserContext';
-import firestore from '@react-native-firebase/firestore';
+// import firestore from '@react-native-firebase/firestore';
 
 const DatePickerBox = ({text, writingDate, setWritingDate, date, setEndDate }:{
   text: string;
@@ -56,12 +56,13 @@ interface CreateFormData {
   emailEnterprise: string;
   nameEnterprise: string;
   rating: number;
+  expireDate: Date;
 }
 
 const CreateForm = ({ navigation }: CreateFormProps) => {
   const [resourcePath, setResourcePath] = useState('');
   const [filename, setFileName] = useState('');
-  const [nameEnterprise, setNameEnterprise] = useState('');
+  // const [nameEnterprise, setNameEnterprise] = useState('');
 
   const {user} = useUser();
   const userEmail = user ? user.email : null;
@@ -71,6 +72,10 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
 
   const [endDate, setEndDate] = useState(new Date());
   const [writtingEndDate, setWritingEndDate] = useState(false);
+
+  const [expireDate, setExpireDate] = useState(new Date());
+  const [writtingExpireDate, setWritingExpireDate] = useState(false);
+
 
   const [data, setData] = useState<CreateFormData>({
     id: 0, // Inicializa el ID en 0
@@ -84,12 +89,17 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
     emailEnterprise: userEmail,
     nameEnterprise: '',
     rating: 0,
+    expireDate: expireDate,
   });
 
   useEffect(() => {
     // Carga el último ID de Firebase al cargar el componente
     loadLastId();
   }, []);
+
+  // useEffect(() => {
+  //   console.log('nameEnterprise:' , nameEnterprise);
+  // }, [nameEnterprise]);
 
   const loadLastId = async () => {
     const lastId = await getLastPackageId(); // Obtén el último ID de Firebase
@@ -98,18 +108,19 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
 
   const submit = async () => {
 
-    const querySnapshot = await firestore().collection('users').where('email', '==', userEmail).get();
+    // const querySnapshot = await firestore().collection('users').where('email', '==', userEmail).get();
 
-    querySnapshot.forEach((doc) => {
-      setNameEnterprise(doc.data().displayName.toString());
-      // console.log('Try again', doc.data().displayName);
-      // console.log('Try again', nameEnterprise);
-      data.nameEnterprise = doc.data().displayName;
-    });
+    // querySnapshot.forEach((doc) => {
+    //   setNameEnterprise(doc.data().displayName.toString());
+    //   // console.log('Try again', doc.data().displayName);
+    //   // console.log('Try again', nameEnterprise);
+    //   data.nameEnterprise = doc.data().displayName;
+    // });
 
 
     data.endDate = endDate;
     data.startDate = startDate;
+    data.expireDate = expireDate;
 
     if (resourcePath === '') {
       console.log(data);
@@ -124,8 +135,9 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
         data.endDate,
         data.startDate,
         data.emailEnterprise,
-        data.nameEnterprise,
+        // data.nameEnterprise,
         data.rating,
+        data.expireDate,
         );
         // Alert.alert('Veamos la fecha (postData, ya se envió)', data.date);
       } else {
@@ -143,8 +155,9 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
           data.endDate,
           data.startDate,
           data.emailEnterprise,
-          data.nameEnterprise,
+          // data.nameEnterprise,
           data.rating,
+          data.expireDate,
           );
         }
     await loadLastId(); // Carga el nuevo último ID después de crear el paquete
@@ -215,11 +228,20 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {setWritingEndDate(true);}} style={styles.inputContainer}>
                 <DatePickerBox
-                  text="El paquete caduca: "
+                  text="El viaje Termina: "
                   writingDate={writtingEndDate}
                   setWritingDate={setWritingEndDate}
                   date={endDate}
                   setEndDate={setEndDate}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {setWritingExpireDate(true);}} style={styles.inputContainer}>
+                <DatePickerBox
+                  text="El paquete expira: "
+                  writingDate={writtingExpireDate}
+                  setWritingDate={setWritingExpireDate}
+                  date={expireDate}
+                  setEndDate={setExpireDate}
                 />
               </TouchableOpacity>
 

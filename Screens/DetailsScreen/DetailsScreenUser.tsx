@@ -1,5 +1,5 @@
-import React from 'react';
-import { ScrollView, Text, StyleSheet, View, Image, Pressable, Alert, TouchableHighlight, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, Text, StyleSheet, View, Image, Pressable, Alert, TouchableOpacity } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import star from '../../vectores/star';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -10,6 +10,7 @@ import { ButtonLikes } from '../../Components/ButtonLikes';
 import { PackageI } from '../../models/package.interface';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
+import firestore from '@react-native-firebase/firestore';
 
 interface detailProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -32,6 +33,26 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
   const endDay = endDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
   const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
   const endYear = endDate.getFullYear();
+
+  const [nameEnterprise, setNameEnterprise] = useState('');
+  const [photoURL, setPhotoUrl] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // console.log('packageIn?.emailEnterprise: ' ,packageIn.emailEnterprise);
+      if (packageIn && packageIn.emailEnterprise) {
+
+        const querySnapshot = await firestore().collection('users').where('email', '==', packageIn.emailEnterprise).get();
+
+        querySnapshot.forEach((doc) => {
+          // console.log(doc.data().displayName);
+          setNameEnterprise(doc.data().displayName);
+          setPhotoUrl(doc.data().photoURL);
+        });
+      }
+    };
+    fetchData();
+  }, [packageIn, packageIn.emailEnterprise]);
 
   return (
     <ScrollView style={styles.background}>
@@ -57,10 +78,12 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         <View style={styles.info}>
           <PhotoProfile
             size={40}
-            imageSource={'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'}
+            // imageSource={'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'}
+            imageSource={photoURL ? photoURL : 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9c64cfe3-bb3b-4ae8-b5a6-d2f39d21ff87/d3jme6i-8c702ad4-4b7a-4763-9901-99f8b4f038b0.png/v1/fill/w_600,h_400/fondo_transparente_png_by_imsnowbieber_d3jme6i-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDAwIiwicGF0aCI6IlwvZlwvOWM2NGNmZTMtYmIzYi00YWU4LWI1YTYtZDJmMzlkMjFmZjg3XC9kM2ptZTZpLThjNzAyYWQ0LTRiN2EtNDc2My05OTAxLTk5ZjhiNGYwMzhiMC5wbmciLCJ3aWR0aCI6Ijw9NjAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.Ymv-MHRcmXXpzmL3f0xZ0mCcyU85lCLnk0jbOnCO8Zg'}
           />
           <TouchableOpacity onPress={() => { navigation.navigate('BusinessProfileScreen');}}>
-            <Text style={styles.text}>{packageIn.nameEnterprise}</Text>
+            {/* <Text style={styles.text}>{packageIn.nameEnterprise}</Text> */}
+            <Text style={styles.text}>{nameEnterprise}</Text>
           </TouchableOpacity>
         </View>
       </View>
