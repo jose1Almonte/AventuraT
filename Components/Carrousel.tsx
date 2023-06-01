@@ -78,7 +78,7 @@ export const Carrousel = ({ navigation }: carruselProps) => {
           );
 
           return {
-            id: data.id,
+            id: data.id ?? 0,
             component: customComponent,
           };
         });
