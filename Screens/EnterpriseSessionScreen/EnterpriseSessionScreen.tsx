@@ -101,7 +101,6 @@ const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => 
         setUser(currentLog());
         setLogged(true);
         navigation.navigate('HomeScreen');
-        
       }
       else {
         Alert.alert('Contraseña inválida');
