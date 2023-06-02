@@ -14,7 +14,7 @@ import SearchResultScreen from './Screens/SearchResultScreen/SearchResultScreen'
 import RatingsScreen from './Screens/RatingsScreen/RatingsScreen';
 import FeedbackScreen from './Screens/FeedbackScreen/FeedbackScreen';
 import EnterpriseFormScreen from './Screens/EnterpriseFormScreen/EnterpriseFormScreen';
-
+import EnterpriseSessionScreen from './Screens/EnterpriseSessionScreen/EnterpriseSessionScreen'
 import { UserProvider } from './Context/UserContext';
 import MobilePaymentScreen from './Screens/MobilePaymentScreen/MobilePaymentScreen';
 import CreatePackageFormScreen from './Screens/CreatePackageFormScreen/CreatePackageFormScreen';
@@ -42,6 +42,7 @@ export default function App() {
           <Stack.Screen name="RatingsScreen" component={RatingsScreen} options={{ headerShown: false }} />
           <Stack.Screen name="FeedbackScreen" component={FeedbackScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EnterpriseFormScreen" component={EnterpriseFormScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="EnterpriseSessionScreen" component={EnterpriseSessionScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

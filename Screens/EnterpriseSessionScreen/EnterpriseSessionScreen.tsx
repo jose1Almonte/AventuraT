@@ -5,15 +5,23 @@ import {
   Image,
   Alert,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
-import YourSignInWithGoogleComponent from '../../firebase/PerfilPicture';
+import YourSignInWithGoogleComponent, { ProfilePicture } from '../../firebase/PerfilPicture';
 import { NavigationProp } from '@react-navigation/native';
+import { checkPasswordCorrect, checkResponsibleNameExists } from '../../firebase/Firestore';
+import auth from '@react-native-firebase/auth';
 
-interface LoginScreenProps {
+interface EnterpriseSessionScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
+}
+
+interface Register{
+  Username: string;
+  Password:String;
 }
 
 interface ContinueWithNameProps {
@@ -45,13 +53,54 @@ export const ContinueWithName = ({
   );
 };
 
+
+const signInWithEmailAndPassword = async (email, password) => {
+  try {
+    const { user } = await auth().signInWithEmailAndPassword(email, password);
+    console.log('Usuario autenticado:', user);
+  } catch (error) {
+    console.error('Error al autenticar el usuario:', error);
+    // Manejar el error de autenticación
+  }
+};
+
 const makingThis = () => {
   console.log('hello');
   Alert.alert('Hello');
 };
 
 
-const LoginScreen = ({ navigation }: LoginScreenProps) => {
+const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => {
+  const [data, setData] = useState<Register>({
+    Username :'',
+    Password : '',
+  });
+
+  const submit = async () => {
+    if (
+      data.Password.trim() === '' ||
+      data.Username.trim() === ''
+    ) {
+      Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
+      return;
+    }
+    else{
+      const responsibleNameExists = await checkResponsibleNameExists(data.Username);
+      const passwordExists = await checkResponsibleNameExists(data.Username);
+      if (!responsibleNameExists) {
+        Alert.alert('Usuario no Existente', 'El usuario no existe en la base de datos');
+        return;
+      }
+      if (await checkPasswordCorrect(data.Username, data.Password)){
+        signInWithEmailAndPassword(data.Username,data.Password);
+
+        navigation.navigate('HomeScreen');
+      }
+      else {
+        Alert.alert('Contraseña inválida');
+      }
+    }};
+
   return (
     <View style={styles.bigBox}>
       <Background
@@ -68,10 +117,24 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
           locations={[0, 0.25, 0.5, 0.9, 1]}
           style={styles.linearGradient}>
           <View style={styles.firstBox}>
-            <Text style={styles.title}>¡Bienvenido!</Text>
-            <Text style={styles.subtitle}>
-              Descubre grandes experiencias a tu alrededor
-            </Text>
+          <View style={styles.inputContainer}>
+          <Text style={styles.label}>Email: </Text>
+          <TextInput
+                style={styles.input}
+                onChangeText={(text) => setData((prevData) => ({ ...prevData, Username: text }))}
+              />
+          </View>
+          <View style={styles.inputContainer}>
+          <Text style={styles.label}>Password: </Text>
+          <TextInput
+                style={styles.input}
+                onChangeText={(text) => setData((prevData) => ({ ...prevData, Password: text }))}
+              />
+          </View>
+          
+          <TouchableOpacity style={styles.submitButton} onPress={submit}>
+            <Text style={styles.buttonText}>Ingresar sesión</Text>
+          </TouchableOpacity>
           </View>
 
           <View style={styles.secondBox}>
@@ -92,14 +155,6 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
               TextStyle={styles.normalTextStyle}
               onPress={() => makingThis()}
             />
-            <ContinueWithName
-              text="Continuar con Empresa"
-              ViewStyle={styles.continueWithFacebookBox}
-              imageSource={require('../../images/images.png')}
-              ImageStyle={styles.LogoStyles}
-              TextStyle={styles.normalTextStyle}
-              onPress={() => navigation.navigate('EnterpriseSessionScreen')}
-            />
           </View>
         </Gradient>
       </Background>
@@ -107,7 +162,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
   );
 };
 
-export default LoginScreen;
+export default LoginScreenEnterprise;
 
 export const styles = StyleSheet.create({
   backGround: {
@@ -134,6 +189,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     marginBottom: '10%',
+  },
+
+  label: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 14,
+    lineHeight: 24,
+    color: 'white',
   },
 
   continueWithGoogleBox: {
@@ -171,6 +233,15 @@ export const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
 
+  inputContainer: {
+    height: 52,
+    width: '80%',
+    justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: 'white',
+    marginTop: 22,
+  },
+
   subtitle: {
     fontFamily: 'Poppins',
     fontStyle: 'normal',
@@ -194,5 +265,29 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#000000',
     paddingRight: '15%',
+  },
+  input: {
+    marginTop: 8,
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
+    lineHeight: 24,
+    color: 'black',
+  },
+
+  submitButton: {
+    display: 'flex',
+    alignItems: 'center',
+    height: 40,
+    width: 200,
+    borderRadius: 5,
+    justifyContent: 'center',
+    backgroundColor: '#1881B1',
+  },
+
+  buttonText: {
+    color: 'white',
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+    textAlign: 'center',
   },
 });

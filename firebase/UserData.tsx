@@ -4,7 +4,7 @@ const currentLog = () => {
     const user = auth().currentUser;
     if (user) {
         return {
-            email: user.displayName,
+            displayName: user.displayName,
             email: user.email,
             photoURL: user.photoURL,
             emailVerified: user.emailVerified,

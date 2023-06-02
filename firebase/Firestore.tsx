@@ -1,5 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import auth from '@react-native-firebase/auth';
 
 const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
@@ -25,7 +26,7 @@ export const updateUser = async (array:string[],userId: string, displayName:stri
 
 
 export const addEnterprise = async (nameEnterprise:string, rif:string,
-   responsibleName:string , location:string, description:string, vip:boolean) => {
+   responsibleName:string , location:string, description:string, vip:boolean, password:string) => {
     await usersCollection2.add({
       id: 0, // Inicializa el ID en 0
       nameEnterprise: nameEnterprise,
@@ -33,7 +34,8 @@ export const addEnterprise = async (nameEnterprise:string, rif:string,
       location: location,
       description: description,
       rif:rif,
-      vip:vip});
+      vip:vip,
+      password:password});
 };
 
 export const updateEnterprise = async (enterpriseId: string, enterpriseName:string, rif:string, personResponsible:string ) => {
@@ -168,4 +170,25 @@ export const checkResponsibleNameExists = async (responsibleName) => {
     const enterprisesRef = usersCollection2;
     const snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
     return !snapshot.empty;
+};
+
+export const createUserWithEmailAndPassword = async (email, password) => {
+  try {
+    const { user } = await auth().createUserWithEmailAndPassword(email, password);
+    console.log('Usuario creado:', user);
+  } catch (error) {
+    console.error('Error al crear el usuario:', error);
+    // Manejar el error de creación de usuario
+  }
+};
+
+export const checkPasswordCorrect = async (email, password) => {
+  try {
+    // Iniciar sesión con el correo electrónico y la contraseña
+    await auth().signInWithEmailAndPassword(email, password);
+    return true; // La contraseña es correcta
+  } catch (error) {
+    console.log('Error al verificar la contraseña:', error);
+    return false; // La contraseña es incorrecta
+  }
 };

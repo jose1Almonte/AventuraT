@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
-import { addEnterprise, uploadImage, getLastEnterpriseId, checkEnterpriseExists, checkResponsibleNameExists } from '../../firebase/Firestore';
+import { addEnterprise, uploadImage, getLastEnterpriseId, checkEnterpriseExists, checkResponsibleNameExists, createUserWithEmailAndPassword } from '../../firebase/Firestore';
 import { launchImageLibrary } from 'react-native-image-picker';
 
 interface EnterpriseFormData {
@@ -11,6 +11,7 @@ interface EnterpriseFormData {
   description: string;
   rif: string;
   vip: boolean;
+  password: string;
 }
 
 const validateEmail = (email: string): boolean => {
@@ -29,6 +30,7 @@ const EnterpriseFormScreen = () => {
     description: '',
     rif: '',
     vip: false,
+    password: '',
   });
 
   useEffect(() => {
@@ -46,13 +48,14 @@ const EnterpriseFormScreen = () => {
       data.responsibleName.trim() === '' ||
       data.location.trim() === '' ||
       data.description.trim() === '' ||
-      data.rif.trim() === ''
+      data.rif.trim().length < 6 ||
+      data.password.trim() === ''
     ) {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
       return;
     }
 
-    if (!validateEmail(data.responsibleName)) {
+    if (!validateEmail(data.responsibleName) ) {
       Alert.alert('Correo Electrónico Inválido', 'Por favor, ingrese un correo electrónico válido');
       return;
     }
@@ -76,9 +79,11 @@ const EnterpriseFormScreen = () => {
         data.responsibleName,
         data.location,
         data.description,
-        data.vip
+        data.vip,
+        data.password
       ).then(() => {
         Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
+        createUserWithEmailAndPassword(data.responsibleName, data.password);
         loadLastId();
       });
     } else {
@@ -89,9 +94,11 @@ const EnterpriseFormScreen = () => {
         data.responsibleName,
         data.location,
         data.description,
-        data.vip
+        data.vip,
+        data.password
         ).then(() => {
           Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
+          createUserWithEmailAndPassword(data.responsibleName, data.password);
           loadLastId();
         });
       });
@@ -133,7 +140,7 @@ const EnterpriseFormScreen = () => {
               <Text style={styles.label}>RIF</Text>
               <TextInput
                 style={styles.input}
-                onChangeText={(text) => setData((prevData) => ({ ...prevData, rif: text }))}
+                onChangeText={(text) => setData((prevData) => ({ ...prevData, rif: text, password: text }))}
               />
             </View>
             <View style={styles.inputContainer}>
