@@ -48,8 +48,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     <ScrollView style={styles.backGround}>
 
       <View style={styles.flex}>
-        <Pressable onPress={() => { navigation.navigate('NavbarScreen');}}>
+        <Pressable onPress={() => { navigation.navigate('NavbarScreen');}} >
+          <View style={styles.colorRed}>
           <SvgXml xml={menuBar} />
+          </View>
         </Pressable>
         <Text style={styles.Central}>AventuraT</Text>
 
@@ -128,11 +130,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 30,
-    marginRight: 30,
-    width: 350,
+    width: '100%',
+    height:'15%',
   },
   Central: {
     fontFamily: 'Sansation',
@@ -144,6 +143,7 @@ export const styles = StyleSheet.create({
     color: '#FFFFFF',
     opacity: 0.8,
     height: height * 0.13,
+    marginLeft:'7%',
   },
   Container2: {
     justifyContent: 'center',
@@ -161,6 +161,13 @@ export const styles = StyleSheet.create({
   },
   Sepa: {
     padding: 5,
+    alignItems: 'center',
+  },
+  colorRed:{
+    height:'20%',
+    width:'200%',
+    marginLeft:'5%',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   Redondos: {

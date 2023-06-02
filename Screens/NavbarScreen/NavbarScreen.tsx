@@ -33,7 +33,7 @@ const NavbarScreen = ({ navigation }: any) => {
 
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} >
       <View style={styles.fondo}>
         <View style={styles.info}>
           <View style={styles.topInfo}>
@@ -91,7 +91,7 @@ const NavbarScreen = ({ navigation }: any) => {
               </View>
               <View style={styles.contenedorLinks}>
                 <SvgXml xml={business} />
-                <Pressable onPress={() => { navigation.navigate('BusinessProfileScreen') }}>
+                <Pressable onPress={() => { navigation.navigate('EnterpriseFormScreen') }}>
                   <Text style={styles.txtInfo}>Registrar empresa</Text>
                 </Pressable>
               </View>

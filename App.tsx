@@ -13,6 +13,7 @@ import FavoriteScreen from './Screens/FavoriteScreen/FavoriteScreen';
 import SearchResultScreen from './Screens/SearchResultScreen/SearchResultScreen';
 import RatingsScreen from './Screens/RatingsScreen/RatingsScreen';
 import FeedbackScreen from './Screens/FeedbackScreen/FeedbackScreen';
+import EnterpriseFormScreen from './Screens/EnterpriseFormScreen/EnterpriseFormScreen';
 
 import { UserProvider } from './Context/UserContext';
 import MobilePaymentScreen from './Screens/MobilePaymentScreen/MobilePaymentScreen';
@@ -40,6 +41,7 @@ export default function App() {
           <Stack.Screen name="SearchResultScreen" component={SearchResultScreen} options={{ headerShown: false }} />
           <Stack.Screen name="RatingsScreen" component={RatingsScreen} options={{ headerShown: false }} />
           <Stack.Screen name="FeedbackScreen" component={FeedbackScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="EnterpriseFormScreen" component={EnterpriseFormScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

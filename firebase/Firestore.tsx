@@ -24,11 +24,16 @@ export const updateUser = async (array:string[],userId: string, displayName:stri
 };
 
 
-export const addEnterprise = async (enterpriseName:string, rif:string, personResponsible:string ) => {
+export const addEnterprise = async (nameEnterprise:string, rif:string,
+   responsibleName:string , location:string, description:string, vip:boolean) => {
     await usersCollection2.add({
-        enterpriseName: enterpriseName,
-        rif: rif,
-        personResponsible: personResponsible});
+      id: 0, // Inicializa el ID en 0
+      nameEnterprise: nameEnterprise,
+      responsibleName: responsibleName,
+      location: location,
+      description: description,
+      rif:rif,
+      vip:vip});
 };
 
 export const updateEnterprise = async (enterpriseId: string, enterpriseName:string, rif:string, personResponsible:string ) => {
@@ -137,4 +142,18 @@ export const getPackage = async (itemId) => {
     return null; // Si ocurre un error al obtener el paquete, puedes retornar null o un valor predeterminado adecuado.
   }
 
+};
+
+export const getLastEnterpriseId = async () => {
+  try {
+    const querySnapshot2 = await usersCollection2.orderBy('id', 'desc').limit(1).get();
+    if (!querySnapshot2.empty) {
+      const lastPackage2 = querySnapshot2.docs[0].data();
+      return lastPackage2.id;
+    }
+  } catch (error) {
+    console.error('Error al obtener el último ID de paquete en Firestore:', error);
+  }
+
+  return 0; // Si no hay paquetes, devuelve 0 como último ID
 };
