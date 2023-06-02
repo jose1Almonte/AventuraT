@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import profileVector from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -10,13 +10,11 @@ import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import currentLog from '../../firebase/UserData';
 import { deleteExpiredDocuments } from '../../firebase/DeletePackage';
-
+import { checkResponsibleNameExists } from '../../firebase/Firestore'; // Update the path to the FirebaseFunctions file
 
 interface UserProfileScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>,
 }
-
-
 
 export const UserProfileScreen = ({
   navigation,
@@ -30,7 +28,16 @@ export const UserProfileScreen = ({
   };
 
   const user = currentLog();
+  const [userExists, setUserExists] = useState(false);
 
+  useEffect(() => {
+    const checkUserExists = async () => {
+      const exists = await checkResponsibleNameExists(user?.email);
+      setUserExists(exists);
+    };
+
+    checkUserExists();
+  }, [user?.email]);
 
   return (
     <View style={styles.container}>
@@ -49,7 +56,6 @@ export const UserProfileScreen = ({
           </View>
 
           <View style = {styles.detailsUserBox}>
-            <Text style={styles.txt}>{user?.displayName}</Text>
             <Text style={styles.txt}>{user?.email}</Text>
           </View>
 
@@ -76,18 +82,22 @@ export const UserProfileScreen = ({
             <Text style={styles.txtInfo}>Opciones de pago</Text>
             <SvgXml xml={profileArrowVector} />
           </View>
-          <TouchableOpacity style={styles.containerInfo} onPress={deleteExpiredDocuments}>
-            <Text style={styles.txtInfo1}>Borrar paquetes caducados</Text>
-            <SvgXml xml={profileArrowVector} />
-          </TouchableOpacity>
+          {userExists && (
+            <TouchableOpacity style={styles.containerInfo} onPress={deleteExpiredDocuments}>
+              <Text style={styles.txtInfo1}>Borrar paquetes caducados</Text>
+              <SvgXml xml={profileArrowVector} />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
             <Text style={styles.txtInfo1}>Cerrar sesión</Text>
             <SvgXml xml={profileArrowVector} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen');}}>
-            <Text style={styles.txtInfo1}>Abrir formulario</Text>
-            <SvgXml xml={profileArrowVector} />
-          </TouchableOpacity>
+          {userExists && (
+            <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen');}}>
+              <Text style={styles.txtInfo1}>Abrir formulario</Text>
+              <SvgXml xml={profileArrowVector} />
+            </TouchableOpacity>
+          )}
         </View>
 
       </View>

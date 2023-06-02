@@ -42,7 +42,7 @@ const NavbarScreen = ({ navigation }: any) => {
               styles={styles}
               destinationNavigationComponentName="LoginScreen"
             />
-            <Text style={styles.txt}>{user?.displayName}</Text>
+            <Text style={styles.txt}>{user?.email}</Text>
           </View>
           <View style={styles.bottomInfo}>
             <View style={styles.linksInfo}>

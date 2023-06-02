@@ -26,7 +26,7 @@ const FeedbackForm = ({ navigation }: FeedbackFormProps) => {
                             }}
                             alt="photo"
                         />
-                        <Text style={styles.textPack}>{user?.displayName}</Text>
+                        <Text style={styles.textPack}>{user?.email}</Text>
 
                     </View>
                     <Text style={styles.textPack3}>Añade una puntuación</Text>
