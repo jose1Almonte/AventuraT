@@ -26,7 +26,7 @@ export const updateUser = async (array:string[],userId: string, displayName:stri
 
 
 export const addEnterprise = async (nameEnterprise:string, rif:string,
-   responsibleName:string , location:string, description:string, vip:boolean, password:string) => {
+   responsibleName:string , location:string, description:string, vip:boolean, password:string, phoneNumber:string) => {
     await usersCollection2.add({
       id: 0, // Inicializa el ID en 0
       nameEnterprise: nameEnterprise,
@@ -35,7 +35,9 @@ export const addEnterprise = async (nameEnterprise:string, rif:string,
       description: description,
       rif:rif,
       vip:vip,
-      password:password});
+      password:password,
+      phoneNumber:phoneNumber,
+    });
 };
 
 export const updateEnterprise = async (enterpriseId: string, enterpriseName:string, rif:string, personResponsible:string ) => {
@@ -172,14 +174,19 @@ export const checkResponsibleNameExists = async (responsibleName) => {
     return !snapshot.empty;
 };
 
-export const createUserWithEmailAndPassword = async (email, password) => {
+export const createUserWithEmailAndPassword = async (email, password, phoneNumber, photoURL) => {
   try {
     const { user } = await auth().createUserWithEmailAndPassword(email, password);
     console.log('Usuario creado:', user);
+    await user.updateProfile({
+      phoneNumber,
+      photoURL,
+    });
   } catch (error) {
     console.error('Error al crear el usuario:', error);
     // Manejar el error de creación de usuario
   }
+  
 };
 
 export const checkPasswordCorrect = async (email, password) => {

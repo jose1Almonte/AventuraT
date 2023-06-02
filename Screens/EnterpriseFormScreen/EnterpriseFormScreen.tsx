@@ -12,6 +12,7 @@ interface EnterpriseFormData {
   rif: string;
   vip: boolean;
   password: string;
+  phoneNumber: string;
 }
 
 const validateEmail = (email: string): boolean => {
@@ -21,7 +22,9 @@ const validateEmail = (email: string): boolean => {
 
 const EnterpriseFormScreen = () => {
   const [resourcePath, setResourcePath] = useState('');
+  const [resourcePath2, setResourcePath2] = useState('');
   const [filename, setFileName] = useState('');
+  const [filename2, setFileName2] = useState('');
   const [data, setData] = useState<EnterpriseFormData>({
     id: 0,
     nameEnterprise: '',
@@ -31,6 +34,7 @@ const EnterpriseFormScreen = () => {
     rif: '',
     vip: false,
     password: '',
+    phoneNumber: '',
   });
 
   useEffect(() => {
@@ -49,7 +53,8 @@ const EnterpriseFormScreen = () => {
       data.location.trim() === '' ||
       data.description.trim() === '' ||
       data.rif.trim().length < 6 ||
-      data.password.trim() === ''
+      data.password.trim() === '' ||
+      data.phoneNumber.trim() === ''
     ) {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
       return;
@@ -72,7 +77,7 @@ const EnterpriseFormScreen = () => {
       return;
     }
 
-    if (resourcePath === '') {
+    if (resourcePath === '' && resourcePath2 !== '') {
       addEnterprise(
         data.nameEnterprise,
         data.rif,
@@ -80,7 +85,8 @@ const EnterpriseFormScreen = () => {
         data.location,
         data.description,
         data.vip,
-        data.password
+        data.password,
+        data.phoneNumber
       ).then(() => {
         Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
         createUserWithEmailAndPassword(data.responsibleName, data.password);
@@ -95,11 +101,14 @@ const EnterpriseFormScreen = () => {
         data.location,
         data.description,
         data.vip,
-        data.password
+        data.password,
+        data.phoneNumber
         ).then(() => {
-          Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
-          createUserWithEmailAndPassword(data.responsibleName, data.password);
-          loadLastId();
+          if(resourcePath2 !== ''){
+            Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
+            createUserWithEmailAndPassword(data.responsibleName, data.password,data.phoneNumber,resourcePath2);
+            loadLastId();
+          }
         });
       });
     }
@@ -116,6 +125,22 @@ const EnterpriseFormScreen = () => {
         if (selectedAsset) {
           setResourcePath(selectedAsset.uri);
           setFileName(selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1));
+        }
+      }
+    });
+  };
+
+  const selectImage2 = () => {
+    launchImageLibrary({ mediaType: 'photo' }, (response) => {
+      if (response.didCancel) {
+        Alert.alert('Not Image', 'No se ha elegido una imagen');
+      } else if (response.errorCode) {
+        Alert.alert('ImagePicker Error', response.errorMessage || 'Error');
+      } else {
+        const selectedAsset2 = response.assets && response.assets[0];
+        if (selectedAsset2) {
+          setResourcePath2(selectedAsset2.uri);
+          setFileName2(selectedAsset2.uri.substring(selectedAsset2.uri.lastIndexOf('/') + 1));
         }
       }
     });
@@ -165,8 +190,20 @@ const EnterpriseFormScreen = () => {
               />
             </View>
 
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Numero de teléfono</Text>
+              <TextInput
+                style={styles.input}
+                onChangeText={(text) => setData((prevData) => ({ ...prevData, phoneNumber: text }))}
+              />
+            </View>
+
             <TouchableOpacity style={styles.button} onPress={selectImage}>
               <Text style={styles.buttonText}>Subir imagen/logo principal de la empresa</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.button} onPress={selectImage2}>
+              <Text style={styles.buttonText}>Subir imagen/propia</Text>
             </TouchableOpacity>
             {resourcePath === '' ? (
               <></>

@@ -7,13 +7,15 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
 import YourSignInWithGoogleComponent, { ProfilePicture } from '../../firebase/PerfilPicture';
 import { NavigationProp } from '@react-navigation/native';
 import { checkPasswordCorrect, checkResponsibleNameExists } from '../../firebase/Firestore';
 import auth from '@react-native-firebase/auth';
+import currentLog from '../../firebase/UserData';
+import { useUser } from '../../Context/UserContext';
 
 interface EnterpriseSessionScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -70,11 +72,14 @@ const makingThis = () => {
 };
 
 
+
 const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => {
   const [data, setData] = useState<Register>({
     Username :'',
     Password : '',
   });
+
+  const { user, setUser, setLogged } = useUser();
 
   const submit = async () => {
     if (
@@ -92,9 +97,11 @@ const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => 
         return;
       }
       if (await checkPasswordCorrect(data.Username, data.Password)){
-        signInWithEmailAndPassword(data.Username,data.Password);
-
+        await signInWithEmailAndPassword(data.Username,data.Password);
+        setUser(currentLog());
+        setLogged(true);
         navigation.navigate('HomeScreen');
+        
       }
       else {
         Alert.alert('Contraseña inválida');
@@ -131,7 +138,6 @@ const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => 
                 onChangeText={(text) => setData((prevData) => ({ ...prevData, Password: text }))}
               />
           </View>
-          
           <TouchableOpacity style={styles.submitButton} onPress={submit}>
             <Text style={styles.buttonText}>Ingresar sesión</Text>
           </TouchableOpacity>
