@@ -157,3 +157,15 @@ export const getLastEnterpriseId = async () => {
 
   return 0; // Si no hay paquetes, devuelve 0 como último ID
 };
+
+export const checkEnterpriseExists = async (nameEnterprise) => {
+    const enterprisesRef = usersCollection2;
+    const snapshot = await enterprisesRef.where('nameEnterprise', '==', nameEnterprise).get();
+    return !snapshot.empty;
+};
+
+export const checkResponsibleNameExists = async (responsibleName) => {
+    const enterprisesRef = usersCollection2;
+    const snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+    return !snapshot.empty;
+};

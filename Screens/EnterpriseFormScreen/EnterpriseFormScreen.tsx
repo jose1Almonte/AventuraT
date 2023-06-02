@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Alert, KeyboardAvoidingView, ScrollView } from 'react-native';
-import { addEnterprise, uploadImage, getLastEnterpriseId } from '../../firebase/Firestore';
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
+import { addEnterprise, uploadImage, getLastEnterpriseId, checkEnterpriseExists, checkResponsibleNameExists } from '../../firebase/Firestore';
 import { launchImageLibrary } from 'react-native-image-picker';
 
 interface EnterpriseFormData {
@@ -40,7 +40,7 @@ const EnterpriseFormScreen = () => {
     setData((prevData) => ({ ...prevData, id: lastId + 1 }));
   };
 
-  const submit = () => {
+  const submit = async () => {
     if (
       data.nameEnterprise.trim() === '' ||
       data.responsibleName.trim() === '' ||
@@ -57,13 +57,25 @@ const EnterpriseFormScreen = () => {
       return;
     }
 
+    const enterpriseExists = await checkEnterpriseExists(data.nameEnterprise);
+    if (enterpriseExists) {
+      Alert.alert('Empresa Existente', 'La empresa ya existe en la base de datos');
+      return;
+    }
+
+    const responsibleNameExists = await checkResponsibleNameExists(data.responsibleName);
+    if (responsibleNameExists) {
+      Alert.alert('Nombre de Responsable Existente', 'El nombre de responsable ya existe en la base de datos');
+      return;
+    }
+
     if (resourcePath === '') {
       addEnterprise(
         data.nameEnterprise,
+        data.rif,
         data.responsibleName,
         data.location,
         data.description,
-        data.rif,
         data.vip
       ).then(() => {
         Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
@@ -72,12 +84,12 @@ const EnterpriseFormScreen = () => {
     } else {
       uploadImage(resourcePath, filename).then((url) => {
         addEnterprise(
-          data.nameEnterprise,
-          data.responsibleName,
-          data.location,
-          data.description,
-          data.rif,
-          data.vip
+        data.nameEnterprise,
+        data.rif,
+        data.responsibleName,
+        data.location,
+        data.description,
+        data.vip
         ).then(() => {
           Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
           loadLastId();
