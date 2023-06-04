@@ -139,8 +139,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#1DB5BE',
   },
   info: {
-    flexGrow: 1,
+    flex: 1,
     marginBottom: 20,
+    backgroundColor: '#1DB5BE',
   },
   top: {
     display: 'flex',
@@ -148,6 +149,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: '#1DB5BE',
   },
   topInfo: {
     top: 30,
