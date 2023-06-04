@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 
 class ButtonWhatsApp extends Component {
   render() {
     return (
-      <View style={styles.containerButton}>
+      <TouchableOpacity style={styles.containerButton}>
         <View style={styles.container}>
           <Image
             style={styles.icon}
@@ -13,7 +13,7 @@ class ButtonWhatsApp extends Component {
           />
           <Text style={styles.text}>WhatsApp</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 }
