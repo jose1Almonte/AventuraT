@@ -9,3 +9,13 @@ export const searchPackagesByEmail = async (userEmail) => {
     return querySnapshot;
 
 };
+
+export const searchPackagesExpiredByEmail = async (userEmail) => {
+
+    const querySnapshot = ((await usersCollection3.where('expireDate', '<', new Date()).where('emailEnterprise', '==', userEmail).get()));
+
+    return querySnapshot;
+
+};
+
+

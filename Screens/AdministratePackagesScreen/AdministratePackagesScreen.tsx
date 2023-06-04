@@ -3,15 +3,15 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Background } from '../../Layouts/Background';
 import { useUser } from '../../Context/UserContext';
 import { NavigationProp } from '@react-navigation/native';
-import { searchPackagesByEmail } from '../../firebase/SearchPackagesByEmail';
-import { deleteSelectedPackage } from '../../firebase/DeletePackage';
+import { searchPackagesByEmail, searchPackagesExpiredByEmail } from '../../firebase/SearchPackagesByEmail';
+import { deleteAllByEmail, deleteExpiredDocumentsByEmail, deleteSelectedPackage } from '../../firebase/DeletePackage';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 
 
-const Button = ({buttonStyle, buttonTextStyle, text}:{buttonStyle: any, buttonTextStyle: any, text: string}) => {
+const Button = ({buttonStyle, buttonTextStyle, text, onPress}:{buttonStyle: any, buttonTextStyle: any, text: string, onPress: any}) => {
     return (
         <>
-            <TouchableOpacity style={buttonStyle}>
+            <TouchableOpacity style={buttonStyle} onPress={onPress}>
                 <Text style={buttonTextStyle}> {text} </Text>
             </TouchableOpacity>
         </>
@@ -75,6 +75,43 @@ const CardBox = ({data, handleTrashCanPress, cardBoxStyles, backgroundCardStyles
 
 const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Record<string, object | undefined>>;}) => {
     const {user} = useUser();
+    const [ready, setReady] = useState(false);
+    const [searchingExpiredPackages, setSearchingExpiredPackages] = useState(false);
+    const [documents, setDocuments] = useState<Document[]>([]);
+
+    const handleTrashCanPress = useCallback(
+        async (data: { id: any }) => {
+            await deleteSelectedPackage(data.id);
+
+          if (!ready){
+              setReady(true);
+          } else {
+            setReady(false);
+          }
+
+        },[ready]
+    );
+
+    const handleEraseExpired = async () => {
+            const emailEnterprise = user?.email;
+            await deleteExpiredDocumentsByEmail(emailEnterprise);
+            if (!ready){
+                setReady(true);
+            } else {
+              setReady(false);
+            }
+        };
+
+    const handleEraseAll = async () => {
+        const emailEnterprise = user?.email;
+        await deleteAllByEmail(emailEnterprise);
+        if (!ready){
+            setReady(true);
+        } else {
+          setReady(false);
+        }
+    };
+
 
     useEffect(()=>{
         if (!user){
@@ -83,25 +120,17 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
         }
     },[user, navigation]);
 
-    const handleTrashCanPress = useCallback(
-        async (data: { id: any }) => {
-          await deleteSelectedPackage(data.id);
-
-          if (!ready){
-              setReady(true);
-          } else {
-            setReady(false);
-          }
-
-        },[]);
-
-    const [documents, setDocuments] = useState<Document[]>([]);
-    const [ready, setReady] = useState(false);
-
     useEffect(()=>{
         const handleQuerySnapshot = async () => {
             try {
-                const querySnapshot = await searchPackagesByEmail(user?.email);
+                let querySnapshot;
+                if (searchingExpiredPackages){
+                    querySnapshot = await searchPackagesExpiredByEmail(user?.email);
+                } else {
+                    querySnapshot = await searchPackagesByEmail(user?.email);
+                }
+
+
                 const docs = querySnapshot.docs.map((doc) => doc.data());
                 setDocuments(docs);
                 console.log('DOCS: ', docs);
@@ -113,7 +142,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
         handleQuerySnapshot();
 
-    }, [user?.email, ready]);
+    }, [user?.email, ready, searchingExpiredPackages]);
 
 
   return (
@@ -137,10 +166,10 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
             <View style={styles.buttonsBox}>
 
-                <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Todos los paquetes" />
-                <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Paquetes caducados" />
-                <Button buttonStyle={styles.buttonEraseExpired} buttonTextStyle={styles.buttonText} text="Borrar caducados" />
-                <Button buttonStyle={styles.buttonEraseAll} buttonTextStyle={styles.buttonText} text="Eliminar TODO" />
+                <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Todos los paquetes" onPress={()=>{setSearchingExpiredPackages(false)}}/>
+                <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Paquetes caducados" onPress={()=>{setSearchingExpiredPackages(true)}}/>
+                <Button buttonStyle={styles.buttonEraseExpired} buttonTextStyle={styles.buttonText} text="Borrar caducados" onPress={() => {handleEraseExpired()}}/>
+                <Button buttonStyle={styles.buttonEraseAll} buttonTextStyle={styles.buttonText} text="Eliminar TODO" onPress={() => {handleEraseAll()}}/>
 
             </View>
 
