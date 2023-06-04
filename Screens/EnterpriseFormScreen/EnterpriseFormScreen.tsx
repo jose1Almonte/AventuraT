@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
-import { addEnterprise, uploadImage, getLastEnterpriseId, checkEnterpriseExists, checkResponsibleNameExists, createUserWithEmailAndPassword } from '../../firebase/Firestore';
+import { addEnterprise, uploadImage, getLastEnterpriseId, checkEnterpriseExists, checkResponsibleNameExists, createUserWithEmailAndPassword, addUser, checkIfUserExists } from '../../firebase/Firestore';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { useUser } from '../../Context/UserContext';
+import currentLog from '../../firebase/UserData';
 
 interface EnterpriseFormData {
   id: number;
@@ -13,6 +15,7 @@ interface EnterpriseFormData {
   vip: boolean;
   password: string;
   phoneNumber: string;
+  disName: string;
 }
 
 const validateEmail = (email: string): boolean => {
@@ -25,6 +28,7 @@ const EnterpriseFormScreen = () => {
   const [resourcePath2, setResourcePath2] = useState('');
   const [filename, setFileName] = useState('');
   const [filename2, setFileName2] = useState('');
+  const { setUser, setLogged } = useUser();
   const [data, setData] = useState<EnterpriseFormData>({
     id: 0,
     nameEnterprise: '',
@@ -35,6 +39,7 @@ const EnterpriseFormScreen = () => {
     vip: false,
     password: '',
     phoneNumber: '',
+    disName:'',
   });
 
   useEffect(() => {
@@ -54,7 +59,8 @@ const EnterpriseFormScreen = () => {
       data.description.trim() === '' ||
       data.rif.trim().length < 6 ||
       data.password.trim() === '' ||
-      data.phoneNumber.trim() === ''
+      data.phoneNumber.trim() === '' ||
+      data.disName.trim() === ''
     ) {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
       return;
@@ -77,21 +83,8 @@ const EnterpriseFormScreen = () => {
       return;
     }
 
-    if (resourcePath === '' && resourcePath2 !== '') {
-      addEnterprise(
-        data.nameEnterprise,
-        data.rif,
-        data.responsibleName,
-        data.location,
-        data.description,
-        data.vip,
-        data.password,
-        data.phoneNumber
-      ).then(() => {
-        Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
-        createUserWithEmailAndPassword(data.responsibleName, data.password);
-        loadLastId();
-      });
+    if (resourcePath === '' || resourcePath2 === '') {
+        Alert.alert('Error', 'Dude introduce pictures vale');
     } else {
       uploadImage(resourcePath, filename).then((url) => {
         addEnterprise(
@@ -102,15 +95,22 @@ const EnterpriseFormScreen = () => {
         data.description,
         data.vip,
         data.password,
-        data.phoneNumber
+        data.phoneNumber,
+        resourcePath,
+        resourcePath2
         ).then(() => {
-          if(resourcePath2 !== ''){
-            Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
-            createUserWithEmailAndPassword(data.responsibleName, data.password,data.phoneNumber,resourcePath2);
-            loadLastId();
-          }
         });
       });
+      if (resourcePath2 !== ''){
+        Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
+        await createUserWithEmailAndPassword(data.responsibleName, data.password,data.phoneNumber,resourcePath2, data.disName);
+        if (await checkIfUserExists(data.responsibleName) === false) {
+          await addUser([''],data.disName,data.responsibleName,false,resourcePath2);
+        }
+        loadLastId();
+        setUser(currentLog());
+        setLogged(true);
+      }
     }
   };
 
@@ -131,6 +131,7 @@ const EnterpriseFormScreen = () => {
   };
 
   const selectImage2 = () => {
+
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
       if (response.didCancel) {
         Alert.alert('Not Image', 'No se ha elegido una imagen');
@@ -166,6 +167,13 @@ const EnterpriseFormScreen = () => {
               <TextInput
                 style={styles.input}
                 onChangeText={(text) => setData((prevData) => ({ ...prevData, rif: text, password: text }))}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Nombre de la persona responsable</Text>
+              <TextInput
+                style={styles.input}
+                onChangeText={(text) => setData((prevData) => ({ ...prevData, disName: text }))}
               />
             </View>
             <View style={styles.inputContainer}>

@@ -20,10 +20,6 @@ export const ProfilePicture = ({
     navigation,
 }: ProfilePictureProps) => {
     const { user, setUser, isLogged } = useUser();
-    useEffect(() => {
-        setUser(currentLog());
-        console.log(user);
-      }, []);
     // const userOn = currentLog();
     let route: string = 'UserProfileScreen';
     return (

@@ -1,5 +1,5 @@
-import { Text, View, StyleSheet, Pressable } from 'react-native';
-import React from 'react';
+import { Text, View, StyleSheet, Pressable, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -10,31 +10,56 @@ import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../vectores/separator';
 import star from '../../vectores/star';
 import { NavigationProp } from '@react-navigation/native';
+import currentLog from '../../firebase/UserData';
+import { returnEnterpisePic } from '../../firebase/Firestore';
 
 interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
 }
 
 const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
+
+  const [empresa, setEmpresa] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [nameEnterprise, setNameEnterprise] = useState(null);
+
+  useEffect(() => {
+    const fetchEnterprisePic = async () => {
+      const user = currentLog();
+      const pic = await returnEnterpisePic(user?.email);
+      if(pic!=null){
+        setEmpresa(pic.urlEmpresa);
+        setDescription(pic.description);
+        setLocation(pic.location);
+        setNameEnterprise(pic.nameEnterprise);
+      }
+    };
+
+    fetchEnterprisePic();
+  }, []);
+
+
   return (
-    <View style={styles.container}>
-      <View style={styles.fondo}>
-        <SvgXml xml={vectorPerfil} />
-      </View>
+    <ScrollView style={styles.scroll}>
+      <View >
       <View style={styles.info}>
         <View style={styles.topInfo}>
           <View style={styles.top}>
-            <PhotoProfile size={90} imageSource={'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'} />
+
+          <View>
+          {empresa &&
+            <PhotoProfile size={90} imageSource={empresa}/>
+          }
+          </View>
             <SvgXml xml={separator} />
             <View style={styles.contenedorPuntaje}>
               <View style={styles.contenedorEstrella}>
                 <Text style={styles.point}>4,5</Text>
                 <SvgXml xml={star} />
               </View>
-
               <Text style={styles.description}>Calificación</Text>
             </View>
-
           </View>
           <View style={stylesBtn.positionContainer}>
             <Pressable onPress={() => {
@@ -56,16 +81,13 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
               </View>
             </Pressable>
           </View>
-          <Text style={styles.txt}>nombre usuario</Text>
+          <Text style={styles.txt}>{nameEnterprise}</Text>
           <Text style={styles.description}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum
-            ducimus consectetur, optio magnam ad quasi eligendi distinctio vel
-            dicta est. Ad a totam ipsum. Animi, ut cupiditate. Quia, ducimus
-            dolore!
+            {description}
           </Text>
           <View style={styles.location}>
             <SvgXml xml={vectorLocation} />
-            <Text style={styles.nameLocation}>Ubicación</Text>
+            <Text style={styles.nameLocation}>{location}</Text>
           </View>
           <View style={styles.buttons}>
             <EditProfileButton />
@@ -73,15 +95,18 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
           </View>
           <View style={styles.bottomInfo}>
             <Text style={styles.titlePack}>Paquetes publicados</Text>
-            <View style={styles.containerPack}>
-              <PublishedPackages />
-              <PublishedPackages />
-            </View>
           </View>
-
         </View>
       </View>
-    </View>
+      </View>
+      <View style={styles.containerPack}>
+        <View style={styles.containerPack2}>
+        <View style={styles.containerPack3}>
+              <PublishedPackages />
+        </View>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -111,6 +136,8 @@ const stylesBtn = StyleSheet.create({
   },
 });
 
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -118,21 +145,25 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 1,
-    display: 'flex',
-    marginBottom: 650,
+    marginBottom: 20,
+    backgroundColor: '#1DB5BE',
   },
+  scroll:{
+    backgroundColor: '#1DB5BE',
+    flex:1},
   top: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignContent: 'center',
   },
   topInfo: {
     top: 30,
     margin: 35,
     alignItems: 'flex-start',
-    gap: 15,
+    gap: 5,
+
   },
   bottomInfo: {
     marginTop: 15,
@@ -141,11 +172,12 @@ const styles = StyleSheet.create({
     gap: 15,
     width: '100%',
     flexDirection: 'column',
+    
   },
-
   fondo: {
     flex: 1,
     display: 'flex',
+    
   },
   txt: {
     color: 'black',
@@ -195,11 +227,33 @@ const styles = StyleSheet.create({
     color: 'black',
     fontFamily: 'Poppins-Medium',
     fontSize: 18,
+    alignItems:'center',
+    textAlign:'center',
   },
   containerPack: {
-    flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  containerPack2: {
+    backgroundColor: '#3d9bba',
+    width: '50%',
+    borderRadius:20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    
+  },
+  containerPack3: {
+    backgroundColor: 'black',
+    width: '85%',
+    borderRadius:20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    marginTop:'5%',
+    marginBottom:'5%',
   },
   contenedorPuntaje: {
     flexDirection: 'column',

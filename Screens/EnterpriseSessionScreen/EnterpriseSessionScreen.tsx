@@ -61,7 +61,6 @@ const signInWithEmailAndPassword = async (email, password) => {
     const { user } = await auth().signInWithEmailAndPassword(email, password);
     console.log('Usuario autenticado:', user);
   } catch (error) {
-    console.error('Error al autenticar el usuario:', error);
     // Manejar el error de autenticación
   }
 };
@@ -91,7 +90,6 @@ const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => 
     }
     else{
       const responsibleNameExists = await checkResponsibleNameExists(data.Username);
-      const passwordExists = await checkResponsibleNameExists(data.Username);
       if (!responsibleNameExists) {
         Alert.alert('Usuario no Existente', 'El usuario no existe en la base de datos');
         return;
@@ -101,7 +99,6 @@ const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => 
         setUser(currentLog());
         setLogged(true);
         navigation.navigate('HomeScreen');
-        
       }
       else {
         Alert.alert('Contraseña inválida');

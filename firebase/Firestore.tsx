@@ -1,6 +1,9 @@
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
+import currentLog from './UserData';
+import { useUser } from '../Context/UserContext';
+import { useEffect } from 'react';
 
 const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
@@ -26,7 +29,7 @@ export const updateUser = async (array:string[],userId: string, displayName:stri
 
 
 export const addEnterprise = async (nameEnterprise:string, rif:string,
-   responsibleName:string , location:string, description:string, vip:boolean, password:string, phoneNumber:string) => {
+   responsibleName:string , location:string, description:string, vip:boolean, password:string, phoneNumber:string,urlPersonal:string,urlEmpresa:string) => {
     await usersCollection2.add({
       id: 0, // Inicializa el ID en 0
       nameEnterprise: nameEnterprise,
@@ -37,6 +40,9 @@ export const addEnterprise = async (nameEnterprise:string, rif:string,
       vip:vip,
       password:password,
       phoneNumber:phoneNumber,
+      urlPersonal:urlPersonal,
+      urlEmpresa:urlEmpresa
+
     });
 };
 
@@ -127,6 +133,7 @@ export const getFavorites = async (email: string) => {
 };
 
 
+
 export const getPackage = async (itemId) => {
   try {
     const documentSnapshot = await firestore()
@@ -174,16 +181,16 @@ export const checkResponsibleNameExists = async (responsibleName) => {
     return !snapshot.empty;
 };
 
-export const createUserWithEmailAndPassword = async (email, password, phoneNumber, photoURL) => {
+export const createUserWithEmailAndPassword = async (email, password, phoneNumber, photoURL,disName) => {
   try {
     const { user } = await auth().createUserWithEmailAndPassword(email, password);
-    console.log('Usuario creado:', user);
     await user.updateProfile({
-      phoneNumber,
       photoURL,
+      displayName:disName,
     });
+
+
   } catch (error) {
-    console.error('Error al crear el usuario:', error);
     // Manejar el error de creación de usuario
   }
   
@@ -199,3 +206,29 @@ export const checkPasswordCorrect = async (email, password) => {
     return false; // La contraseña es incorrecta
   }
 };
+
+export const returnEnterpisePic = async (responsibleName) => {
+  const enterprisesRef = usersCollection2;
+  const snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+  if (!snapshot.empty) {
+    const enterpriseData = snapshot.docs[0].data();
+    return enterpriseData;
+  } else {
+    return null;
+  }
+};
+
+export const listPackage = async (responsibleName) => {
+  const query = packagesCollection.where('emailEnterprise', '==', responsibleName);
+  const querySnapshot = await query.get();
+  const packages = [];
+  querySnapshot.forEach((doc) => {
+    const packageData = doc.data();
+    packages.push(packageData);
+  });
+
+  return packages;
+};
+
+
+
