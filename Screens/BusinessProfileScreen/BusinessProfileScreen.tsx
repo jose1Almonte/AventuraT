@@ -149,13 +149,13 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#1DB5BE',
   },
   topInfo: {
     top: 30,
     margin: 35,
     alignItems: 'flex-start',
     gap: 15,
+
   },
   bottomInfo: {
     marginTop: 15,
@@ -164,10 +164,12 @@ const styles = StyleSheet.create({
     gap: 15,
     width: '100%',
     flexDirection: 'column',
+    
   },
   fondo: {
     flex: 1,
     display: 'flex',
+    
   },
   txt: {
     color: 'black',
@@ -219,9 +221,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   containerPack: {
-    flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    alignContent:'center',
   },
   contenedorPuntaje: {
     flexDirection: 'column',
