@@ -82,17 +82,24 @@ export const UserProfileScreen = ({
             <Text style={styles.txtInfo}>Opciones de pago</Text>
             <SvgXml xml={profileArrowVector} />
           </View>
+          <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
+            <Text style={styles.txtInfo1}>Cerrar sesión</Text>
+            <SvgXml xml={profileArrowVector} />
+          </TouchableOpacity>
           {userExists && (
             <TouchableOpacity style={styles.containerInfo} onPress={deleteExpiredDocuments}>
               <Text style={styles.txtInfo1}>Borrar paquetes caducados</Text>
               <SvgXml xml={profileArrowVector} />
             </TouchableOpacity>
           )}
-          <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
-            <Text style={styles.txtInfo1}>Cerrar sesión</Text>
-            <SvgXml xml={profileArrowVector} />
-          </TouchableOpacity>
           {userExists && (
+            <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessProfileScreen');}}>
+              <Text style={styles.txtInfo1}>Perfil empresarial</Text>
+              <SvgXml xml={profileArrowVector} />
+            </TouchableOpacity>
+          )}
+          {userExists && (
+            
             <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen');}}>
               <Text style={styles.txtInfo1}>Abrir formulario</Text>
               <SvgXml xml={profileArrowVector} />

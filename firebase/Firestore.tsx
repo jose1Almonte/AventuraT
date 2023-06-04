@@ -29,7 +29,7 @@ export const updateUser = async (array:string[],userId: string, displayName:stri
 
 
 export const addEnterprise = async (nameEnterprise:string, rif:string,
-   responsibleName:string , location:string, description:string, vip:boolean, password:string, phoneNumber:string) => {
+   responsibleName:string , location:string, description:string, vip:boolean, password:string, phoneNumber:string,urlPersonal:string,urlEmpresa:string) => {
     await usersCollection2.add({
       id: 0, // Inicializa el ID en 0
       nameEnterprise: nameEnterprise,
@@ -40,6 +40,9 @@ export const addEnterprise = async (nameEnterprise:string, rif:string,
       vip:vip,
       password:password,
       phoneNumber:phoneNumber,
+      urlPersonal:urlPersonal,
+      urlEmpresa:urlEmpresa
+
     });
 };
 
@@ -201,5 +204,16 @@ export const checkPasswordCorrect = async (email, password) => {
   } catch (error) {
     console.log('Error al verificar la contraseña:', error);
     return false; // La contraseña es incorrecta
+  }
+};
+
+export const returnEnterpisePic = async (responsibleName) => {
+  const enterprisesRef = usersCollection2;
+  const snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+  if (!snapshot.empty) {
+    const enterpriseData = snapshot.docs[0].data();
+    return enterpriseData;
+  } else {
+    return null;
   }
 };

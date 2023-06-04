@@ -95,7 +95,9 @@ const EnterpriseFormScreen = () => {
         data.description,
         data.vip,
         data.password,
-        data.phoneNumber
+        data.phoneNumber,
+        resourcePath,
+        resourcePath2
         ).then(() => {
         });
       });
@@ -103,7 +105,7 @@ const EnterpriseFormScreen = () => {
         Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
         await createUserWithEmailAndPassword(data.responsibleName, data.password,data.phoneNumber,resourcePath2, data.disName);
         if (await checkIfUserExists(data.responsibleName) === false) {
-          await addUser([''],data.disName,data.responsibleName,false,resourcePath2,);
+          await addUser([''],data.disName,data.responsibleName,false,resourcePath2);
         }
         loadLastId();
         setUser(currentLog());

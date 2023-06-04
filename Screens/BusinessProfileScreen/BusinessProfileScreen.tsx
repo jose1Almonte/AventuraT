@@ -1,5 +1,5 @@
-import { Text, View, StyleSheet, Pressable } from 'react-native';
-import React from 'react';
+import { Text, View, StyleSheet, Pressable, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -10,31 +10,56 @@ import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../vectores/separator';
 import star from '../../vectores/star';
 import { NavigationProp } from '@react-navigation/native';
+import currentLog from '../../firebase/UserData';
+import { returnEnterpisePic } from '../../firebase/Firestore';
 
 interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
 }
 
 const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
+
+  const [empresa, setEmpresa] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [nameEnterprise, setNameEnterprise] = useState(null);
+
+  useEffect(() => {
+    const fetchEnterprisePic = async () => {
+      const user = currentLog();
+      const pic = await returnEnterpisePic(user?.email);
+      if(pic!=null){
+        setEmpresa(pic.urlEmpresa);
+        setDescription(pic.description);
+        setLocation(pic.location);
+        setNameEnterprise(pic.nameEnterprise);
+      }
+    };
+
+    fetchEnterprisePic();
+  }, []);
+
+
   return (
-    <View style={styles.container}>
-      <View style={styles.fondo}>
-        <SvgXml xml={vectorPerfil} />
-      </View>
+    <ScrollView>
+      <View >
       <View style={styles.info}>
         <View style={styles.topInfo}>
           <View style={styles.top}>
-            <PhotoProfile size={90} imageSource={'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'} />
+
+          <View>
+          {empresa &&
+            <PhotoProfile size={90} imageSource={empresa}/>
+          }
+          </View>
             <SvgXml xml={separator} />
             <View style={styles.contenedorPuntaje}>
               <View style={styles.contenedorEstrella}>
                 <Text style={styles.point}>4,5</Text>
                 <SvgXml xml={star} />
               </View>
-
               <Text style={styles.description}>Calificación</Text>
             </View>
-
           </View>
           <View style={stylesBtn.positionContainer}>
             <Pressable onPress={() => {
@@ -56,16 +81,13 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
               </View>
             </Pressable>
           </View>
-          <Text style={styles.txt}>nombre usuario</Text>
+          <Text style={styles.txt}>{nameEnterprise}</Text>
           <Text style={styles.description}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum
-            ducimus consectetur, optio magnam ad quasi eligendi distinctio vel
-            dicta est. Ad a totam ipsum. Animi, ut cupiditate. Quia, ducimus
-            dolore!
+            {description}
           </Text>
           <View style={styles.location}>
             <SvgXml xml={vectorLocation} />
-            <Text style={styles.nameLocation}>Ubicación</Text>
+            <Text style={styles.nameLocation}>{location}</Text>
           </View>
           <View style={styles.buttons}>
             <EditProfileButton />
@@ -78,10 +100,10 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
               <PublishedPackages />
             </View>
           </View>
-
         </View>
       </View>
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -117,9 +139,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#1DB5BE',
   },
   info: {
-    flex: 1,
-    display: 'flex',
-    marginBottom: 650,
+    flexGrow: 1,
+    marginBottom: 20,
   },
   top: {
     display: 'flex',
@@ -142,7 +163,6 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'column',
   },
-
   fondo: {
     flex: 1,
     display: 'flex',
