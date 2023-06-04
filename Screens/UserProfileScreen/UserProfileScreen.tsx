@@ -99,7 +99,6 @@ export const UserProfileScreen = ({
             </TouchableOpacity>
           )}
           {userExists && (
-            
             <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen');}}>
               <Text style={styles.txtInfo1}>Abrir formulario</Text>
               <SvgXml xml={profileArrowVector} />

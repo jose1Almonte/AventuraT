@@ -1,45 +1,51 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
 import calendar from '../../vectores/calendar';
 import {SvgXml} from 'react-native-svg';
+import { listPackage } from '../../firebase/Firestore';
+import { useUser } from '../../Context/UserContext';
 
-class PublishedPackages extends Component {
-  render() {
+function PublishedPackages() {
+
+    const {user} = useUser();
+    const [packages, setPackages] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const packageList = await listPackage(user.email);
+      setPackages(packageList);
+    };
+
+    fetchData();
+  }, [user.email]);
+
     return (
-      <View style={styles.container}>
+      <View>
+      {packages != null && packages.map((packageData, index) => (
+      <View style={styles.container} key={index} >
         <View style={styles.containerPack}>
           <View style={styles.containerText}>
-            <Text style={styles.textPack}>Nombre paquete</Text>
+            <Text style={styles.textPack}>{packageData.name}</Text>
             <View style={styles.contenedorCalendario}>
               <SvgXml xml={calendar} />
-              <Text style={styles.date}>Mayo, 15</Text>
+              <Text style={styles.date}>'s'</Text>
             </View>
           </View>
           <Image
             style={styles.img}
-            source={{
-              uri: 'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
-            }}
+            source={{ uri: packageData.mainImageUrl }}
             alt="photo"
           />
         </View>
-
-        {/* <View style={styles.containerPack}>
-          <View style={styles.containerText}>
-            <Text style={styles.textPack}>Nombre paquete</Text>
-            <View style={styles.contenedorCalendario}>
-              <SvgXml xml={calendar} />
-              <Text style={styles.date}>Mayo, 16</Text>
-            </View>
-          </View>
-        </View> */}
+      </View>))}
       </View>
     );
-  }
 }
 
 const styles = StyleSheet.create({
   containerPack: {
+    marginTop:'5%',
+    marginBottom:'5%',
     height: 185,
     width: 161,
     borderRadius: 20,

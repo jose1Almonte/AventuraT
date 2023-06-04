@@ -27,8 +27,8 @@ export default function App() {
     <UserProvider>
       <NavigationContainer>
         <Stack.Navigator>
+        <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="AdministratePackagesScreen" component={AdministratePackagesScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="CreatePackageFormScreen" component={CreatePackageFormScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} options={{ headerShown: false }} />
           <Stack.Screen name="MobilePaymentScreen" component={MobilePaymentScreen} options={{ headerShown: false }} />

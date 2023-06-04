@@ -217,3 +217,18 @@ export const returnEnterpisePic = async (responsibleName) => {
     return null;
   }
 };
+
+export const listPackage = async (responsibleName) => {
+  const query = packagesCollection.where('emailEnterprise', '==', responsibleName);
+  const querySnapshot = await query.get();
+  const packages = [];
+  querySnapshot.forEach((doc) => {
+    const packageData = doc.data();
+    packages.push(packageData);
+  });
+
+  return packages;
+};
+
+
+

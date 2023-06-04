@@ -41,7 +41,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
 
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.scroll}>
       <View >
       <View style={styles.info}>
         <View style={styles.topInfo}>
@@ -95,13 +95,16 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
           </View>
           <View style={styles.bottomInfo}>
             <Text style={styles.titlePack}>Paquetes publicados</Text>
-            <View style={styles.containerPack}>
-              <PublishedPackages />
-              <PublishedPackages />
-            </View>
           </View>
         </View>
       </View>
+      </View>
+      <View style={styles.containerPack}>
+        <View style={styles.containerPack2}>
+        <View style={styles.containerPack3}>
+              <PublishedPackages />
+        </View>
+        </View>
       </View>
     </ScrollView>
   );
@@ -133,6 +136,8 @@ const stylesBtn = StyleSheet.create({
   },
 });
 
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -143,18 +148,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: '#1DB5BE',
   },
+  scroll:{
+    backgroundColor: '#1DB5BE',
+    flex:1},
   top: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignContent: 'center',
   },
   topInfo: {
     top: 30,
     margin: 35,
     alignItems: 'flex-start',
-    gap: 15,
+    gap: 5,
 
   },
   bottomInfo: {
@@ -219,11 +227,33 @@ const styles = StyleSheet.create({
     color: 'black',
     fontFamily: 'Poppins-Medium',
     fontSize: 18,
+    alignItems:'center',
+    textAlign:'center',
   },
   containerPack: {
     width: '100%',
     justifyContent: 'center',
-    alignContent:'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  containerPack2: {
+    backgroundColor: '#3d9bba',
+    width: '50%',
+    borderRadius:20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    
+  },
+  containerPack3: {
+    backgroundColor: 'black',
+    width: '85%',
+    borderRadius:20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    marginTop:'5%',
+    marginBottom:'5%',
   },
   contenedorPuntaje: {
     flexDirection: 'column',
