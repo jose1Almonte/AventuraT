@@ -85,7 +85,7 @@ const NavbarScreen = ({ navigation }: any) => {
               </View>
               <View style={styles.contenedorLinks}>
                 <SvgXml xml={helpdesk} />
-                <Pressable onPress={() => { navigation.navigate('HomeScreen') }}>
+                <Pressable onPress={() => { navigation.navigate('HelpdeskScreen') }}>
                   <Text style={styles.txtInfo}>Atención al cliente</Text>
                 </Pressable>
               </View>
