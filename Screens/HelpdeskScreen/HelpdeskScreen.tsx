@@ -22,7 +22,7 @@ export default class HelpdeskScreen extends Component {
         <SvgXml
           xml={vectorHelpdeskScreen}
           width={`${screenWidth * 1}`}
-          height={`${screenHeight * 0.51}`}
+          height={`${screenHeight * 0.515}`}
         />
 
         <View style={styles.containerImg}>
