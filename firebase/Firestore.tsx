@@ -178,10 +178,6 @@ export const createUserWithEmailAndPassword = async (email, password, phoneNumbe
   try {
     const { user } = await auth().createUserWithEmailAndPassword(email, password);
     console.log('Usuario creado:', user);
-    await user.updateProfile({
-      phoneNumber,
-      photoURL,
-    });
   } catch (error) {
     console.error('Error al crear el usuario:', error);
     // Manejar el error de creación de usuario
