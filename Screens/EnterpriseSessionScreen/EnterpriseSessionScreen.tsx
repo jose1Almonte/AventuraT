@@ -61,7 +61,6 @@ const signInWithEmailAndPassword = async (email, password) => {
     const { user } = await auth().signInWithEmailAndPassword(email, password);
     console.log('Usuario autenticado:', user);
   } catch (error) {
-    console.error('Error al autenticar el usuario:', error);
     // Manejar el error de autenticación
   }
 };

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
 import { addEnterprise, uploadImage, getLastEnterpriseId, checkEnterpriseExists, checkResponsibleNameExists, createUserWithEmailAndPassword } from '../../firebase/Firestore';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { useUser } from '../../Context/UserContext';
+import currentLog from '../../firebase/UserData';
 
 interface EnterpriseFormData {
   id: number;
@@ -25,6 +27,7 @@ const EnterpriseFormScreen = () => {
   const [resourcePath2, setResourcePath2] = useState('');
   const [filename, setFileName] = useState('');
   const [filename2, setFileName2] = useState('');
+  const { setUser, setLogged } = useUser();
   const [data, setData] = useState<EnterpriseFormData>({
     id: 0,
     nameEnterprise: '',
@@ -77,21 +80,8 @@ const EnterpriseFormScreen = () => {
       return;
     }
 
-    if (resourcePath === '' && resourcePath2 !== '') {
-      addEnterprise(
-        data.nameEnterprise,
-        data.rif,
-        data.responsibleName,
-        data.location,
-        data.description,
-        data.vip,
-        data.password,
-        data.phoneNumber
-      ).then(() => {
-        Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
-        createUserWithEmailAndPassword(data.responsibleName, data.password);
-        loadLastId();
-      });
+    if (resourcePath === '' || resourcePath2 === '') {
+        Alert.alert('Error', 'Dude introduce pictures vale');
     } else {
       uploadImage(resourcePath, filename).then((url) => {
         addEnterprise(
@@ -104,13 +94,15 @@ const EnterpriseFormScreen = () => {
         data.password,
         data.phoneNumber
         ).then(() => {
-          if(resourcePath2 !== ''){
-            Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
-            createUserWithEmailAndPassword(data.responsibleName, data.password,data.phoneNumber,resourcePath2);
-            loadLastId();
-          }
         });
       });
+      if (resourcePath2 !== ''){
+        Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
+        await createUserWithEmailAndPassword(data.responsibleName, data.password,data.phoneNumber,resourcePath2);
+        loadLastId();
+        setUser(currentLog());
+        setLogged(true);
+      }
     }
   };
 
@@ -131,6 +123,7 @@ const EnterpriseFormScreen = () => {
   };
 
   const selectImage2 = () => {
+
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
       if (response.didCancel) {
         Alert.alert('Not Image', 'No se ha elegido una imagen');

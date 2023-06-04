@@ -1,6 +1,9 @@
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
+import currentLog from './UserData';
+import { useUser } from '../Context/UserContext';
+import { useEffect } from 'react';
 
 const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
@@ -127,6 +130,7 @@ export const getFavorites = async (email: string) => {
 };
 
 
+
 export const getPackage = async (itemId) => {
   try {
     const documentSnapshot = await firestore()
@@ -177,9 +181,12 @@ export const checkResponsibleNameExists = async (responsibleName) => {
 export const createUserWithEmailAndPassword = async (email, password, phoneNumber, photoURL) => {
   try {
     const { user } = await auth().createUserWithEmailAndPassword(email, password);
-    console.log('Usuario creado:', user);
+    await user.updateProfile({
+      photoURL,
+    });
+
+
   } catch (error) {
-    console.error('Error al crear el usuario:', error);
     // Manejar el error de creación de usuario
   }
   
