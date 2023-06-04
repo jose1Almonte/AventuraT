@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Background } from '../../Layouts/Background';
 import { useUser } from '../../Context/UserContext';
 import { NavigationProp } from '@react-navigation/native';
@@ -18,7 +18,7 @@ const Button = ({buttonStyle, buttonTextStyle, text}:{buttonStyle: any, buttonTe
     );
 };
 
-const CardBox = ({data, cardBoxStyles, backgroundCardStyles}:{data: any,cardBoxStyles: any, backgroundCardStyles: any}) => {
+const CardBox = ({data, handleTrashCanPress, cardBoxStyles, backgroundCardStyles}:{data: any, handleTrashCanPress: any, cardBoxStyles: any, backgroundCardStyles: any}) => {
 
     const startDate = data.startDate.toDate();
     const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
@@ -46,7 +46,7 @@ const CardBox = ({data, cardBoxStyles, backgroundCardStyles}:{data: any,cardBoxS
                     </View>
 
                     <View style={styles.firstRowRight}>
-                        <TouchableOpacity style={styles.circle} onPress={() => {deleteSelectedPackage(data.id);}}>
+                        <TouchableOpacity style={styles.circle} onPress={() => {handleTrashCanPress(data);}}>
                             <View style={styles.imageBox}>
                                 <Image source={require('../../images/TrashCanLogo.png')} style={styles.image}/>
                             </View>
@@ -83,7 +83,20 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
         }
     },[user, navigation]);
 
+    const handleTrashCanPress = useCallback(
+        async (data: { id: any }) => {
+          await deleteSelectedPackage(data.id);
+
+          if (!ready){
+              setReady(true);
+          } else {
+            setReady(false);
+          }
+
+        },[]);
+
     const [documents, setDocuments] = useState<Document[]>([]);
+    const [ready, setReady] = useState(false);
 
     useEffect(()=>{
         const handleQuerySnapshot = async () => {
@@ -99,7 +112,9 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
         };
 
         handleQuerySnapshot();
-    }, [user?.email]);
+
+    }, [user?.email, ready]);
+
 
   return (
 
@@ -139,7 +154,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             <ScrollView style={styles.scrollView} contentContainerStyle = {styles.scrollViewContentContainerStyle}>
 
                 {documents.map((document, index) => (
-                    <CardBox key={index} data={document} cardBoxStyles={styles.cardBox} backgroundCardStyles={styles.backgroundCard}/>
+                    <CardBox key={index} data={document} handleTrashCanPress={handleTrashCanPress} cardBoxStyles={styles.cardBox} backgroundCardStyles={styles.backgroundCard}/>
                 ))}
 
                 {/* <CardBox cardBoxStyles={styles.cardBox} backgroundCardStyles={styles.backgroundCard}/> */}
