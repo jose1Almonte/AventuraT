@@ -1,7 +1,7 @@
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 
-const usersCollection3 = firestore().collection('package');
+export const usersCollection3 = firestore().collection('package');
 
 export const deleteExpiredDocuments = async () => {
 
