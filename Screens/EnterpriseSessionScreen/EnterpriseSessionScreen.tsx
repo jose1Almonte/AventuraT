@@ -90,7 +90,6 @@ const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => 
     }
     else{
       const responsibleNameExists = await checkResponsibleNameExists(data.Username);
-      const passwordExists = await checkResponsibleNameExists(data.Username);
       if (!responsibleNameExists) {
         Alert.alert('Usuario no Existente', 'El usuario no existe en la base de datos');
         return;

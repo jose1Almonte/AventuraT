@@ -178,11 +178,12 @@ export const checkResponsibleNameExists = async (responsibleName) => {
     return !snapshot.empty;
 };
 
-export const createUserWithEmailAndPassword = async (email, password, phoneNumber, photoURL) => {
+export const createUserWithEmailAndPassword = async (email, password, phoneNumber, photoURL,disName) => {
   try {
     const { user } = await auth().createUserWithEmailAndPassword(email, password);
     await user.updateProfile({
       photoURL,
+      displayName:disName,
     });
 
 
