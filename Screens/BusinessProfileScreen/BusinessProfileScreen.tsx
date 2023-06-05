@@ -42,7 +42,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
 
   return (
     <ScrollView style={styles.scroll}>
-      <View >
+      <View>
       <View style={styles.info}>
         <View style={styles.topInfo}>
           <View style={styles.top}>
