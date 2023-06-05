@@ -99,6 +99,7 @@ const EnterpriseFormScreen = () => {
         resourcePath,
         resourcePath2
         ).then(() => {
+          Alert.alert('Done', 'image uploaded');
         });
       });
       if (resourcePath2 !== ''){
@@ -122,9 +123,10 @@ const EnterpriseFormScreen = () => {
         Alert.alert('ImagePicker Error', response.errorMessage || 'Error');
       } else {
         const selectedAsset = response.assets && response.assets[0];
-        if (selectedAsset) {
+        if (selectedAsset && selectedAsset.uri) {
           setResourcePath(selectedAsset.uri);
           setFileName(selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1));
+          Alert.alert('Done', 'Image uploaded');
         }
       }
     });
@@ -139,9 +141,10 @@ const EnterpriseFormScreen = () => {
         Alert.alert('ImagePicker Error', response.errorMessage || 'Error');
       } else {
         const selectedAsset2 = response.assets && response.assets[0];
-        if (selectedAsset2) {
+        if (selectedAsset2 && selectedAsset2.uri) {
           setResourcePath2(selectedAsset2.uri);
           setFileName2(selectedAsset2.uri.substring(selectedAsset2.uri.lastIndexOf('/') + 1));
+          Alert.alert('Done', 'picture uploaded');
         }
       }
     });
