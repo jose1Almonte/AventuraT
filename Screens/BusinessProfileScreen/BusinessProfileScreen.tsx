@@ -99,7 +99,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
             </View>
             <View style={styles.buttons}>
               <EditProfileButton />
-              <EditPackageButton />
+              <EditPackageButton navigation={navigation}/>
             </View>
             <View style={styles.bottomInfo}>
               <Text style={styles.titlePack}>Paquetes publicados</Text>
@@ -203,12 +203,12 @@ const styles = StyleSheet.create({
     gap: 15,
     width: '100%',
     flexDirection: 'column',
-    
+
   },
   fondo: {
     flex: 1,
     display: 'flex',
-    
+
   },
   txt: {
     color: 'black',
@@ -277,30 +277,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'center',
   },
-  containerPack2: {
-    // backgroundColor: '#3d9bba',
-    // width: '100%',
-    // borderRadius:20,
-    // justifyContent: 'space-between',
-    // marginTop:'5%',
-    // marginBottom:'5%',
-    // flexDirection: 'row',
-    // flexWrap: 'wrap',
-    // alignItems: 'center',
-  },
-  containerPack3: {
-    // backgroundColor: 'red',
-    // backgroundColor: 'black',
-    // width: '100%',
-    // borderRadius:20,
-    // justifyContent: 'space-between',
-    // marginTop:'5%',
-    // marginBottom:'5%',
 
-    // flexDirection: 'row',
-    // flexWrap: 'wrap',
-    // alignItems: 'center',
-  },
   contenedorPuntaje: {
     flexDirection: 'column',
   },

@@ -1,30 +1,33 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import React from 'react';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+// import { navigateToAdministrationPackagesScreen } from '../../Screens/AdministratePackagesScreen/AdministratePackagesScreen';
 
-class EditPackageButton extends Component {
-  render() {
-    return (
-      <View style={styles.containerButton}>
-        <View style={styles.container}>
-          <Text style={styles.txt}>Editar paquetes</Text>
-        </View>
-      </View>
-    );
-  }
-}
+
+
+const EditPackageButton = ({navigation}) => {
+
+  return (
+    <View style={styles.containerButton}>
+      <TouchableOpacity style={styles.container} onPress={() => {navigation.navigate('AdministratePackagesScreen');}}>
+        <Text style={styles.txt}>Editar paquetes</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   containerButton: {
     display: 'flex',
-    alignItems: "center"
+    alignItems: 'center',
   },
   container: {
     height: 40,
     width: 140,
-    borderRadius: 50,
+    borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#1881B1',
+    // backgroundColor: 'red',
   },
   txt: {
     color: 'white',

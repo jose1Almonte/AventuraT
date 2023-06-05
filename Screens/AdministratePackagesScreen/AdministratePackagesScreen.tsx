@@ -6,6 +6,7 @@ import { NavigationProp } from '@react-navigation/native';
 import { searchPackagesByEmail, searchPackagesExpiredByEmail } from '../../firebase/SearchPackagesByEmail';
 import { deleteAllByEmail, deleteExpiredDocumentsByEmail, deleteSelectedPackage } from '../../firebase/DeletePackage';
 // import { SafeAreaView } from 'react-native-safe-area-context';
+// import { NavigationProp } from '@react-navigation/native';
 
 
 const Button = ({buttonStyle, buttonTextStyle, text, onPress}:{buttonStyle: any, buttonTextStyle: any, text: string, onPress: any}) => {
