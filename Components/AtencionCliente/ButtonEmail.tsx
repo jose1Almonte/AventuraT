@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Linking } from 'react-native';
+import React, {useState} from 'react';
+import { 
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Linking} from 'react-native';
 
 const ButtonEmail = () => {
   const [emailSent, setEmailSent] = useState(false);
 
   const handleEmail = async () => {
-    const recipientEmail = 'helpdesk.aventurat@gmail.com'; // Reemplaza con el correo electrónico de tu empresa
-    const subject = 'Consulta'; // Asunto del correo electrónico
+    const recipientEmail = 'helpdesk.aventurat@gmail.com';
+    const subject = 'Consulta';
     const body = 'Hola, tengo una pregunta...';
     const mailtoUrl = `mailto:${recipientEmail}?subject=${subject}&body=${body}`;
 
     try {
       await Linking.openURL(mailtoUrl);
-      setEmailSent(true); // Marcar el correo electrónico como enviado
+      setEmailSent(true);
     } catch (error) {
       console.log('Error al abrir el cliente de correo electrónico', error);
     }
@@ -26,7 +31,9 @@ const ButtonEmail = () => {
         </View>
       </TouchableOpacity>
       {emailSent && (
-        <Text style={styles.message}>¡El correo electrónico se ha enviado correctamente!</Text>
+        <Text style={styles.message}>
+          ¡El correo electrónico se ha enviado correctamente!
+        </Text>
       )}
     </View>
   );

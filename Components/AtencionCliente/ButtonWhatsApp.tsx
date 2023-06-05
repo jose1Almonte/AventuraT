@@ -1,10 +1,31 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 
-class ButtonWhatsApp extends Component {
-  render() {
-    return (
-      <TouchableOpacity style={styles.containerButton}>
+const ButtonWhatsApp = () => {
+  const [whatsSent, setWhatsSent] = useState(false);
+
+  const openWhatsApp = async () => {
+    const phoneNumber = '+584140227086';
+    const url = `whatsapp://send?phone=${phoneNumber}`;
+
+    try {
+      await Linking.openURL(url);
+      setWhatsSent(true);
+    } catch (error) {
+      console.log('Error al abrir WhatsApp', error);
+    }
+  };
+
+  return (
+    <View>
+      <TouchableOpacity style={styles.containerButton} onPress={openWhatsApp}>
         <View style={styles.container}>
           <Image
             style={styles.icon}
@@ -14,9 +35,9 @@ class ButtonWhatsApp extends Component {
           <Text style={styles.text}>WhatsApp</Text>
         </View>
       </TouchableOpacity>
-    );
-  }
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   containerButton: {
