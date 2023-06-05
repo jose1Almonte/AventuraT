@@ -44,7 +44,6 @@ export const UserProfileScreen = ({
 
         <View style={styles.backGround}>
           <SvgXml xml={profileVector} />
-          {/* <Text>Helloooo</Text> */}
         </View>
 
       <View style={styles.info}>
