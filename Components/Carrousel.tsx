@@ -56,10 +56,10 @@ export const Carrousel = ({ navigation }: carruselProps) => {
 
           // Crea tu componente personalizado utilizando name, description y mainImageUrl
           const customComponent = (
-            <Pressable onPress={() => {
+            <TouchableOpacity style={styles.touchable} onPress={() => {
               navigation.navigate('DetailsScreenUser', { data });
             }}>
-              <View style={styles.contenedor2}>
+              <View>
                 <ImageBackground borderRadius={30} style={styles.reescala} source={{ uri: data.mainImageUrl }}>
                   <View style={styles.contenedor3}>
                     <View style={styles.ContainerLikes}>
@@ -73,7 +73,7 @@ export const Carrousel = ({ navigation }: carruselProps) => {
                   </View>
                 </ImageBackground>
               </View>
-            </Pressable>
+            </TouchableOpacity>
 
           );
 
@@ -118,9 +118,7 @@ export const Carrousel = ({ navigation }: carruselProps) => {
     };
 
     return (
-      <TouchableOpacity style={styles.contenedor}>
         <Animated.View style={[styles.carouselItem, itemStyle]}>{item.component}</Animated.View>
-      </TouchableOpacity>
     );
   };
 
@@ -213,9 +211,14 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     opacity: 0.8,
   },
-
   carouselItem: {},
   contenedor4: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  touchable: {
+    flex: 1,
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
