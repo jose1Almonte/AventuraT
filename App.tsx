@@ -7,6 +7,7 @@ import DetailsScreenUser from './Screens/DetailsScreen/DetailsScreenUser';
 import DetailsScreenBusiness from './Screens/DetailsScreen/DetailsScreenBusiness';
 import { UserProfileScreen } from './Screens/UserProfileScreen/UserProfileScreen';
 import BusinessProfileScreen from './Screens/BusinessProfileScreen/BusinessProfileScreen';
+import BusinessProfileScreen2 from './Screens/BusinessProfileScreen/BusinessProfileScreen2';
 import NavbarScreen from './Screens/NavbarScreen/NavbarScreen';
 import SearchScreen from './Screens/SearchScreen/SearchScreen';
 import FavoriteScreen from './Screens/FavoriteScreen/FavoriteScreen';
@@ -38,6 +39,7 @@ export default function App() {
           <Stack.Screen name="DetailsScreenUser" component={DetailsScreenUser} options={{ headerShown: false }} />
           <Stack.Screen name="DetailsScreenBusiness" component={DetailsScreenBusiness} options={{ headerShown: false }} />
           <Stack.Screen name="BusinessProfileScreen" component={BusinessProfileScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="BusinessProfileScreen2" component={BusinessProfileScreen2} options={{ headerShown: false }} />
           <Stack.Screen name="NavbarScreen" component={NavbarScreen} options={{ headerShown: false }} />
           <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerShown: false }} />
           <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} options={{ headerShown: false }} />
