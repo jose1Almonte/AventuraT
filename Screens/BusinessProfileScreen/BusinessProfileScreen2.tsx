@@ -13,32 +13,43 @@ import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
 import { returnEnterpisePic } from '../../firebase/Firestore';
 import profileVector from '../../vectores/vectorPerfil';
+import { PackageI } from '../../models/package.interface';
+import firestore from '@react-native-firebase/firestore';
+import PublishedPackages2 from '../../Components/Profiles/publishedPackages2';
 
 interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
+  route?: any;
+  data?: PackageI;
 }
 
-const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
-
-  const [empresa, setEmpresa] = useState(null);
+const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
+  let packageIn: PackageI = route.params.data;
+  const [nameEnterprise, setNameEnterprise] = useState(null);
+  const [emailEnterprise, setEmailEnterprise] = useState('');
   const [description, setDescription] = useState(null);
   const [location, setLocation] = useState(null);
-  const [nameEnterprise, setNameEnterprise] = useState(null);
+  const [empresa, setEmpresa] = useState(null);
 
   useEffect(() => {
-    const fetchEnterprisePic = async () => {
-      const user = currentLog();
-      const pic = await returnEnterpisePic(user?.email);
-      if(pic!=null){
-        setEmpresa(pic.urlEmpresa);
-        setDescription(pic.description);
-        setLocation(pic.location);
-        setNameEnterprise(pic.nameEnterprise);
+    const fetchData = async () => {
+      // console.log('packageIn?.emailEnterprise: ' ,packageIn.emailEnterprise);
+      if (packageIn && packageIn.emailEnterprise) {
+
+        const querySnapshot = await firestore().collection('users').where('email', '==', packageIn.emailEnterprise).get();
+
+        querySnapshot.forEach((doc) => {
+          // console.log(doc.data().displayName);
+          setNameEnterprise(doc.data().displayName);
+          setEmailEnterprise(doc.data().responsibleName);
+          setEmpresa(doc.data().urlEmpresa);
+          setDescription(doc.data().description);
+          setLocation(doc.data().location);
+        });
       }
     };
-
-    fetchEnterprisePic();
-  }, []);
+    fetchData();
+  }, [packageIn, packageIn.emailEnterprise]);
 
 
   return (
@@ -56,8 +67,8 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
             <View style={styles.top}>
 
             <View>
-            {empresa &&
-              <PhotoProfile size={90} imageSource={empresa}/>
+            {packageIn.mainImageUrl &&
+              <PhotoProfile size={90} imageSource={packageIn.mainImageUrl}/>
             }
             </View>
               <SvgXml xml={separator} />
@@ -89,17 +100,16 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
                 </View>
               </Pressable>
             </View>
-            <Text style={styles.txt}>{nameEnterprise}</Text>
+            {packageIn.mainImageUrl &&
+            <Text style={styles.txt}>Empresa: {packageIn.name}</Text>
+            }
+            <Text style={styles.txt}>Encargado: {nameEnterprise}</Text>
             <Text style={styles.description}>
               {description}
             </Text>
             <View style={styles.location}>
               <SvgXml xml={vectorLocation} />
               <Text style={styles.nameLocation}>{location}</Text>
-            </View>
-            <View style={styles.buttons}>
-              <EditProfileButton />
-              <EditPackageButton navigation={navigation}/>
             </View>
             <View style={styles.bottomInfo}>
               <Text style={styles.titlePack}>Paquetes publicados</Text>
@@ -111,7 +121,9 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
         <View style={styles.containerPack}>
           {/* <View style={styles.containerPack2}> */}
           {/* <View style={styles.containerPack3}> */}
-                <PublishedPackages />
+          {packageIn.emailEnterprise !== undefined && (
+            <PublishedPackages2 email={packageIn.emailEnterprise} />
+          )}
           {/* </View> */}
           {/* </View> */}
         </View>
