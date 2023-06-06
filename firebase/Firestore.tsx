@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
 const packagesCollection = firestore().collection('package');
+const paidPackages = firestore().collection('paidPackage');
 
 export const addUser = async (array:string[],displayName:string,email:string, emailVerified:boolean,photoURL:string) => {
     await usersCollection.add({
@@ -228,6 +229,34 @@ export const listPackage = async (responsibleName) => {
   });
 
   return packages;
+};
+
+export const addPaidPackage = async (id, name, availability, price, description, mainImageUrl, location, endDate, startDate, emailEnterprise, rating, expireDate,mobilePayment,nameEnterprise,photoURL) => {
+  try {
+    const packageData = {
+      id,
+      name,
+      availability,
+      price,
+      description,
+      mainImageUrl,
+      location,
+      endDate,
+      startDate,
+      emailEnterprise,
+      // nameEnterprise,
+      rating,
+      expireDate,
+      mobilePayment,
+      nameEnterprise,
+      photoURL,
+    };
+
+    await paidPackages.add(packageData);
+    console.log('Paquete añadido exitosamente a Firestore');
+  } catch (error) {
+    console.error('Error al añadir el paquete a Firestore:', error);
+  }
 };
 
 

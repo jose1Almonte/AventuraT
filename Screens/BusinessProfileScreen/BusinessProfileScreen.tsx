@@ -12,6 +12,7 @@ import star from '../../vectores/star';
 import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
 import { returnEnterpisePic } from '../../firebase/Firestore';
+import profileVector from '../../vectores/vectorPerfil';
 
 interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -41,78 +42,94 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
 
 
   return (
-    <ScrollView style={styles.scroll}>
-      <View >
-      <View style={styles.info}>
-        <View style={styles.topInfo}>
-          <View style={styles.top}>
+    <>
 
-          <View>
-          {empresa &&
-            <PhotoProfile size={90} imageSource={empresa}/>
-          }
-          </View>
-            <SvgXml xml={separator} />
-            <View style={styles.contenedorPuntaje}>
-              <View style={styles.contenedorEstrella}>
-                <Text style={styles.point}>4,5</Text>
-                <SvgXml xml={star} />
+
+    <ScrollView style={styles.scroll}>
+        <View style={styles.backGround}>
+          <SvgXml xml={profileVector} />
+        </View>
+
+      <View>
+        <View style={styles.info}>
+          <View style={styles.topInfo}>
+            <View style={styles.top}>
+
+            <View>
+            {empresa &&
+              <PhotoProfile size={90} imageSource={empresa}/>
+            }
+            </View>
+              <SvgXml xml={separator} />
+              <View style={styles.contenedorPuntaje}>
+                <View style={styles.contenedorEstrella}>
+                  <Text style={styles.point}>4,5</Text>
+                  <SvgXml xml={star} />
+                </View>
+                <Text style={styles.description}>Calificación</Text>
               </View>
-              <Text style={styles.description}>Calificación</Text>
+            </View>
+            <View style={stylesBtn.positionContainer}>
+              <Pressable onPress={() => {
+                navigation.navigate('RatingsScreen');
+              }}>
+                <View style={stylesBtn.containerButton}>
+                  <View style={stylesBtn.container}>
+                    <Text style={stylesBtn.txt}>Ver calificaciones</Text>
+                  </View>
+                </View>
+              </Pressable>
+              <Pressable onPress={() => {
+                navigation.navigate('FeedbackScreen');
+              }}>
+                <View style={stylesBtn.containerButton}>
+                  <View style={stylesBtn.container}>
+                    <Text style={stylesBtn.txt}>¡Calificanos!</Text>
+                  </View>
+                </View>
+              </Pressable>
+            </View>
+            <Text style={styles.txt}>{nameEnterprise}</Text>
+            <Text style={styles.description}>
+              {description}
+            </Text>
+            <View style={styles.location}>
+              <SvgXml xml={vectorLocation} />
+              <Text style={styles.nameLocation}>{location}</Text>
+            </View>
+            <View style={styles.buttons}>
+              <EditProfileButton />
+              <EditPackageButton navigation={navigation}/>
+            </View>
+            <View style={styles.bottomInfo}>
+              <Text style={styles.titlePack}>Paquetes publicados</Text>
             </View>
           </View>
-          <View style={stylesBtn.positionContainer}>
-            <Pressable onPress={() => {
-              navigation.navigate('RatingsScreen');
-            }}>
-              <View style={stylesBtn.containerButton}>
-                <View style={stylesBtn.container}>
-                  <Text style={stylesBtn.txt}>Ver calificaciones</Text>
-                </View>
-              </View>
-            </Pressable>
-            <Pressable onPress={() => {
-              navigation.navigate('FeedbackScreen');
-            }}>
-              <View style={stylesBtn.containerButton}>
-                <View style={stylesBtn.container}>
-                  <Text style={stylesBtn.txt}>¡Calificanos!</Text>
-                </View>
-              </View>
-            </Pressable>
-          </View>
-          <Text style={styles.txt}>{nameEnterprise}</Text>
-          <Text style={styles.description}>
-            {description}
-          </Text>
-          <View style={styles.location}>
-            <SvgXml xml={vectorLocation} />
-            <Text style={styles.nameLocation}>{location}</Text>
-          </View>
-          <View style={styles.buttons}>
-            <EditProfileButton />
-            <EditPackageButton />
-          </View>
-          <View style={styles.bottomInfo}>
-            <Text style={styles.titlePack}>Paquetes publicados</Text>
-          </View>
+        </View>
+
+
+        <View style={styles.containerPack}>
+          {/* <View style={styles.containerPack2}> */}
+          {/* <View style={styles.containerPack3}> */}
+                <PublishedPackages />
+          {/* </View> */}
+          {/* </View> */}
         </View>
       </View>
-      </View>
-      <View style={styles.containerPack}>
-        <View style={styles.containerPack2}>
-        <View style={styles.containerPack3}>
-              <PublishedPackages />
-        </View>
-        </View>
-      </View>
+
     </ScrollView>
+    </>
+
   );
 };
 
 export default BusinessProfileScreen;
 
 const stylesBtn = StyleSheet.create({
+  giantBox:{
+    flex: 1,
+  },
+
   containerButton: {
     display: 'flex',
     alignItems: 'center',
@@ -139,18 +156,32 @@ const stylesBtn = StyleSheet.create({
 
 
 const styles = StyleSheet.create({
+  backGround: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 0,
+    // display: 'flex',
+    backgroundColor: '#1DB5BE',
+  },
+
   container: {
     flex: 1,
     backgroundColor: '#1DB5BE',
   },
   info: {
     flex: 1,
-    marginBottom: 20,
-    backgroundColor: '#1DB5BE',
+    // marginBottom: 20,
+    // backgroundColor: '#1DB5BE',
+    // backgroundColor: 'red',
   },
   scroll:{
-    backgroundColor: '#1DB5BE',
-    flex:1},
+    backgroundColor: 'white',
+    // backgroundColor: 'blue',
+    // flex:1,
+  },
   top: {
     display: 'flex',
     flexDirection: 'row',
@@ -172,12 +203,12 @@ const styles = StyleSheet.create({
     gap: 15,
     width: '100%',
     flexDirection: 'column',
-    
+
   },
   fondo: {
     flex: 1,
     display: 'flex',
-    
+
   },
   txt: {
     color: 'black',
@@ -231,30 +262,22 @@ const styles = StyleSheet.create({
     textAlign:'center',
   },
   containerPack: {
+    // width: '100%',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // alignContent: 'center',
+    // backgroundColor: '#3d9bba',
+    backgroundColor: 'white',
     width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-  },
-  containerPack2: {
-    backgroundColor: '#3d9bba',
-    width: '50%',
-    borderRadius:20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    
-  },
-  containerPack3: {
-    backgroundColor: 'black',
-    width: '85%',
-    borderRadius:20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
+    // borderRadius:20,
+    justifyContent: 'space-between',
     marginTop:'5%',
-    marginBottom:'5%',
+    // marginBottom:'5%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
   },
+
   contenedorPuntaje: {
     flexDirection: 'column',
   },

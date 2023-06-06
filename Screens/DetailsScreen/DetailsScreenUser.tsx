@@ -53,7 +53,6 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
     };
     fetchData();
   }, [packageIn, packageIn.emailEnterprise]);
-
   return (
     <ScrollView style={styles.background}>
       <View style={styles.container}>
@@ -120,14 +119,14 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         </View>
         <Pressable onPress={() => {
           if (isLogged) {
-            navigation.navigate('MobilePaymentScreen');
+            navigation.navigate('MobilePaymentScreen',{data:packageIn});
           } else {
             Alert.alert('Inicie sesión', 'Para reservar debe iniciar sesión');
             navigation.navigate('LoginScreen');
           }
         }}>
           <View style={styles.buttonReserva}>
-            <Text style={styles.titulo}>Reservar</Text>
+            <Text style={styles.titulo}>Pagar</Text>
           </View>
         </Pressable>
       </View>

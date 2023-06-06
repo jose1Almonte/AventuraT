@@ -6,6 +6,7 @@ import { NavigationProp } from '@react-navigation/native';
 import { searchPackagesByEmail, searchPackagesExpiredByEmail } from '../../firebase/SearchPackagesByEmail';
 import { deleteAllByEmail, deleteExpiredDocumentsByEmail, deleteSelectedPackage } from '../../firebase/DeletePackage';
 // import { SafeAreaView } from 'react-native-safe-area-context';
+// import { NavigationProp } from '@react-navigation/native';
 
 
 const Button = ({buttonStyle, buttonTextStyle, text, onPress}:{buttonStyle: any, buttonTextStyle: any, text: string, onPress: any}) => {
@@ -30,7 +31,7 @@ const CardBox = ({data, handleTrashCanPress, cardBoxStyles, backgroundCardStyles
     const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
     const endYear = endDate.getFullYear();
 
-    const expireDate = data.expireDate.toDate()
+    const expireDate = data.expireDate.toDate();
     const expireDay = expireDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
     const expireMonth = (expireDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
     const expireYear = expireDate.getFullYear();
@@ -166,10 +167,10 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
             <View style={styles.buttonsBox}>
 
-                <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Todos los paquetes" onPress={()=>{setSearchingExpiredPackages(false)}}/>
-                <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Paquetes caducados" onPress={()=>{setSearchingExpiredPackages(true)}}/>
-                <Button buttonStyle={styles.buttonEraseExpired} buttonTextStyle={styles.buttonText} text="Borrar caducados" onPress={() => {handleEraseExpired()}}/>
-                <Button buttonStyle={styles.buttonEraseAll} buttonTextStyle={styles.buttonText} text="Eliminar TODO" onPress={() => {handleEraseAll()}}/>
+                <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Todos los paquetes" onPress={()=>{setSearchingExpiredPackages(false);}}/>
+                <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Paquetes caducados" onPress={()=>{setSearchingExpiredPackages(true);}}/>
+                <Button buttonStyle={styles.buttonEraseExpired} buttonTextStyle={styles.buttonText} text="Borrar caducados" onPress={() => {handleEraseExpired();}}/>
+                <Button buttonStyle={styles.buttonEraseAll} buttonTextStyle={styles.buttonText} text="Eliminar TODO" onPress={() => {handleEraseAll();}}/>
 
             </View>
 
@@ -412,7 +413,7 @@ const styles = StyleSheet.create({
         width: '48.08%',
         justifyContent: 'center',
         alignItems: 'center',
-        
+
         // backgroundColor: 'black',
 
     },

@@ -1,5 +1,5 @@
-import firebase from '@react-native-firebase/app';
-import firestore from '@react-native-firebase/firestore';
+// import firebase from '@react-native-firebase/app';
+// import firestore from '@react-native-firebase/firestore';
 import { usersCollection3 } from './DeletePackage';
 
 export const searchPackagesByEmail = async (userEmail) => {
