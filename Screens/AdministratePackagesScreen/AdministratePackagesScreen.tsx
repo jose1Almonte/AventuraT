@@ -68,7 +68,7 @@ const CardBox = ({data, setSelectedPackage, handleTrashCanPress, cardBoxStyles, 
 
                         <View style={styles.datesBox}>
                             <Text style={styles.text}>Fecha inicio: {startDay}/{startMonth}/{startYear}</Text>
-                            <Text style={styles.text}>Fecha inicio: {endDay}/{endMonth}/{endYear}</Text>
+                            <Text style={styles.text}>Fecha fin: {endDay}/{endMonth}/{endYear}</Text>
                         </View>
 
                     </View>
@@ -139,7 +139,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
                 const docs = querySnapshot.docs.map((doc) => doc.data());
                 setDocuments(docs);
-                console.log('DOCS: ', docs);
+                // console.log('DOCS: ', docs);
             } catch (error){
                 // console.warn(error);
                 console.log(error);
