@@ -99,7 +99,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
             </View>
             <View style={styles.buttons}>
               <EditProfileButton />
-              <EditPackageButton />
+              <EditPackageButton navigation={navigation}/>
             </View>
             <View style={styles.bottomInfo}>
               <Text style={styles.titlePack}>Paquetes publicados</Text>
@@ -109,11 +109,11 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
 
 
         <View style={styles.containerPack}>
-          <View style={styles.containerPack2}>
-          <View style={styles.containerPack3}>
+          {/* <View style={styles.containerPack2}> */}
+          {/* <View style={styles.containerPack3}> */}
                 <PublishedPackages />
-          </View>
-          </View>
+          {/* </View> */}
+          {/* </View> */}
         </View>
       </View>
 
@@ -161,10 +161,10 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    // bottom: 0,
+    bottom: 0,
     zIndex: 0,
     // display: 'flex',
-    // backgroundColor: '#1DB5BE',
+    backgroundColor: '#1DB5BE',
   },
 
   container: {
@@ -173,12 +173,12 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 1,
-    marginBottom: 20,
+    // marginBottom: 20,
     // backgroundColor: '#1DB5BE',
     // backgroundColor: 'red',
   },
   scroll:{
-    backgroundColor: '#1DB5BE',
+    backgroundColor: 'white',
     // backgroundColor: 'blue',
     // flex:1,
   },
@@ -203,12 +203,12 @@ const styles = StyleSheet.create({
     gap: 15,
     width: '100%',
     flexDirection: 'column',
-    
+
   },
   fondo: {
     flex: 1,
     display: 'flex',
-    
+
   },
   txt: {
     color: 'black',
@@ -262,30 +262,22 @@ const styles = StyleSheet.create({
     textAlign:'center',
   },
   containerPack: {
+    // width: '100%',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // alignContent: 'center',
+    // backgroundColor: '#3d9bba',
+    backgroundColor: 'white',
     width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-  },
-  containerPack2: {
-    backgroundColor: '#3d9bba',
-    width: '50%',
-    borderRadius:20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    
-  },
-  containerPack3: {
-    backgroundColor: 'black',
-    width: '85%',
-    borderRadius:20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
+    // borderRadius:20,
+    justifyContent: 'space-between',
     marginTop:'5%',
-    marginBottom:'5%',
+    // marginBottom:'5%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
   },
+
   contenedorPuntaje: {
     flexDirection: 'column',
   },

@@ -20,7 +20,7 @@ function PublishedPackages() {
   }, [user.email]);
 
     return (
-      <View>
+      <>
       {packages != null && packages.map((packageData, index) => (
       <View style={styles.container} key={index} >
         <View style={styles.containerPack}>
@@ -38,14 +38,15 @@ function PublishedPackages() {
           />
         </View>
       </View>))}
-      </View>
+      </>
     );
 }
 
 const styles = StyleSheet.create({
   containerPack: {
-    marginTop:'5%',
-    marginBottom:'5%',
+    // backgroundColor: 'red',
+    // marginTop:'5%',
+    // marginBottom:'5%',
     height: 185,
     width: 161,
     borderRadius: 20,
@@ -55,11 +56,15 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    gap: 20,
+    marginHorizontal: '4%',
+    marginVertical: '1%',
+    // gap: 20,
+    // backgroundColor: 'red',
   },
   textPack: {
-    marginLeft: 5,
-    padding: 3,
+    // backgroundColor: 'green',
+    // marginLeft: 5,
+    // padding: 3,
     color: 'black',
     fontSize: 12,
     fontFamily: 'Poppins-Medium',
