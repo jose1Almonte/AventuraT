@@ -30,7 +30,7 @@ export const Carrousel = ({ navigation }: carruselProps) => {
     const fetchCarouselData = async () => {
       try {
         let listPackage: PackageI[] = [];
-        const snapshot = await firestore().collection('package').get();
+        const snapshot = await firestore().collection('package').where('isPublic','==',true).get();
 
         snapshot.docs.map((doc: any) => {
           let packageTemp: PackageI = {
