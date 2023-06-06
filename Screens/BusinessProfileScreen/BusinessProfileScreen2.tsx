@@ -111,10 +111,6 @@ const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
               <SvgXml xml={vectorLocation} />
               <Text style={styles.nameLocation}>{location}</Text>
             </View>
-            <View style={styles.buttons}>
-              <EditProfileButton />
-              <EditPackageButton navigation={navigation}/>
-            </View>
             <View style={styles.bottomInfo}>
               <Text style={styles.titlePack}>Paquetes publicados</Text>
             </View>
@@ -253,11 +249,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
   },
   location: {
+    color:'black',
     display: 'flex',
     flexDirection: 'row',
     gap: 10,
   },
   nameLocation: {
+    color:'black',
     fontSize: 12,
     fontFamily: 'Poppins-Medium',
     alignItems: 'center',

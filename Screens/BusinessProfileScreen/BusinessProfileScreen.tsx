@@ -237,11 +237,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
   },
   location: {
+    color:'black',
     display: 'flex',
     flexDirection: 'row',
     gap: 10,
   },
   nameLocation: {
+    color:'black',
     fontSize: 12,
     fontFamily: 'Poppins-Medium',
     alignItems: 'center',
