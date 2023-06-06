@@ -4,6 +4,7 @@ import auth from '@react-native-firebase/auth';
 import currentLog from './UserData';
 import { useUser } from '../Context/UserContext';
 import { useEffect } from 'react';
+import { usersCollection3 } from './DeletePackage';
 
 const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
@@ -88,6 +89,20 @@ export const addPackage = async (id, name, availability, price, description, mai
           console.error('Error al añadir el paquete a Firestore:', error);
         }
       };
+
+export const changePackageIsPublicValue = async (packageId: { toString: () => string | undefined; }, newIsPublic: boolean) => {
+
+  try {
+    await usersCollection3.doc(packageId?.toString()).update({
+      isPublic: newIsPublic,
+    });
+
+    console.log('DONE: ', `isPublic was successfully changed to ${newIsPublic}`  );
+  } catch (error){
+    console.log(error);
+  }
+
+};
 
 export const checkPackage = async (id) => {
         try {
