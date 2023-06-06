@@ -57,12 +57,16 @@ const EnterpriseFormScreen = () => {
       data.responsibleName.trim() === '' ||
       data.location.trim() === '' ||
       data.description.trim() === '' ||
-      data.rif.trim().length < 6 ||
       data.password.trim() === '' ||
       data.phoneNumber.trim() === '' ||
       data.disName.trim() === ''
     ) {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
+      return;
+    }
+
+    if (data.rif.trim().length < 6){
+      Alert.alert('Error','El Rif es demasiado corto');
       return;
     }
 
