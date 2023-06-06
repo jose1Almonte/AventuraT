@@ -57,6 +57,7 @@ interface CreateFormData {
   nameEnterprise: string;
   rating: number;
   expireDate: Date;
+  isPublic: boolean,
 }
 
 const CreateForm = ({ navigation }: CreateFormProps) => {
@@ -90,6 +91,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
     nameEnterprise: '',
     rating: 0,
     expireDate: expireDate,
+    isPublic: true,
   });
 
   useEffect(() => {
@@ -100,6 +102,10 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   // useEffect(() => {
   //   console.log('nameEnterprise:' , nameEnterprise);
   // }, [nameEnterprise]);
+
+  const handleIsPublic = () => {
+    setData(prevData => ({ ...prevData, isPublic: !data.isPublic}));
+  };
 
   const loadLastId = async () => {
     const lastId = await getLastPackageId(); // Obtén el último ID de Firebase
@@ -138,6 +144,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
         // data.nameEnterprise,
         data.rating,
         data.expireDate,
+        data.isPublic,
         );
         // Alert.alert('Veamos la fecha (postData, ya se envió)', data.date);
       } else {
@@ -158,6 +165,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
           // data.nameEnterprise,
           data.rating,
           data.expireDate,
+          data.isPublic,
           );
         }
     await loadLastId(); // Carga el nuevo último ID después de crear el paquete
@@ -217,6 +225,17 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
                   }
                 />
               </View>
+
+              <TouchableOpacity style={styles.inputContainer} onPress={() => {handleIsPublic()}}>
+                <Text style={styles.label}>El Paquete es:</Text>
+
+                { data.isPublic ? (
+                    <Text style={styles.input}>Público</Text>
+                  ) : (
+                    <Text style={styles.input}>Privado </Text>
+                  )
+                }
+              </TouchableOpacity>
               <TouchableOpacity onPress={() => {setWritingStartDate(true);}} style={styles.inputContainer}>
                 <DatePickerBox
                   text="El viaje empieza: "
