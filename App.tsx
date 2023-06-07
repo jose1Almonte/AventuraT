@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from './Screens/LoginScreen/LoginScreen';
 import DetailsScreenUser from './Screens/DetailsScreen/DetailsScreenUser';
+import DetailsScreenUser2 from './Screens/DetailsScreen/DetailsScreenUser2';
 import DetailsScreenBusiness from './Screens/DetailsScreen/DetailsScreenBusiness';
 import { UserProfileScreen } from './Screens/UserProfileScreen/UserProfileScreen';
 import BusinessProfileScreen from './Screens/BusinessProfileScreen/BusinessProfileScreen';
@@ -21,7 +22,7 @@ import MobilePaymentScreen from './Screens/MobilePaymentScreen/MobilePaymentScre
 import CreatePackageFormScreen from './Screens/CreatePackageFormScreen/CreatePackageFormScreen';
 import HelpdeskScreen from './Screens/HelpdeskScreen/HelpdeskScreen';
 import AdministratePackagesScreen from './Screens/AdministratePackagesScreen/AdministratePackagesScreen';
-
+import PublishedPackages2 from './Components/Profiles/publishedPackages2';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -37,6 +38,7 @@ export default function App() {
           <Stack.Screen name="MobilePaymentScreen" component={MobilePaymentScreen} options={{ headerShown: false }} />
           <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
           <Stack.Screen name="DetailsScreenUser" component={DetailsScreenUser} options={{ headerShown: false }} />
+          <Stack.Screen name="DetailsScreenUser2" component={DetailsScreenUser2} options={{ headerShown: false }} />
           <Stack.Screen name="DetailsScreenBusiness" component={DetailsScreenBusiness} options={{ headerShown: false }} />
           <Stack.Screen name="BusinessProfileScreen" component={BusinessProfileScreen} options={{ headerShown: false }} />
           <Stack.Screen name="BusinessProfileScreen2" component={BusinessProfileScreen2} options={{ headerShown: false }} />

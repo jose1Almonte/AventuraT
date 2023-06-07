@@ -276,4 +276,14 @@ export const addPaidPackage = async (id, name, availability, price, description,
 };
 
 
+export const listPaidPackage = async (id) => {
+  const query = paidPackages.where('id', '==', id);
+  const querySnapshot = await query.get();
+  const packages = [];
+  querySnapshot.forEach((doc) => {
+    const packageData = doc.data();
+    packages.push(packageData);
+  });
 
+  return packages;
+};

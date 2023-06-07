@@ -111,7 +111,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
         <View style={styles.containerPack}>
           {/* <View style={styles.containerPack2}> */}
           {/* <View style={styles.containerPack3}> */}
-                <PublishedPackages />
+                <PublishedPackages navigation={navigation} />
           {/* </View> */}
           {/* </View> */}
         </View>
