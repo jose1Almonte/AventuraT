@@ -6,6 +6,7 @@ import { ButtonLikes } from './ButtonLikes';
 import Califications from './Califications';
 import { PackageI } from '../models/package.interface';
 import { NavigationProp } from '@react-navigation/native';
+import { LoadingScreen } from '../firebase/Firestore';
 
 const { height, width } = Dimensions.get('window');
 // let navigation: NavigationProp<Record<string, object | undefined>>;

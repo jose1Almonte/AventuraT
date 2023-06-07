@@ -5,6 +5,8 @@ import currentLog from './UserData';
 import { useUser } from '../Context/UserContext';
 import { useEffect } from 'react';
 import { usersCollection3 } from './DeletePackage';
+import React, { useState } from 'react';
+import { View, Image, StyleSheet } from 'react-native';
 
 const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
@@ -289,3 +291,52 @@ export const listPaidPackage = async (id) => {
 
   return packages;
 };
+
+
+
+export const LoadingScreen = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      {isLoading ? (
+        <>
+          <View style={styles.overlay} />
+        </>
+      ) : (
+        <View>
+          {/* Contenido principal de la aplicación */}
+        </View>
+      )}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)', // Ajusta la opacidad aquí (0.3 en este ejemplo)
+  },
+  loadingGif: {
+    width: 30,
+    height: 30,
+  },
+});
+

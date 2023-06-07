@@ -11,6 +11,7 @@ import { PackageI } from '../../models/package.interface';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import firestore from '@react-native-firebase/firestore';
+import { LoadingScreen } from '../../firebase/Firestore';
 
 interface detailProps {
   navigation: NavigationProp<Record<string, object | undefined>>;

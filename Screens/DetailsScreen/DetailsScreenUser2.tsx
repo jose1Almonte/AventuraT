@@ -72,6 +72,7 @@ const DetailsScreenUser2 = ({ navigation, route }: detailProps) => {
     fetchData();
   }, [packageIn, packageIn.emailEnterprise]);
   return (
+  
     <ScrollView style={styles.background}>
       <View style={styles.container}>
         <View style={styles.containerPack}>
