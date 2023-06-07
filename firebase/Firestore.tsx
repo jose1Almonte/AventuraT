@@ -247,9 +247,11 @@ export const listPackage = async (responsibleName) => {
   return packages;
 };
 
-export const addPaidPackage = async (id, name, availability, price, description, mainImageUrl, location, endDate, startDate, emailEnterprise, rating, expireDate,mobilePayment,nameEnterprise,photoURL) => {
+export const addPaidPackage = async (compradorMail, photoCompradorURL, id, name, availability, price, description, mainImageUrl, location, endDate, startDate, emailEnterprise, rating, expireDate,mobilePayment,nameEnterprise,photoURL) => {
   try {
     const packageData = {
+      compradorMail,
+      photoCompradorURL,
       id,
       name,
       availability,

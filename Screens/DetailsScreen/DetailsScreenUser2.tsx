@@ -11,6 +11,7 @@ import { PackageI } from '../../models/package.interface';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import firestore from '@react-native-firebase/firestore';
+import { listPaidPackage } from '../../firebase/Firestore';
 
 type RootStackParamList = {
   DetailsScreenUser2: { packageIn: PackageI };
@@ -27,6 +28,8 @@ interface detailProps {
 }
 
 const DetailsScreenUser2 = ({ navigation, route }: detailProps) => {
+  
+
   const { packageIn } = route.params;
   const startDate = packageIn.startDate.toDate();
   const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
@@ -40,6 +43,17 @@ const DetailsScreenUser2 = ({ navigation, route }: detailProps) => {
 
   const [nameEnterprise, setNameEnterprise] = useState('');
   const [photoURL, setPhotoUrl] = useState('');
+
+  const [packages, setPackages] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const packageList = await listPaidPackage(packageIn.id);
+      setPackages(packageList);
+    };
+
+    fetchData();
+  }, [packageIn.id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,6 +130,21 @@ const DetailsScreenUser2 = ({ navigation, route }: detailProps) => {
         <Text style={styles.subtitulo}>Desayuno</Text>
         <Text style={styles.subtitulo}>Atención personalizada</Text>
       </View>
+
+      <View style={styles.container}>
+      <Text style={styles.title}>FavoriteScreen</Text>
+      {packages.map((esteitem) => (
+        <View key={esteitem}>
+          {esteitem && (
+            <View style={styles.card}>
+              <Text style={styles.name}>Nombre: {packages[esteitem]?.name}</Text>
+              <Text style={styles.description}>Descripción: {packages[esteitem]?.description}</Text>
+              <Text style={styles.price}>Precio: {packages[esteitem]?.price}</Text>
+            </View>
+          )}
+        </View>
+      ))}
+    </View>
 
     </ScrollView>
   );
