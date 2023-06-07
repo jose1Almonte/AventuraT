@@ -131,20 +131,24 @@ const DetailsScreenUser2 = ({ navigation, route }: detailProps) => {
         <Text style={styles.subtitulo}>Atención personalizada</Text>
       </View>
 
-      <View style={styles.container}>
-      <Text style={styles.title}>FavoriteScreen</Text>
-      {packages.map((esteitem) => (
-        <View key={esteitem}>
+      <ScrollView style={styles.container}>
+      {packages[0] !== undefined && (
+      <Text style={styles.title}>Paquete Reservado Por:</Text>
+      )}
+      {packages.map((esteitem, index) => (
+        <View  key={`${esteitem.id}-${index}`}>
           {esteitem && (
             <View style={styles.card}>
-              <Text style={styles.name}>Nombre: {packages[esteitem]?.name}</Text>
-              <Text style={styles.description}>Descripción: {packages[esteitem]?.description}</Text>
-              <Text style={styles.price}>Precio: {packages[esteitem]?.price}</Text>
+              <Text style={styles.name}>Comprador: {esteitem?.compradorMail}</Text>
+              <Text style={styles.name}>Numero de reserva: {esteitem?.mobilePayment.mobilePaymentRef}</Text>
+              {esteitem?.photoCompradorURL &&
+                <PhotoProfile size={90} imageSource={esteitem?.photoCompradorURL}/>
+              }
             </View>
           )}
         </View>
       ))}
-    </View>
+    </ScrollView>
 
     </ScrollView>
   );
@@ -157,10 +161,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#1DB5BE',
     // backgroundColor: 'red',
   },
+
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    color: '#FFF',
+    textAlign:'center',
+  },
+  card: {
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 16,
+  },
+  name: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: 'black',
+    fontFamily: 'Poppins-Medium',
+  },
+
   container: {
     flex: 1,
     width: '100%',
-    height: 360,
   },
   containerPhotoPack: {
     width: '100%',
