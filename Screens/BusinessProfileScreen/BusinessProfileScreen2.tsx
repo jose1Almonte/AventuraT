@@ -17,6 +17,7 @@ import { PackageI } from '../../models/package.interface';
 import firestore from '@react-native-firebase/firestore';
 import PublishedPackages2 from '../../Components/Profiles/publishedPackages2';
 
+
 interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
   route?: any;

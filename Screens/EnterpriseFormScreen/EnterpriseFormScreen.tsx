@@ -4,6 +4,7 @@ import { addEnterprise, uploadImage, getLastEnterpriseId, checkEnterpriseExists,
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useUser } from '../../Context/UserContext';
 import currentLog from '../../firebase/UserData';
+import { LoadingScreen } from '../../firebase/Firestore';
 
 interface EnterpriseFormData {
   id: number;
@@ -29,6 +30,7 @@ const EnterpriseFormScreen = () => {
   const [filename, setFileName] = useState('');
   const [filename2, setFileName2] = useState('');
   const { setUser, setLogged } = useUser();
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState<EnterpriseFormData>({
     id: 0,
     nameEnterprise: '',
@@ -103,11 +105,11 @@ const EnterpriseFormScreen = () => {
         resourcePath,
         resourcePath2
         ).then(() => {
-          Alert.alert('Done', 'image uploaded');
         });
       });
       if (resourcePath2 !== ''){
-        Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
+        setLoading(true);
+        setTimeout(async () => {
         await createUserWithEmailAndPassword(data.responsibleName, data.password,data.phoneNumber,resourcePath2, data.disName);
         if (await checkIfUserExists(data.responsibleName) === false) {
           await addUser([''],data.disName,data.responsibleName,false,resourcePath2);
@@ -115,7 +117,13 @@ const EnterpriseFormScreen = () => {
         loadLastId();
         setUser(currentLog());
         setLogged(true);
+        setLoading(false); // Ocultar la pantalla de carga después de 3 segundos
+      }, 3000);
       }
+      setTimeout(() => {
+        Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
+        setLoading(false);
+      }, 3000);
     }
   };
 
@@ -154,6 +162,9 @@ const EnterpriseFormScreen = () => {
     });
   };
 
+  if (loading) {
+    return <LoadingScreen />;
+  }
   return (
     <View style={styles.container}>
       <View style={styles.header}>
