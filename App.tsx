@@ -23,6 +23,7 @@ import CreatePackageFormScreen from './Screens/CreatePackageFormScreen/CreatePac
 import HelpdeskScreen from './Screens/HelpdeskScreen/HelpdeskScreen';
 import AdministratePackagesScreen from './Screens/AdministratePackagesScreen/AdministratePackagesScreen';
 import PublishedPackages2 from './Components/Profiles/publishedPackages2';
+import PayPremiumScreen from './Screens/PayPremiumScreen/PayPremiumScreen';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -50,6 +51,7 @@ export default function App() {
           <Stack.Screen name="FeedbackScreen" component={FeedbackScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EnterpriseFormScreen" component={EnterpriseFormScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EnterpriseSessionScreen" component={EnterpriseSessionScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="PayPremiumScreen" component={PayPremiumScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

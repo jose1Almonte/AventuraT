@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, Pressable, ScrollView, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import vectorPerfil from '../../vectores/vectorPerfil';
@@ -87,6 +87,16 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
                     <Text style={stylesBtn.txt}>¡Calificanos!</Text>
                   </View>
                 </View>
+                </Pressable>
+                
+              <Pressable onPress={() => {
+                  navigation.navigate("PayPremiumScreen");
+              }}>
+                <View style={stylesBtn.containerButton}>
+                  <View style={stylesBtn.containerN}>
+                    <Text style={stylesBtn.txt}>AventuraT Nitro</Text>
+                  </View >
+                </View>
               </Pressable>
             </View>
             <Text style={styles.txt}>{nameEnterprise}</Text>
@@ -145,6 +155,14 @@ const stylesBtn = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#1881B1',
+  },
+  containerN: {
+    height: 40,
+    width: 140,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFE403',
   },
   txt: {
     color: 'white',
