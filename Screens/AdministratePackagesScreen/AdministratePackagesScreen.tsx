@@ -152,6 +152,43 @@ const SelectedPackageView = ({data, ready, setReady, setSelectedPackage}:{data: 
     );
 };
 
+const WantEraseViewAuxiliar = ({setWantErase, titleText, text1, text2, eraseExpired, setEraseExpired, eraseAll, setEraseAll, ifPressYes}:{setWantErase: any, titleText: string, text1: string, text2: string, eraseExpired: any, setEraseExpired: any, eraseAll: any, setEraseAll: any, ifPressYes: any}) => {
+
+    const handleSaidNoWantToErase = () => {
+        if (eraseExpired) {setEraseExpired(false);}
+        if (eraseAll) {setEraseAll(false);}
+        setWantErase(false);
+    };
+    return (
+        <>
+        <View style={stylesWantErase.firstBox}>
+            <Text style={stylesWantErase.title}>{titleText}</Text>
+        </View>
+        <View style={stylesWantErase.secondBox}>
+            <Button buttonStyle={stylesWantErase.buttonTop} buttonTextStyle={stylesWantErase.text} text={text1} onPress={()=>{ifPressYes();}}/>
+            <Button buttonStyle={stylesWantErase.buttonBottom} buttonTextStyle={stylesWantErase.text} text={text2} onPress={()=>{handleSaidNoWantToErase();}}/>
+        </View>
+        </>
+
+    );
+};
+
+const WantEraseView = ({setWantErase, eraseExpired, setEraseExpired, eraseAll, setEraseAll, handleEraseExpired, handleEraseAll}:{setWantErase: any, eraseExpired: any, setEraseExpired: any, eraseAll: any, setEraseAll: any, handleEraseExpired: any, handleEraseAll: any}) => {
+    return (
+        <View style={stylesWantErase.giantWantErase}>
+            <View style={stylesWantErase.bigBox}>
+                {eraseExpired && (
+                    <WantEraseViewAuxiliar setWantErase={setWantErase} titleText={'¿Estas segur@ de borrar expirados?'} text1="Si, borra esa vaina" text2="No vale, pobrecito" eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} ifPressYes={handleEraseExpired}/>
+                    )
+                }
+                {eraseAll && (
+                    <WantEraseViewAuxiliar setWantErase={setWantErase} titleText={'¿Estas segur@ de borrar todo?'} text1="Si, borra esa vaina" text2="No vale, pobrecito" eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} ifPressYes={handleEraseAll}/>
+                )}
+            </View>
+        </View>
+    )
+}
+
 const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Record<string, object | undefined>>;}) => {
     const {user} = useUser();
     const [ready, setReady] = useState(false);
@@ -159,6 +196,10 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
     const [documents, setDocuments] = useState<Document[]>([]);
     const [selectedPackage, setSelectedPackage] = useState(false);
     const [indexSelectedPackage, setIndexSelectedPackage] = useState(0);
+
+    const[wantErase, setWantErase] = useState(false);
+    const[eraseExpired, setEraseExpired] = useState(false);
+    const[eraseAll, setEraseAll] = useState(false);
 
     const handleTrashCanPress = useCallback(
         async (data: { id: any }) => {
@@ -173,29 +214,49 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
         },[ready]
     );
 
+    const handleSetConfirmationToEraseAll = async () => {
+        setEraseAll(true);
+        setWantErase(true);
+    };
+
+    const handleSetConfirmationToEraseExpired = async () => {
+        setEraseExpired(true);
+        setWantErase(true);
+    };
+
     const handleEraseExpired = async () => {
             const emailEnterprise = user?.email;
-            await deleteExpiredDocumentsByEmail(emailEnterprise);
+            const packagesExist = await deleteExpiredDocumentsByEmail(emailEnterprise);
+
             if (!ready){
                 setReady(true);
             } else {
               setReady(false);
             }
+            if (eraseExpired) {setEraseExpired(false);}
+            if (eraseAll) {setEraseAll(false);}
+            setWantErase(false);
+            if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes expirados de forma exitosa');} else {Alert.alert('Nada', 'Nada que borrar');}
+
         };
 
-    const handleEraseAll = async () => {
-        const emailEnterprise = user?.email;
-        await deleteAllByEmail(emailEnterprise);
-        if (!ready){
-            setReady(true);
-        } else {
-          setReady(false);
-        }
-    };
+        const handleEraseAll = async () => {
+            const emailEnterprise = user?.email;
+            const packagesExist = await deleteAllByEmail(emailEnterprise);
+            if (!ready){
+                setReady(true);
+            } else {
+                setReady(false);
+            }
+            if (eraseExpired) {setEraseExpired(false);}
+            if (eraseAll) {setEraseAll(false);}
+            setWantErase(false);
 
+            if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes de forma exitosa');} else {Alert.alert('Nada', 'Nada que borrar');}
+        };
 
-    useEffect(()=>{
-        if (!user){
+        useEffect(()=>{
+            if (!user){
             Alert.alert('Te pasaste man, no estas logeado');
             navigation.navigate('HomeScreen');
         }
@@ -220,7 +281,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
                 console.log(error);
             }
         };
-
+        
         handleQuerySnapshot();
 
     }, [user?.email, ready, searchingExpiredPackages]);
@@ -228,15 +289,13 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
   return (
     <>
-        {selectedPackage && (
-                <>
-                <SelectedPackageView data={documents[indexSelectedPackage]} ready={ready} setReady={setReady} setSelectedPackage={setSelectedPackage}/>
-
-                </>
-
-            // </selectedPackageView>
+        {wantErase && (
+            <WantEraseView setWantErase={setWantErase} eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} handleEraseExpired={handleEraseExpired} handleEraseAll={handleEraseAll}/>
         )}
 
+        {selectedPackage && (
+            <SelectedPackageView data={documents[indexSelectedPackage]} ready={ready} setReady={setReady} setSelectedPackage={setSelectedPackage}/>
+        )}
 
         <View style={styles.giantBox}>
         <View style={styles.firstBox}>
@@ -259,8 +318,8 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
                 <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Todos los paquetes" onPress={()=>{setSearchingExpiredPackages(false);}}/>
                 <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Paquetes caducados" onPress={()=>{setSearchingExpiredPackages(true);}}/>
-                <Button buttonStyle={styles.buttonEraseExpired} buttonTextStyle={styles.buttonText} text="Borrar caducados" onPress={() => {handleEraseExpired();}}/>
-                <Button buttonStyle={styles.buttonEraseAll} buttonTextStyle={styles.buttonText} text="Eliminar TODO" onPress={() => {handleEraseAll();}}/>
+                <Button buttonStyle={styles.buttonEraseExpired} buttonTextStyle={styles.buttonText} text="Borrar caducados" onPress={() => {handleSetConfirmationToEraseExpired()}}/>
+                <Button buttonStyle={styles.buttonEraseAll} buttonTextStyle={styles.buttonText} text="Eliminar TODO" onPress={() => {handleSetConfirmationToEraseAll();}}/>
 
             </View>
 
@@ -600,7 +659,7 @@ const stylesIndividualCard = StyleSheet.create({
         borderBottomStartRadius: 20,
         borderBottomEndRadius: 20,
     },
-    
+
     firstRowRight: {
         width: '17.647%',
         height: '100%',
@@ -619,7 +678,7 @@ const stylesIndividualCard = StyleSheet.create({
         // backgroundColor:'red',
 
     },
-    
+
     secondRow: {
         height: '85.676%',
         justifyContent: 'flex-end',
@@ -629,6 +688,85 @@ const stylesIndividualCard = StyleSheet.create({
         height: '88.235%',
         backgroundColor: 'rgba(255, 255, 255, 0.6)',
         borderRadius: 20,
+    },
+
+});
+
+const stylesWantErase = StyleSheet.create({
+    giantWantErase:{
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        width: '100%',
+        backgroundColor: 'blackrgba(0, 0, 0, 0.36)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 2,
+    },
+    bigBox:{
+        width: '85%',
+        // backgroundColor: 'rgba(255, 255, 255, 0.77)',
+        backgroundColor: '#FFFFFF',
+        height: 172,
+        borderRadius: 20,
+        // justifyContent: 'center',
+        // alignItems: 'center',
+    },
+
+    firstBox:{
+        width: '100%',
+        height: '25.581%',
+        // backgroundColor: 'green',
+        // borderRadius: 20,
+        borderTopEndRadius: 20,
+        borderTopStartRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+
+    secondBox:{
+        width: '100%',
+        height: '74.419%',
+        // backgroundColor: 'black',
+        // borderRadius: 20,
+        borderBottomEndRadius: 20,
+        borderBottomStartRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    title:{
+        fontWeight: '500',
+        fontSize: 16,
+        lineHeight: 24,
+        color: '#333333',
+    },
+
+    text:{
+        fontWeight: '700',
+        fontSize: 18,
+        lineHeight: 27,
+        color: '#FFFFFF',
+    },
+
+    buttonTop:{
+        backgroundColor: '#630D0D',
+        width: '81.046%',
+        height: 43,
+        marginTop: '4.667%',
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonBottom:{
+        backgroundColor: '#1881B1',
+        width: '81.046%',
+        height: 43,
+        marginVertical: '4.667%',
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 
 });

@@ -127,6 +127,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
     data.endDate = endDate;
     data.startDate = startDate;
     data.expireDate = expireDate;
+    // Alert.alert('Se está subiendo tus datos, presiona ok para que se continue');
 
     if (resourcePath === '') {
       console.log(data);
