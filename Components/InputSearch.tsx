@@ -7,6 +7,7 @@ import settings from '../vectores/settings';
 // import React, { useEffect, useState } from 'react';
 // import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import { NavigationProp } from '@react-navigation/native';
 // import settings from '../../vectores/settings';
 // import { SvgXml } from 'react-native-svg';
 
@@ -46,9 +47,9 @@ const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
   );
 };
 
-const SearchBar: React.FC = () => {
+const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: string) => void }> = ({searchKeyword, setSearchKeyword}) => {
   const [items, setItems] = useState<Item[]>([]);
-  const [searchKeyword, setSearchKeyword] = useState('');
+  // const [searchKeyword, setSearchKeyword] = useState('');
   const [resultOffset, setResultOffset] = useState(0);
   const [type, setType] = useState('name');
   const [isOpen, setIsOpen] = useState(false);
@@ -129,17 +130,19 @@ const SearchBar: React.FC = () => {
 
 
 
-export const InputSearch = ({navigation}:{navigation: any}) => {
+export const InputSearch = ({navigation}) => {
+  const [searchKeyword, setSearchKeyword] = useState('');
+
   return (
     <View style={styles.contenedor}>
       <View style={styles.buscador}>
         <View style={styles.barSizes}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => {navigation.navigate('SearchResultScreen', {name: searchKeyword});}}>
           <SvgXml xml={search} />
           </TouchableOpacity>
 
           <View style={styles.settings}>
-            <SearchBar/>
+            <SearchBar searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword}/>
             {/* <SvgXml xml={settings} /> */}
           </View>
         </View>

@@ -8,6 +8,7 @@ import VectorPerfilFlecha from '../../vectores/vectorPerfilFlecha';
 import InputSearch from '../../Components/InputSearch';
 import PackagesSearch from '../../Components/packagesSearch';
 import options from '../../vectores/options';
+// import { NavigationProp } from '@react-navigation/native';
 
 
 const CardBoxView = () => {
@@ -36,15 +37,16 @@ const CardBoxView = () => {
     );
 };
 
-const SearchResultScreen = () => {
+const SearchResultScreen = ({navigation, route}) => {
+    const {name} = route.params;
     return (
         <View style={styles.container}>
             <ScrollView>
 
                 <View style={styles.info}>
                     <View style={styles.topInfo}>
-                        <Text style={styles.txt}>Resultados de Busqueda</Text>
-                        <InputSearch />
+                        <Text style={styles.txt}>Resultados de Busqueda: {name}</Text>
+                        <InputSearch navigation={navigation}/>
 
                         <CardBoxView/>
 
