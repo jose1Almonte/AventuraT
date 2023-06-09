@@ -5,23 +5,40 @@ import search from '../vectores/search';
 import settings from '../vectores/settings';
 import SearchBar from './SearchBar/SearchBar';
 
-class InputSearch extends Component {
-  render() {
-    return (
-      <View style={styles.contenedor}>
-        <View style={styles.buscador}>
-          <View style={styles.barSizes}>
-            <SvgXml xml={search}  />
-            <View style={styles.settings}>
-              <SearchBar/>
-              {/* <SvgXml xml={settings} /> */}
-            </View>
+
+export const InputSearch = () => {
+  return (
+    <View style={styles.contenedor}>
+      <View style={styles.buscador}>
+        <View style={styles.barSizes}>
+          <SvgXml xml={search}  />
+          <View style={styles.settings}>
+            <SearchBar/>
+            {/* <SvgXml xml={settings} /> */}
           </View>
         </View>
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
+
+// class InputSearch extends Component {
+//   render() {
+//     return (
+//       <View style={styles.contenedor}>
+//         <View style={styles.buscador}>
+//           <View style={styles.barSizes}>
+//             <SvgXml xml={search}  />
+//             <View style={styles.settings}>
+//               <SearchBar/>
+//               {/* <SvgXml xml={settings} /> */}
+//             </View>
+//           </View>
+//         </View>
+//       </View>
+//     );
+//   }
+// }
 
 const styles = StyleSheet.create({
   contenedor: {
