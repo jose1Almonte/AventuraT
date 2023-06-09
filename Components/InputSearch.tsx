@@ -140,14 +140,28 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
 
 
 
-export const InputSearch = ({navigation}) => {
+export const InputSearch = ({navigation, areYouInSearchResult}:{navigation: any, areYouInSearchResult: boolean}) => {
   const [searchKeyword, setSearchKeyword] = useState('');
+  const inSearch = areYouInSearchResult;
+
+  const handleOnPressButtonSearch = async (inSearch) => {
+
+    if (!inSearch){
+      if (searchKeyword !== ''){
+        navigation.navigate('SearchResultScreen',{name: searchKeyword});
+      } else {
+        Alert.alert('Escribe algo gafo', 'tututututu');
+      }
+    } else {
+      Alert.alert('Hola, ya estoy')
+    } // AQUI VA UN ELSE INDICANDO LO QUE HARA SI SE ENCUENTRA EN SearchResultScreen
+  };
 
   return (
     <View style={styles.contenedor}>
       <View style={styles.buscador}>
         <View style={styles.barSizes}>
-          <TouchableOpacity onPress={() => {navigation.navigate('SearchResultScreen', {name: searchKeyword});}}>
+          <TouchableOpacity onPress={() => {handleOnPressButtonSearch(inSearch);}}>
           <SvgXml xml={search} />
           </TouchableOpacity>
 

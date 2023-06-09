@@ -46,7 +46,7 @@ const SearchResultScreen = ({navigation, route}) => {
                 <View style={styles.info}>
                     <View style={styles.topInfo}>
                         <Text style={styles.txt}>Resultados de Busqueda: {name}</Text>
-                        <InputSearch navigation={navigation}/>
+                        <InputSearch navigation={navigation} areYouInSearchResult={true}/>
 
                         <CardBoxView/>
 

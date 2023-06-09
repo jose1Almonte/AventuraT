@@ -32,8 +32,8 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
         {/* <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerShown: false }} /> */}
-          <Stack.Screen name="SearchResultScreen" component={SearchResultScreen} options={{ headerShown: false }} />
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="SearchResultScreen" component={SearchResultScreen} options={{ headerShown: false }} />
           <Stack.Screen name="AdministratePackagesScreen" component={AdministratePackagesScreen} options={{headerShown: false}}/>
           <Stack.Screen name="HelpdeskScreen" component={HelpdeskScreen} options={{ headerShown: false }} />
           <Stack.Screen name="CreatePackageFormScreen" component={CreatePackageFormScreen} options={{ headerShown: false }}/>
