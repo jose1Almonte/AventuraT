@@ -102,7 +102,8 @@ const SearchBar: React.FC = () => {
               <View style={styles.resultsContainer}>
                 <View style={{ height: resultOffset }} />
                 {items.map((item, index) => (
-                  <View
+                  <TouchableOpacity
+                  onPress={() => handleSearchKeywordChange(item.name)}
                     key={item.id}
                     style={[
                       styles.resultItem,
@@ -112,7 +113,7 @@ const SearchBar: React.FC = () => {
                     <Text numberOfLines={1} style={styles.itemText}>
                       {item.name}
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 ))}
               </View>
             )}
