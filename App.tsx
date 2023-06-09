@@ -31,7 +31,6 @@ export default function App() {
     <UserProvider>
       <NavigationContainer>
         <Stack.Navigator>
-        {/* <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerShown: false }} /> */}
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="SearchResultScreen" component={SearchResultScreen} options={{ headerShown: false }} />
           <Stack.Screen name="AdministratePackagesScreen" component={AdministratePackagesScreen} options={{headerShown: false}}/>
