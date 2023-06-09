@@ -162,10 +162,12 @@ export const InputSearch = ({navigation, areYouInSearchResult, defaultValue, sea
       if (searchKeyword !== ''){
         navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
       } else {
+        // navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
         Alert.alert('Escribe algo gafo', 'tututututu');
       }
     } else {
-      Alert.alert('Hola, ya estoy')
+      // Alert.alert('Hola, ya estoy')
+      navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
     } // AQUI VA UN ELSE INDICANDO LO QUE HARA SI SE ENCUENTRA EN SearchResultScreen
   };
 

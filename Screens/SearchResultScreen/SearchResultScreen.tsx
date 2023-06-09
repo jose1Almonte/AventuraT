@@ -81,7 +81,7 @@ const SearchResultScreen = ({navigation, route}) => {
 
         fetchData();
 
-    }, []);
+    }, [searchKeyword]);
 
 
     return (
@@ -90,7 +90,7 @@ const SearchResultScreen = ({navigation, route}) => {
 
                 <View style={styles.info}>
                     <View style={styles.topInfo}>
-                        <Text style={styles.txt}>Resultados de Busqueda: {initialSearchValue}</Text>
+                        <Text style={styles.txt}> Resultados de Busqueda </Text>
                         <InputSearch navigation={navigation} areYouInSearchResult={true} defaultValue={initialSearchValue} searchKeyword = {searchKeyword} setSearchKeyword = {setSearchKeyword}/>
 
                         {items.map((document, index) => (
