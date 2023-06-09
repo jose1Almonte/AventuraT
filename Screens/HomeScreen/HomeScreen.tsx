@@ -65,6 +65,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       <InputSearch />
       <View style={styles.Container2}>
         <View style={styles.Caracteristicas}>
+
           <TouchableOpacity onPress={() => { navigation.navigate('VistaPorTipoScreen',{parameter:'Montaña'});}}>
           <View style={styles.Sepa}>
             <View style={styles.Redondos}>
@@ -73,6 +74,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             <Text style={styles.letras}>Montaña</Text>
           </View>
           </TouchableOpacity>
+
           <TouchableOpacity onPress={() => { navigation.navigate('VistaPorTipoScreen',{parameter:'Playa'});}}>
           <View style={styles.Sepa}>
             <View style={styles.Redondos}>
