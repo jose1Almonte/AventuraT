@@ -51,6 +51,7 @@ export const Carrousel = ({ navigation }: carruselProps) => {
               endDate: data.endDate,
               emailEnterprise: data.emailEnterprise,
               expireDate: data.expireDate,
+              isPublic: data.isPublic,
             };
 
             const customComponent = (

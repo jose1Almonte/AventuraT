@@ -241,7 +241,7 @@ export const returnEnterpisePic = async (responsibleName) => {
 };
 
 export const listPackage = async (responsibleName) => {
-  const query = packagesCollection.where('emailEnterprise', '==', responsibleName);
+  const query = packagesCollection.where('emailEnterprise', '==', responsibleName).where('isPublic', '==', true);
   const querySnapshot = await query.get();
   const packages = [];
   querySnapshot.forEach((doc) => {
