@@ -234,8 +234,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   boxCard:{
-    borderColor: 'black',
-    borderWidth: 2,
+    // borderColor: 'black',
+    // borderWidth: 2,
     borderRadius: 30,
     overflow: 'hidden',
     width: width * 0.4,
