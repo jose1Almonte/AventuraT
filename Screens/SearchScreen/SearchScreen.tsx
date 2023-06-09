@@ -1,19 +1,29 @@
-import {Text, View, StyleSheet} from 'react-native';
-import React from 'react';
-import {SvgXml} from 'react-native-svg';
-import vectorPerfil from '../../vectores/vectorPerfil';
-import PhotoProfile from '../../Components/Profiles/photoProfile';
-import EditProfileButton from '../../Components/Profiles/editProfileButton';
-import VectorPerfilFlecha from '../../vectores/vectorPerfilFlecha';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+} from 'react-native';
+import React, {useState} from 'react';
 import InputSearch from '../../Components/InputSearch';
-import options from '../../vectores/options';
+import {ButtonOptions} from '../../Components/ButtonOptions';
 
 const SearchScreen = () => {
-  return (
-    <View style={styles.container}>
-      {/* <View style={styles.fondo}>
+  const [textColor, setTextColor] = useState<{[key: number]: string}>({}); // Estado para rastrear los colores de los textos
 
-      </View> */}
+  const handleTextClick = (textId: number) => {
+    const newColor = textColor[textId] === '#1881B1' ? '#323F4B' : '#1881B1'; // Cambiar el color del texto según el estado actual
+
+    setTextColor(prevState => ({
+      ...prevState,
+      [textId]: newColor,
+    }));
+  };
+
+  return (
+    <ScrollView style={styles.container}>
       <View style={styles.info}>
         <View style={styles.topInfo}>
           <Text style={styles.txt}>Filtro de búsqueda</Text>
@@ -23,73 +33,104 @@ const SearchScreen = () => {
         <View style={styles.contenedorInfoTop}>
           <View style={styles.info2}>
             <Text style={styles.title}>Clasificar</Text>
-            <View style={styles.contenedorInfo}>
-              <Text style={styles.txtInfo}>Novedades</Text>
-              {/* <SvgXml xml={VectorPerfilFlecha} /> */}
-            </View>
-            <View style={styles.contenedorInfo}>
-              <Text style={styles.txtInfo}>Menor precio</Text>
-              {/* <SvgXml xml={VectorPerfilFlecha} /> */}
-            </View>
-            <View style={styles.contenedorInfo}>
-              <Text style={styles.txtInfo}>Mayor precio</Text>
-              {/* <SvgXml xml={VectorPerfilFlecha} /> */}
-            </View>
-            <View style={styles.contenedorInfo}>
-              <Text style={styles.txtInfo}>Mejor valorados</Text>
-              {/* <SvgXml xml={VectorPerfilFlecha} /> */}
-            </View>
+            <TouchableOpacity
+              style={styles.contenedorInfo}
+              onPress={() => handleTextClick(1)}>
+              <Text style={[styles.txtInfo, {color: textColor[1]}]}>
+                Novedades
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.contenedorInfo}
+              onPress={() => handleTextClick(2)}>
+              <Text style={[styles.txtInfo, {color: textColor[2]}]}>
+                Menor precio
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.contenedorInfo}
+              onPress={() => handleTextClick(3)}>
+              <Text style={[styles.txtInfo, {color: textColor[3]}]}>
+                Mayor precio
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.contenedorInfo}
+              onPress={() => handleTextClick(4)}>
+              <Text style={[styles.txtInfo, {color: textColor[4]}]}>
+                Mejor valorados
+              </Text>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.info3}>
             <Text style={styles.title}>Categoría</Text>
-            <View style={styles.contenedorInfo}>
-              <Text style={styles.txtInfo}>Montaña</Text>
-              {/* <SvgXml xml={VectorPerfilFlecha} /> */}
-            </View>
-            <View style={styles.contenedorInfo}>
-              <Text style={styles.txtInfo}>Playa</Text>
-              {/* <SvgXml xml={VectorPerfilFlecha} /> */}
-            </View>
-            <View style={styles.contenedorInfo}>
-              <Text style={styles.txtInfo}>Full-day</Text>
-              {/* <SvgXml xml={VectorPerfilFlecha} /> */}
-            </View>
-            <View style={styles.contenedorInfo}>
-              <Text style={styles.txtInfo}>Camping</Text>
-              {/* <SvgXml xml={VectorPerfilFlecha} /> */}
-            </View>
+            <TouchableOpacity
+              style={styles.contenedorInfo}
+              onPress={() => handleTextClick(5)}>
+              <Text style={[styles.txtInfo, {color: textColor[5]}]}>
+                Montaña
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.contenedorInfo}
+              onPress={() => handleTextClick(6)}>
+              <Text style={[styles.txtInfo, {color: textColor[6]}]}>
+                Playa
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.contenedorInfo}
+              onPress={() => handleTextClick(7)}>
+              <Text style={[styles.txtInfo, {color: textColor[7]}]}>
+                Full-Day
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.contenedorInfo}
+              onPress={() => handleTextClick(8)}>
+              <Text style={[styles.txtInfo, {color: textColor[8]}]}>
+                Camping
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
+
         <View style={styles.contenedorServicios}>
           <Text style={styles.title}>Servicios incluidos</Text>
           <View style={styles.contenedorInfo}>
             <Text style={styles.txtInfo}>Transporte privado</Text>
-            <SvgXml xml={options} />
+            <ButtonOptions />
           </View>
           <View style={styles.contenedorInfo}>
             <Text style={styles.txtInfo}>Comidas y refrigerios</Text>
-            <SvgXml xml={options} />
+            <ButtonOptions />
           </View>
           <View style={styles.contenedorInfo}>
             <Text style={styles.txtInfo}>Hidratación</Text>
-            <SvgXml xml={options} />
+            <ButtonOptions />
           </View>
           <View style={styles.contenedorInfo}>
             <Text style={styles.txtInfo}>Actividades recreativas</Text>
-            <SvgXml xml={options} />
+            <ButtonOptions />
           </View>
           <View style={styles.contenedorInfo}>
             <Text style={styles.txtInfo}>Guía y acompañamiento</Text>
-            <SvgXml xml={options} />
+            <ButtonOptions />
           </View>
           <View style={styles.contenedorInfo}>
             <Text style={styles.txtInfo}>Fotos y videos</Text>
-            <SvgXml xml={options} />
+            <ButtonOptions />
           </View>
           <View style={styles.contenedorInfo}>
             <Text style={styles.txtInfo}>Hospedaje</Text>
-            <SvgXml xml={options} />
+            <ButtonOptions />
           </View>
         </View>
         <View style={styles.contenedorPrecio}>
@@ -97,21 +138,22 @@ const SearchScreen = () => {
 
           <View style={styles.contenedorPrecios}>
             <View style={styles.contenedorEscala}>
-              <Text style={styles.txtInfo2}>Min.</Text>
+              <TextInput style={styles.txtInfo2} placeholder="Min." />
             </View>
+
             <View style={styles.contenedorEscala}>
-              <Text style={styles.txtInfo2}>Máx.</Text>
+              <TextInput style={styles.txtInfo2} placeholder="Máx." />
             </View>
           </View>
         </View>
 
-        <View style={styles.containerButton}>
+        <TouchableOpacity style={styles.containerButton}>
           <View style={styles.container2}>
             <Text style={styles.txtInfo1}>Buscar</Text>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -125,10 +167,10 @@ const styles = StyleSheet.create({
   info: {
     flex: 1,
     display: 'flex',
-    margin: 5
+    gap: 2,
   },
   topInfo: {
-    marginTop: 80,
+    marginTop: 60,
     alignItems: 'center',
     gap: 15,
   },
@@ -181,13 +223,11 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   contenedorEscala: {
-    justifyContent: "center",
-    display: 'flex',
     borderRadius: 4,
-    width: 90,
-    height: 35,
+    width: 100,
+    height: 45,
     borderColor: '#1881B1',
-    borderWidth: 1
+    borderWidth: 1,
   },
   containerButton: {
     display: 'flex',
@@ -204,7 +244,7 @@ const styles = StyleSheet.create({
   },
   txt: {
     color: 'black',
-    fontSize: 20,
+    fontSize: 22,
     fontFamily: 'Poppins-SemiBold',
   },
   title: {
