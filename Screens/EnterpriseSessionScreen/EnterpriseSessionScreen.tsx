@@ -191,7 +191,7 @@ export const styles = StyleSheet.create({
   },
 
   label: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'Poppins-SemiBold',
     fontSize: 15,
     lineHeight: 24,
     color: 'white',
@@ -258,7 +258,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     fontSize: 14,
     lineHeight: 24,
-    color: 'black',
+    color: 'white',
   },
 
   submitButton: {
