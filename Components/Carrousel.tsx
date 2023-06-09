@@ -51,20 +51,25 @@ export const Carrousel = ({ navigation }: carruselProps) => {
               endDate: data.endDate,
               emailEnterprise: data.emailEnterprise,
               expireDate: data.expireDate,
+              isPublic: data.isPublic,
             };
-    
+
             const customComponent = (
               <TouchableOpacity style={styles.touchable} onPress={() => {
                 navigation.navigate('DetailsScreenUser', { data: packageTemp });
               }}>
-                <View>
-                  <ImageBackground borderRadius={30} style={styles.reescala} source={{ uri: packageTemp.mainImageUrl }}>
+                <View style={styles.boxCard}>
+                  <ImageBackground style={styles.reescala} source={{ uri: packageTemp.mainImageUrl }}>
                     <View style={styles.contenedor3}>
+
                       <View style={styles.ContainerLikes}>
                         <ButtonLikes packageDetails={packageTemp} />
                       </View>
+
                       <Califications calification={packageTemp.rating} />
+
                     </View>
+
                     <View style={styles.textContainer}>
                       <Text style={styles.texto}>{packageTemp.name}</Text>
                       <Text style={styles.texto2}>{packageTemp.description}</Text>
@@ -89,7 +94,7 @@ export const Carrousel = ({ navigation }: carruselProps) => {
     const unsubscribe = subscribeToChanges();
     return () => {
       unsubscribe();};
-  }, []);
+  }, [navigation]);
 
   const renderItem = ({ item, index }: { item: CarouselItem; index: number }) => {
     const centerScale = 1.2;
@@ -150,6 +155,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: screenWidth * 0.6,
   },
+
   contentContainer: {
     alignItems: 'center',
   },
@@ -169,22 +175,29 @@ const styles = StyleSheet.create({
     marginTop: 12,
     flexDirection: 'row',
     gap: 60,
+    
+
   },
   reescala: {
-    width: width * 0.4,
-    height: height * 0.23,
+    // width: width * 0.4,
+    // height: height * 0.23,
+    width: '100%',
+    height: '100%',
+    // borderRadius: 30,
+    
   },
   textContainer: {
     position: 'absolute',
     bottom: 0,
-    left: 0,
-    right: 0,
+    // left: 0,
+    // right: 0,
+    width: '100%',
     height: 80,
     gap: 5,
     backgroundColor:
       'linear-gradient(359.78deg, rgba(0, 0, 0, 0.8) 4.2%, rgba(13, 13, 13, 0) 118.3%)',
-    borderBottomStartRadius: 30,
-    borderBottomEndRadius: 30,
+    // borderBottomStartRadius: 30,
+    // borderBottomEndRadius: 30,
   },
   ContainerLikes: {
     justifyContent: 'center',
@@ -220,6 +233,14 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  boxCard:{
+    // borderColor: 'black',
+    // borderWidth: 2,
+    borderRadius: 30,
+    overflow: 'hidden',
+    width: width * 0.4,
+    height: height * 0.23,
   },
 
 });

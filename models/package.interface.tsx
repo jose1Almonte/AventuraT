@@ -12,4 +12,5 @@ export interface PackageI {
     // nameEnterprise?: string;
     emailEnterprise?: string;
     expireDate?: any;
+    isPublic: boolean;
 }

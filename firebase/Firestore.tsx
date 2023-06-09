@@ -215,7 +215,7 @@ export const createUserWithEmailAndPassword = async (email, password, phoneNumbe
   } catch (error) {
     // Manejar el error de creación de usuario
   }
-  
+
 };
 
 export const checkPasswordCorrect = async (email, password) => {
@@ -240,8 +240,15 @@ export const returnEnterpisePic = async (responsibleName) => {
   }
 };
 
-export const listPackage = async (responsibleName) => {
-  const query = packagesCollection.where('emailEnterprise', '==', responsibleName);
+export const listPackage = async (responsibleName, searchingOnlyPublics) => {
+  let query;
+
+  if (searchingOnlyPublics){
+    query = packagesCollection.where('emailEnterprise', '==', responsibleName).where('isPublic', '==', true);
+  } else {
+    query = packagesCollection.where('emailEnterprise', '==', responsibleName);
+
+  }
   const querySnapshot = await query.get();
   const packages = [];
   querySnapshot.forEach((doc) => {
@@ -296,7 +303,7 @@ export const listPaidPackage = async (id) => {
 };
 
 export const listTipoPackage = async (id) => {
-  const query = packagesCollection.where('tipo', '==', id);
+  const query = packagesCollection.where('tipo', '==', id).where('isPublic', '==', true);
   const querySnapshot = await query.get();
   const packages = [];
   querySnapshot.forEach((doc) => {

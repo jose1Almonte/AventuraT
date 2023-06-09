@@ -20,14 +20,18 @@ const SearchResultScreen = () => {
                     <View style={styles.topInfo}>
                         <Text style={styles.txt}>Resultados de Busqueda</Text>
                         <InputSearch />
-                        <PackagesSearch />
-                        <PackagesSearch />
-                        <PackagesSearch />
-                        <PackagesSearch />
-                        <PackagesSearch />
-                        <PackagesSearch />
-                        <PackagesSearch />
-                        <PackagesSearch />
+                        
+                        <View>
+                            <View>
+
+                            </View>
+                            <View>
+                                <Text> Cayo Muerto </Text>
+                                <Text> Cayo Muerto </Text>
+                                <Text> Cayo Muerto </Text>
+                            </View>
+                        </View>
+
                     </View>
                 </View>
             </View>

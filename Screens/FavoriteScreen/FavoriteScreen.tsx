@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { useUser, UserProvider } from "../../Context/UserContext"
 import { getFavorites, getPackage, LoadingScreen } from '../../firebase/Firestore';
+import { Background } from '../../Layouts/Background';
 
 const FavoriteScreen = () => {
   const [loadingFavorites, setLoadingFavorites] = useState(true);
@@ -56,7 +57,9 @@ const FavoriteScreen = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>FavoriteScreen</Text>
+      <View style={styles.titleBox}>
+        <Text style={styles.title}>FavoriteScreen</Text>
+      </View>
       {favorites.length === 0 ? (
         <Text style={styles.noFavoritesText}>NO HAY FAVORITOS</Text>
       ) : (
@@ -65,17 +68,42 @@ const FavoriteScreen = () => {
             if (packages[String(esteitem)]) {
               return (
                 <View key={esteitem} style={styles.card}>
-                  <>
-                    <Text style={styles.name}>Nombre: {packages[String(esteitem)]?.name}</Text>
-                    <Text style={styles.description}>Descripción: {packages[String(esteitem)]?.description}</Text>
-                    <Text style={styles.price}>Precio: {packages[String(esteitem)]?.price}</Text>
-                    <Image
+                  <Background style={styles.containerPhotoPack} image={{uri: packages[String(esteitem)]?.mainImageUrl}}>
+
+                  <View style={styles.layer}>
+
+                    <View style = {styles.firstBox}>
+                      <View style={styles.textBox}>
+
+                        <Text style={styles.name}>Nombre:</Text>
+                        <Text style={styles.name} >{packages[String(esteitem)]?.name}</Text>
+                      </View>
+                      <View style={styles.textBox}>
+
+                        <Text style={styles.description}>Descripción:</Text>
+                        <Text style={styles.description} >{packages[String(esteitem)]?.description}</Text>
+                      </View>
+                      <View style={styles.textBox}>
+
+                        <Text style={styles.price}>Precio:</Text>
+                        <Text style={styles.price} >{packages[String(esteitem)]?.price}</Text>
+                      </View>
+
+                    </View>
+
+                    <View style = {styles.secondBox}>
+                      <Image style={styles.rightImage} source={{uri: packages[String(esteitem)]?.mainImageUrl}}/>
+
+                    </View>
+
+                    {/* <Image
                       style={styles.containerPhotoPack}
                       source={{
                         uri: packages[String(esteitem)]?.mainImageUrl,
                       }}
-                    />
-                  </>
+                      /> */}
+                  </View>
+                  </Background>
                 </View>
               );
             }
@@ -93,6 +121,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#1DB5BE',
     padding: 16,
   },
+
+  titleBox:{
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 100,
+  },
+
   title: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -110,9 +145,13 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#FFF',
-    borderRadius: 8,
-    padding: 16,
+    borderRadius: 20,
+    // padding: 16,
+    height: 120,
     marginBottom: 16,
+    overflow: 'hidden',
+    borderColor: 'black',
+    borderWidth: 2,
   },
   name: {
     fontSize: 18,
@@ -126,15 +165,54 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   containerPhotoPack: {
-    borderRadius: 50,
-    width: '100%',
-    height: 200,
-    marginBottom: 8,
+    // borderRadius: 50,
+    // width: '100%',
+    // height: 200,
+    // marginBottom: 8,
+    flex: 1,
   },
+
+  layer:{
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    width: '100%',
+    flex: 1,
+    flexDirection: 'row',
+  },
+
   price: {
     fontSize: 16,
     fontWeight: 'bold',
     color: 'black',
+  },
+
+  firstBox:{
+    width: '50%',
+    // backgroundColor: 'red',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  textBox:{
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent:'space-between',
+  },
+
+  secondBox:{
+    width: '50%',
+    // backgroundColor: 'green',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+
+  rightImage:{
+    height:'90%',
+    width: '90%',
+    borderRadius: 20,
+    borderColor: 'black',
+    borderWidth: 1,
   },
 });
 
