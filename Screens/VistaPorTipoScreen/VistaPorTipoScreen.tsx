@@ -28,23 +28,25 @@ const VistaPorTipoScreen = () => {
         <Text style={styles.noFavoritesText}>NO HAY PAQUETES CON ESTE TIPO</Text>
       ) : (
         <View style={styles.cardContainer}>
-        {packages.map((esteitem) => {
-            return (
+          {packages.map((esteitem) => {
+              return (
                 <View key={esteitem.id} style={styles.card}>
-            <>
-                <Image
-                    style={styles.containerPhotoPack}
-                    source={{
-                        uri: esteitem?.mainImageUrl,
-                    }}
-                    />
+                  <>
                     <Text style={styles.name}>Nombre: {esteitem?.name}</Text>
                     <Text style={styles.description}>Descripción: {esteitem?.description}</Text>
                     <Text style={styles.price}>Precio: {esteitem?.price}</Text>
-                </>
+                    <Image
+                      style={styles.containerPhotoPack}
+                      source={{
+                        uri: esteitem?.mainImageUrl,
+                      }}
+                    />
+                  </>
                 </View>
-            );
-        })}
+              );
+            
+            return null; // Omitir tarjeta si no se encuentra el índice
+          })}
         </View>
       )}
     </ScrollView>
