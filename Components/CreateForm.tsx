@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
-import { addPackage, uploadImage, getLastPackageId } from '../firebase/Firestore'; // Importa la función getLastPackageId
+import { addPackage, uploadImage, getLastPackageId, LoadingScreen } from '../firebase/Firestore'; // Importa la función getLastPackageId
 import { launchImageLibrary } from 'react-native-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useUser } from '../Context/UserContext';
@@ -64,7 +64,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   const [resourcePath, setResourcePath] = useState('');
   const [filename, setFileName] = useState('');
   // const [nameEnterprise, setNameEnterprise] = useState('');
-
+  const [loading, setLoading] = useState(false);
   const {user} = useUser();
   const userEmail = user ? user.email : null;
 
@@ -114,6 +114,16 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
 
   const submit = async () => {
 
+    if (
+      data.name.trim() === '' ||
+      data.availability.trim() === '' ||
+      data.location.trim() === '' ||
+      data.description.trim() === '' ||
+      data.price.trim() === ''
+    ) {
+      Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
+      return;
+    }
     // const querySnapshot = await firestore().collection('users').where('email', '==', userEmail).get();
 
     // querySnapshot.forEach((doc) => {
@@ -130,25 +140,12 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
     // Alert.alert('Se está subiendo tus datos, presiona ok para que se continue');
 
     if (resourcePath === '') {
-      console.log(data);
-      await addPackage(
-        data.id,
-        data.name,
-        data.availability,
-        data.price,
-        data.description,
-        '',
-        data.location,
-        data.endDate,
-        data.startDate,
-        data.emailEnterprise,
-        // data.nameEnterprise,
-        data.rating,
-        data.expireDate,
-        data.isPublic,
-        );
+        Alert.alert('Por favor coloque la imagen');
+        return;
         // Alert.alert('Veamos la fecha (postData, ya se envió)', data.date);
       } else {
+        setLoading(true);
+        setTimeout(async () => {
         const url = await uploadImage(resourcePath, filename);
         console.log(url);
         console.log(data);
@@ -168,10 +165,13 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
           data.expireDate,
           data.isPublic,
           );
+          setLoading(false);
+          }, 3000);
+          await loadLastId();
+          setTimeout(() => {
+            Alert.alert('Ya se subió el paquete a la base de datos');
+          }, 3000);
         }
-    await loadLastId(); // Carga el nuevo último ID después de crear el paquete
-    Alert.alert('Ya se subió el paquete a la base de datos');
-    navigation.navigate('HomeScreen');
   };
 
   const selectImage = () => {
@@ -192,7 +192,9 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
       }
     });
   };
-
+  if (loading) {
+    return <LoadingScreen />;
+  }
   return (
     <View style={styles.container}>
       <View style={styles.header}>

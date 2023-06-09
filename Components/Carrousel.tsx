@@ -7,6 +7,7 @@ import Califications from './Califications';
 import { PackageI } from '../models/package.interface';
 import { NavigationProp } from '@react-navigation/native';
 import { LoadingScreen } from '../firebase/Firestore';
+import { snapshotListener } from '../firebase/Firestore';
 
 const { height, width } = Dimensions.get('window');
 // let navigation: NavigationProp<Record<string, object | undefined>>;
@@ -23,74 +24,71 @@ interface carruselProps {
 const screenWidth = Dimensions.get('window').width;
 const carouselItemWidth = screenWidth * 0.43; // Ancho de los componentes
 
+
 export const Carrousel = ({ navigation }: carruselProps) => {
   const [carouselItems, setCarouselItems] = useState<CarouselItem[]>([]);
   const scrollX = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    const fetchCarouselData = async () => {
-      try {
-        let listPackage: PackageI[] = [];
-        const snapshot = await firestore().collection('package').where('isPublic','==',true).get();
-
-        snapshot.docs.map((doc: any) => {
-          let packageTemp: PackageI = {
-            availability: doc.data().availability,
-            description: doc.data().description,
-            id: doc.data().id,
-            location: doc.data().location,
-            mainImageUrl: doc.data().mainImageUrl,
-            name: doc.data().name,
-            price: doc.data().price,
-            rating: doc.data().rating,
-            // nameEnterprise: doc.data().nameEnterprise,
-            startDate: doc.data().startDate,
-            endDate: doc.data().endDate,
-            emailEnterprise: doc.data().emailEnterprise,
-            expireDate: doc.data().expireDate,
-          };
-
-          listPackage.push(packageTemp);
-        });
-
-        const firebaseItems: CarouselItem[] = listPackage.map((data: PackageI) => {
-
-          // Crea tu componente personalizado utilizando name, description y mainImageUrl
-          const customComponent = (
-            <TouchableOpacity style={styles.touchable} onPress={() => {
-              navigation.navigate('DetailsScreenUser', { data });
-            }}>
-              <View>
-                <ImageBackground borderRadius={30} style={styles.reescala} source={{ uri: data.mainImageUrl }}>
-                  <View style={styles.contenedor3}>
-                    <View style={styles.ContainerLikes}>
-                      <ButtonLikes packageDetails={data} />
+    const subscribeToChanges = () => {
+      const unsubscribe = firestore()
+        .collection('package')
+        .where('isPublic', '==', true)
+        .onSnapshot((snapshot) => {
+          const updatedCarouselItems: CarouselItem[] = [];
+          snapshot.docs.forEach((doc) => {
+            const data = doc.data();
+            const packageTemp: PackageI = {
+              availability: data.availability,
+              description: data.description,
+              id: data.id,
+              location: data.location,
+              mainImageUrl: data.mainImageUrl,
+              name: data.name,
+              price: data.price,
+              rating: data.rating,
+              startDate: data.startDate,
+              endDate: data.endDate,
+              emailEnterprise: data.emailEnterprise,
+              expireDate: data.expireDate,
+            };
+    
+            const customComponent = (
+              <TouchableOpacity style={styles.touchable} onPress={() => {
+                navigation.navigate('DetailsScreenUser', { data: packageTemp });
+              }}>
+                <View>
+                  <ImageBackground borderRadius={30} style={styles.reescala} source={{ uri: packageTemp.mainImageUrl }}>
+                    <View style={styles.contenedor3}>
+                      <View style={styles.ContainerLikes}>
+                        <ButtonLikes packageDetails={packageTemp} />
+                      </View>
+                      <Califications calification={packageTemp.rating} />
                     </View>
-                    <Califications calification={data.rating} />
-                  </View>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.texto}>{data.name}</Text>
-                    <Text style={styles.texto2}>{data.description}</Text>
-                  </View>
-                </ImageBackground>
-              </View>
-            </TouchableOpacity>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.texto}>{packageTemp.name}</Text>
+                      <Text style={styles.texto2}>{packageTemp.description}</Text>
+                    </View>
+                  </ImageBackground>
+                </View>
+              </TouchableOpacity>
+            );
 
-          );
+            updatedCarouselItems.push({
+              id: packageTemp.id ?? 0,
+              component: customComponent,
+            });
+          });
 
-          return {
-            id: data.id ?? 0,
-            component: customComponent,
-          };
+          setCarouselItems(updatedCarouselItems);
         });
 
-        setCarouselItems((prevItems) => [...prevItems, ...firebaseItems]);
-      } catch (error) {
-        console.log('Error fetching carousel data from Firebase:', error);
-      }
+      return unsubscribe; // Devuelve la función para cancelar la suscripción
     };
 
-    fetchCarouselData();
+    const unsubscribe = subscribeToChanges();
+    return () => {
+      unsubscribe();};
   }, []);
 
   const renderItem = ({ item, index }: { item: CarouselItem; index: number }) => {

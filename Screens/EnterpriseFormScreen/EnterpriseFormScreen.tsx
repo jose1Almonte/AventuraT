@@ -54,6 +54,7 @@ const EnterpriseFormScreen = () => {
   };
 
   const submit = async () => {
+
     if (
       data.nameEnterprise.trim() === '' ||
       data.responsibleName.trim() === '' ||
