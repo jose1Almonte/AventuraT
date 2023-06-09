@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import settings from '../../vectores/settings';
-import {SvgXml} from 'react-native-svg';
+import { SvgXml } from 'react-native-svg';
 
 interface Item {
   id: string;
@@ -13,34 +13,32 @@ interface Item {
   type: string;
 }
 
-interface FilterOptionsProps{
-  setType: any,
-  toggleMenu: any
+interface FilterOptionsProps {
+  setType: any;
+  toggleMenu: any;
 }
 
-const FilterOptions = ({setType, toggleMenu}: FilterOptionsProps) => {
+const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
   return (
-    <View style = {styles.filterOptionsBox}>
-            <TouchableOpacity style={styles.optionsPills} onPress={() => {setType('name'); toggleMenu();}}>
-                <Text>Nombre</Text>
-            </TouchableOpacity>
+    <View style={styles.filterOptionsBox}>
+      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); toggleMenu(); }}>
+        <Text>Nombre</Text>
+      </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => {setType('description'); toggleMenu();}}>
-              <Text>Descripcion</Text>
-            </TouchableOpacity>
+      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); toggleMenu(); }}>
+        <Text>Descripcion</Text>
+      </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => {setType('location');  toggleMenu();}}>
-              <Text>Location</Text>
-            </TouchableOpacity>
+      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); toggleMenu(); }}>
+        <Text>Location</Text>
+      </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => {setType('price');  toggleMenu();}}>
-              <Text>price</Text>
-            </TouchableOpacity>
+      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); toggleMenu(); }}>
+        <Text>price</Text>
+      </TouchableOpacity>
     </View>
   );
 };
-
-// const {height} = Dimensions.get('window');
 
 const SearchBar: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
@@ -58,65 +56,74 @@ const SearchBar: React.FC = () => {
         setItems([]);
         return;
       }
+      const uppercaseKeyword = searchKeyword.charAt(0).toUpperCase() + searchKeyword.slice(1);
+
       const snapshot = await firestore()
         .collection('package')
-        .where(type, '>=', searchKeyword)
-        .where(type, '<=', searchKeyword + '\uf8ff')
+        .where(type, '>=', uppercaseKeyword)
+        .where(type, '<=', uppercaseKeyword + '\uf8ff')
+        .orderBy(type)
         .get();
-      // @ts-ignore
+
       const data: Item[] = snapshot.docs.map((doc) => ({
         id: doc.id,
         name: doc.data().name,
         description: doc.data().description,
       }));
       setItems(data);
-      setResultOffset(0); // Reiniciar el desplazamiento vertical al obtener nuevos resultados
+      setResultOffset(0);
     };
+
     fetchData();
   }, [searchKeyword, type]);
+
   const handleSearchKeywordChange = (text: string) => {
     setSearchKeyword(text);
   };
 
   return (
     <>
-{isOpen ? (
-            <FilterOptions setType={setType} toggleMenu={toggleMenu}/>
-          ) : (
-          <>
-            <View style={styles.container}>
-              <TextInput placeholder="Ingrese una palabra clave" value={searchKeyword} onChangeText={handleSearchKeywordChange} style={styles.txt}/>
+      {isOpen ? (
+        <FilterOptions setType={setType} toggleMenu={toggleMenu} />
+      ) : (
+        <>
+          <View style={styles.container}>
+            <TextInput
+              placeholder="Ingrese una palabra clave"
+              value={searchKeyword}
+              onChangeText={handleSearchKeywordChange}
+              style={styles.txt}
+            />
 
-              {searchKeyword.trim() !== '' && (
-                <View style={styles.resultsContainer}>
-                  <View style={{ height: resultOffset }} />
-                  {items.map((item, index) => (
-                    <View
-                      key={item.id}
-                      style={[
-                        styles.resultItem,
-                        { top: index * 30 }, // Espaciado vertical entre resultados
-                      ]}
-                    >
-                      <Text numberOfLines={1} style={styles.itemText}>
-                        {item.name}
-                      </Text>
-                    </View>
-                  ))}
-                </View>
-              )}
-            </View>
+            {searchKeyword.trim() !== '' && (
+              <View style={styles.resultsContainer}>
+                <View style={{ height: resultOffset }} />
+                {items.map((item, index) => (
+                  <View
+                    key={item.id}
+                    style={[
+                      styles.resultItem,
+                      { top: index * 30 }, // Espaciado vertical entre resultados
+                    ]}
+                  >
+                    <Text numberOfLines={1} style={styles.itemText}>
+                      {item.name}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )}
+          </View>
 
-            <TouchableOpacity onPress={() =>{toggleMenu()}}>
-              <SvgXml xml={settings}/>  
-            </TouchableOpacity>
-          </>
-        )}
-
+          <TouchableOpacity onPress={toggleMenu}>
+            <SvgXml xml={settings} />
+          </TouchableOpacity>
         </>
+      )}
+    </>
   );
-  
 };
+
 const styles = StyleSheet.create({
   container: {
     height: '100%',
@@ -124,7 +131,7 @@ const styles = StyleSheet.create({
   },
   txt: {
     width: '130%',
-    color: "white",
+    color: 'white',
     fontFamily: 'Poppins-Regular',
     fontSize: 14,
     zIndex: 999,
@@ -160,14 +167,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     width: '70%',
   },
-  // Container2: {
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   marginTop: 150,
-  //   width: '100%',
-  // },
-
-  filterOptionsBox:{
+  filterOptionsBox: {
     position: 'relative',
     // height: 90,
     // backgroundColor: 'red',
@@ -175,10 +175,10 @@ const styles = StyleSheet.create({
     // paddingTop: 160,
     width: '75%',
     // zIndex: 999,
-    justifyContent:'center',
+    justifyContent: 'center',
     alignItems: 'center',
     // backgroundColor: 'red',
   },
 });
-export default SearchBar;
 
+export default SearchBar;
