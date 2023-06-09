@@ -7,23 +7,28 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { Background } from '../../Layouts/Background';
+import React, {useEffect, useState} from 'react';
+import {Background} from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
-import YourSignInWithGoogleComponent, { ProfilePicture } from '../../firebase/PerfilPicture';
-import { NavigationProp } from '@react-navigation/native';
-import { checkPasswordCorrect, checkResponsibleNameExists } from '../../firebase/Firestore';
+import YourSignInWithGoogleComponent, {
+  ProfilePicture,
+} from '../../firebase/PerfilPicture';
+import {NavigationProp} from '@react-navigation/native';
+import {
+  checkPasswordCorrect,
+  checkResponsibleNameExists,
+} from '../../firebase/Firestore';
 import auth from '@react-native-firebase/auth';
 import currentLog from '../../firebase/UserData';
-import { useUser } from '../../Context/UserContext';
+import {useUser} from '../../Context/UserContext';
 
 interface EnterpriseSessionScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
 }
 
-interface Register{
+interface Register {
   Username: string;
-  Password:String;
+  Password: String;
 }
 
 interface ContinueWithNameProps {
@@ -55,10 +60,9 @@ export const ContinueWithName = ({
   );
 };
 
-
 const signInWithEmailAndPassword = async (email, password) => {
   try {
-    const { user } = await auth().signInWithEmailAndPassword(email, password);
+    const {user} = await auth().signInWithEmailAndPassword(email, password);
     console.log('Usuario autenticado:', user);
   } catch (error) {
     // Manejar el error de autenticación
@@ -70,40 +74,39 @@ const makingThis = () => {
   Alert.alert('Hello');
 };
 
-
-
-const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => {
+const LoginScreenEnterprise = ({navigation}: EnterpriseSessionScreenProps) => {
   const [data, setData] = useState<Register>({
-    Username :'',
-    Password : '',
+    Username: '',
+    Password: '',
   });
 
-  const { user, setUser, setLogged } = useUser();
+  const {user, setUser, setLogged} = useUser();
 
   const submit = async () => {
-    if (
-      data.Password.trim() === '' ||
-      data.Username.trim() === ''
-    ) {
+    if (data.Password.trim() === '' || data.Username.trim() === '') {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
       return;
-    }
-    else{
-      const responsibleNameExists = await checkResponsibleNameExists(data.Username);
+    } else {
+      const responsibleNameExists = await checkResponsibleNameExists(
+        data.Username,
+      );
       if (!responsibleNameExists) {
-        Alert.alert('Usuario no Existente', 'El usuario no existe en la base de datos');
+        Alert.alert(
+          'Usuario no existente',
+          'El usuario no existe en la base de datos',
+        );
         return;
       }
-      if (await checkPasswordCorrect(data.Username, data.Password)){
-        await signInWithEmailAndPassword(data.Username,data.Password);
+      if (await checkPasswordCorrect(data.Username, data.Password)) {
+        await signInWithEmailAndPassword(data.Username, data.Password);
         setUser(currentLog());
         setLogged(true);
         navigation.navigate('HomeScreen');
-      }
-      else {
+      } else {
         Alert.alert('Contraseña inválida');
       }
-    }};
+    }
+  };
 
   return (
     <View style={styles.bigBox}>
@@ -121,42 +124,35 @@ const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => 
           locations={[0, 0.25, 0.5, 0.9, 1]}
           style={styles.linearGradient}>
           <View style={styles.firstBox}>
-          <View style={styles.inputContainer}>
-          <Text style={styles.label}>Email: </Text>
-          <TextInput
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Correo electrónico: </Text>
+              <TextInput
                 style={styles.input}
-                onChangeText={(text) => setData((prevData) => ({ ...prevData, Username: text }))}
+                onChangeText={text =>
+                  setData(prevData => ({...prevData, Username: text}))
+                }
               />
-          </View>
-          <View style={styles.inputContainer}>
-          <Text style={styles.label}>Password: </Text>
-          <TextInput
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Contraseña: </Text>
+              <TextInput
                 style={styles.input}
-                onChangeText={(text) => setData((prevData) => ({ ...prevData, Password: text }))}
+                onChangeText={text =>
+                  setData(prevData => ({...prevData, Password: text}))
+                }
               />
+            </View>
+            <TouchableOpacity style={styles.submitButton} onPress={submit}>
+              <Text style={styles.buttonText}>Iniciar sesión</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.submitButton} onPress={submit}>
-            <Text style={styles.buttonText}>Ingresar sesión</Text>
-          </TouchableOpacity>
-          </View>
-
+        
           <View style={styles.secondBox}>
-            {/* <GmailRegister ViewStyle={styles.continueWithGoogleBox}/> */}
             <YourSignInWithGoogleComponent
               styles={styles}
               navigation={navigation}
               destinationNavigationComponentName={'HomeScreen'}
-              //destinationNavigationComponentName={'FeedbackScreen'}
               goToLoginScreen={false}
-            />
-            {/* <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={onGoogleButtonPress}/> */}
-            <ContinueWithName
-              text="Continuar con Facebook"
-              ViewStyle={styles.continueWithFacebookBox}
-              imageSource={require('../../images/FacebookLogo.png')}
-              ImageStyle={styles.LogoStyles}
-              TextStyle={styles.normalTextStyle}
-              onPress={() => makingThis()}
             />
           </View>
         </Gradient>
@@ -178,25 +174,25 @@ export const styles = StyleSheet.create({
 
   bigBox: {
     flex: 1,
-    // backgroundColor: 'red',
   },
 
   firstBox: {
     flex: 2,
+    marginTop: '25%',
+    marginBottom: '6%',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
   },
-
   secondBox: {
     flex: 3,
     alignItems: 'center',
     justifyContent: 'flex-end',
-    marginBottom: '10%',
+    marginBottom: '15%',
   },
 
   label: {
     fontFamily: 'Poppins-Medium',
-    fontSize: 14,
+    fontSize: 15,
     lineHeight: 24,
     color: 'white',
   },
@@ -207,8 +203,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 25,
     alignItems: 'center',
-    height: '10%',
-    marginBottom: '5%',
+    height: 52,
+    marginBottom: '2%',
     paddingHorizontal: '2%',
     backgroundColor: '#FFFFFF',
     borderRadius: 8,
@@ -221,28 +217,18 @@ export const styles = StyleSheet.create({
     gap: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    height: '10%',
+    height: 52,
     paddingHorizontal: '2%',
     backgroundColor: '#FFFFFF',
     borderRadius: 8,
   },
-
-  title: {
-    fontFamily: 'Poppins',
-    fontStyle: 'normal',
-    fontWeight: '500',
-    fontSize: 45,
-    lineHeight: 58.5, // Calculado como 45 * 1.3
-    color: '#FFFFFF',
-  },
-
   inputContainer: {
     height: 52,
     width: '80%',
     justifyContent: 'center',
     borderBottomWidth: 1,
     borderBottomColor: 'white',
-    marginTop: 22,
+    marginTop: 30,
   },
 
   subtitle: {
@@ -260,9 +246,7 @@ export const styles = StyleSheet.create({
   },
 
   normalTextStyle: {
-    fontFamily: 'Poppins',
-    fontStyle: 'normal',
-    fontWeight: '500',
+    fontFamily: 'Poppins-Regular',
     fontSize: 16,
     lineHeight: 24,
     textAlign: 'center',
@@ -282,14 +266,15 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     height: 40,
     width: 200,
-    borderRadius: 5,
+    borderRadius: 8,
+    marginTop: 25,
     justifyContent: 'center',
     backgroundColor: '#1881B1',
   },
 
   buttonText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: 15,
     fontFamily: 'Poppins-Medium',
     textAlign: 'center',
   },
