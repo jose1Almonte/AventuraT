@@ -4,6 +4,7 @@ import { addPackage, uploadImage, getLastPackageId, LoadingScreen } from '../fir
 import { launchImageLibrary } from 'react-native-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useUser } from '../Context/UserContext';
+import FourOptionsSelector from './SelectorFour';
 // import firestore from '@react-native-firebase/firestore';
 
 const DatePickerBox = ({text, writingDate, setWritingDate, date, setEndDate }:{
@@ -77,6 +78,11 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   const [expireDate, setExpireDate] = useState(new Date());
   const [writtingExpireDate, setWritingExpireDate] = useState(false);
 
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+  };
 
   const [data, setData] = useState<CreateFormData>({
     id: 0, // Inicializa el ID en 0
@@ -119,7 +125,8 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
       data.availability.trim() === '' ||
       data.location.trim() === '' ||
       data.description.trim() === '' ||
-      data.price.trim() === ''
+      data.price.trim() === '' ||
+      handleOptionSelect === ''
     ) {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
       return;
@@ -203,6 +210,10 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
         <View style={styles.formContainer}>
           <ScrollView style={styles.scrollFormContainer}>
             <View style={styles.formContainer}>
+            <View style={styles.container2}>
+                <FourOptionsSelector onSelect={handleOptionSelect} />
+                <Text style={styles.labelSelector}>Opción Seleccionada: {selectedOption} !!!</Text>
+              </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Nombre del paquete</Text>
                 <TextInput style={styles.input} onChangeText={text => setData(prevData => ({ ...prevData, name: text })) }/>
@@ -228,6 +239,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
                   }
                 />
               </View>
+
 
               <TouchableOpacity style={styles.inputContainer} onPress={() => {handleIsPublic()}}>
                 <Text style={styles.label}>El Paquete es:</Text>
@@ -296,6 +308,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#1DB5BE',
   },
+  container2: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
   header: {
     flex: 3,
     width: '100%',
@@ -334,6 +351,12 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: 'black',
   },
+  labelSelector: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 10,
+    lineHeight: 24,
+    color: 'red',
+  },
   label1: {
     fontFamily: 'Poppins-Medium',
     fontSize: 14,
@@ -356,6 +379,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#1881B1',
     marginTop: 40,
+    marginBottom: '5%',
   },
   buttonText: {
     color: 'white',
