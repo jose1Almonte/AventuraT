@@ -62,7 +62,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           destinationNavigationComponentName="UserProfileScreen"
         />
       </View>
-      <InputSearch />
+      <InputSearch navigation={navigation}/>
       <View style={styles.Container2}>
         <View style={styles.Caracteristicas}>
 
