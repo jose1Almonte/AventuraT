@@ -119,14 +119,14 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   };
 
   const submit = async () => {
-
+    console.log(selectedOption);
     if (
       data.name.trim() === '' ||
       data.availability.trim() === '' ||
       data.location.trim() === '' ||
       data.description.trim() === '' ||
       data.price.trim() === '' ||
-      handleOptionSelect === ''
+      selectedOption === null
     ) {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
       return;
@@ -171,13 +171,12 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
           data.rating,
           data.expireDate,
           data.isPublic,
+          selectedOption,
           );
           setLoading(false);
+          Alert.alert('Ya se subió el paquete a la base de datos');
           }, 3000);
           await loadLastId();
-          setTimeout(() => {
-            Alert.alert('Ya se subió el paquete a la base de datos');
-          }, 3000);
         }
   };
 
