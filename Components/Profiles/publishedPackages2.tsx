@@ -9,7 +9,7 @@ function PublishedPackages(email) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const packageList = await listPackage(email.email);
+      const packageList = await listPackage(email.email, true);
       setPackages(packageList);
     };
 
@@ -50,6 +50,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     display: 'flex',
+    borderColor: 'black',
+    borderWidth: 2,
+    overflow:'hidden',
   },
   container: {
     flexDirection: 'row',
@@ -57,6 +60,8 @@ const styles = StyleSheet.create({
     marginVertical: '1%',
     // gap: 20,
     // backgroundColor: 'red',
+    // borderColor: 'black',
+    // borderWidth: 2,
   },
   textPack: {
     // backgroundColor: 'green',

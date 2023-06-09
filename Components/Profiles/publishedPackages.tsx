@@ -19,7 +19,7 @@ const PublishedPackages = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      const packageList = await listPackage(user.email);
+      const packageList = await listPackage(user.email, false);
       setPackages(packageList);
     };
 
