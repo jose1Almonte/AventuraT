@@ -21,33 +21,34 @@ interface Item {
 }
 
 interface FilterOptionsProps {
+  navigation: NavigationProp<Record<string, object | undefined>>;
   setType: any;
   toggleMenu: any;
 }
 
-const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
+const FilterOptions = ({ setType, toggleMenu,navigation }: FilterOptionsProps) => {
   return (
     <View style={styles.filterOptionsBox}>
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); toggleMenu(); }}>
+      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'name'});}}>
         <Text>Nombre</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); toggleMenu(); }}>
+      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'description'});; }}>
         <Text>Descripcion</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); toggleMenu(); }}>
+      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'location'});; }}>
         <Text>Location</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); toggleMenu(); }}>
+      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'price'});; }}>
         <Text>price</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: string) => void; areYouInSearchResult: boolean, defaultValue: string, type: string, setType: any }> = ({searchKeyword, setSearchKeyword, areYouInSearchResult, defaultValue, type, setType}) => {
+const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: string) => void; areYouInSearchResult: boolean, defaultValue: string, type: string, setType: any, navigation: NavigationProp<Record<string, object | undefined>>; }> = ({searchKeyword, setSearchKeyword, areYouInSearchResult, defaultValue, type, setType, navigation}) => {
   const [items, setItems] = useState<Item[]>([]);
   // const [searchKeyword, setSearchKeyword] = useState('');
   const [resultOffset, setResultOffset] = useState(0);
@@ -106,7 +107,7 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
   return (
     <>
       {isOpen ? (
-        <FilterOptions setType={setType} toggleMenu={toggleMenu} />
+        <FilterOptions setType={setType} toggleMenu={toggleMenu} navigation={navigation}/>
       ) : (
         <>
           <View style={styles.container}>
@@ -181,7 +182,7 @@ export const InputSearch = ({navigation, areYouInSearchResult, defaultValue, sea
           </TouchableOpacity>
 
           <View style={styles.settings}>
-            <SearchBar searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} areYouInSearchResult={areYouInSearchResult} defaultValue={defaultValue} type={type} setType={setType}/>
+            <SearchBar searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} areYouInSearchResult={areYouInSearchResult} defaultValue={defaultValue} type={type} setType={setType} navigation={navigation}/>
             {/* <SvgXml xml={settings} /> */}
           </View>
         </View>

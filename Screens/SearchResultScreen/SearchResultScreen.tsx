@@ -10,6 +10,7 @@ import PackagesSearch from '../../Components/packagesSearch';
 import options from '../../vectores/options';
 // import { NavigationProp } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
+import InputSearch2 from '../../Components/InputSearch2';
 
 // interface Item {
 //     id: string;
@@ -91,7 +92,8 @@ const SearchResultScreen = ({navigation, route}) => {
                 <View style={styles.info}>
                     <View style={styles.topInfo}>
                         <Text style={styles.txt}> Resultados de Busqueda </Text>
-                        <InputSearch navigation={navigation} areYouInSearchResult={true} defaultValue={initialSearchValue} searchKeyword = {searchKeyword} setSearchKeyword = {setSearchKeyword}/>
+                        <Text style={styles.txt}> Estas Buscando por: {type} </Text>
+                        <InputSearch2 navigation={navigation} areYouInSearchResult={true} defaultValue={initialSearchValue} searchKeyword = {searchKeyword} setSearchKeyword = {setSearchKeyword}/>
 
                         {items.map((document, index) => (
                     <CardBoxView key={index} data={document}/>
