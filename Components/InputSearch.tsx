@@ -53,6 +53,7 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
   const [resultOffset, setResultOffset] = useState(0);
   const [type, setType] = useState('name');
   const [isOpen, setIsOpen] = useState(false);
+  const [doNotShow, setDoNotShow] = useState(false);
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -90,6 +91,14 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
     // Alert.alert(text);
   };
 
+  const handleSearchKeywordChange2 = (text: string) => {
+    setSearchKeyword(text);
+    setDoNotShow(true);
+    // Alert.alert(text);
+    setTimeout(async () => {
+      setDoNotShow(false);
+    }, 3000);
+  };
   return (
     <>
       {isOpen ? (
@@ -102,8 +111,9 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
             {searchKeyword.trim() !== '' && (
               <View style={styles.resultsContainer}>
                 <View style={{ height: resultOffset }} />
-                {items.map((item, index) => (
-                  <View
+                {doNotShow === false && items.map((item, index) => (
+                  <TouchableOpacity
+                  onPress={() => handleSearchKeywordChange2(item.name)}
                     key={item.id}
                     style={[
                       styles.resultItem,
@@ -113,7 +123,7 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
                     <Text numberOfLines={1} style={styles.itemText}>
                       {item.name}
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 ))}
               </View>
             )}
