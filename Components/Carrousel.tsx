@@ -52,7 +52,7 @@ export const Carrousel = ({ navigation }: carruselProps) => {
               emailEnterprise: data.emailEnterprise,
               expireDate: data.expireDate,
             };
-    
+
             const customComponent = (
               <TouchableOpacity style={styles.touchable} onPress={() => {
                 navigation.navigate('DetailsScreenUser', { data: packageTemp });
@@ -89,7 +89,7 @@ export const Carrousel = ({ navigation }: carruselProps) => {
     const unsubscribe = subscribeToChanges();
     return () => {
       unsubscribe();};
-  }, []);
+  }, [navigation]);
 
   const renderItem = ({ item, index }: { item: CarouselItem; index: number }) => {
     const centerScale = 1.2;

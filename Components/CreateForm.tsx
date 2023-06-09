@@ -131,15 +131,6 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
       return;
     }
-    // const querySnapshot = await firestore().collection('users').where('email', '==', userEmail).get();
-
-    // querySnapshot.forEach((doc) => {
-    //   setNameEnterprise(doc.data().displayName.toString());
-    //   // console.log('Try again', doc.data().displayName);
-    //   // console.log('Try again', nameEnterprise);
-    //   data.nameEnterprise = doc.data().displayName;
-    // });
-
 
     data.endDate = endDate;
     data.startDate = startDate;
@@ -149,7 +140,6 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
     if (resourcePath === '') {
         Alert.alert('Por favor coloque la imagen');
         return;
-        // Alert.alert('Veamos la fecha (postData, ya se envió)', data.date);
       } else {
         setLoading(true);
         setTimeout(async () => {
@@ -175,6 +165,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
           );
           setLoading(false);
           Alert.alert('Ya se subió el paquete a la base de datos');
+          await navigation.navigate('HomeScreen');
           }, 3000);
           await loadLastId();
         }
