@@ -9,7 +9,7 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 //import RegisterEnterprise from '../../Components/registerEnterprise';
 import { ProfilePicture } from '../../firebase/PerfilPicture';
 // import RegisterEnterprise from '../../Components/registerEnterprise';
@@ -38,6 +38,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   // const handleOpenForm = () => {
   //   setShowForm(true);
   // };
+  const [searchKeyword, setSearchKeyword] = useState('');
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -62,7 +63,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           destinationNavigationComponentName="UserProfileScreen"
         />
       </View>
-      <InputSearch navigation={navigation} areYouInSearchResult={false}/>
+      <InputSearch navigation={navigation} areYouInSearchResult={false} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} defaultValue={undefined}/>
       <View style={styles.Container2}>
         <View style={styles.Caracteristicas}>
 

@@ -47,17 +47,18 @@ const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
   );
 };
 
-const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: string) => void }> = ({searchKeyword, setSearchKeyword}) => {
+const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: string) => void; areYouInSearchResult: boolean, defaultValue: string, type: string, setType: any }> = ({searchKeyword, setSearchKeyword, areYouInSearchResult, defaultValue, type, setType}) => {
   const [items, setItems] = useState<Item[]>([]);
   // const [searchKeyword, setSearchKeyword] = useState('');
   const [resultOffset, setResultOffset] = useState(0);
-  const [type, setType] = useState('name');
+  // const [type, setType] = useState('name');
   const [isOpen, setIsOpen] = useState(false);
   const [doNotShow, setDoNotShow] = useState(false);
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
   // const [textInput, setTextInput] = useState('');
+  // const defaultReallyValue = defaultValue;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,14 +92,16 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
     // Alert.alert(text);
   };
 
-  const handleSearchKeywordChange2 = (text: string) => {
+  const handleSearchKeywordChange2 = async (text: string) => {
     setSearchKeyword(text);
+    defaultValue = text;
     setDoNotShow(true);
     // Alert.alert(text);
     setTimeout(async () => {
       setDoNotShow(false);
     }, 3000);
   };
+
   return (
     <>
       {isOpen ? (
@@ -106,7 +109,15 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
       ) : (
         <>
           <View style={styles.container}>
-            <TextInput placeholder="Ingrese una palabra clave" value={searchKeyword} onChangeText={handleSearchKeywordChange} style={styles.txt}/>
+            {areYouInSearchResult ? (
+              <>
+              <TextInput value={searchKeyword} placeholder="Ingrese una palabra clave" onChangeText={handleSearchKeywordChange} style={styles.txt} />
+              {/* <TextInput placeholder="Ingrese una palabra clave" value={searchKeyword} onChangeText={handleSearchKeywordChange} style={styles.txt}/> */}
+              </>
+
+            ) : (
+              <TextInput placeholder="Ingrese una palabra clave" value={searchKeyword} onChangeText={handleSearchKeywordChange} style={styles.txt}/>
+            )}
 
             {searchKeyword.trim() !== '' && (
               <View style={styles.resultsContainer}>
@@ -140,15 +151,16 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
 
 
 
-export const InputSearch = ({navigation, areYouInSearchResult}:{navigation: any, areYouInSearchResult: boolean}) => {
-  const [searchKeyword, setSearchKeyword] = useState('');
+export const InputSearch = ({navigation, areYouInSearchResult, defaultValue, searchKeyword, setSearchKeyword}:{navigation: any, areYouInSearchResult: boolean, defaultValue: any, searchKeyword: string, setSearchKeyword: any}) => {
+  // const [searchKeyword, setSearchKeyword] = useState('');
   const inSearch = areYouInSearchResult;
+  const [type, setType] = useState('name');
 
   const handleOnPressButtonSearch = async (inSearch) => {
 
     if (!inSearch){
       if (searchKeyword !== ''){
-        navigation.navigate('SearchResultScreen',{name: searchKeyword});
+        navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
       } else {
         Alert.alert('Escribe algo gafo', 'tututututu');
       }
@@ -166,7 +178,7 @@ export const InputSearch = ({navigation, areYouInSearchResult}:{navigation: any,
           </TouchableOpacity>
 
           <View style={styles.settings}>
-            <SearchBar searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword}/>
+            <SearchBar searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} areYouInSearchResult={areYouInSearchResult} defaultValue={defaultValue} type={type} setType={setType}/>
             {/* <SvgXml xml={settings} /> */}
           </View>
         </View>
