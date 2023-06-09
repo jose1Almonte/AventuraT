@@ -215,7 +215,7 @@ export const createUserWithEmailAndPassword = async (email, password, phoneNumbe
   } catch (error) {
     // Manejar el error de creación de usuario
   }
-  
+
 };
 
 export const checkPasswordCorrect = async (email, password) => {
