@@ -7,6 +7,7 @@ import {
   BackHandler,
   Pressable,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import React, { useEffect } from 'react';
 //import RegisterEnterprise from '../../Components/registerEnterprise';
@@ -64,30 +65,38 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       <InputSearch />
       <View style={styles.Container2}>
         <View style={styles.Caracteristicas}>
+          <TouchableOpacity onPress={() => { navigation.navigate('VistaPorTipoScreen',{parameter:'Montaña'});}}>
           <View style={styles.Sepa}>
             <View style={styles.Redondos}>
               <Image style={styles.Escalado} source={require('../../images/tt.jpg')}/>
             </View>
             <Text style={styles.letras}>Montaña</Text>
           </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { navigation.navigate('VistaPorTipoScreen',{parameter:'Playa'});}}>
           <View style={styles.Sepa}>
             <View style={styles.Redondos}>
               <Image style={styles.Escalado} source={require('../../images/mas.jpg')}/>
             </View>
             <Text style={styles.letras}>Playa</Text>
           </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { navigation.navigate('VistaPorTipoScreen',{parameter:'Full-Day'});}}>
           <View style={styles.Sepa}>
             <View style={styles.Redondos}>
               <Image style={styles.Escalado} source={require('../../images/para.jpg')}/>
             </View>
             <Text style={styles.letras}>Full-Day</Text>
           </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { navigation.navigate('VistaPorTipoScreen',{parameter:'Camping'});}}>
           <View style={styles.Sepa}>
             <View style={styles.Redondos}>
               <Image style={styles.Escalado} source={require('../../images/lol.jpg')}/>
             </View>
             <Text style={styles.letras}>Camping</Text>
           </View>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.MyComponent}>

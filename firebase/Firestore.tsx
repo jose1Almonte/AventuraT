@@ -4,6 +4,11 @@ import auth from '@react-native-firebase/auth';
 import currentLog from './UserData';
 import { useUser } from '../Context/UserContext';
 import { useEffect } from 'react';
+import { usersCollection3 } from './DeletePackage';
+import React, { useState } from 'react';
+import { View, Image, StyleSheet } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { Text } from 'react-native-svg';
 
 const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
@@ -63,7 +68,7 @@ export const checkIfUserExists = async (email:string) => {
     const querySnapshot = await usersCollection.where('email', '==', email).get();
     return !querySnapshot.empty;};
 
-export const addPackage = async (id, name, availability, price, description, mainImageUrl, location, endDate, startDate, emailEnterprise, rating, expireDate) => {
+export const addPackage = async (id, name, availability, price, description, mainImageUrl, location, endDate, startDate, emailEnterprise, rating, expireDate, isPublic, tipo) => {
         try {
           const packageData = {
             id,
@@ -79,6 +84,8 @@ export const addPackage = async (id, name, availability, price, description, mai
             // nameEnterprise,
             rating,
             expireDate,
+            isPublic,
+            tipo,
           };
 
           await packagesCollection.doc(id.toString()).set(packageData);
@@ -87,6 +94,20 @@ export const addPackage = async (id, name, availability, price, description, mai
           console.error('Error al añadir el paquete a Firestore:', error);
         }
       };
+
+export const changePackageIsPublicValue = async (packageId: { toString: () => string | undefined; }, newIsPublic: boolean) => {
+
+  try {
+    await usersCollection3.doc(packageId?.toString()).update({
+      isPublic: newIsPublic,
+    });
+
+    console.log('DONE: ', `isPublic was successfully changed to ${newIsPublic}`  );
+  } catch (error){
+    console.log(error);
+  }
+
+};
 
 export const checkPackage = async (id) => {
         try {
@@ -231,9 +252,11 @@ export const listPackage = async (responsibleName) => {
   return packages;
 };
 
-export const addPaidPackage = async (id, name, availability, price, description, mainImageUrl, location, endDate, startDate, emailEnterprise, rating, expireDate,mobilePayment,nameEnterprise,photoURL) => {
+export const addPaidPackage = async (compradorMail, photoCompradorURL, id, name, availability, price, description, mainImageUrl, location, endDate, startDate, emailEnterprise, rating, expireDate,mobilePayment,nameEnterprise,photoURL) => {
   try {
     const packageData = {
+      compradorMail,
+      photoCompradorURL,
       id,
       name,
       availability,
@@ -260,4 +283,53 @@ export const addPaidPackage = async (id, name, availability, price, description,
 };
 
 
+export const listPaidPackage = async (id) => {
+  const query = paidPackages.where('id', '==', id);
+  const querySnapshot = await query.get();
+  const packages = [];
+  querySnapshot.forEach((doc) => {
+    const packageData = doc.data();
+    packages.push(packageData);
+  });
 
+  return packages;
+};
+
+export const listTipoPackage = async (id) => {
+  const query = packagesCollection.where('tipo', '==', id);
+  const querySnapshot = await query.get();
+  const packages = [];
+  querySnapshot.forEach((doc) => {
+    const packageData = doc.data();
+    packages.push(packageData);
+  });
+
+  return packages;
+};
+
+
+export const LoadingScreen = () => {
+
+    return (
+      <View style={styles.container}>
+        <FastImage
+          source={require('../images/cat-cute.gif')}
+          style={styles.loadingGif}
+          resizeMode="contain"
+        />
+      </View>
+    );
+  };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1DB5BE',
+  },
+  loadingGif: {
+    width: 60,
+    height: 60,
+  },
+});

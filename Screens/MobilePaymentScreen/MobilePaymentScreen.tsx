@@ -18,7 +18,7 @@ interface PackaI {
 
 const MobilePaymentScreen = ({ navigation, route }: PackaI) => {
     
-  const { isLogged } = useUser();
+  const { user,isLogged } = useUser();
   let packageIn: PackageI = route.params.data;
   const [nameEnterprise, setNameEnterprise] = useState('');
   const [photoURL, setPhotoUrl] = useState('');
@@ -53,6 +53,8 @@ const MobilePaymentScreen = ({ navigation, route }: PackaI) => {
 
         if (packageIn) {
           await addPaidPackage(
+            user.email,
+            user.photoURL,
             packageIn.id,
             packageIn.name,
             packageIn.availability,

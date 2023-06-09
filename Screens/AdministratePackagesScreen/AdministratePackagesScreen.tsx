@@ -5,6 +5,7 @@ import { useUser } from '../../Context/UserContext';
 import { NavigationProp } from '@react-navigation/native';
 import { searchPackagesByEmail, searchPackagesExpiredByEmail } from '../../firebase/SearchPackagesByEmail';
 import { deleteAllByEmail, deleteExpiredDocumentsByEmail, deleteSelectedPackage } from '../../firebase/DeletePackage';
+import { changePackageIsPublicValue } from '../../firebase/Firestore';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 // import { NavigationProp } from '@react-navigation/native';
 
@@ -19,7 +20,7 @@ const Button = ({buttonStyle, buttonTextStyle, text, onPress}:{buttonStyle: any,
     );
 };
 
-const CardBox = ({data, handleTrashCanPress, cardBoxStyles, backgroundCardStyles}:{data: any, handleTrashCanPress: any, cardBoxStyles: any, backgroundCardStyles: any}) => {
+const CardBox = ({data, index, setIndexSelectedPackage, setSelectedPackage, handleTrashCanPress, cardBoxStyles, backgroundCardStyles}:{data: any, index: number, setIndexSelectedPackage: any, setSelectedPackage: any, handleTrashCanPress: any, cardBoxStyles: any, backgroundCardStyles: any}) => {
 
     const startDate = data.startDate.toDate();
     const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
@@ -36,6 +37,10 @@ const CardBox = ({data, handleTrashCanPress, cardBoxStyles, backgroundCardStyles
     const expireMonth = (expireDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
     const expireYear = expireDate.getFullYear();
 
+    const handleSetIndexSelectedPackage = async () => {
+        await setIndexSelectedPackage(index);
+    };
+
     return (
         <View style={cardBoxStyles}>
             <Background style={backgroundCardStyles} image={{uri: data?.mainImageUrl || 'data:image/jpeg;base64,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'}}>
@@ -43,7 +48,17 @@ const CardBox = ({data, handleTrashCanPress, cardBoxStyles, backgroundCardStyles
                 <View style={styles.firstRowCard}>
 
                     <View style={styles.firstRowLeft}>
-                        <Text style={styles.text}>Caduca {expireDay}/{expireMonth}/{expireYear}</Text>
+                            <Text style={styles.text}>Caduca {expireDay}/{expireMonth}/{expireYear}</Text>
+                    </View>
+
+                    <View style ={styles.firstRowCenter}>
+                        {data.isPublic ? (
+                                <Text style={styles.text}> Publico </Text>
+
+                            ) : (
+
+                                <Text style={styles.text}> Privado </Text>
+                        )}
                     </View>
 
                     <View style={styles.firstRowRight}>
@@ -55,7 +70,7 @@ const CardBox = ({data, handleTrashCanPress, cardBoxStyles, backgroundCardStyles
                     </View>
 
                 </View>
-                <View style={styles.secondRowCardBox}>
+                <TouchableOpacity style={styles.secondRowCardBox} onPress={() =>{setSelectedPackage(true); handleSetIndexSelectedPackage()}}>
                     <View style={styles.secondRowCard}>
 
                         <View style={styles.travelNameBox}>
@@ -64,21 +79,127 @@ const CardBox = ({data, handleTrashCanPress, cardBoxStyles, backgroundCardStyles
 
                         <View style={styles.datesBox}>
                             <Text style={styles.text}>Fecha inicio: {startDay}/{startMonth}/{startYear}</Text>
-                            <Text style={styles.text}>Fecha inicio: {endDay}/{endMonth}/{endYear}</Text>
+                            <Text style={styles.text}>Fecha fin: {endDay}/{endMonth}/{endYear}</Text>
                         </View>
 
                     </View>
-                </View>
+                </TouchableOpacity>
             </Background>
         </View>
     );
 };
+
+const SelectedPackageView = ({data, ready, setReady, setSelectedPackage}:{data: any, ready: boolean, setReady: any, setSelectedPackage: any}) => {
+
+    const [dataIsPublic, setDataIsPublic] = useState(data.isPublic); 
+
+    const handleSetSelectedPackage = async () => {
+        await setSelectedPackage(false);
+        // setReady(ready);
+    };
+
+    const changeIsPublic = async () => {
+        await changePackageIsPublicValue(data.id, !data.isPublic);
+        data.isPublic = !data.isPublic;
+        setDataIsPublic(data.isPublic);
+        // Alert.alert(dataIsPublic.toString());
+    };
+
+    // useEffect(() => {
+    //     Alert.alert('Hello');
+    // }, [dataIsPublic])
+
+    return (
+        <View style={stylesIndividualCard.giantSelectedCard}>
+
+                <View style={stylesIndividualCard.card}>
+                <Background style={styles.backgroundCard} image={{uri: data?.mainImageUrl || 'data:image/jpeg;base64,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'}}>
+
+                    <View style={stylesIndividualCard.firstRow}>
+                        <View style={stylesIndividualCard.firstRowLeft}>
+                            <View style={stylesIndividualCard.firstRowLeftBox}>
+                                <Text>Edit</Text>
+                            </View>
+                        </View>
+                        <TouchableOpacity style={stylesIndividualCard.firstRowCenter} onPress={() => {changeIsPublic()}}>
+                            {data.isPublic ? (
+                                <Text style={styles.bigText}>Público</Text>
+
+                                ) : (
+
+                                <Text style={styles.bigText}>Privado</Text>
+                            )
+
+                            }
+                        </TouchableOpacity>
+                        <View style={stylesIndividualCard.firstRowRight}>
+                            <TouchableOpacity style={stylesIndividualCard.firstRowRightBox} onPress={() => {handleSetSelectedPackage()}}>
+                                <Text>Out</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <View style ={stylesIndividualCard.secondRow}>
+                        <View style ={stylesIndividualCard.secondRowDescriptionBox}>
+                        <Text>{data.name}</Text>
+                        </View>
+                    </View>
+
+                </Background>
+                </View>
+
+            </View>
+    );
+};
+
+const WantEraseViewAuxiliar = ({setWantErase, titleText, text1, text2, eraseExpired, setEraseExpired, eraseAll, setEraseAll, ifPressYes}:{setWantErase: any, titleText: string, text1: string, text2: string, eraseExpired: any, setEraseExpired: any, eraseAll: any, setEraseAll: any, ifPressYes: any}) => {
+
+    const handleSaidNoWantToErase = () => {
+        if (eraseExpired) {setEraseExpired(false);}
+        if (eraseAll) {setEraseAll(false);}
+        setWantErase(false);
+    };
+    return (
+        <>
+        <View style={stylesWantErase.firstBox}>
+            <Text style={stylesWantErase.title}>{titleText}</Text>
+        </View>
+        <View style={stylesWantErase.secondBox}>
+            <Button buttonStyle={stylesWantErase.buttonTop} buttonTextStyle={stylesWantErase.text} text={text1} onPress={()=>{ifPressYes();}}/>
+            <Button buttonStyle={stylesWantErase.buttonBottom} buttonTextStyle={stylesWantErase.text} text={text2} onPress={()=>{handleSaidNoWantToErase();}}/>
+        </View>
+        </>
+
+    );
+};
+
+const WantEraseView = ({setWantErase, eraseExpired, setEraseExpired, eraseAll, setEraseAll, handleEraseExpired, handleEraseAll}:{setWantErase: any, eraseExpired: any, setEraseExpired: any, eraseAll: any, setEraseAll: any, handleEraseExpired: any, handleEraseAll: any}) => {
+    return (
+        <View style={stylesWantErase.giantWantErase}>
+            <View style={stylesWantErase.bigBox}>
+                {eraseExpired && (
+                    <WantEraseViewAuxiliar setWantErase={setWantErase} titleText={'¿Estas segur@ de borrar expirados?'} text1="Si, borra esa vaina" text2="No vale, pobrecito" eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} ifPressYes={handleEraseExpired}/>
+                    )
+                }
+                {eraseAll && (
+                    <WantEraseViewAuxiliar setWantErase={setWantErase} titleText={'¿Estas segur@ de borrar todo?'} text1="Si, borra esa vaina" text2="No vale, pobrecito" eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} ifPressYes={handleEraseAll}/>
+                )}
+            </View>
+        </View>
+    )
+}
 
 const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Record<string, object | undefined>>;}) => {
     const {user} = useUser();
     const [ready, setReady] = useState(false);
     const [searchingExpiredPackages, setSearchingExpiredPackages] = useState(false);
     const [documents, setDocuments] = useState<Document[]>([]);
+    const [selectedPackage, setSelectedPackage] = useState(false);
+    const [indexSelectedPackage, setIndexSelectedPackage] = useState(0);
+
+    const[wantErase, setWantErase] = useState(false);
+    const[eraseExpired, setEraseExpired] = useState(false);
+    const[eraseAll, setEraseAll] = useState(false);
 
     const handleTrashCanPress = useCallback(
         async (data: { id: any }) => {
@@ -93,29 +214,49 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
         },[ready]
     );
 
+    const handleSetConfirmationToEraseAll = async () => {
+        setEraseAll(true);
+        setWantErase(true);
+    };
+
+    const handleSetConfirmationToEraseExpired = async () => {
+        setEraseExpired(true);
+        setWantErase(true);
+    };
+
     const handleEraseExpired = async () => {
             const emailEnterprise = user?.email;
-            await deleteExpiredDocumentsByEmail(emailEnterprise);
+            const packagesExist = await deleteExpiredDocumentsByEmail(emailEnterprise);
+
             if (!ready){
                 setReady(true);
             } else {
               setReady(false);
             }
+            if (eraseExpired) {setEraseExpired(false);}
+            if (eraseAll) {setEraseAll(false);}
+            setWantErase(false);
+            if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes expirados de forma exitosa');} else {Alert.alert('Nada', 'Nada que borrar');}
+
         };
 
-    const handleEraseAll = async () => {
-        const emailEnterprise = user?.email;
-        await deleteAllByEmail(emailEnterprise);
-        if (!ready){
-            setReady(true);
-        } else {
-          setReady(false);
-        }
-    };
+        const handleEraseAll = async () => {
+            const emailEnterprise = user?.email;
+            const packagesExist = await deleteAllByEmail(emailEnterprise);
+            if (!ready){
+                setReady(true);
+            } else {
+                setReady(false);
+            }
+            if (eraseExpired) {setEraseExpired(false);}
+            if (eraseAll) {setEraseAll(false);}
+            setWantErase(false);
 
+            if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes de forma exitosa');} else {Alert.alert('Nada', 'Nada que borrar');}
+        };
 
-    useEffect(()=>{
-        if (!user){
+        useEffect(()=>{
+            if (!user){
             Alert.alert('Te pasaste man, no estas logeado');
             navigation.navigate('HomeScreen');
         }
@@ -134,19 +275,27 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
                 const docs = querySnapshot.docs.map((doc) => doc.data());
                 setDocuments(docs);
-                console.log('DOCS: ', docs);
+                // console.log('DOCS: ', docs);
             } catch (error){
                 // console.warn(error);
                 console.log(error);
             }
         };
-
+        
         handleQuerySnapshot();
 
     }, [user?.email, ready, searchingExpiredPackages]);
 
 
   return (
+    <>
+        {wantErase && (
+            <WantEraseView setWantErase={setWantErase} eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} handleEraseExpired={handleEraseExpired} handleEraseAll={handleEraseAll}/>
+        )}
+
+        {selectedPackage && (
+            <SelectedPackageView data={documents[indexSelectedPackage]} ready={ready} setReady={setReady} setSelectedPackage={setSelectedPackage}/>
+        )}
 
         <View style={styles.giantBox}>
         <View style={styles.firstBox}>
@@ -169,8 +318,8 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
                 <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Todos los paquetes" onPress={()=>{setSearchingExpiredPackages(false);}}/>
                 <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Paquetes caducados" onPress={()=>{setSearchingExpiredPackages(true);}}/>
-                <Button buttonStyle={styles.buttonEraseExpired} buttonTextStyle={styles.buttonText} text="Borrar caducados" onPress={() => {handleEraseExpired();}}/>
-                <Button buttonStyle={styles.buttonEraseAll} buttonTextStyle={styles.buttonText} text="Eliminar TODO" onPress={() => {handleEraseAll();}}/>
+                <Button buttonStyle={styles.buttonEraseExpired} buttonTextStyle={styles.buttonText} text="Borrar caducados" onPress={() => {handleSetConfirmationToEraseExpired()}}/>
+                <Button buttonStyle={styles.buttonEraseAll} buttonTextStyle={styles.buttonText} text="Eliminar TODO" onPress={() => {handleSetConfirmationToEraseAll();}}/>
 
             </View>
 
@@ -184,7 +333,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             <ScrollView style={styles.scrollView} contentContainerStyle = {styles.scrollViewContentContainerStyle}>
 
                 {documents.map((document, index) => (
-                    <CardBox key={index} data={document} handleTrashCanPress={handleTrashCanPress} cardBoxStyles={styles.cardBox} backgroundCardStyles={styles.backgroundCard}/>
+                    <CardBox key={index} data={document} index={index} setIndexSelectedPackage={setIndexSelectedPackage} setSelectedPackage={setSelectedPackage} handleTrashCanPress={handleTrashCanPress} cardBoxStyles={styles.cardBox} backgroundCardStyles={styles.backgroundCard}/>
                 ))}
 
                 {/* <CardBox cardBoxStyles={styles.cardBox} backgroundCardStyles={styles.backgroundCard}/> */}
@@ -197,6 +346,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
 
         </View>
+    </>
   );
 };
 
@@ -353,6 +503,18 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 20, // Si deseas aplicar un radio diferente a las esquinas inferiores derechas
     },
 
+    firstRowCenter:{
+        width: '33.65%',
+        height: '100%',
+        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+        borderBottomEndRadius: 20,
+        borderBottomStartRadius: 20,
+        // backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center',
+
+    },
+
     firstRowRight:{
         // backgroundColor: 'green',
         width: '9.94%',
@@ -439,6 +601,172 @@ const styles = StyleSheet.create({
         height: '50%',
         borderRadius: 50,
         overflow: 'hidden',
+    },
+
+});
+
+const stylesIndividualCard = StyleSheet.create({
+    giantSelectedCard:{
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        width: '100%',
+        backgroundColor: 'blackrgba(0, 0, 0, 0.36)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1,
+    },
+
+    card:{
+        width: '85%',
+        height: '47.125%',
+        backgroundColor: 'white',
+        borderRadius: 20,
+    },
+
+    firstRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        height: '14.324%',
+    },
+
+    firstRowLeft: {
+        width: '17.647%',
+        height: '100%',
+        // backgroundColor: 'rgba(0, 0, 0, 0.28)',
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    
+    firstRowLeftBox:{
+        width: '70%',
+        height: '70%',
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.28)',
+        // backgroundColor:'red',
+
+    },
+    
+    firstRowCenter: {
+        width: '42.157%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+        borderBottomStartRadius: 20,
+        borderBottomEndRadius: 20,
+    },
+
+    firstRowRight: {
+        width: '17.647%',
+        height: '100%',
+        // backgroundColor: 'rgba(0, 0, 0, 0.28)',
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    firstRowRightBox:{
+        width: '70%',
+        height: '70%',
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.28)',
+        // backgroundColor:'red',
+
+    },
+
+    secondRow: {
+        height: '85.676%',
+        justifyContent: 'flex-end',
+    },
+
+    secondRowDescriptionBox:{
+        height: '88.235%',
+        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+        borderRadius: 20,
+    },
+
+});
+
+const stylesWantErase = StyleSheet.create({
+    giantWantErase:{
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        width: '100%',
+        backgroundColor: 'blackrgba(0, 0, 0, 0.36)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 2,
+    },
+    bigBox:{
+        width: '85%',
+        // backgroundColor: 'rgba(255, 255, 255, 0.77)',
+        backgroundColor: '#FFFFFF',
+        height: 172,
+        borderRadius: 20,
+        // justifyContent: 'center',
+        // alignItems: 'center',
+    },
+
+    firstBox:{
+        width: '100%',
+        height: '25.581%',
+        // backgroundColor: 'green',
+        // borderRadius: 20,
+        borderTopEndRadius: 20,
+        borderTopStartRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+
+    secondBox:{
+        width: '100%',
+        height: '74.419%',
+        // backgroundColor: 'black',
+        // borderRadius: 20,
+        borderBottomEndRadius: 20,
+        borderBottomStartRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    title:{
+        fontWeight: '500',
+        fontSize: 16,
+        lineHeight: 24,
+        color: '#333333',
+    },
+
+    text:{
+        fontWeight: '700',
+        fontSize: 18,
+        lineHeight: 27,
+        color: '#FFFFFF',
+    },
+
+    buttonTop:{
+        backgroundColor: '#630D0D',
+        width: '81.046%',
+        height: 43,
+        marginTop: '4.667%',
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonBottom:{
+        backgroundColor: '#1881B1',
+        width: '81.046%',
+        height: 43,
+        marginVertical: '4.667%',
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 
 });

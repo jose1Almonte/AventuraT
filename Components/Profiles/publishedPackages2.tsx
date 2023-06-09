@@ -1,41 +1,31 @@
 import React, {Component, useEffect, useState} from 'react';
-import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, Image} from 'react-native';
 import calendar from '../../vectores/calendar';
 import {SvgXml} from 'react-native-svg';
 import { listPackage } from '../../firebase/Firestore';
-import { useUser } from '../../Context/UserContext';
-import { NavigationProp } from '@react-navigation/native';
 
-interface publishedPackagesProps {
-  navigation: NavigationProp<Record<string, object | undefined>>;
-}
-
-const PublishedPackages = ({
-  navigation,
-}: publishedPackagesProps) => {
-
-    const {user} = useUser();
+function PublishedPackages(email) {
     const [packages, setPackages] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const packageList = await listPackage(user.email);
+      const packageList = await listPackage(email.email);
       setPackages(packageList);
     };
 
     fetchData();
-  }, [user.email]);
+  }, [email.email]);
 
     return (
       <>
       {packages != null && packages.map((packageData, index) => (
-      <TouchableOpacity style={styles.container} key={index} onPress={() => navigation.navigate('DetailsScreenUser2', { packageIn: packageData })}>
+      <View style={styles.container} key={index} >
         <View style={styles.containerPack}>
           <View style={styles.containerText}>
             <Text style={styles.textPack}>{packageData.name}</Text>
             <View style={styles.contenedorCalendario}>
               <SvgXml xml={calendar} />
-              <Text style={styles.date}>{packageData.en}</Text>
+              <Text style={styles.date}>'s'</Text>
             </View>
           </View>
           <Image
@@ -44,10 +34,10 @@ const PublishedPackages = ({
             alt="photo"
           />
         </View>
-      </TouchableOpacity>
-      ))}
-    </>);
-};
+      </View>))}
+      </>
+    );
+}
 
 const styles = StyleSheet.create({
   containerPack: {

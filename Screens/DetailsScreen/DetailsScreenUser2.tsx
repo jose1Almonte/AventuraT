@@ -11,20 +11,26 @@ import { PackageI } from '../../models/package.interface';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import firestore from '@react-native-firebase/firestore';
-import { LoadingScreen } from '../../firebase/Firestore';
+import { listPaidPackage } from '../../firebase/Firestore';
+
+type RootStackParamList = {
+  DetailsScreenUser2: { packageIn: PackageI };
+};
+
+type DetailsScreenUser2RouteProp = RouteProp<
+  RootStackParamList,
+  'DetailsScreenUser2'
+>;
 
 interface detailProps {
-  navigation: NavigationProp<Record<string, object | undefined>>;
-  route?: any;
-  data?: PackageI;
+  navigation: NavigationProp<RootStackParamList>;
+  route: DetailsScreenUser2RouteProp;
 }
 
+const DetailsScreenUser2 = ({ navigation, route }: detailProps) => {
+  
 
-
-const DetailsScreenUser = ({ navigation, route }: detailProps) => {
-  let { isLogged } = useUser();
-  let packageIn: PackageI = route.params.data;
-
+  const { packageIn } = route.params;
   const startDate = packageIn.startDate.toDate();
   const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
   const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
@@ -37,6 +43,17 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
 
   const [nameEnterprise, setNameEnterprise] = useState('');
   const [photoURL, setPhotoUrl] = useState('');
+
+  const [packages, setPackages] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const packageList = await listPaidPackage(packageIn.id);
+      setPackages(packageList);
+    };
+
+    fetchData();
+  }, [packageIn.id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +72,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
     fetchData();
   }, [packageIn, packageIn.emailEnterprise]);
   return (
+  
     <ScrollView style={styles.background}>
       <View style={styles.container}>
         <View style={styles.containerPack}>
@@ -81,7 +99,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
             // imageSource={'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'}
             imageSource={photoURL ? photoURL : 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9c64cfe3-bb3b-4ae8-b5a6-d2f39d21ff87/d3jme6i-8c702ad4-4b7a-4763-9901-99f8b4f038b0.png/v1/fill/w_600,h_400/fondo_transparente_png_by_imsnowbieber_d3jme6i-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDAwIiwicGF0aCI6IlwvZlwvOWM2NGNmZTMtYmIzYi00YWU4LWI1YTYtZDJmMzlkMjFmZjg3XC9kM2ptZTZpLThjNzAyYWQ0LTRiN2EtNDc2My05OTAxLTk5ZjhiNGYwMzhiMC5wbmciLCJ3aWR0aCI6Ijw9NjAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.Ymv-MHRcmXXpzmL3f0xZ0mCcyU85lCLnk0jbOnCO8Zg'}
           />
-          <TouchableOpacity onPress={() => { navigation.navigate('BusinessProfileScreen2',{data:packageIn});}}>
+          <TouchableOpacity>
             {/* <Text style={styles.text}>{packageIn.nameEnterprise}</Text> */}
             <Text style={styles.text}>{nameEnterprise}</Text>
           </TouchableOpacity>
@@ -102,7 +120,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         <View style={styles.contenedorInformacion}>
           <SvgXml xml={vectorPrecio} />
           <Text style={styles.titulo}>Precio</Text>
-          <Text style={styles.subtitulo}>$ {packageIn.price}</Text>
+          <Text style={styles.subtitulo}>${packageIn.price}</Text>
         </View>
       </View>
 
@@ -114,38 +132,61 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         <Text style={styles.subtitulo}>Atención personalizada</Text>
       </View>
 
-      <View style={styles.reserva}>
-        <View style={styles.contenedorLikes}>
-          <ButtonLikes packageDetails={packageIn} />
+      <ScrollView style={styles.container}>
+      {packages[0] !== undefined && (
+      <Text style={styles.title}>Paquete Reservado Por:</Text>
+      )}
+      {packages.map((esteitem, index) => (
+        <View  key={`${esteitem.id}-${index}`}>
+          {esteitem && (
+            <View style={styles.card}>
+              <Text style={styles.name}>Comprador: {esteitem?.compradorMail}</Text>
+              <Text style={styles.name}>Numero de reserva: {esteitem?.mobilePayment.mobilePaymentRef}</Text>
+              {esteitem?.photoCompradorURL &&
+                <PhotoProfile size={90} imageSource={esteitem?.photoCompradorURL}/>
+              }
+            </View>
+          )}
         </View>
-        <Pressable onPress={() => {
-          if (isLogged) {
-            navigation.navigate('MobilePaymentScreen',{data:packageIn});
-          } else {
-            Alert.alert('Inicie sesión', 'Para reservar debe iniciar sesión');
-            navigation.navigate('LoginScreen');
-          }
-        }}>
-          <View style={styles.buttonReserva}>
-            <Text style={styles.titulo}>Pagar</Text>
-          </View>
-        </Pressable>
-      </View>
+      ))}
+    </ScrollView>
+
     </ScrollView>
   );
 };
 
-export default DetailsScreenUser;
+export default DetailsScreenUser2;
 
 const styles = StyleSheet.create({
   background: {
     backgroundColor: '#1DB5BE',
     // backgroundColor: 'red',
   },
+
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    color: '#FFF',
+    textAlign:'center',
+  },
+  card: {
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 16,
+  },
+  name: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: 'black',
+    fontFamily: 'Poppins-Medium',
+  },
+
   container: {
     flex: 1,
     width: '100%',
-    height: 360,
   },
   containerPhotoPack: {
     width: '100%',
