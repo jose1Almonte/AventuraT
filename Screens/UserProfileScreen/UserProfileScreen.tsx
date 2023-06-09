@@ -117,23 +117,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1DB5BE',
-    // backgroundColor: 'green',
   },
   info: {
     flex: 1,
     display: 'flex',
-    // marginBottom: 650,
-    // backgroundColor: 'red',
   },
   topInfo: {
     flex: 3.6,
     alignItems: 'center',
-    // gap: 15,
-    // backgroundColor: 'black',
   },
   info2: {
     flex: 5,
-    // backgroundColor: 'red',
     marginTop: 30,
     display: 'flex',
     flexDirection: 'column',
@@ -144,7 +138,7 @@ const styles = StyleSheet.create({
 
   photoBox: {
     flex: 2,
-    // backgroundColor: 'blue',
+    marginTop: 80,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -152,7 +146,7 @@ const styles = StyleSheet.create({
 
   detailsUserBox: {
     flex: 0.5,
-    // backgroundColor: 'white',
+    marginBottom: 20,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -163,7 +157,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-
   },
 
   containerInfo: {
@@ -176,7 +169,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#CFD8E2',
     padding: 2,
   },
-
   backGround: {
     position: 'absolute',
     top: 0,
@@ -185,7 +177,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     zIndex: 0,
     display: 'flex',
-    // backgroundColor: '#1DB5BE',
   },
   txt: {
     color: 'black',
@@ -203,13 +194,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
   },
   txtInfo1: {
-    // color: '#1881B1',
-    color: 'black',
+    color: '#1881B1',
     fontSize: 16,
     fontFamily: 'Poppins-Regular',
   },
-
-
   container4: {
     flex: 1,
     justifyContent: 'center',
