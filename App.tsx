@@ -31,6 +31,8 @@ export default function App() {
     <UserProvider>
       <NavigationContainer>
         <Stack.Navigator>
+        {/* <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerShown: false }} /> */}
+        {/* <Stack.Screen name="SearchResultScreen" component={SearchResultScreen} options={{ headerShown: false }} /> */}
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="AdministratePackagesScreen" component={AdministratePackagesScreen} options={{headerShown: false}}/>
           <Stack.Screen name="HelpdeskScreen" component={HelpdeskScreen} options={{ headerShown: false }} />
@@ -44,9 +46,9 @@ export default function App() {
           <Stack.Screen name="BusinessProfileScreen" component={BusinessProfileScreen} options={{ headerShown: false }} />
           <Stack.Screen name="BusinessProfileScreen2" component={BusinessProfileScreen2} options={{ headerShown: false }} />
           <Stack.Screen name="NavbarScreen" component={NavbarScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerShown: false }} />
+          {/* <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerShown: false }} /> */}
           <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="SearchResultScreen" component={SearchResultScreen} options={{ headerShown: false }} />
+          {/* <Stack.Screen name="SearchResultScreen" component={SearchResultScreen} options={{ headerShown: false }} /> */}
           <Stack.Screen name="RatingsScreen" component={RatingsScreen} options={{ headerShown: false }} />
           <Stack.Screen name="FeedbackScreen" component={FeedbackScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EnterpriseFormScreen" component={EnterpriseFormScreen} options={{ headerShown: false }} />
