@@ -42,7 +42,7 @@ const NavbarScreen = ({ navigation }: any) => {
               styles={styles}
               destinationNavigationComponentName="LoginScreen"
             />
-            <Text style={styles.txt}>{user?.email}</Text>
+            <Text style={styles.txt}>{user?.displayName}</Text>
           </View>
           <View style={styles.bottomInfo}>
             <View style={styles.linksInfo}>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     marginTop: 20,
     flexDirection: 'column',
-    gap: 20,
+    gap: 90,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   txt: {
     color: 'black',
     fontSize: 18,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-SemiBold',
   },
   txtInfo: {
     color: 'black',
