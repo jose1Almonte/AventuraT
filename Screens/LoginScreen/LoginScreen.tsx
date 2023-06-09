@@ -81,14 +81,6 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
               destinationNavigationComponentName={'HomeScreen'}
               goToLoginScreen={false}
             />
-            {/* <ContinueWithName
-              text="Continuar con Facebook"
-              ViewStyle={styles.continueWithFacebookBox}
-              imageSource={require('../../images/FacebookLogo.png')}
-              ImageStyle={styles.LogoStyles}
-              TextStyle={styles.normalTextStyle}
-              onPress={() => makingThis()}
-            /> */}
             <ContinueWithName
               text="Continuar con Empresa"
               ViewStyle={styles.continueWithFacebookBox}
@@ -133,11 +125,11 @@ export const styles = StyleSheet.create({
 
   continueWithGoogleBox: {
     flexDirection: 'row',
-    width: '85%',
+    width: '86.39%',
     justifyContent: 'center',
     gap: 25,
     alignItems: 'center',
-    height: '12%',
+    height: 52,
     marginBottom: '5%',
     paddingHorizontal: '2%',
     backgroundColor: '#FFFFFF',
@@ -147,11 +139,11 @@ export const styles = StyleSheet.create({
   continueWithFacebookBox: {
     flexDirection: 'row',
     marginBottom: '18%',
-    width: '85%',
+    width: '86.39%',
     gap: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    height: '12%',
+    height: 52,
     paddingHorizontal: '2%',
     backgroundColor: '#FFFFFF',
     borderRadius: 8,
