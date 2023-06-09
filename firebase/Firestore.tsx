@@ -295,6 +295,18 @@ export const listPaidPackage = async (id) => {
   return packages;
 };
 
+export const listTipoPackage = async (id) => {
+  const query = packagesCollection.where('tipo', '==', id);
+  const querySnapshot = await query.get();
+  const packages = [];
+  querySnapshot.forEach((doc) => {
+    const packageData = doc.data();
+    packages.push(packageData);
+  });
+
+  return packages;
+};
+
 
 export const LoadingScreen = () => {
 

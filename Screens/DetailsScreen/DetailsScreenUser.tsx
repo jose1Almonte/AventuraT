@@ -102,7 +102,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         <View style={styles.contenedorInformacion}>
           <SvgXml xml={vectorPrecio} />
           <Text style={styles.titulo}>Precio</Text>
-          <Text style={styles.subtitulo}>${packageIn.price}</Text>
+          <Text style={styles.subtitulo}>$ {packageIn.price}</Text>
         </View>
       </View>
 

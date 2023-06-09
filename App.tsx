@@ -23,6 +23,7 @@ import CreatePackageFormScreen from './Screens/CreatePackageFormScreen/CreatePac
 import HelpdeskScreen from './Screens/HelpdeskScreen/HelpdeskScreen';
 import AdministratePackagesScreen from './Screens/AdministratePackagesScreen/AdministratePackagesScreen';
 import PublishedPackages2 from './Components/Profiles/publishedPackages2';
+import VistaPorTipoScreen from './Screens/VistaPorTipoScreen/VistaPorTipoScreen';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -50,6 +51,7 @@ export default function App() {
           <Stack.Screen name="FeedbackScreen" component={FeedbackScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EnterpriseFormScreen" component={EnterpriseFormScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EnterpriseSessionScreen" component={EnterpriseSessionScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="VistaPorTipoScreen" component={VistaPorTipoScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>
