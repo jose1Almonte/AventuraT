@@ -5,7 +5,7 @@ import { useUser } from '../../Context/UserContext';
 import { NavigationProp } from '@react-navigation/native';
 import { searchPackagesByEmail, searchPackagesExpiredByEmail } from '../../firebase/SearchPackagesByEmail';
 import { deleteAllByEmail, deleteExpiredDocumentsByEmail, deleteSelectedPackage } from '../../firebase/DeletePackage';
-import { changePackageIsPublicValue } from '../../firebase/Firestore';
+import { changePackageIsPublicValue, checkResponsibleNameExists, checkVIP, makeRegular, makeVIP} from '../../firebase/Firestore';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 // import { NavigationProp } from '@react-navigation/native';
 
@@ -90,8 +90,10 @@ const CardBox = ({data, index, setIndexSelectedPackage, setSelectedPackage, hand
 };
 
 const SelectedPackageView = ({data, ready, setReady, setSelectedPackage}:{data: any, ready: boolean, setReady: any, setSelectedPackage: any}) => {
-
-    const [dataIsPublic, setDataIsPublic] = useState(data.isPublic); 
+    const {user} = useUser();
+    const [dataIsPublic, setDataIsPublic] = useState(data.isPublic);
+    const [userExists, setUserExists] = useState(true);
+    const [VIP, setVIP] = useState("");
 
     const handleSetSelectedPackage = async () => {
         await setSelectedPackage(false);
@@ -105,9 +107,22 @@ const SelectedPackageView = ({data, ready, setReady, setSelectedPackage}:{data: 
         // Alert.alert(dataIsPublic.toString());
     };
 
-    // useEffect(() => {
-    //     Alert.alert('Hello');
-    // }, [dataIsPublic])
+    useEffect(() => {
+        //     Alert.alert('Hello');
+        // }, [dataIsPublic])
+        const checkUserExists = async () => {
+            const exists = await checkVIP(user?.email);
+            setUserExists(exists);
+        };
+        checkUserExists;
+        if (data.isVIP) {
+            setVIP("VIP");
+        } else {
+            setVIP("Regular");
+        }
+    }, [user?.name]);
+
+
 
     return (
         <View style={stylesIndividualCard.giantSelectedCard}>
@@ -138,7 +153,22 @@ const SelectedPackageView = ({data, ready, setReady, setSelectedPackage}:{data: 
                             </TouchableOpacity>
                         </View>
                     </View>
+                    <Text>Estado: {VIP}</Text>
+                    {userExists && 
+                        <View>
+                            
+                            {VIP === "VIP" ?
+                                <TouchableOpacity onPress={() => { makeRegular(data.id, user.email); setVIP("Regular")}}>
+                                    <Text>Pasar a Regular</Text>
+                                </TouchableOpacity> :
+                                <TouchableOpacity onPress={() => { makeVIP(data.id, user.email); setVIP("VIP")}}>
+                                    <Text>Pasar a VIP</Text>
+                                </TouchableOpacity>
+                            }
 
+                        </View>
+
+                    }
                     <View style ={stylesIndividualCard.secondRow}>
                         <View style ={stylesIndividualCard.secondRowDescriptionBox}>
                         <Text>{data.name}</Text>
@@ -197,6 +227,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
     const [selectedPackage, setSelectedPackage] = useState(false);
     const [indexSelectedPackage, setIndexSelectedPackage] = useState(0);
 
+
     const[wantErase, setWantErase] = useState(false);
     const[eraseExpired, setEraseExpired] = useState(false);
     const[eraseAll, setEraseAll] = useState(false);
@@ -231,7 +262,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             if (!ready){
                 setReady(true);
             } else {
-              setReady(false);
+                setReady(false);
             }
             if (eraseExpired) {setEraseExpired(false);}
             if (eraseAll) {setEraseAll(false);}
@@ -255,14 +286,16 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes de forma exitosa');} else {Alert.alert('Nada', 'Nada que borrar');}
         };
 
-        useEffect(()=>{
+    useEffect(()=>{
             if (!user){
             Alert.alert('Te pasaste man, no estas logeado');
             navigation.navigate('HomeScreen');
         }
     },[user, navigation]);
 
-    useEffect(()=>{
+    useEffect(() => {
+
+
         const handleQuerySnapshot = async () => {
             try {
                 let querySnapshot;
@@ -287,7 +320,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
     }, [user?.email, ready, searchingExpiredPackages]);
 
 
-  return (
+    return (
     <>
         {wantErase && (
             <WantEraseView setWantErase={setWantErase} eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} handleEraseExpired={handleEraseExpired} handleEraseAll={handleEraseAll}/>

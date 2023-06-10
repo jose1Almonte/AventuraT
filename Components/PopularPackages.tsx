@@ -21,7 +21,7 @@ export const PopularPackages = ({navigation}: popularProps) => {
   useEffect(() => {
 
     fetchPackages();
-  }, [loading])
+  }, [])
 
   const fetchPackages = async () => {
     
@@ -32,12 +32,16 @@ export const PopularPackages = ({navigation}: popularProps) => {
 
   return (
     <>
-      {
+      {!loading &&
         popularPackages.map((rawData: any, idx: any) => (
-            <View>
+            <View key={idx}>
               <PopularPackage data={popularPackages[idx]} navigation={navigation} />
             </View>
         ))
+      }
+      {
+        loading &&
+        <Text>Estoy cargandoooooooooooooooooooooooo</Text>
       }
       </>
       );

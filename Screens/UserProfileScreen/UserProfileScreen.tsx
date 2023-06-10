@@ -101,6 +101,13 @@ export const UserProfileScreen = ({
             </TouchableOpacity>
           )}
 
+          {userExists && (
+            <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('PayPremiumScreen');}}>
+              <Text style={styles.txtInfo1}>Pasar a AventuraT Nitro</Text>
+              <SvgXml xml={profileArrowVector} />
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
             <Text style={styles.txtInfo1}>Cerrar sesión</Text>
             <SvgXml xml={profileArrowVector} />

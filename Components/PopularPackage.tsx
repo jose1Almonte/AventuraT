@@ -32,7 +32,6 @@ interface popularPackageProps {
 export default function PopularPackage({ data, navigation }: popularPackageProps) {
     return (
         <>
-            {console.log(data)}
         <TouchableOpacity style={styles.container} onPress={() => {navigation.navigate('DetailsScreenUser', { data })}}>
             <View style={styles.container1}>
                 <View style={styles.ContainerLikes}>

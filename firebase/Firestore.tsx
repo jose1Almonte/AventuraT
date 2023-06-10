@@ -1,12 +1,14 @@
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 import currentLog from './UserData';
 import { useUser } from '../Context/UserContext';
 import { useEffect } from 'react';
 import { usersCollection3 } from './DeletePackage';
 import React, { useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
+
+
 
 const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
@@ -341,11 +343,61 @@ const styles = StyleSheet.create({
 });
 
 export const getPopularPackages = async () => {
-  const packages = [];
-  let query = await packagesCollection.where("isVIP", "==", true).where("isPublic", "==", false).limit(6).get();
+  const packages:any[] = [];
+  let query = await packagesCollection.where("isVIP", "==", true).where("isPublic", "==", true).limit(6).get();
   query.docs.forEach((rawData, idx) => {
     packages.push(rawData.data());
   })
   return packages;
 }
 
+export const changePremium = async (email:any) => {
+  const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
+  const id = getDoc.docs[0].id;
+  usersCollection2.doc(id).update({
+    vip: true,
+    VIPCount: 5,
+  })
+
+}
+
+export const checkVIP = async (email: any) => {
+  return true
+}
+
+export const makeRegular = async (packageId: any, email: any) => {
+  const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
+  const enterpriseId = getDoc.docs[0].id;
+  let count = getDoc.docs[0].data().VIPCount + 1;
+  if (count > 0) {
+    
+    usersCollection2.doc(enterpriseId).update({
+      VIPCount: count,
+    })
+
+    packagesCollection.doc(packageId.toString()).update({
+      isVIP: false,
+    })
+  } else {
+    // da error y no se procesa, hay que cambiar esto tambien en administratePackagesScreen para que no procesa si hubo error, linea 161
+  }
+}
+
+export const makeVIP = async (packageId: any, email: any) => {
+  const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
+  const enterpriseId = getDoc.docs[0].id;
+  let count = getDoc.docs[0].data().VIPCount - 1;
+  console.log(count)
+  if (count > 0) {
+    
+    await usersCollection2.doc(enterpriseId).update({
+      VIPCount: count,
+    });
+
+    await packagesCollection.doc(packageId.toString()).update({
+      isVIP: true,
+    });
+  } else {
+    // da error y...
+  }
+}

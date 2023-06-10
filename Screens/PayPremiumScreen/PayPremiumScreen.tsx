@@ -1,20 +1,24 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native'
+import currentLog from '../../firebase/UserData';
+import { changePremium } from '../../firebase/Firestore';
 
 export default function PayPremiumScreen() {
     const [paymentRef, setPaymentRef] = useState("");
+    const user = currentLog();
 
-    const goPremium = async () => {
-        //pone la empresa en modo premium
-    }
 
-    const payCheck = async () => {
+        
+
+
+    const checkPay = async () => {
         if (paymentRef === "") {
             Alert.alert("Error", "Por favor ingrese un código de referencia válido, para más información solicite soporte técnico");
-            // navigate to soporte
+            
         } else {
-            Alert.alert("Progreso", "Su pago esta siendo procesado");
-            goPremium;
+
+            changePremium(user?.email);
+            
         }
 
     }
@@ -41,7 +45,7 @@ export default function PayPremiumScreen() {
                 placeholder="Ingrese nro. de referencia"
                 onChangeText={(text: React.SetStateAction<string>) => setPaymentRef(text)}
                 />
-            <TouchableOpacity onPress={payCheck}>
+            <TouchableOpacity onPress={checkPay}>
                 <Text >Ya pagué</Text>
             </TouchableOpacity>
         </View>
