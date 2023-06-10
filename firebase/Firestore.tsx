@@ -35,7 +35,7 @@ export const updateUser = async (array:string[],userId: string, displayName:stri
 
 
 export const addEnterprise = async (nameEnterprise:string, rif:string,
-   responsibleName:string , location:string, description:string, vip:boolean, password:string, phoneNumber:string,urlPersonal:string,urlEmpresa:string) => {
+   responsibleName:string , location:string, description:string, vip:boolean, password:string, phoneNumber:string,urlPersonal:any,urlEmpresa:any) => {
     await usersCollection2.add({
       id: 0, // Inicializa el ID en 0
       nameEnterprise: nameEnterprise,

@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 // import vectorPerfil from '../../vectores/vectorPerfil';
@@ -22,10 +22,12 @@ interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
   route?: any;
   data?: PackageI;
+  // userData?: Partial<Record<string, any>>;
 }
 
-const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
+const BusinessProfileScreen = ({ navigation, route }) => {
   let packageIn: PackageI = route.params.data;
+  const {userData: userData} = route.params;
   const [nameEnterprise, setNameEnterprise] = useState(null);
   const [emailEnterprise, setEmailEnterprise] = useState('');
   const [description, setDescription] = useState(null);
@@ -39,25 +41,31 @@ const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
   const [loadingSomeThing, setLoadingSomething] = useState(false);
 
   useEffect(() => {
+    console.log('userData: ',userData);
     const fetchData = async () => {
       setLoadingSomething(true);
       // console.log('packageIn?.emailEnterprise: ' ,packageIn.emailEnterprise);
       if (packageIn && packageIn.emailEnterprise) {
 
+        // console.log('meee: ',packageIn.emailEnterprise);
         const querySnapshot = await firestore().collection('users').where('email', '==', packageIn.emailEnterprise).get();
 
         querySnapshot.forEach((doc) => {
           // console.log(doc.data().displayName);
+          // console.log(userData.displayName);
           setNameEnterprise(doc.data().displayName);
           setEmailEnterprise(doc.data().responsibleName);
           setEmpresa(doc.data().urlEmpresa);
           setDescription(doc.data().description);
           setLocation(doc.data().location);
         });
-        const user = currentLog();
-        const pic = await returnEnterpisePic(user?.email);
+
+        // const user = currentLog();
+
+        const pic = await returnEnterpisePic(userData?.email);
         if (pic != null){
           setEmpresa2(pic.urlEmpresa);
+          console.log(empresa2);
           setDescription2(pic.description);
           setLocation2(pic.location);
           setNameEnterprise2(pic.nameEnterprise);
@@ -88,7 +96,10 @@ const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
 
             <View>
             {empresa2 &&
+            <>
               <PhotoProfile size={90} imageSource={empresa2}/>
+              {/* <Image style = {styles.imagesStyles} source={{uri: empresa2}}/> */}
+            </>
             }
             </View>
               <SvgXml xml={separator} />
@@ -122,8 +133,10 @@ const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
             </View>
             {packageIn.mainImageUrl &&
             <Text style={styles.txt}>Empresa: {nameEnterprise2}</Text>
+            // <Text style={styles.txt}>Empresa: {userData.displayName}</Text>
             }
-            <Text style={styles.txt}>Encargado: {nameEnterprise}</Text>
+            {/* <Text style={styles.txt}>Encargado: {nameEnterprise}</Text> */}
+            <Text style={styles.txt}>Encargado: {userData.displayName}</Text>
             <Text style={styles.description}>
               {description}
             </Text>
@@ -188,6 +201,18 @@ const stylesBtn = StyleSheet.create({
 
 
 const styles = StyleSheet.create({
+
+  profileView:{
+    backgroundColor: 'red',
+    height: 100,
+    width: 100,
+    overflow: 'hidden',
+  },
+
+  imagesStyles:{
+    width: '100%',
+    height: '100%',
+  },
   backGround: {
     position: 'absolute',
     top: 0,
