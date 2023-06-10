@@ -93,7 +93,22 @@ const CardBox = ({data, index, setIndexSelectedPackage, setSelectedPackage, hand
 
 const SelectedPackageView = ({data, ready, setReady, setSelectedPackage}:{data: any, ready: boolean, setReady: any, setSelectedPackage: any}) => {
 
-    const [dataIsPublic, setDataIsPublic] = useState(data.isPublic); 
+    const [dataIsPublic, setDataIsPublic] = useState(data.isPublic);
+    
+    const startDate = data.startDate.toDate();
+    const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
+    const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
+    const startYear = startDate.getFullYear();
+
+    const endDate = data.endDate.toDate();
+    const endDay = endDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
+    const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
+    const endYear = endDate.getFullYear();
+
+    const expireDate = data.expireDate.toDate();
+    const expireDay = expireDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
+    const expireMonth = (expireDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
+    const expireYear = expireDate.getFullYear();
 
     const handleSetSelectedPackage = async () => {
         await setSelectedPackage(false);
@@ -125,12 +140,12 @@ const SelectedPackageView = ({data, ready, setReady, setSelectedPackage}:{data: 
                                     </View>
                                 </View>
                                 <TouchableOpacity style={stylesIndividualCard.firstRowCenter} onPress={() => {changeIsPublic()}}>
-                                    {data.isPublic ? (
-                                        <Text style={styles.bigText}>Público</Text>
+                                    {dataIsPublic ? (
+                                        <Text style={stylesIndividualCard.bigText}>Público</Text>
 
                                         ) : (
 
-                                            <Text style={styles.bigText}>Privado</Text>
+                                            <Text style={stylesIndividualCard.bigText}>Privado</Text>
                                             )
 
                                     }
@@ -144,7 +159,38 @@ const SelectedPackageView = ({data, ready, setReady, setSelectedPackage}:{data: 
 
                             <View style ={stylesIndividualCard.secondRow}>
                                 <View style ={stylesIndividualCard.secondRowDescriptionBox}>
-                                <Text>{data.name}</Text>
+                                <View style={stylesIndividualCard.textBox}>
+                                    <Text style={stylesIndividualCard.text}>Nombre de empresa:</Text>
+                                    <Text style={stylesIndividualCard.text}>{data.name}</Text>
+                                </View>
+                                <View style={stylesIndividualCard.textBox}>
+                                    <Text style={stylesIndividualCard.text}>Descripción: </Text>
+                                    <Text style={stylesIndividualCard.text}>{data.description}</Text>
+                                </View>
+                                <View style={stylesIndividualCard.textBox}>
+                                    <Text style={stylesIndividualCard.text}>Fecha inicio: </Text>
+                                    <Text style={stylesIndividualCard.text}>{startDay}/{startMonth}/{startYear}</Text>
+                                </View>
+                                <View style={stylesIndividualCard.textBox}>
+                                    <Text style={stylesIndividualCard.text}>Fecha fin: </Text>
+                                    <Text style={stylesIndividualCard.text}>{endDay}/{endMonth}/{endYear}</Text>
+                                </View>
+                                <View style={stylesIndividualCard.textBox}>
+                                    <Text style={stylesIndividualCard.text}>Fecha expira: </Text>
+                                    <Text style={stylesIndividualCard.text}>{expireDay}/{expireMonth}/{expireYear}</Text>
+                                </View>
+                                <View style={stylesIndividualCard.textBox}>
+                                    <Text style={stylesIndividualCard.text}>Precio: </Text>
+                                    <Text style={stylesIndividualCard.text}>$ {data.price}</Text>
+                                </View>
+                                <View style={stylesIndividualCard.textBox}>
+                                    <Text style={stylesIndividualCard.text}>Rating: </Text>
+                                    <Text style={stylesIndividualCard.text}>{data.rating} estrellas</Text>
+                                </View>
+                                <View style={stylesIndividualCard.textBox}>
+                                    <Text style={stylesIndividualCard.text}>Tipo: </Text>
+                                    <Text style={stylesIndividualCard.text}>{data.tipo}</Text>
+                                </View>
                                 </View>
                             </View>
 
@@ -502,7 +548,7 @@ const styles = StyleSheet.create({
         // backgroundColor: 'black',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
         borderRadius: 20,
         borderBottomLeftRadius: 0,
         borderTopRightRadius: 0, // Si deseas aplicar un radio diferente a las esquinas superiores derechas
@@ -512,7 +558,7 @@ const styles = StyleSheet.create({
     firstRowCenter:{
         width: '33.65%',
         height: '100%',
-        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
         borderBottomEndRadius: 20,
         borderBottomStartRadius: 20,
         // backgroundColor: 'red',
@@ -535,7 +581,7 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.39)',
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
     },
 
     imageBox:{
@@ -563,7 +609,7 @@ const styles = StyleSheet.create({
         height: '38.45%',
         width: '100%',
         alignSelf: 'flex-end',
-        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
         justifyContent: 'space-between',
         alignItems: 'center',
     },
@@ -587,6 +633,7 @@ const styles = StyleSheet.create({
     },
 
     bigText:{
+        fontFamily: 'Poppins-Regular',
         color: 'black',
         fontWeight: '500',
         fontSize: 10,
@@ -660,7 +707,7 @@ const stylesIndividualCard = StyleSheet.create({
         borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.28)',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         // backgroundColor:'red',
 
     },
@@ -670,7 +717,7 @@ const stylesIndividualCard = StyleSheet.create({
         height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
         borderBottomStartRadius: 20,
         borderBottomEndRadius: 20,
     },
@@ -689,7 +736,7 @@ const stylesIndividualCard = StyleSheet.create({
         borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.28)',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         // backgroundColor:'red',
 
     },
@@ -700,9 +747,40 @@ const stylesIndividualCard = StyleSheet.create({
     },
 
     secondRowDescriptionBox:{
+        alignItems: 'center',
         height: '88.235%',
-        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
         borderRadius: 20,
+    },
+
+    bigText:{
+        fontFamily: 'Poppins-Regular',
+        color: 'black',
+        fontWeight: '500',
+        fontSize: 14,
+        lineHeight: 18,
+        display: 'flex',
+    },
+
+    textBox:{
+        width: '80%',
+        // backgroundColor: 'red',
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        // backgroundColor: 'rgba(255,255,255,0.3)',
+        padding: '2%',
+        marginVertical: '1%',
+    },
+
+    text:{
+        fontFamily: 'Poppins-Regular',
+        color: 'black',
+        fontWeight: '500',
+        fontSize: 12,
+        lineHeight: 18,
+        display: 'flex',
     },
 
 });
@@ -759,6 +837,7 @@ const stylesWantErase = StyleSheet.create({
     },
 
     text:{
+        fontFamily: 'Poppins-Regular',
         fontWeight: '700',
         fontSize: 18,
         lineHeight: 27,
