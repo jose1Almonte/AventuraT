@@ -49,6 +49,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
           // console.log(doc.data().displayName);
           setNameEnterprise(doc.data().displayName);
           setPhotoUrl(doc.data().photoURL);
+          console.log('email enterprise', packageIn.emailEnterprise);
         });
       }
     };

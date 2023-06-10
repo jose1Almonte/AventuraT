@@ -51,10 +51,11 @@ const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
           setDescription(doc.data().description);
           setLocation(doc.data().location);
         });
-        const user = currentLog();
-        const pic = await returnEnterpisePic(user?.email);
+        // const user = currentLog();
+        const pic = await returnEnterpisePic(packageIn.emailEnterprise);
         if (pic != null){
           setEmpresa2(pic.urlEmpresa);
+          console.log('urlEmpresa', pic.urlEmpresa);
           setDescription2(pic.description);
           setLocation2(pic.location);
           setNameEnterprise2(pic.nameEnterprise);
