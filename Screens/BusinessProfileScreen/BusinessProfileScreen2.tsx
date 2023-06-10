@@ -69,7 +69,7 @@ const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
 
             <View>
             {packageIn.mainImageUrl &&
-              <PhotoProfile size={90} imageSource={packageIn.mainImageUrl}/>
+              <PhotoProfile size={90} imageSource={empresa}/>
             }
             </View>
               <SvgXml xml={separator} />
@@ -102,7 +102,7 @@ const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
               </Pressable>
             </View>
             {packageIn.mainImageUrl &&
-            <Text style={styles.txt}>Empresa: {packageIn.name}</Text>
+            <Text style={styles.txt}>Empresa: {nameEnterprise}</Text>
             }
             <Text style={styles.txt}>Encargado: {nameEnterprise}</Text>
             <Text style={styles.description}>
