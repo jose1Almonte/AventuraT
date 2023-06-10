@@ -35,7 +35,7 @@ class PopularPackages extends Component {
 const styles = StyleSheet.create({
   container: {
     width: 115,
-    height: "100%",
+    // height: 170,
     backgroundColor: '#ffffff',
     borderRadius: 15,
   },

@@ -31,6 +31,10 @@ const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
   const [description, setDescription] = useState(null);
   const [location, setLocation] = useState(null);
   const [empresa, setEmpresa] = useState(null);
+  const [nameEnterprise2, setNameEnterprise2] = useState(null);
+  const [description2, setDescription2] = useState(null);
+  const [location2, setLocation2] = useState(null);
+  const [empresa2, setEmpresa2] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +51,14 @@ const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
           setDescription(doc.data().description);
           setLocation(doc.data().location);
         });
+        const user = currentLog();
+        const pic = await returnEnterpisePic(user?.email);
+        if (pic != null){
+          setEmpresa2(pic.urlEmpresa);
+          setDescription2(pic.description);
+          setLocation2(pic.location);
+          setNameEnterprise2(pic.nameEnterprise);
+        }
       }
     };
     fetchData();
@@ -68,8 +80,8 @@ const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
             <View style={styles.top}>
 
             <View>
-            {packageIn.mainImageUrl &&
-              <PhotoProfile size={90} imageSource={packageIn.mainImageUrl}/>
+            {empresa2 &&
+              <PhotoProfile size={90} imageSource={empresa2}/>
             }
             </View>
               <SvgXml xml={separator} />
@@ -102,7 +114,7 @@ const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
               </Pressable>
             </View>
             {packageIn.mainImageUrl &&
-            <Text style={styles.txt}>Empresa: {packageIn.name}</Text>
+            <Text style={styles.txt}>Empresa: {nameEnterprise2}</Text>
             }
             <Text style={styles.txt}>Encargado: {nameEnterprise}</Text>
             <Text style={styles.description}>
