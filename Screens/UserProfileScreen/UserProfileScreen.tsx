@@ -35,7 +35,12 @@ export const UserProfileScreen = ({
   useEffect(() => {
     const checkUserExists = async () => {
       setLoadingSomething(true);
-      const exists = await checkResponsibleNameExists(user?.email);
+
+        const userEmail = user?.email;
+
+      // console.log(userEmail);
+      const exists = await checkResponsibleNameExists(userEmail);
+      // console.log(exists);
       setUserExists(exists);
       setLoadingSomething(false);
     };
