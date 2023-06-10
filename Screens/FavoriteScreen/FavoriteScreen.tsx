@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { useUser, UserProvider } from "../../Context/UserContext"
-import { getFavorites, getPackage, LoadingScreen } from '../../firebase/Firestore';
+import { getFavorites, getPackage, getPublicPackage, LoadingScreen } from '../../firebase/Firestore';
 import { Background } from '../../Layouts/Background';
 
 const FavoriteScreen = () => {
@@ -30,7 +30,7 @@ const FavoriteScreen = () => {
     const fetchPackages = async () => {
       const packageData: Record<string, any> = {}; // Tipo de datos para 'packageData'
       for (const item of favorites) {
-        const packageInfo = await getPackage(item);
+        const packageInfo = await getPublicPackage(item);
         if (packageInfo) {
           packageData[item] = packageInfo;
         }

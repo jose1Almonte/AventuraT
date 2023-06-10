@@ -177,6 +177,34 @@ export const getPackage = async (itemId) => {
 
 };
 
+export const getPublicPackage = async (itemId) => {
+  try {
+    const querySnapshot = await firestore()
+      .collection('package')
+      .where('isPublic', '==', true)
+      .get();
+
+    const documentSnapshot = querySnapshot.docs.find(doc => doc.id === itemId);
+
+    // const documentSnapshot = await firestore()
+    //   .collection('package')
+    //   .doc(itemId)
+    //   .get();
+
+    if (documentSnapshot && documentSnapshot.exists) {
+      const data = documentSnapshot.data();
+      // Aquí puedes realizar cualquier transformación o ajuste necesario en los datos obtenidos
+      return data;
+    } else {
+      throw new Error(`Package with ID ${itemId} does not exist.`);
+    }
+  } catch (error) {
+    console.log(error);
+    return null; // Si ocurre un error al obtener el paquete, puedes retornar null o un valor predeterminado adecuado.
+  }
+
+};
+
 export const getLastEnterpriseId = async () => {
   try {
     const querySnapshot2 = await usersCollection2.orderBy('id', 'desc').limit(1).get();
