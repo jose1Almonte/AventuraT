@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
-import { addEnterprise, uploadImage, getLastEnterpriseId, checkEnterpriseExists, checkResponsibleNameExists, createUserWithEmailAndPassword, addUser, checkIfUserExists } from '../../firebase/Firestore';
+import { addEnterprise, uploadImage, getLastEnterpriseId, checkEnterpriseExists, checkResponsibleNameExists, createUserWithEmailAndPassword, addUser, checkIfUserExists, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useUser } from '../../Context/UserContext';
 import currentLog from '../../firebase/UserData';
@@ -24,7 +24,7 @@ const validateEmail = (email: string): boolean => {
   return emailRegex.test(email);
 };
 
-const EnterpriseFormScreen = () => {
+const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<string, object | undefined>>}) => {
   const [resourcePath, setResourcePath] = useState('');
   const [resourcePath2, setResourcePath2] = useState('');
   const [filename, setFileName] = useState('');
@@ -54,6 +54,8 @@ const EnterpriseFormScreen = () => {
   };
 
   const submit = async () => {
+    let isDone = false;
+    setLoading(true);
 
     if (
       data.nameEnterprise.trim() === '' ||
@@ -65,108 +67,120 @@ const EnterpriseFormScreen = () => {
       data.disName.trim() === ''
     ) {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
+      setLoading(false);
       return;
     }
-
+    
     if (data.rif.trim().length < 6){
       Alert.alert('Error','El Rif es demasiado corto');
+      setLoading(false);
       return;
     }
-
+    
     if (!validateEmail(data.responsibleName) ) {
       Alert.alert('Correo Electrónico Inválido', 'Por favor, ingrese un correo electrónico válido');
+      setLoading(false);
       return;
     }
-
+    
     const enterpriseExists = await checkEnterpriseExists(data.nameEnterprise);
     if (enterpriseExists) {
       Alert.alert('Empresa Existente', 'La empresa ya existe en la base de datos');
+      setLoading(false);
       return;
     }
-
+    
     const responsibleNameExists = await checkResponsibleNameExists(data.responsibleName);
     if (responsibleNameExists) {
       Alert.alert('Nombre de Responsable Existente', 'El nombre de responsable ya existe en la base de datos');
+      setLoading(false);
       return;
     }
-
+    
     if (resourcePath === '' || resourcePath2 === '') {
-        Alert.alert('Error', 'Dude introduce pictures vale');
+      Alert.alert('Error', 'Dude introduce pictures vale');
+      setLoading(false);
     } else {
       uploadImage(resourcePath, filename).then((url) => {
         addEnterprise(
-        data.nameEnterprise,
-        data.rif,
-        data.responsibleName,
-        data.location,
-        data.description,
-        data.vip,
-        data.password,
-        data.phoneNumber,
-        resourcePath,
-        resourcePath2
-        ).then(() => {
+          data.nameEnterprise,
+          data.rif,
+          data.responsibleName,
+          data.location,
+          data.description,
+          data.vip,
+          data.password,
+          data.phoneNumber,
+          resourcePath,
+          resourcePath2
+          ).then(() => {
+          });
         });
-      });
-      if (resourcePath2 !== ''){
-        setLoading(true);
-        setTimeout(async () => {
-        await createUserWithEmailAndPassword(data.responsibleName, data.password,data.phoneNumber,resourcePath2, data.disName);
-        if (await checkIfUserExists(data.responsibleName) === false) {
-          await addUser([''],data.disName,data.responsibleName,false,resourcePath2);
+        if (resourcePath2 !== ''){
+          // setLoading(true);
+          await createUserWithEmailAndPassword(data.responsibleName, data.password,data.phoneNumber,resourcePath2, data.disName);
+          if (await checkIfUserExists(data.responsibleName) === false) {
+            await addUser([''],data.disName,data.responsibleName,false,resourcePath2);
+          }
+          loadLastId();
+          setUser(currentLog());
+          setLogged(true);
+          // setLoading(false); // Ocultar la pantalla de carga después de 3 segundos
+          
         }
-        loadLastId();
-        setUser(currentLog());
-        setLogged(true);
-        setLoading(false); // Ocultar la pantalla de carga después de 3 segundos
-      }, 3000);
-      }
-      setTimeout(() => {
+        isDone = true;
         Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
-        setLoading(false);
-      }, 3000);
-    }
-  };
-
-  const selectImage = () => {
-    launchImageLibrary({ mediaType: 'photo' }, (response) => {
-      if (response.didCancel) {
-        Alert.alert('Not Image', 'No se ha elegido una imagen');
-      } else if (response.errorCode) {
-        Alert.alert('ImagePicker Error', response.errorMessage || 'Error');
-      } else {
-        const selectedAsset = response.assets && response.assets[0];
-        if (selectedAsset && selectedAsset.uri) {
-          setResourcePath(selectedAsset.uri);
-          setFileName(selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1));
-          Alert.alert('Done', 'Image uploaded');
-        }
+        // setLoading(false);
+        
       }
-    });
-  };
-
-  const selectImage2 = () => {
-
-    launchImageLibrary({ mediaType: 'photo' }, (response) => {
-      if (response.didCancel) {
-        Alert.alert('Not Image', 'No se ha elegido una imagen');
-      } else if (response.errorCode) {
-        Alert.alert('ImagePicker Error', response.errorMessage || 'Error');
-      } else {
-        const selectedAsset2 = response.assets && response.assets[0];
-        if (selectedAsset2 && selectedAsset2.uri) {
-          setResourcePath2(selectedAsset2.uri);
-          setFileName2(selectedAsset2.uri.substring(selectedAsset2.uri.lastIndexOf('/') + 1));
-          Alert.alert('Done', 'picture uploaded');
+      setLoading(false);
+      if (isDone) {navigation.navigate('HomeScreen');}
+      
+    };
+    
+    const selectImage = () => {
+      launchImageLibrary({ mediaType: 'photo' }, (response) => {
+        if (response.didCancel) {
+          Alert.alert('Not Image', 'No se ha elegido una imagen');
+        } else if (response.errorCode) {
+          Alert.alert('ImagePicker Error', response.errorMessage || 'Error');
+        } else {
+          const selectedAsset = response.assets && response.assets[0];
+          if (selectedAsset && selectedAsset.uri) {
+            setResourcePath(selectedAsset.uri);
+            setFileName(selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1));
+            Alert.alert('Done', 'Image uploaded');
+          }
         }
-      }
-    });
-  };
+      });
+    };
+    
+    const selectImage2 = () => {
+      
+      launchImageLibrary({ mediaType: 'photo' }, (response) => {
+        if (response.didCancel) {
+          Alert.alert('Not Image', 'No se ha elegido una imagen');
+        } else if (response.errorCode) {
+          Alert.alert('ImagePicker Error', response.errorMessage || 'Error');
+        } else {
+          const selectedAsset2 = response.assets && response.assets[0];
+          if (selectedAsset2 && selectedAsset2.uri) {
+            setResourcePath2(selectedAsset2.uri);
+            setFileName2(selectedAsset2.uri.substring(selectedAsset2.uri.lastIndexOf('/') + 1));
+            Alert.alert('Done', 'picture uploaded');
+          }
+        }
+      });
+    };
 
-  if (loading) {
-    return <LoadingScreen />;
-  }
-  return (
+    // if (loading) {
+      //   return <LoadingScreen />;
+      // }
+      return (
+        <>
+    {loading && (
+      <LoadingScreenTransparentBackground/>
+      )}
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>¡Agrega tu Empresa con AventuraT!</Text>
@@ -248,6 +262,7 @@ const EnterpriseFormScreen = () => {
         </TouchableOpacity>
       </View>
     </View>
+  </>
   );
 };
 
