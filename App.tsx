@@ -10,7 +10,7 @@ import { UserProfileScreen } from './Screens/UserProfileScreen/UserProfileScreen
 import BusinessProfileScreen from './Screens/BusinessProfileScreen/BusinessProfileScreen';
 import BusinessProfileScreen2 from './Screens/BusinessProfileScreen/BusinessProfileScreen2';
 import NavbarScreen from './Screens/NavbarScreen/NavbarScreen';
-import SearchScreen from './Screens/SearchScreen/SearchScreen';
+// import SearchScreen from './Screens/SearchScreen/SearchScreen';
 import FavoriteScreen from './Screens/FavoriteScreen/FavoriteScreen';
 import SearchResultScreen from './Screens/SearchResultScreen/SearchResultScreen';
 import RatingsScreen from './Screens/RatingsScreen/RatingsScreen';
@@ -22,7 +22,7 @@ import MobilePaymentScreen from './Screens/MobilePaymentScreen/MobilePaymentScre
 import CreatePackageFormScreen from './Screens/CreatePackageFormScreen/CreatePackageFormScreen';
 import HelpdeskScreen from './Screens/HelpdeskScreen/HelpdeskScreen';
 import AdministratePackagesScreen from './Screens/AdministratePackagesScreen/AdministratePackagesScreen';
-import PublishedPackages2 from './Components/Profiles/publishedPackages2';
+// import PublishedPackages2 from './Components/Profiles/publishedPackages2';
 import VistaPorTipoScreen from './Screens/VistaPorTipoScreen/VistaPorTipoScreen';
 const Stack = createNativeStackNavigator();
 

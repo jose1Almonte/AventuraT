@@ -1,12 +1,12 @@
 import { Text, View, StyleSheet, Pressable, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
-import vectorPerfil from '../../vectores/vectorPerfil';
+// import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
-import EditProfileButton from '../../Components/Profiles/editProfileButton';
+// import EditProfileButton from '../../Components/Profiles/editProfileButton';
 import vectorLocation from '../../vectores/vectorLocation';
-import EditPackageButton from '../../Components/Profiles/editPackagesButton';
-import PublishedPackages from '../../Components/Profiles/publishedPackages';
+// import EditPackageButton from '../../Components/Profiles/editPackagesButton';
+// import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../vectores/separator';
 import star from '../../vectores/star';
 import { NavigationProp } from '@react-navigation/native';

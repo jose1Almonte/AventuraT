@@ -385,8 +385,8 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
                         <Text style={stylesWantErase.title}>¿Quieres borrar el paquete "{dataToErasePersonally.name}" ?</Text>
                     </View>
                     <View style={stylesWantErase.secondBox}>
-                        <Button buttonStyle={stylesWantErase.buttonTop} buttonTextStyle={stylesWantErase.text} text = "Si, borra ese paquete"   onPress={()=>{Alert.alert('Presionaste que si'); handleTrashCanPress(dataToErasePersonally);}}/>
-                        <Button buttonStyle={stylesWantErase.buttonBottom} buttonTextStyle={stylesWantErase.text} text="No, no borres ese paquete" onPress={()=>{Alert.alert('Presiono que no'); setWantPersonallyErase(false);}}/>
+                        <Button buttonStyle={stylesWantErase.buttonTop} buttonTextStyle={stylesWantErase.text} text = "Si, borra ese paquete"   onPress={()=>{handleTrashCanPress(dataToErasePersonally);}}/>
+                        <Button buttonStyle={stylesWantErase.buttonBottom} buttonTextStyle={stylesWantErase.text} text="No, no borres ese paquete" onPress={()=>{setWantPersonallyErase(false);}}/>
                     </View>
                 </View>
             </View>

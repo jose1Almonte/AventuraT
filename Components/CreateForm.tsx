@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
-import { addPackage, uploadImage, getLastPackageId, LoadingScreen } from '../firebase/Firestore'; // Importa la función getLastPackageId
+import { addPackage, uploadImage, getLastPackageId, LoadingScreen, LoadingScreenTransparentBackground } from '../firebase/Firestore'; // Importa la función getLastPackageId
 import { launchImageLibrary } from 'react-native-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useUser } from '../Context/UserContext';
@@ -189,10 +189,16 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
       }
     });
   };
-  if (loading) {
-    return <LoadingScreen />;
-  }
+  // if (loading) {
+  //   return <LoadingScreenTransparentBackground />;
+  // }
   return (
+
+    <>
+        {loading && (
+            <LoadingScreenTransparentBackground/>
+        )}
+
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>¡Agrega tu paquete con AventuraT!</Text>
@@ -274,7 +280,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
               </TouchableOpacity>
               {resourcePath === '' ? (
                 <></>
-              ) : (
+                ) : (
                 <View>
                   <Image source={{ uri: resourcePath }} />
                 </View>
@@ -289,6 +295,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
         </TouchableOpacity>
       </View>
     </View>
+  </>
   );
 };
 

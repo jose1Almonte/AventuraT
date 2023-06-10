@@ -8,10 +8,11 @@ import { NavigationProp } from '@react-navigation/native';
 
 interface publishedPackagesProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
+  setLoadingSomeThing: any,
 }
 
 const PublishedPackages = ({
-  navigation,
+  navigation, setLoadingSomeThing,
 }: publishedPackagesProps) => {
 
     const {user} = useUser();
@@ -19,8 +20,10 @@ const PublishedPackages = ({
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoadingSomeThing(true);
       const packageList = await listPackage(user.email, false);
       setPackages(packageList);
+      setLoadingSomeThing(false);
     };
 
     fetchData();

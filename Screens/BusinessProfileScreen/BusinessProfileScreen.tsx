@@ -11,7 +11,7 @@ import separator from '../../vectores/separator';
 import star from '../../vectores/star';
 import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
-import { returnEnterpisePic } from '../../firebase/Firestore';
+import { LoadingScreenTransparentBackground, returnEnterpisePic } from '../../firebase/Firestore';
 import profileVector from '../../vectores/vectorPerfil';
 
 interface businessProfileProps {
@@ -25,16 +25,20 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
   const [location, setLocation] = useState(null);
   const [nameEnterprise, setNameEnterprise] = useState(null);
 
+  const [loadingSomeThing, setLoadingSomeThing] = useState(false);
+
   useEffect(() => {
     const fetchEnterprisePic = async () => {
+      setLoadingSomeThing(true);
       const user = currentLog();
       const pic = await returnEnterpisePic(user?.email);
-      if(pic!=null){
+      if (pic!=null){
         setEmpresa(pic.urlEmpresa);
         setDescription(pic.description);
         setLocation(pic.location);
         setNameEnterprise(pic.nameEnterprise);
       }
+      setLoadingSomeThing(false);
     };
 
     fetchEnterprisePic();
@@ -43,7 +47,9 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
 
   return (
     <>
-
+    {loadingSomeThing && (
+        <LoadingScreenTransparentBackground/>
+    )}
 
     <ScrollView style={styles.scroll}>
         <View style={styles.backGround}>
@@ -111,7 +117,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
         <View style={styles.containerPack}>
           {/* <View style={styles.containerPack2}> */}
           {/* <View style={styles.containerPack3}> */}
-                <PublishedPackages navigation={navigation} />
+                <PublishedPackages navigation={navigation} setLoadingSomeThing={setLoadingSomeThing}/>
           {/* </View> */}
           {/* </View> */}
         </View>
