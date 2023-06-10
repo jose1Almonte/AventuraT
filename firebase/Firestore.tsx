@@ -340,3 +340,12 @@ const styles = StyleSheet.create({
   },
 });
 
+export const getPopularPackages = async () => {
+  const packages = [];
+  let query = await packagesCollection.where("isVIP", "==", true).where("isPublic", "==", false).limit(6).get();
+  query.docs.forEach((rawData, idx) => {
+    packages.push(rawData.data());
+  })
+  return packages;
+}
+

@@ -97,21 +97,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       <View style={styles.Container3}>
         <Text style={styles.title}>Paquetes Populares</Text>
         <View style={styles.ContainerPackages}>
-          <Pressable onPress={() => {
-            Alert.alert('Funcionalidad en desarrollo');
-          }}>
-            <PopularPackages />
-          </Pressable>
-          <Pressable onPress={() => {
-            Alert.alert('Funcionalidad en desarrollo');
-          }}>
-            <PopularPackages />
-          </Pressable>
-          <Pressable onPress={() => {
-            Alert.alert('Funcionalidad en desarrollo');
-          }}>
-            <PopularPackages />
-          </Pressable>
+            <PopularPackages navigation={navigation} />
         </View>
       </View>
 
