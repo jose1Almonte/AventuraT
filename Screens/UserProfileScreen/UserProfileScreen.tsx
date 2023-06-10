@@ -10,7 +10,7 @@ import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import currentLog from '../../firebase/UserData';
 import { deleteExpiredDocuments } from '../../firebase/DeletePackage';
-import { checkResponsibleNameExists } from '../../firebase/Firestore'; // Update the path to the FirebaseFunctions file
+import { LoadingScreenTransparentBackground, checkResponsibleNameExists } from '../../firebase/Firestore'; // Update the path to the FirebaseFunctions file
 
 interface UserProfileScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>,
@@ -30,16 +30,25 @@ export const UserProfileScreen = ({
   const user = currentLog();
   const [userExists, setUserExists] = useState(false);
 
+  const [loadingSomeThing, setLoadingSomething] = useState(false);
+
   useEffect(() => {
     const checkUserExists = async () => {
+      setLoadingSomething(true);
       const exists = await checkResponsibleNameExists(user?.email);
       setUserExists(exists);
+      setLoadingSomething(false);
     };
 
     checkUserExists();
   }, [user?.email]);
 
   return (
+    <>
+      {loadingSomeThing && (
+            <LoadingScreenTransparentBackground/>
+      )}
+        
     <View style={styles.container}>
 
         <View style={styles.backGround}>
@@ -109,6 +118,7 @@ export const UserProfileScreen = ({
 
       </View>
     </View>
+  </>
   );
 };
 

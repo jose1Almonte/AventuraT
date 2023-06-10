@@ -11,7 +11,7 @@ import { PackageI } from '../../models/package.interface';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import firestore from '@react-native-firebase/firestore';
-import { LoadingScreen } from '../../firebase/Firestore';
+import { LoadingScreen, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 
 interface detailProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -38,8 +38,11 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
   const [nameEnterprise, setNameEnterprise] = useState('');
   const [photoURL, setPhotoUrl] = useState('');
 
+  const [loadingSomeThing, setLoadingSomething] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
+      setLoadingSomething(true);
       // console.log('packageIn?.emailEnterprise: ' ,packageIn.emailEnterprise);
       if (packageIn && packageIn.emailEnterprise) {
 
@@ -51,10 +54,19 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
           setPhotoUrl(doc.data().photoURL);
         });
       }
+      setLoadingSomething(false);
     };
     fetchData();
   }, [packageIn, packageIn.emailEnterprise]);
+
   return (
+
+    <>
+
+        {loadingSomeThing && (
+            <LoadingScreenTransparentBackground/>
+        )}
+
     <ScrollView style={styles.background}>
       <View style={styles.container}>
         <View style={styles.containerPack}>
@@ -132,6 +144,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         </Pressable>
       </View>
     </ScrollView>
+    </>
   );
 };
 

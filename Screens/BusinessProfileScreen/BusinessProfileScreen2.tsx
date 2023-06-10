@@ -11,7 +11,7 @@ import separator from '../../vectores/separator';
 import star from '../../vectores/star';
 import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
-import { returnEnterpisePic } from '../../firebase/Firestore';
+import { LoadingScreenTransparentBackground, returnEnterpisePic } from '../../firebase/Firestore';
 import profileVector from '../../vectores/vectorPerfil';
 import { PackageI } from '../../models/package.interface';
 import firestore from '@react-native-firebase/firestore';
@@ -36,8 +36,11 @@ const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
   const [location2, setLocation2] = useState(null);
   const [empresa2, setEmpresa2] = useState(null);
 
+  const [loadingSomeThing, setLoadingSomething] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
+      setLoadingSomething(true);
       // console.log('packageIn?.emailEnterprise: ' ,packageIn.emailEnterprise);
       if (packageIn && packageIn.emailEnterprise) {
 
@@ -60,6 +63,7 @@ const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
           setNameEnterprise2(pic.nameEnterprise);
         }
       }
+      setLoadingSomething(false);
     };
     fetchData();
   }, [packageIn, packageIn.emailEnterprise]);
@@ -68,6 +72,9 @@ const BusinessProfileScreen = ({ navigation, route }: businessProfileProps) => {
   return (
     <>
 
+        {loadingSomeThing && (
+            <LoadingScreenTransparentBackground/>
+        )}
 
     <ScrollView style={styles.scroll}>
         <View style={styles.backGround}>
