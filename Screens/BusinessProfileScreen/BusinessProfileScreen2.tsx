@@ -67,7 +67,7 @@ const BusinessProfileScreen = ({navigation, route}: businessProfileProps) => {
                 <View>
                   {packageIn.mainImageUrl && (
                     <PhotoProfile
-                      size={90}
+                      size={100}
                       imageSource={packageIn.mainImageUrl}
                     />
                   )}
@@ -99,17 +99,17 @@ const BusinessProfileScreen = ({navigation, route}: businessProfileProps) => {
                 </View>
               </View>
               {packageIn.mainImageUrl && (
-                <Text style={styles.txt}>{packageIn.name}</Text>
+                <Text style={styles.txt}>Empresa: {packageIn.name}</Text>
               )}
               <View style={styles.containerManager}>
                 <Text style={styles.txt}>Encargado: </Text>
                 <Text style={styles.txtManager}>{nameEnterprise}</Text>
               </View>
-              <Text style={styles.description}>{description}</Text>
-              {/* <View style={styles.location}>
+              <Text style={styles.description}>{packageIn.description}</Text>
+              <View style={styles.location}>
                 <SvgXml xml={vectorLocation} />
-                <Text style={styles.nameLocation}>{location}</Text>
-              </View> */}
+                <Text style={styles.nameLocation}>{packageIn.location}</Text>
+              </View>
               <View style={styles.bottomInfo}>
                 <Text style={styles.titlePack}>Paquetes publicados</Text>
               </View>
@@ -259,8 +259,8 @@ const styles = StyleSheet.create({
   },
   nameLocation: {
     color: 'black',
-    fontSize: 12,
-    fontFamily: 'Poppins-Medium',
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
     alignItems: 'center',
     justifyContent: 'center',
   },
