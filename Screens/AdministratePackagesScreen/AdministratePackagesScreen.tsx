@@ -20,7 +20,7 @@ const Button = ({buttonStyle, buttonTextStyle, text, onPress}:{buttonStyle: any,
     );
 };
 
-const CardBox = ({data, changeIsPublic, index, setIndexSelectedPackage, setSelectedPackage, handleTrashCanPress, cardBoxStyles, backgroundCardStyles}:{data: any, changeIsPublic: any, index: number, setIndexSelectedPackage: any, setSelectedPackage: any, handleTrashCanPress: any, cardBoxStyles: any, backgroundCardStyles: any}) => {
+const CardBox = ({data, handleWantPersonallyErase, changeIsPublic, index, setIndexSelectedPackage, setSelectedPackage, cardBoxStyles, backgroundCardStyles}:{data: any, handleWantPersonallyErase: any, changeIsPublic: any, index: number, setIndexSelectedPackage: any, setSelectedPackage: any, cardBoxStyles: any, backgroundCardStyles: any}) => {
 
     const startDate = data.startDate.toDate();
     const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
@@ -54,7 +54,7 @@ const CardBox = ({data, changeIsPublic, index, setIndexSelectedPackage, setSelec
                                 <Text style={styles.text}>Caduca {expireDay}/{expireMonth}/{expireYear}</Text>
                         </View>
 
-                        <TouchableOpacity style ={styles.firstRowCenter} onPress={() => {changeIsPublic(data, setDataIsPublic)}}>
+                        <TouchableOpacity style ={styles.firstRowCenter} onPress={() => {changeIsPublic(data, setDataIsPublic);}}>
                             {dataIsPublic ? (
                                     <Text style={styles.text}> Publico </Text>
 
@@ -65,7 +65,7 @@ const CardBox = ({data, changeIsPublic, index, setIndexSelectedPackage, setSelec
                         </TouchableOpacity>
 
                         <View style={styles.firstRowRight}>
-                            <TouchableOpacity style={styles.circle} onPress={() => {handleTrashCanPress(data);}}>
+                            <TouchableOpacity style={styles.circle} onPress={() => {handleWantPersonallyErase(data);}}>
                                 <View style={styles.imageBox}>
                                     <Image source={require('../../images/TrashCanLogo.png')} style={styles.image}/>
                                 </View>
@@ -93,10 +93,10 @@ const CardBox = ({data, changeIsPublic, index, setIndexSelectedPackage, setSelec
     );
 };
 
-const SelectedPackageView = ({data, changeIsPublic, ready, setReady, setSelectedPackage}:{data: any, changeIsPublic: any, ready: boolean, setReady: any, setSelectedPackage: any}) => {
+const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: any, changeIsPublic: any, setSelectedPackage: any}) => {
 
     const [dataIsPublic, setDataIsPublic] = useState(data.isPublic);
-    
+
     const startDate = data.startDate.toDate();
     const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
     const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
@@ -238,7 +238,7 @@ const WantEraseView = ({setWantErase, eraseExpired, setEraseExpired, eraseAll, s
                 )}
             </View>
         </View>
-    )
+    );
 };
 
 const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Record<string, object | undefined>>;}) => {
@@ -253,15 +253,24 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
     const [eraseExpired, setEraseExpired] = useState(false);
     const [eraseAll, setEraseAll] = useState(false);
 
-    const handleTrashCanPress = useCallback(
-        async (data: { id: any }) => {
-            await deleteSelectedPackage(data.id);
+    const [wantPersonallyErase, setWantPersonallyErase] = useState(false);
+    const [dataToErasePersonally, setDataToErasePersonally] = useState<Partial<Record<string, any>>>({});
 
-          if (!ready){
-              setReady(true);
-          } else {
+    const handleWantPersonallyErase = (data: Partial<Record<string, any>>) => {
+        setDataToErasePersonally(data);
+        setWantPersonallyErase(true);
+    };
+
+    const handleTrashCanPress = useCallback(
+        async (data: Partial<Record<string, any>>) => {
+        await deleteSelectedPackage(data.id);
+        // console.log('Estamos en handleTrash', 'VAMOOO TUUTUT')
+        setWantPersonallyErase(false);
+        if (!ready){
+            setReady(true);
+        } else {
             setReady(false);
-          }
+        }
 
         },[ready]
     );
@@ -353,7 +362,21 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
         )}
 
         {selectedPackage && (
-            <SelectedPackageView data={documents[indexSelectedPackage]} changeIsPublic={changeIsPublic} ready={ready} setReady={setReady} setSelectedPackage={setSelectedPackage}/>
+            <SelectedPackageView data={documents[indexSelectedPackage]} changeIsPublic={changeIsPublic} setSelectedPackage={setSelectedPackage}/>
+        )}
+
+        {wantPersonallyErase && (
+            <View style={stylesWantErase.giantWantErase}>
+                <View style={stylesWantErase.bigBox}>
+                    <View style={stylesWantErase.firstBox}>
+                        <Text style={stylesWantErase.title}>¿Quieres borrar el paquete "{dataToErasePersonally.name}" ?</Text>
+                    </View>
+                    <View style={stylesWantErase.secondBox}>
+                        <Button buttonStyle={stylesWantErase.buttonTop} buttonTextStyle={stylesWantErase.text} text = "Si, borra ese paquete"   onPress={()=>{Alert.alert('Presionaste que si'); handleTrashCanPress(dataToErasePersonally);}}/>
+                        <Button buttonStyle={stylesWantErase.buttonBottom} buttonTextStyle={stylesWantErase.text} text="No, no borres ese paquete" onPress={()=>{Alert.alert('Presiono que no'); setWantPersonallyErase(false);}}/>
+                    </View>
+                </View>
+            </View>
         )}
 
         <View style={styles.giantBox}>
@@ -392,7 +415,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             <ScrollView style={styles.scrollView} contentContainerStyle = {styles.scrollViewContentContainerStyle}>
 
                 {documents.map((document, index) => (
-                    <CardBox key={index} data={document} changeIsPublic={changeIsPublic} index={index} setIndexSelectedPackage={setIndexSelectedPackage} setSelectedPackage={setSelectedPackage} handleTrashCanPress={handleTrashCanPress} cardBoxStyles={styles.cardBox} backgroundCardStyles={styles.backgroundCard}/>
+                    <CardBox key={index} data={document} handleWantPersonallyErase={handleWantPersonallyErase} changeIsPublic={changeIsPublic} index={index} setIndexSelectedPackage={setIndexSelectedPackage} setSelectedPackage={setSelectedPackage} cardBoxStyles={styles.cardBox} backgroundCardStyles={styles.backgroundCard}/>
                 ))}
 
                 {/* <CardBox cardBoxStyles={styles.cardBox} backgroundCardStyles={styles.backgroundCard}/> */}
