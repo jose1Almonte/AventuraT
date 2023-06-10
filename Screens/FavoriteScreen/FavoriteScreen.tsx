@@ -1,30 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
-import { useUser, UserProvider } from "../../Context/UserContext"
-import { getFavorites, getPackage, getPublicPackage, LoadingScreen } from '../../firebase/Firestore';
+// import firestore from '@react-native-firebase/firestore';
+// import auth from '@react-native-firebase/auth';
+import { useUser } from '../../Context/UserContext';
+import { getFavorites,  getPublicPackage, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 import { Background } from '../../Layouts/Background';
 
 const FavoriteScreen = () => {
-  const [loadingFavorites, setLoadingFavorites] = useState(true);
+  // const [loadingFavorites, setLoadingFavorites] = useState(true);
   const [favorites, setFavorites] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [packages, setPackages] = useState<Record<string, any>>({}); // Tipo de datos para el estado 'packages'
-  const { user, isLogged } = useUser();
-  const [showContent, setShowContent] = useState(false); // Variable de estado para controlar la visibilidad del contenido
+  const { user } = useUser();
+  // const [showContent, setShowContent] = useState(false); // Variable de estado para controlar la visibilidad del contenido
 
-  const conseguirFavoritos = async () => {
-    const email = user.email;
-    const fav = await getFavorites(email);
-    setFavorites(fav);
-    setLoadingFavorites(false);
-  };
+
+  const [loadingSomeThing, setLoadingSomeThing] = useState(false);
 
   useEffect(() => {
-    setLoadingFavorites(true); // Establece el estado a true al iniciar la carga de favoritos
+    const conseguirFavoritos = async () => {
+      setLoadingSomeThing(true);
+      const email = user.email;
+      const fav = await getFavorites(email);
+      setFavorites(fav);
+      // setLoadingFavorites(false);
+      setLoadingSomeThing(false);
+    };
+    // setLoadingFavorites(true); // Establece el estado a true al iniciar la carga de favoritos
     conseguirFavoritos();
-  }, []);
+  }, [user.email]);
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -36,82 +40,88 @@ const FavoriteScreen = () => {
         }
       }
       setPackages(packageData);
-      setLoading(false); // Marca la carga como completa
+      // setLoading(false); // Marca la carga como completa
     };
 
     fetchPackages();
   }, [favorites]);
 
-  useEffect(() => {
-    // Muestra el contenido después de 3 segundos
-    const timer = setTimeout(() => {
-      setShowContent(true);
-    }, 3000);
+  // useEffect(() => {
+  //   // Muestra el contenido después de 3 segundos
+  //   const timer = setTimeout(() => {
+  //     setShowContent(true);
+  //   }, 3000);
 
-    return () => clearTimeout(timer); // Limpia el temporizador al desmontar el componente
-  }, []);
+  //   return () => clearTimeout(timer); // Limpia el temporizador al desmontar el componente
+  // }, []);
 
-  if (loadingFavorites || loading || !showContent) {
-    return <LoadingScreen />;
-  }
+  // if (loadingFavorites || loading || !showContent) {
+  //   return <LoadingScreen />;
+  // }
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.titleBox}>
-        <Text style={styles.title}>FavoriteScreen</Text>
-      </View>
-      {favorites.length === 0 ? (
-        <Text style={styles.noFavoritesText}>NO HAY FAVORITOS</Text>
-      ) : (
-        <View style={styles.cardContainer}>
-          {favorites.map((esteitem, idx) => {
-            if (packages[String(esteitem)]) {
-              return (
-                <View key={esteitem} style={styles.card}>
-                  <Background style={styles.containerPhotoPack} image={{uri: packages[String(esteitem)]?.mainImageUrl}}>
-
-                  <View style={styles.layer}>
-
-                    <View style = {styles.firstBox}>
-                      <View style={styles.textBox}>
-
-                        <Text style={styles.name}>Nombre:</Text>
-                        <Text style={styles.name} >{packages[String(esteitem)]?.name}</Text>
-                      </View>
-                      <View style={styles.textBox}>
-
-                        <Text style={styles.description}>Descripción:</Text>
-                        <Text style={styles.description} >{packages[String(esteitem)]?.description}</Text>
-                      </View>
-                      <View style={styles.textBox}>
-
-                        <Text style={styles.price}>Precio:</Text>
-                        <Text style={styles.price} >{packages[String(esteitem)]?.price}</Text>
-                      </View>
-
-                    </View>
-
-                    <View style = {styles.secondBox}>
-                      <Image style={styles.rightImage} source={{uri: packages[String(esteitem)]?.mainImageUrl}}/>
-
-                    </View>
-
-                    {/* <Image
-                      style={styles.containerPhotoPack}
-                      source={{
-                        uri: packages[String(esteitem)]?.mainImageUrl,
-                      }}
-                      /> */}
-                  </View>
-                  </Background>
-                </View>
-              );
-            }
-            return null; // Omitir tarjeta si no se encuentra el índice
-          })}
-        </View>
+    <>
+      {loadingSomeThing && (
+        <LoadingScreenTransparentBackground/>
       )}
-    </ScrollView>
+
+      <ScrollView style={styles.container}>
+        <View style={styles.titleBox}>
+          <Text style={styles.title}>FavoriteScreen</Text>
+        </View>
+        {favorites.length === 0 ? (
+          <Text style={styles.noFavoritesText}>NO HAY FAVORITOS</Text>
+        ) : (
+          <View style={styles.cardContainer}>
+            {favorites.map((esteitem) => {
+              if (packages[String(esteitem)]) {
+                return (
+                  <View key={esteitem} style={styles.card}>
+                    <Background style={styles.containerPhotoPack} image={{uri: packages[String(esteitem)]?.mainImageUrl}}>
+
+                    <View style={styles.layer}>
+
+                      <View style = {styles.firstBox}>
+                        <View style={styles.textBox}>
+
+                          <Text style={styles.name}>Nombre:</Text>
+                          <Text style={styles.name} >{packages[String(esteitem)]?.name}</Text>
+                        </View>
+                        <View style={styles.textBox}>
+
+                          <Text style={styles.description}>Descripción:</Text>
+                          <Text style={styles.description} >{packages[String(esteitem)]?.description}</Text>
+                        </View>
+                        <View style={styles.textBox}>
+
+                          <Text style={styles.price}>Precio:</Text>
+                          <Text style={styles.price} >{packages[String(esteitem)]?.price}</Text>
+                        </View>
+
+                      </View>
+
+                      <View style = {styles.secondBox}>
+                        <Image style={styles.rightImage} source={{uri: packages[String(esteitem)]?.mainImageUrl}}/>
+
+                      </View>
+
+                      {/* <Image
+                        style={styles.containerPhotoPack}
+                        source={{
+                          uri: packages[String(esteitem)]?.mainImageUrl,
+                        }}
+                        /> */}
+                    </View>
+                    </Background>
+                  </View>
+                );
+              }
+              return null; // Omitir tarjeta si no se encuentra el índice
+            })}
+          </View>
+        )}
+      </ScrollView>
+    </>
   );
 };
 
