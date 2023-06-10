@@ -102,7 +102,10 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
       Alert.alert('Error', 'Dude introduce pictures vale');
       setLoading(false);
     } else {
-      uploadImage(resourcePath, filename).then((url) => {
+
+      const url1 = await uploadImage(resourcePath, filename);
+      const url2 = await uploadImage(resourcePath2, filename2);
+
         addEnterprise(
           data.nameEnterprise,
           data.rif,
@@ -112,16 +115,14 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
           data.vip,
           data.password,
           data.phoneNumber,
-          resourcePath,
-          resourcePath2
-          ).then(() => {
-          });
-        });
+          url1,
+          url2
+          )
         if (resourcePath2 !== ''){
           // setLoading(true);
-          await createUserWithEmailAndPassword(data.responsibleName, data.password,data.phoneNumber,resourcePath2, data.disName);
-          if (await checkIfUserExists(data.responsibleName) === false) {
-            await addUser([''],data.disName,data.responsibleName,false,resourcePath2);
+          await createUserWithEmailAndPassword(data.responsibleName, data.password,data.phoneNumber,url2, data.disName);
+          if (await checkIfUserExists(data.responsibleName) === false && url2) {
+            await addUser([''],data.disName,data.responsibleName,false,url2);
           }
           loadLastId();
           setUser(currentLog());

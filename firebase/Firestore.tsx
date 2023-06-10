@@ -266,7 +266,12 @@ export const checkPasswordCorrect = async (email, password) => {
 
 export const returnEnterpisePic = async (responsibleName) => {
   const enterprisesRef = usersCollection2;
-  const snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+  let snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+  if (snapshot.empty){
+    responsibleName = responsibleName.charAt(0).toUpperCase() + responsibleName.slice(1);
+    snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+    console.log('WTF CONTIGO', responsibleName)
+  }
   if (!snapshot.empty) {
     const enterpriseData = snapshot.docs[0].data();
     return enterpriseData;

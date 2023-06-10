@@ -63,6 +63,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
           // console.log(doc.data)
           setNameEnterprise(doc.data().displayName);
           setPhotoUrl(doc.data().photoURL);
+          console.log('email enterprise', packageIn.emailEnterprise);
         });
       }
       setLoadingSomething(false);
