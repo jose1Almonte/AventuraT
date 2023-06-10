@@ -109,11 +109,11 @@ const BusinessProfileScreen = ({navigation, route}: businessProfileProps) => {
                 <Text style={styles.txt}>Encargado: </Text>
                 <Text style={styles.txtManager}>{nameEnterprise}</Text>
               </View>
-              <Text style={styles.description}>{packageIn.description}</Text>
-              <View style={styles.location}>
+              {/* <Text style={styles.description}>{packageIn.description}</Text> */}
+              {/* <View style={styles.location}>
                 <SvgXml xml={vectorLocation} />
                 <Text style={styles.nameLocation}>{packageIn.location}</Text>
-              </View>
+              </View> */}
               <View style={styles.bottomInfo}>
                 <Text style={styles.titlePack}>Paquetes publicados</Text>
               </View>
