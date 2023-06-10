@@ -5,6 +5,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { useUser } from '../../Context/UserContext';
 import currentLog from '../../firebase/UserData';
 import { LoadingScreen } from '../../firebase/Firestore';
+import { NavigationProp } from '@react-navigation/native';
 
 interface EnterpriseFormData {
   id: number;
@@ -70,33 +71,33 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
       setLoading(false);
       return;
     }
-    
+
     if (data.rif.trim().length < 6){
       Alert.alert('Error','El Rif es demasiado corto');
       setLoading(false);
       return;
     }
-    
+
     if (!validateEmail(data.responsibleName) ) {
       Alert.alert('Correo Electrónico Inválido', 'Por favor, ingrese un correo electrónico válido');
       setLoading(false);
       return;
     }
-    
+
     const enterpriseExists = await checkEnterpriseExists(data.nameEnterprise);
     if (enterpriseExists) {
       Alert.alert('Empresa Existente', 'La empresa ya existe en la base de datos');
       setLoading(false);
       return;
     }
-    
+
     const responsibleNameExists = await checkResponsibleNameExists(data.responsibleName);
     if (responsibleNameExists) {
       Alert.alert('Nombre de Responsable Existente', 'El nombre de responsable ya existe en la base de datos');
       setLoading(false);
       return;
     }
-    
+
     if (resourcePath === '' || resourcePath2 === '') {
       Alert.alert('Error', 'Dude introduce pictures vale');
       setLoading(false);
@@ -126,18 +127,18 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
           setUser(currentLog());
           setLogged(true);
           // setLoading(false); // Ocultar la pantalla de carga después de 3 segundos
-          
+
         }
         isDone = true;
         Alert.alert('Empresa creada', 'La empresa se ha creado exitosamente');
         // setLoading(false);
-        
+
       }
       setLoading(false);
       if (isDone) {navigation.navigate('HomeScreen');}
-      
+
     };
-    
+
     const selectImage = () => {
       launchImageLibrary({ mediaType: 'photo' }, (response) => {
         if (response.didCancel) {
@@ -154,9 +155,9 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
         }
       });
     };
-    
+
     const selectImage2 = () => {
-      
+
       launchImageLibrary({ mediaType: 'photo' }, (response) => {
         if (response.didCancel) {
           Alert.alert('Not Image', 'No se ha elegido una imagen');
