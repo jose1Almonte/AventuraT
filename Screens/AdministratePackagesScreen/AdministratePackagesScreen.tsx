@@ -141,7 +141,7 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                         <Text>Edit</Text>
                                     </View>
                                 </View>
-                                <TouchableOpacity style={stylesIndividualCard.firstRowCenter} onPress={() => {changeIsPublic(data, setDataIsPublic)}}>
+                                <TouchableOpacity style={stylesIndividualCard.firstRowCenter} onPress={() => {changeIsPublic(data, setDataIsPublic);}}>
                                     {dataIsPublic ? (
                                         <Text style={stylesIndividualCard.bigText}>Público</Text>
 
@@ -153,7 +153,7 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                     }
                                 </TouchableOpacity>
                                 <View style={stylesIndividualCard.firstRowRight}>
-                                    <TouchableOpacity style={stylesIndividualCard.firstRowRightBox} onPress={() => {handleSetSelectedPackage()}}>
+                                    <TouchableOpacity style={stylesIndividualCard.firstRowRightBox} onPress={() => {handleSetSelectedPackage();}}>
                                         <Text>Out</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -355,7 +355,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
     }, [user?.email, ready, searchingExpiredPackages]);
 
 
-  return (
+    return (
     <>
         {wantErase && (
             <WantEraseView setWantErase={setWantErase} eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} handleEraseExpired={handleEraseExpired} handleEraseAll={handleEraseAll}/>
@@ -400,7 +400,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
                 <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Todos los paquetes" onPress={()=>{setSearchingExpiredPackages(false);}}/>
                 <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Paquetes caducados" onPress={()=>{setSearchingExpiredPackages(true);}}/>
-                <Button buttonStyle={styles.buttonEraseExpired} buttonTextStyle={styles.buttonText} text="Borrar caducados" onPress={() => {handleSetConfirmationToEraseExpired()}}/>
+                <Button buttonStyle={styles.buttonEraseExpired} buttonTextStyle={styles.buttonText} text="Borrar caducados" onPress={() => {handleSetConfirmationToEraseExpired();}}/>
                 <Button buttonStyle={styles.buttonEraseAll} buttonTextStyle={styles.buttonText} text="Eliminar TODO" onPress={() => {handleSetConfirmationToEraseAll();}}/>
 
             </View>
@@ -708,7 +708,7 @@ const stylesIndividualCard = StyleSheet.create({
         // borderColor: 'black',
         // borderWidth: 2,
     },
-    
+
     card:{
         width: '85%',
         height: '47.125%',
@@ -732,7 +732,7 @@ const stylesIndividualCard = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    
+
     firstRowLeftBox:{
         width: '70%',
         height: '70%',
@@ -743,7 +743,7 @@ const stylesIndividualCard = StyleSheet.create({
         // backgroundColor:'red',
 
     },
-    
+
     firstRowCenter: {
         width: '42.157%',
         height: '100%',
