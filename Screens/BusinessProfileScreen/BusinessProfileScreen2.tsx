@@ -97,7 +97,11 @@ const BusinessProfileScreen = ({navigation, route}: businessProfileProps) => {
                     </View>
                   </Pressable>
                 </View>
+
+
               </View>
+
+
               {packageIn.mainImageUrl && (
                 <Text style={styles.txt}>Empresa: {packageIn.name}</Text>
               )}
@@ -139,6 +143,8 @@ const stylesBtn = StyleSheet.create({
     marginVertical: 5,
   },
   positionContainer: {
+    // marg
+    // justifyContent: 'center',
     alignSelf: 'flex-end',
     // marginBottom: 20,
     // backgroundColor: "red"
@@ -286,6 +292,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
+    gap: 5
   },
   contenedorPuntaje: {
     flexDirection: 'column',
