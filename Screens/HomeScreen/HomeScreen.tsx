@@ -22,6 +22,7 @@ import menuBar from '../../vectores/menuBar';
 import {SvgXml} from 'react-native-svg';
 import InputSearch from '../../Components/InputSearch';
 import PopularPackages from '../../Components/PopularPackages';
+import { useUser } from '../../Context/UserContext';
 
 interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -47,8 +48,13 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
       <View style={styles.navbar}>
         <Pressable
           onPress={() => {
+
+            
             navigation.navigate('NavbarScreen');
           }}>
+
+
+
           <View style={styles.colorRed}>
             <SvgXml xml={menuBar} />
           </View>
