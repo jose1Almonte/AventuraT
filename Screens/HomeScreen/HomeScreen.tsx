@@ -22,6 +22,7 @@ import menuBar from '../../vectores/menuBar';
 import {SvgXml} from 'react-native-svg';
 import InputSearch from '../../Components/InputSearch';
 import PopularPackages from '../../Components/PopularPackages';
+import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 
 interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -36,6 +37,8 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
   //   setShowForm(true);
   // };
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [loadingSomeThing, setLoadingSomething] = useState(false);
+
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -44,6 +47,12 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
     return () => backHandler.remove();
   }, []);
   return (
+    <>
+
+        {loadingSomeThing && (
+            <LoadingScreenTransparentBackground/>
+        )}
+
     <ScrollView style={styles.background}>
       <View style={styles.navbar}>
         <Pressable
@@ -127,7 +136,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
       </View>
       <View style={styles.MyComponent}>
         <Text style={styles.title1}>Destinos Populares</Text>
-        <Carrousel navigation={navigation} />
+        <Carrousel navigation={navigation} setLoadingSomething={setLoadingSomething}/>
       </View>
       <View style={styles.Container3}>
         <Text style={styles.title}>Paquetes Populares</Text>
@@ -156,6 +165,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
       </TouchableOpacity>
       </View>
     </ScrollView>
+    </>
   );
 };
 
