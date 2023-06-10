@@ -356,6 +356,19 @@ export const LoadingScreen = () => {
     );
   };
 
+export const LoadingScreenTransparentBackground = () => {
+
+    return (
+      <View style={styles.containerTransparent}>
+        <FastImage
+          source={require('../images/cat-cute.gif')}
+          style={styles.loadingGif}
+          resizeMode="contain"
+        />
+      </View>
+    );
+  };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -363,6 +376,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#1DB5BE',
   },
+  containerTransparent:{
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: '100%',
+    // backgroundColor: 'blackrgba(0, 0, 0, 0.36)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+
   loadingGif: {
     width: 60,
     height: 60,

@@ -231,7 +231,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
               </View>
 
 
-              <TouchableOpacity style={styles.inputContainer} onPress={() => {handleIsPublic()}}>
+              <TouchableOpacity style={styles.inputContainer} onPress={() => {handleIsPublic();}}>
                 <Text style={styles.label}>El Paquete es:</Text>
 
                 { data.isPublic ? (

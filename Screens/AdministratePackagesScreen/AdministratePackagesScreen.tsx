@@ -5,7 +5,7 @@ import { useUser } from '../../Context/UserContext';
 import { NavigationProp } from '@react-navigation/native';
 import { searchPackagesByEmail, searchPackagesExpiredByEmail } from '../../firebase/SearchPackagesByEmail';
 import { deleteAllByEmail, deleteExpiredDocumentsByEmail, deleteSelectedPackage } from '../../firebase/DeletePackage';
-import { changePackageIsPublicValue } from '../../firebase/Firestore';
+import { LoadingScreenTransparentBackground, changePackageIsPublicValue } from '../../firebase/Firestore';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 // import { NavigationProp } from '@react-navigation/native';
 
@@ -255,6 +255,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
     const [wantPersonallyErase, setWantPersonallyErase] = useState(false);
     const [dataToErasePersonally, setDataToErasePersonally] = useState<Partial<Record<string, any>>>({});
+    const [loadingSomeThing, setLoadingSomething] = useState(false);
 
     const handleWantPersonallyErase = (data: Partial<Record<string, any>>) => {
         setDataToErasePersonally(data);
@@ -263,14 +264,16 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
     const handleTrashCanPress = useCallback(
         async (data: Partial<Record<string, any>>) => {
-        await deleteSelectedPackage(data.id);
-        // console.log('Estamos en handleTrash', 'VAMOOO TUUTUT')
-        setWantPersonallyErase(false);
-        if (!ready){
-            setReady(true);
-        } else {
-            setReady(false);
-        }
+            setLoadingSomething(true);
+            await deleteSelectedPackage(data.id);
+            // console.log('Estamos en handleTrash', 'VAMOOO TUUTUT')
+            setWantPersonallyErase(false);
+            if (!ready){
+                setReady(true);
+            } else {
+                setReady(false);
+            }
+            setLoadingSomething(false);
 
         },[ready]
     );
@@ -286,6 +289,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
     };
 
     const handleEraseExpired = async () => {
+        setLoadingSomething(true);
             const emailEnterprise = user?.email;
             const packagesExist = await deleteExpiredDocumentsByEmail(emailEnterprise);
 
@@ -298,10 +302,12 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             if (eraseAll) {setEraseAll(false);}
             setWantErase(false);
             if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes expirados de forma exitosa');} else {Alert.alert('Nada', 'Nada que borrar');}
+            setLoadingSomething(false);
 
         };
 
         const handleEraseAll = async () => {
+            setLoadingSomething(true);
             const emailEnterprise = user?.email;
             const packagesExist = await deleteAllByEmail(emailEnterprise);
             if (!ready){
@@ -314,12 +320,15 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             setWantErase(false);
 
             if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes de forma exitosa');} else {Alert.alert('Nada', 'Nada que borrar');}
+            setLoadingSomething(false);
         };
 
         const changeIsPublic = async (data: { id: { toString: () => string | undefined; }; isPublic: boolean; }, setDataIsPublic: (arg0: boolean) => void) => {
+            setLoadingSomething(true);
             await changePackageIsPublicValue(data.id, !data.isPublic);
             data.isPublic = !data.isPublic;
             setDataIsPublic(data.isPublic);
+            setLoadingSomething(false);
             // Alert.alert(dataIsPublic.toString());
         };
 
@@ -332,31 +341,35 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
     useEffect(()=>{
         const handleQuerySnapshot = async () => {
-            try {
-                let querySnapshot;
-                if (searchingExpiredPackages){
-                    querySnapshot = await searchPackagesExpiredByEmail(user?.email);
-                } else {
-                    querySnapshot = await searchPackagesByEmail(user?.email);
+                setLoadingSomething(true);
+                try {
+                    let querySnapshot;
+                    if (searchingExpiredPackages){
+                        querySnapshot = await searchPackagesExpiredByEmail(user?.email);
+                    } else {
+                        querySnapshot = await searchPackagesByEmail(user?.email);
+                    }
+
+
+                    const docs = querySnapshot.docs.map((doc) => doc.data());
+                    setDocuments(docs);
+                    // console.log('DOCS: ', docs);
+                } catch (error){
+                    // console.warn(error);
+                    console.log(error);
                 }
+                setLoadingSomething(false);
+            };
 
-
-                const docs = querySnapshot.docs.map((doc) => doc.data());
-                setDocuments(docs);
-                // console.log('DOCS: ', docs);
-            } catch (error){
-                // console.warn(error);
-                console.log(error);
-            }
-        };
-
-        handleQuerySnapshot();
-
+            handleQuerySnapshot();
     }, [user?.email, ready, searchingExpiredPackages]);
 
 
     return (
     <>
+        {loadingSomeThing && (
+            <LoadingScreenTransparentBackground/>
+        )}
         {wantErase && (
             <WantEraseView setWantErase={setWantErase} eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} handleEraseExpired={handleEraseExpired} handleEraseAll={handleEraseAll}/>
         )}
