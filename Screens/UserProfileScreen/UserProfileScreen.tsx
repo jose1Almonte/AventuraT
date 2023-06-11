@@ -90,11 +90,14 @@ export const UserProfileScreen = ({
             <Text style={styles.txtInfo}>Favoritos</Text>
             <SvgXml xml={profileArrowVector} />
           </TouchableOpacity>
-
           <View style={styles.containerInfo}>
             <Text style={styles.txtInfo}>Opciones de pago</Text>
             <SvgXml xml={profileArrowVector} />
           </View>
+          <TouchableOpacity style={styles.containerInfo} onPress={() => navigation.navigate('ReservedScreen')}>
+            <Text style={styles.txtInfo}>Mis Reservas</Text>
+            <SvgXml xml={profileArrowVector} />
+          </TouchableOpacity>
           {/* {userExists && (
             <TouchableOpacity style={styles.containerInfo} onPress={deleteExpiredDocuments}>
             <Text style={styles.txtInfo1}>Borrar paquetes caducados</Text>
@@ -111,6 +114,13 @@ export const UserProfileScreen = ({
           {userExists && (
             <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen');}}>
               <Text style={styles.txtInfo1}>Crear paquete</Text>
+              <SvgXml xml={profileArrowVector} />
+            </TouchableOpacity>
+          )}
+
+          {userExists && (
+            <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessReservedScreen');}}>
+              <Text style={styles.txtInfo1}>Gestión de Pagos de Paquetes</Text>
               <SvgXml xml={profileArrowVector} />
             </TouchableOpacity>
           )}
