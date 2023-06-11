@@ -78,7 +78,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
       return;
     }
 
-    if (!validateEmail(data.responsibleName) ) {
+    if (!validateEmail(data.responsibleName.toLowerCase()) ) {
       Alert.alert('Correo Electrónico Inválido', 'Por favor, ingrese un correo electrónico válido');
       setLoading(false);
       return;
@@ -91,7 +91,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
       return;
     }
 
-    const responsibleNameExists = await checkResponsibleNameExists(data.responsibleName);
+    const responsibleNameExists = await checkResponsibleNameExists(data.responsibleName.toLowerCase());
     if (responsibleNameExists) {
       Alert.alert('Nombre de Responsable Existente', 'El nombre de responsable ya existe en la base de datos');
       setLoading(false);
@@ -109,7 +109,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
         addEnterprise(
           data.nameEnterprise,
           data.rif,
-          data.responsibleName,
+          data.responsibleName.toLowerCase(),
           data.location,
           data.description,
           data.vip,
@@ -120,9 +120,9 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
           )
         if (resourcePath2 !== ''){
           // setLoading(true);
-          await createUserWithEmailAndPassword(data.responsibleName, data.password,data.phoneNumber,url2, data.disName);
-          if (await checkIfUserExists(data.responsibleName) === false && url2) {
-            await addUser([''],data.disName,data.responsibleName,false,url2);
+          await createUserWithEmailAndPassword(data.responsibleName.toLowerCase(), data.password,data.phoneNumber,url2, data.disName);
+          if (await checkIfUserExists(data.responsibleName.toLowerCase()) === false && url2) {
+            await addUser([''],data.disName,data.responsibleName.toLowerCase(),false,url2);
           }
           loadLastId();
           setUser(currentLog());
