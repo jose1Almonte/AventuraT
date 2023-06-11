@@ -6,7 +6,7 @@ import { NavigationProp } from '@react-navigation/native';
 import { searchPackagesByEmail, searchPackagesExpiredByEmail } from '../../firebase/SearchPackagesByEmail';
 import { deleteAllByEmail, deleteExpiredDocumentsByEmail, deleteSelectedPackage } from '../../firebase/DeletePackage';
 import { changePackageIsPublicValue, checkResponsibleNameExists, checkVIP, makeRegular, makeVIP} from '../../firebase/Firestore';
-import { LoadingScreenTransparentBackground, changePackageIsPublicValue } from '../../firebase/Firestore';
+import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 // import { NavigationProp } from '@react-navigation/native';
 
@@ -94,13 +94,12 @@ const CardBox = ({data, handleWantPersonallyErase, changeIsPublic, index, setInd
     );
 };
 
-const SelectedPackageView = ({data, changeIsPublic,ready, setReady, setSelectedPackage}:{data: any, changeIsPublic: any,ready: boolean, setReady: any, setSelectedPackage: any}) => {
+const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: any, changeIsPublic: any, setSelectedPackage: any}) => {
 
     const {user} = useUser();
     const [dataIsPublic, setDataIsPublic] = useState(data.isPublic);
     const [userExists, setUserExists] = useState(true);
     const [VIP, setVIP] = useState("");
-    const [dataIsPublic, setDataIsPublic] = useState(data.isPublic);
 
     const startDate = data.startDate.toDate();
     const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario

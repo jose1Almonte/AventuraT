@@ -9,7 +9,7 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from  "react";
 //import RegisterEnterprise from '../../Components/registerEnterprise';
 import {ProfilePicture} from '../../firebase/PerfilPicture';
 // import RegisterEnterprise from '../../Components/registerEnterprise';

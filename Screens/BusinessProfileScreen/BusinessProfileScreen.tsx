@@ -75,6 +75,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
                 </Pressable>
               </View>
             </View>
+            
             <View style={stylesBtn.positionContainer}>
               <Pressable onPress={() => {
                 navigation.navigate('RatingsScreen');
@@ -101,7 +102,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
                 <View style={stylesBtn.containerButton}>
                   <View style={stylesBtn.containerN}>
                     <Text style={stylesBtn.txt}>AventuraT Nitro</Text>
-                  </View >
+                  </View>
                 </View>
               </Pressable>
             </View>
@@ -134,6 +135,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
 
         <View style={styles.containerPack}>
         <PublishedPackages navigation={navigation} setLoadingSomeThing={setLoadingSomeThing}/>
+        </View>
         </View>
       </View>
     </ScrollView>
