@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
-import { addPackage, uploadImage, getLastPackageId } from '../firebase/Firestore'; // Importa la función getLastPackageId
+import { addPackage, uploadImage, getLastPackageId, LoadingScreen, LoadingScreenTransparentBackground } from '../firebase/Firestore'; // Importa la función getLastPackageId
 import { launchImageLibrary } from 'react-native-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useUser } from '../Context/UserContext';
+import FourOptionsSelector from './SelectorFour';
 // import firestore from '@react-native-firebase/firestore';
 
 const DatePickerBox = ({text, writingDate, setWritingDate, date, setEndDate }:{
@@ -64,7 +65,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   const [resourcePath, setResourcePath] = useState('');
   const [filename, setFileName] = useState('');
   // const [nameEnterprise, setNameEnterprise] = useState('');
-
+  const [loading, setLoading] = useState(false);
   const {user} = useUser();
   const userEmail = user ? user.email : null;
 
@@ -77,6 +78,11 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   const [expireDate, setExpireDate] = useState(new Date());
   const [writtingExpireDate, setWritingExpireDate] = useState(false);
 
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+  };
 
   const [data, setData] = useState<CreateFormData>({
     id: 0, // Inicializa el ID en 0
@@ -113,16 +119,18 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   };
 
   const submit = async () => {
-
-    // const querySnapshot = await firestore().collection('users').where('email', '==', userEmail).get();
-
-    // querySnapshot.forEach((doc) => {
-    //   setNameEnterprise(doc.data().displayName.toString());
-    //   // console.log('Try again', doc.data().displayName);
-    //   // console.log('Try again', nameEnterprise);
-    //   data.nameEnterprise = doc.data().displayName;
-    // });
-
+    console.log(selectedOption);
+    if (
+      data.name.trim() === '' ||
+      data.availability.trim() === '' ||
+      data.location.trim() === '' ||
+      data.description.trim() === '' ||
+      data.price.trim() === '' ||
+      selectedOption === null
+    ) {
+      Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
+      return;
+    }
 
     data.endDate = endDate;
     data.startDate = startDate;
@@ -130,25 +138,11 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
     // Alert.alert('Se está subiendo tus datos, presiona ok para que se continue');
 
     if (resourcePath === '') {
-      console.log(data);
-      await addPackage(
-        data.id,
-        data.name,
-        data.availability,
-        data.price,
-        data.description,
-        '',
-        data.location,
-        data.endDate,
-        data.startDate,
-        data.emailEnterprise,
-        // data.nameEnterprise,
-        data.rating,
-        data.expireDate,
-        data.isPublic,
-        );
-        // Alert.alert('Veamos la fecha (postData, ya se envió)', data.date);
+        Alert.alert('Por favor coloque la imagen');
+        return;
       } else {
+        setLoading(true);
+        setTimeout(async () => {
         const url = await uploadImage(resourcePath, filename);
         console.log(url);
         console.log(data);
@@ -167,11 +161,14 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
           data.rating,
           data.expireDate,
           data.isPublic,
+          selectedOption,
           );
+          setLoading(false);
+          Alert.alert('Ya se subió el paquete a la base de datos');
+          await navigation.navigate('HomeScreen');
+          }, 3000);
+          await loadLastId();
         }
-    await loadLastId(); // Carga el nuevo último ID después de crear el paquete
-    Alert.alert('Ya se subió el paquete a la base de datos');
-    navigation.navigate('HomeScreen');
   };
 
   const selectImage = () => {
@@ -192,8 +189,16 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
       }
     });
   };
-
+  // if (loading) {
+  //   return <LoadingScreenTransparentBackground />;
+  // }
   return (
+
+    <>
+        {loading && (
+            <LoadingScreenTransparentBackground/>
+        )}
+
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>¡Agrega tu paquete con AventuraT!</Text>
@@ -201,6 +206,11 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
         <View style={styles.formContainer}>
           <ScrollView style={styles.scrollFormContainer}>
             <View style={styles.formContainer}>
+            <View style={styles.container2}>
+                <FourOptionsSelector onSelect={handleOptionSelect} />
+                <Text style={styles.label}>Opción Seleccionada: </Text>
+                <Text style={styles.labelSelector}>{selectedOption}</Text>
+              </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Nombre del paquete</Text>
                 <TextInput style={styles.input} onChangeText={text => setData(prevData => ({ ...prevData, name: text })) }/>
@@ -227,7 +237,8 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
                 />
               </View>
 
-              <TouchableOpacity style={styles.inputContainer} onPress={() => {handleIsPublic()}}>
+
+              <TouchableOpacity style={styles.inputContainer} onPress={() => {handleIsPublic();}}>
                 <Text style={styles.label}>El Paquete es:</Text>
 
                 { data.isPublic ? (
@@ -270,7 +281,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
               </TouchableOpacity>
               {resourcePath === '' ? (
                 <></>
-              ) : (
+                ) : (
                 <View>
                   <Image source={{ uri: resourcePath }} />
                 </View>
@@ -285,6 +296,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
         </TouchableOpacity>
       </View>
     </View>
+  </>
   );
 };
 
@@ -293,6 +305,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#1DB5BE',
+  },
+  container2: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: 'white',
   },
   header: {
     flex: 3,
@@ -332,6 +349,12 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: 'black',
   },
+  labelSelector: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 14,
+    lineHeight: 24,
+    color: '#1881B1',
+  },
   label1: {
     fontFamily: 'Poppins-Medium',
     fontSize: 14,
@@ -354,6 +377,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#1881B1',
     marginTop: 40,
+    marginBottom: '5%',
   },
   buttonText: {
     color: 'white',

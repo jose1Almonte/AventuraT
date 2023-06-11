@@ -1,10 +1,22 @@
-import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  TextInput,
+  Alert,
+  Dimensions,
+  ScrollView
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import { PackageI } from '../../models/package.interface';
 import { addPaidPackage } from '../../firebase/Firestore';
 import firestore from '@react-native-firebase/firestore';
+import { SvgXml } from 'react-native-svg';
+import vectorHelpdeskScreen from '../../vectores/vectorHelpdeskScreen';
 
 interface MobilePayment {
   mobilePaymentRef: string;
@@ -17,15 +29,13 @@ interface PackaI {
 }
 
 const MobilePaymentScreen = ({ navigation, route }: PackaI) => {
-    
-  const { user,isLogged } = useUser();
+  const { user, isLogged } = useUser();
   let packageIn: PackageI = route.params.data;
   const [nameEnterprise, setNameEnterprise] = useState('');
   const [photoURL, setPhotoUrl] = useState('');
   const [mobilePayment, setMobilePayment] = useState<MobilePayment>({
     mobilePaymentRef: '',
   });
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,9 +57,15 @@ const MobilePaymentScreen = ({ navigation, route }: PackaI) => {
   async function upToFirebase() {
     if (isLogged) {
       if (mobilePayment.mobilePaymentRef === '') {
-        Alert.alert('Blank Space Not Allowed', 'You have to write your reference code');
+        Alert.alert(
+          'Blank Space Not Allowed',
+          'You have to write your reference code',
+        );
       } else {
-        Alert.alert('Your Reference Code Was Sent', mobilePayment.mobilePaymentRef);
+        Alert.alert(
+          'Your Reference Code Was Sent',
+          mobilePayment.mobilePaymentRef,
+        );
 
         if (packageIn) {
           await addPaidPackage(
@@ -69,11 +85,11 @@ const MobilePaymentScreen = ({ navigation, route }: PackaI) => {
             packageIn.expireDate,
             mobilePayment,
             nameEnterprise,
-            photoURL
+            photoURL,
           );
           navigation.navigate('HomeScreen');
         } else {
-            console.log(packageIn);
+          console.log(packageIn);
           Alert.alert('Package data not available');
         }
       }
@@ -83,37 +99,64 @@ const MobilePaymentScreen = ({ navigation, route }: PackaI) => {
     }
   }
 
+  const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
+
   return (
-    <View style={styles.giantBox}>
-      <View style={styles.firstBigBox}>
-        <Text style={styles.title}>¡Elegiste pago móvil!</Text>
-      </View>
+    <ScrollView style={styles.giantBox}>
+      <SvgXml
+        xml={vectorHelpdeskScreen}
+        width={`${screenWidth * 1}`}
+        height={`${screenHeight * 0.511}`}
+      />
+
       <View style={styles.secondBigBox}>
-        <Image style={styles.imageUsed} source={require('../../images/PagoMovilLogo.png')} />
+        <View style={styles.firstBigBox}>
+          <Text style={styles.title}>Método de Pago</Text>
+        </View>
+        <Image
+          style={styles.imageUsed}
+          source={require('../../images/online-payment.png')}
+        />
+        {/* <Text style={styles.textTotal}>Total a pagar</Text><Text style={styles.textTotal}>Total a pagar</Text> */}
       </View>
+      
+      <View style={styles.containerPrice}>
+        <Text style={styles.textTotal}>Total a pagar</Text>
+        <Text style={styles.textPrice}>$ {packageIn.price}</Text>
+      </View>
+
       <View style={styles.thirdBigBox}>
         <View style={styles.textBox}>
           <Text style={styles.paragraph}>
-            Para proceder, por favor, realiza tu pago móvil tomando en cuenta los siguientes datos:
+            Realiza el pago tomando en cuenta los siguientes datos:
           </Text>
-          <Text style={styles.bulletText}>• Nro de telefono: 0424 116 61 78</Text>
-          <Text style={styles.bulletText}>• Banco: Banco Venezolano de Crédito</Text>
-          <Text style={styles.bulletText}>• Cédula: V- 27 624 189</Text>
+          <Text style={styles.bulletText}>
+            • Nro. de teléfono: 0424-1166-178
+          </Text>
+          <Text style={styles.bulletText}>
+            • Banco: Banco Venezolano de Crédito
+          </Text>
+          <Text style={styles.bulletText}>• Cédula: V- 27.624.189</Text>
         </View>
       </View>
+
       <View style={styles.fourthBigBox}>
         <TextInput
           style={styles.inputReferenceNumber}
           placeholder="Ingrese nro. de referencia"
-          onChangeText={(text) => setMobilePayment({ ...mobilePayment, mobilePaymentRef: text })}
+          onChangeText={(text) =>
+            setMobilePayment({ ...mobilePayment, mobilePaymentRef: text })
+          }
         />
       </View>
+
       <View style={styles.fifthBigBox}>
         <TouchableOpacity style={styles.buttonIPaid} onPress={upToFirebase}>
           <Text style={styles.textIPaid}>Ya pagué</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -122,16 +165,26 @@ export default MobilePaymentScreen;
 const styles = StyleSheet.create({
   giantBox: {
     flex: 1,
-    backgroundColor: '#1DB5BE',
+    backgroundColor: '#ffffff',
   },
   firstBigBox: {
-    flex: 17.75,
-    justifyContent: 'flex-end',
+    marginTop: 10,
+    justifyContent: 'center',
   },
   secondBigBox: {
     flex: 20.375,
     alignItems: 'center',
+    position: 'absolute',
+    width: '100%',
   },
+  containerPrice: {
+    // flex: 18,
+    width: '100%',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginBottom: '4%',
+  },
+
   thirdBigBox: {
     flex: 29.375,
     alignItems: 'center',
@@ -139,25 +192,47 @@ const styles = StyleSheet.create({
   fourthBigBox: {
     flex: 21.25,
     alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: '3%',
   },
   fifthBigBox: {
     flex: 11.25,
     alignItems: 'center',
+    marginTop: '3%',
   },
-  title: {
-    fontWeight: '600',
-    fontSize: 24,
+  textTotal: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 20,
     lineHeight: 36,
     textAlign: 'center',
+    color: '#1881B1',
+  },
+  textPrice: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 30,
+    lineHeight: 36,
+    textAlign: 'center',
+    color: '#1881B1',
+    borderBottomColor: '#1881B1',
+    borderBottomWidth: 1,
+    width: 220,
+  },
+  title: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 28,
+    lineHeight: 36,
+    marginTop: 60,
+    textAlign: 'center',
     color: '#FFFFFF',
-    marginBottom: '7%',
   },
   imageUsed: {
-    height: '100%',
+    height: 220,
+    width: 220,
+    marginTop: 50,
   },
   textBox: {
-    marginTop: '3%',
-    width: '88.61%',
+    marginTop: '3.5%',
+    width: '80.61%',
   },
   paragraph: {
     paddingBottom: '3%',
@@ -172,35 +247,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'justify',
     color: '#000000',
-    marginLeft: '7%',
+    marginLeft: 15,
+    marginBottom: 8,
   },
   inputReferenceNumber: {
-    width: '88.05%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#1881B1',
-    height: 48,
-    borderRadius: 25,
-    fontWeight: '500',
+    borderBottomColor: '#1881B1',
+    borderBottomWidth: 1,
+    width: 260,
     fontSize: 18,
-    lineHeight: 27,
-    display: 'flex',
     textAlign: 'center',
-    color: '#FFFFFF',
   },
   buttonIPaid: {
-    height: '44.44%',
-    width: '68.33%',
-    backgroundColor: '#EEEEFF',
-    alignItems: 'center',
+    backgroundColor: '#1881B1',
+    borderRadius: 8,
+    width: 264,
+    height: 52,
     justifyContent: 'center',
-    borderRadius: 18,
+    alignItems: 'center',
   },
   textIPaid: {
-    fontWeight: '700',
-    fontSize: 18,
-    lineHeight: 27,
-    textAlign: 'center',
-    color: '#000000',
+    color: '#FFFFFF',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 16,
+    lineHeight: 19,
   },
 });

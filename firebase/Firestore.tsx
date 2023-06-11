@@ -7,6 +7,8 @@ import { useEffect } from 'react';
 import { usersCollection3 } from './DeletePackage';
 import React, { useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { Text } from 'react-native-svg';
 
 
 
@@ -35,7 +37,7 @@ export const updateUser = async (array:string[],userId: string, displayName:stri
 
 
 export const addEnterprise = async (nameEnterprise:string, rif:string,
-   responsibleName:string , location:string, description:string, vip:boolean, password:string, phoneNumber:string,urlPersonal:string,urlEmpresa:string) => {
+   responsibleName:string , location:string, description:string, vip:boolean, password:string, phoneNumber:string,urlPersonal:any,urlEmpresa:any) => {
     await usersCollection2.add({
       id: 0, // Inicializa el ID en 0
       nameEnterprise: nameEnterprise,
@@ -68,7 +70,7 @@ export const checkIfUserExists = async (email:string) => {
     const querySnapshot = await usersCollection.where('email', '==', email).get();
     return !querySnapshot.empty;};
 
-export const addPackage = async (id, name, availability, price, description, mainImageUrl, location, endDate, startDate, emailEnterprise, rating, expireDate, isPublic) => {
+export const addPackage = async (id, name, availability, price, description, mainImageUrl, location, endDate, startDate, emailEnterprise, rating, expireDate, isPublic, tipo) => {
         try {
           const packageData = {
             id,
@@ -85,6 +87,7 @@ export const addPackage = async (id, name, availability, price, description, mai
             rating,
             expireDate,
             isPublic,
+            tipo,
           };
 
           await packagesCollection.doc(id.toString()).set(packageData);
@@ -176,6 +179,34 @@ export const getPackage = async (itemId) => {
 
 };
 
+export const getPublicPackage = async (itemId) => {
+  try {
+    const querySnapshot = await firestore()
+      .collection('package')
+      .where('isPublic', '==', true)
+      .get();
+
+    const documentSnapshot = querySnapshot.docs.find(doc => doc.id === itemId);
+
+    // const documentSnapshot = await firestore()
+    //   .collection('package')
+    //   .doc(itemId)
+    //   .get();
+
+    if (documentSnapshot && documentSnapshot.exists) {
+      const data = documentSnapshot.data();
+      // Aquí puedes realizar cualquier transformación o ajuste necesario en los datos obtenidos
+      return data;
+    } else {
+      throw new Error(`Package with ID ${itemId} does not exist.`);
+    }
+  } catch (error) {
+    console.log(error);
+    return null; // Si ocurre un error al obtener el paquete, puedes retornar null o un valor predeterminado adecuado.
+  }
+
+};
+
 export const getLastEnterpriseId = async () => {
   try {
     const querySnapshot2 = await usersCollection2.orderBy('id', 'desc').limit(1).get();
@@ -198,7 +229,14 @@ export const checkEnterpriseExists = async (nameEnterprise) => {
 
 export const checkResponsibleNameExists = async (responsibleName) => {
     const enterprisesRef = usersCollection2;
-    const snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+    let snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+
+    if (snapshot.empty){
+      responsibleName = responsibleName.charAt(0).toUpperCase() + responsibleName.slice(1);
+      snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+    }
+
+    // console.log('SNAPSHOT: ',snapshot);
     return !snapshot.empty;
 };
 
@@ -214,7 +252,7 @@ export const createUserWithEmailAndPassword = async (email, password, phoneNumbe
   } catch (error) {
     // Manejar el error de creación de usuario
   }
-  
+
 };
 
 export const checkPasswordCorrect = async (email, password) => {
@@ -230,7 +268,12 @@ export const checkPasswordCorrect = async (email, password) => {
 
 export const returnEnterpisePic = async (responsibleName) => {
   const enterprisesRef = usersCollection2;
-  const snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+  let snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+  if (snapshot.empty){
+    responsibleName = responsibleName.charAt(0).toUpperCase() + responsibleName.slice(1);
+    snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+    console.log('WTF CONTIGO', responsibleName)
+  }
   if (!snapshot.empty) {
     const enterpriseData = snapshot.docs[0].data();
     return enterpriseData;
@@ -239,8 +282,15 @@ export const returnEnterpisePic = async (responsibleName) => {
   }
 };
 
-export const listPackage = async (responsibleName) => {
-  const query = packagesCollection.where('emailEnterprise', '==', responsibleName);
+export const listPackage = async (responsibleName, searchingOnlyPublics) => {
+  let query;
+
+  if (searchingOnlyPublics){
+    query = packagesCollection.where('emailEnterprise', '==', responsibleName).where('isPublic', '==', true);
+  } else {
+    query = packagesCollection.where('emailEnterprise', '==', responsibleName);
+
+  }
   const querySnapshot = await query.get();
   const packages = [];
   querySnapshot.forEach((doc) => {
@@ -294,51 +344,67 @@ export const listPaidPackage = async (id) => {
   return packages;
 };
 
+export const listTipoPackage = async (id) => {
+  const query = packagesCollection.where('tipo', '==', id).where('isPublic', '==', true);
+  const querySnapshot = await query.get();
+  const packages = [];
+  querySnapshot.forEach((doc) => {
+    const packageData = doc.data();
+    packages.push(packageData);
+  });
+
+  return packages;
+};
 
 
 export const LoadingScreen = () => {
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    return (
+      <View style={styles.container}>
+        <FastImage
+          source={require('../images/cat-cute.gif')}
+          style={styles.loadingGif}
+          resizeMode="contain"
+        />
+      </View>
+    );
+  };
 
-    return () => clearTimeout(timer);
-  }, []);
+export const LoadingScreenTransparentBackground = () => {
 
-  return (
-    <View style={styles.container}>
-      {isLoading ? (
-        <>
-          <View style={styles.overlay} />
-        </>
-      ) : (
-        <View>
-          {/* Contenido principal de la aplicación */}
-        </View>
-      )}
-    </View>
-  );
-};
+    return (
+      <View style={styles.containerTransparent}>
+        <FastImage
+          source={require('../images/cat-cute.gif')}
+          style={styles.loadingGif}
+          resizeMode="contain"
+        />
+      </View>
+    );
+  };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1DB5BE',
   },
-  overlay: {
+  containerTransparent:{
     position: 'absolute',
     top: 0,
-    left: 0,
-    right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)', // Ajusta la opacidad aquí (0.3 en este ejemplo)
+    width: '100%',
+    // backgroundColor: 'blackrgba(0, 0, 0, 0.36)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999,
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
+
   loadingGif: {
-    width: 30,
-    height: 30,
+    width: 60,
+    height: 60,
   },
 });
 

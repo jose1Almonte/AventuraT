@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import favorites from '../vectores/favorites';
 import auth from '@react-native-firebase/auth';
-import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 
 
@@ -14,13 +12,41 @@ interface ButtonLikesProps {
 export function ButtonLikes({ packageDetails }: ButtonLikesProps) {
   const [isClicked, setIsClicked] = useState(false); // Estado para rastrear si se ha hecho clic en el botón
 
+  useEffect(() => {
+    const unsubscribe = subscribeToChanges();
+
+    return () => {
+      unsubscribe(); // Cancela la suscripción al desmontar el componente
+    };
+  }, []);
+
+  const subscribeToChanges = () => {
+    const user = auth().currentUser;
+
+    if (user && packageDetails && packageDetails.id) {
+      return firestore()
+        .collection('users')
+        .where('email', '==', user.email)
+        .onSnapshot((snapshot) => {
+          snapshot.forEach((doc) => {
+            const userData = doc.data();
+            const favorites = userData.favorites;
+            const isFavorite = favorites.includes(packageDetails.id.toString());
+            setIsClicked(isFavorite);
+          });
+        });
+    }
+
+    return () => {}; // Si no se cumplen las condiciones, devuelve una función vacía para cancelar la suscripción
+  };
+
   const handleButtonClick = () => {
     setIsClicked(!isClicked); // Invertir el estado de isClicked al hacer clic
   };
 
   const handleToggled = async () => {
     const user = auth().currentUser;
-    if (user) {
+    if (user && packageDetails && packageDetails.id) { // Verificar que packageDetails esté definido
       const querySnapshot = await firestore()
         .collection('users')
         .where('email', '==', user.email)

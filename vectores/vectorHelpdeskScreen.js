@@ -1,5 +1,5 @@
 export default `<svg width="360" height="381" viewBox="0 0 360 381" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<rect width="360" height="381" fill="url(#pattern0)"/>
+<rect width="360" height="320" fill="url(#pattern0)"/>
 <defs>
 <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
 <use xlink:href="#image0_380_1870" transform="matrix(0.00212975 0 0 0.00201236 -0.26671 0)"/>

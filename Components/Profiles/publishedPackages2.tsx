@@ -9,7 +9,7 @@ function PublishedPackages(email) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const packageList = await listPackage(email.email);
+      const packageList = await listPackage(email.email, true);
       setPackages(packageList);
     };
 
@@ -41,27 +41,24 @@ function PublishedPackages(email) {
 
 const styles = StyleSheet.create({
   containerPack: {
-    // backgroundColor: 'red',
-    // marginTop:'5%',
-    // marginBottom:'5%',
+    backgroundColor: '#1DB5BE',
     height: 185,
-    width: 161,
+    width: 165,
     borderRadius: 20,
     justifyContent: 'flex-end',
     alignItems: 'center',
     display: 'flex',
+    // borderColor: '#1db6be94',
+    // borderWidth: 1.5,
+    overflow:'hidden',
   },
   container: {
     flexDirection: 'row',
     marginHorizontal: '4%',
-    marginVertical: '1%',
-    // gap: 20,
-    // backgroundColor: 'red',
+    marginVertical: '1.5%',
   },
   textPack: {
-    // backgroundColor: 'green',
-    // marginLeft: 5,
-    // padding: 3,
+    marginLeft: 10,
     color: 'black',
     fontSize: 12,
     fontFamily: 'Poppins-Medium',
@@ -71,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
     borderBottomStartRadius: 20,
     borderBottomEndRadius: 20,
-    width: 161,
+    width: 165,
     height: 60,
     gap: 5,
     zIndex: 1,

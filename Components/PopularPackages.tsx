@@ -51,6 +51,64 @@ export const PopularPackages = ({navigation}: popularProps) => {
 
 const styles = StyleSheet.create({
 
+  container: {
+    width: 115,
+    // height: 170,
+    backgroundColor: '#ffffff',
+    borderRadius: 15,
+  },
+  container1: {
+    flexDirection: 'column',
+    gap: 6,
+    alignItems: 'center',
+  },
+  star: {
+    width: 12,
+    height: 12,
+  },
+  textPack: {
+    padding: 6,
+    color: 'black',
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+  },
+  ContainerText: {
+    marginTop: 80,
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: "flex-end",
+    alignSelf: "flex-end",
+    alignItems: 'flex-start',
+  },
+  img: {
+    marginTop: 3,
+    width: '95%',
+    height: 120,
+    borderRadius: 15,
+    position: "absolute"
+  },
+  ContainerLocation: {
+    flexDirection: 'row',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 3,
+    marginLeft: 12,
+  },
+  ContainerLikes: {
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    display: 'flex',
+    width: 26,
+    height: 26,
+    padding: 10,
+    marginTop: 10,
+    zIndex: 1,
+  },
+  textLocation: {
+    color: 'rgba(0, 0, 0, 0.74)',
+    fontFamily: 'Poppins-Regular',
+    fontSize: 10,
+  },
 });
 
 export default PopularPackages;

@@ -11,7 +11,7 @@ import { PackageI } from '../../models/package.interface';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import firestore from '@react-native-firebase/firestore';
-import { LoadingScreen } from '../../firebase/Firestore';
+import { LoadingScreen, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 
 interface detailProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -38,23 +38,47 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
   const [nameEnterprise, setNameEnterprise] = useState('');
   const [photoURL, setPhotoUrl] = useState('');
 
+  const [loadingSomeThing, setLoadingSomething] = useState(false);
+
+  const [fullData, setFullData] = useState<Partial<Record<string, any>>>({});
+
   useEffect(() => {
     const fetchData = async () => {
+      setLoadingSomething(true);
       // console.log('packageIn?.emailEnterprise: ' ,packageIn.emailEnterprise);
       if (packageIn && packageIn.emailEnterprise) {
 
-        const querySnapshot = await firestore().collection('users').where('email', '==', packageIn.emailEnterprise).get();
+        let querySnapshot = await firestore().collection('users').where('email', '==', packageIn.emailEnterprise).get();
+
+        if (querySnapshot.empty){
+          const emailEnterpriseUpperCase = packageIn.emailEnterprise.charAt(0).toUpperCase() + packageIn.emailEnterprise.slice(1);
+          querySnapshot = await firestore().collection('users').where('email', '==', emailEnterpriseUpperCase).get();
+        }
 
         querySnapshot.forEach((doc) => {
           // console.log(doc.data().displayName);
+          // console.log(doc.data())
+          setFullData(doc.data());
+          // console.log('dataaa: ',doc.data().displayName);
+          // console.log(doc.data)
           setNameEnterprise(doc.data().displayName);
           setPhotoUrl(doc.data().photoURL);
+          console.log('email enterprise', packageIn.emailEnterprise);
         });
       }
+      setLoadingSomething(false);
     };
     fetchData();
   }, [packageIn, packageIn.emailEnterprise]);
+
   return (
+
+    <>
+
+        {loadingSomeThing && (
+            <LoadingScreenTransparentBackground/>
+        )}
+
     <ScrollView style={styles.background}>
       <View style={styles.container}>
         <View style={styles.containerPack}>
@@ -81,7 +105,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
             // imageSource={'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'}
             imageSource={photoURL ? photoURL : 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9c64cfe3-bb3b-4ae8-b5a6-d2f39d21ff87/d3jme6i-8c702ad4-4b7a-4763-9901-99f8b4f038b0.png/v1/fill/w_600,h_400/fondo_transparente_png_by_imsnowbieber_d3jme6i-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDAwIiwicGF0aCI6IlwvZlwvOWM2NGNmZTMtYmIzYi00YWU4LWI1YTYtZDJmMzlkMjFmZjg3XC9kM2ptZTZpLThjNzAyYWQ0LTRiN2EtNDc2My05OTAxLTk5ZjhiNGYwMzhiMC5wbmciLCJ3aWR0aCI6Ijw9NjAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.Ymv-MHRcmXXpzmL3f0xZ0mCcyU85lCLnk0jbOnCO8Zg'}
           />
-          <TouchableOpacity onPress={() => { navigation.navigate('BusinessProfileScreen2',{data:packageIn});}}>
+          <TouchableOpacity onPress={() => { navigation.navigate('BusinessProfileScreen2',{data:packageIn, userData:fullData});}}>
             {/* <Text style={styles.text}>{packageIn.nameEnterprise}</Text> */}
             <Text style={styles.text}>{nameEnterprise}</Text>
           </TouchableOpacity>
@@ -102,7 +126,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         <View style={styles.contenedorInformacion}>
           <SvgXml xml={vectorPrecio} />
           <Text style={styles.titulo}>Precio</Text>
-          <Text style={styles.subtitulo}>${packageIn.price}</Text>
+          <Text style={styles.subtitulo}>$ {packageIn.price}</Text>
         </View>
       </View>
 
@@ -132,6 +156,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         </Pressable>
       </View>
     </ScrollView>
+    </>
   );
 };
 

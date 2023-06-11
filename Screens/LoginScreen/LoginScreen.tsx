@@ -75,27 +75,16 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
           </View>
 
           <View style={styles.secondBox}>
-            {/* <GmailRegister ViewStyle={styles.continueWithGoogleBox}/> */}
             <YourSignInWithGoogleComponent
               styles={styles}
               navigation={navigation}
               destinationNavigationComponentName={'HomeScreen'}
-              //destinationNavigationComponentName={'FeedbackScreen'}
               goToLoginScreen={false}
-            />
-            {/* <ContinueWithName text = "Continuar con Google" ViewStyle={styles.continueWithGoogleBox} imageSource={require('../../images/GoogleLogo.png')} ImageStyle={styles.LogoStyles} TextStyle={styles.normalTextStyle} onPress={onGoogleButtonPress}/> */}
-            <ContinueWithName
-              text="Continuar con Facebook"
-              ViewStyle={styles.continueWithFacebookBox}
-              imageSource={require('../../images/FacebookLogo.png')}
-              ImageStyle={styles.LogoStyles}
-              TextStyle={styles.normalTextStyle}
-              onPress={() => makingThis()}
             />
             <ContinueWithName
               text="Continuar con Empresa"
               ViewStyle={styles.continueWithFacebookBox}
-              imageSource={require('../../images/images.png')}
+              imageSource={require('../../images/suitcase.png')}
               ImageStyle={styles.LogoStyles}
               TextStyle={styles.normalTextStyle}
               onPress={() => navigation.navigate('EnterpriseSessionScreen')}
@@ -120,7 +109,6 @@ export const styles = StyleSheet.create({
 
   bigBox: {
     flex: 1,
-    // backgroundColor: 'red',
   },
 
   firstBox: {
@@ -133,7 +121,6 @@ export const styles = StyleSheet.create({
     flex: 3,
     alignItems: 'center',
     justifyContent: 'flex-end',
-    marginBottom: '10%',
   },
 
   continueWithGoogleBox: {
@@ -142,7 +129,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 25,
     alignItems: 'center',
-    height: '10%',
+    height: 52,
     marginBottom: '5%',
     paddingHorizontal: '2%',
     backgroundColor: '#FFFFFF',
@@ -151,44 +138,42 @@ export const styles = StyleSheet.create({
 
   continueWithFacebookBox: {
     flexDirection: 'row',
-    marginBottom: '5%',
+    marginBottom: '18%',
     width: '86.39%',
     gap: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    height: '10%',
+    height: 52,
     paddingHorizontal: '2%',
     backgroundColor: '#FFFFFF',
     borderRadius: 8,
   },
 
   title: {
-    fontFamily: 'Poppins',
-    fontStyle: 'normal',
-    fontWeight: '500',
+    fontFamily: 'Poppins-Medium',
     fontSize: 45,
     lineHeight: 58.5, // Calculado como 45 * 1.3
+    marginBottom: '2%',
     color: '#FFFFFF',
   },
 
   subtitle: {
-    fontFamily: 'Poppins',
-    fontStyle: 'normal',
-    fontWeight: '800',
+    fontFamily: 'Poppins-Medium',
     fontSize: 18,
     lineHeight: 27,
+    width: '80%',
     textAlign: 'center',
     color: '#FFFFFF',
   },
 
   LogoStyles: {
     marginLeft: '5%',
+    width: 30,
+    height: 30
   },
 
   normalTextStyle: {
-    fontFamily: 'Poppins',
-    fontStyle: 'normal',
-    fontWeight: '500',
+    fontFamily: 'Poppins-Regular',
     fontSize: 16,
     lineHeight: 24,
     textAlign: 'center',

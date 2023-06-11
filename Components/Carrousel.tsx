@@ -7,6 +7,7 @@ import Califications from './Califications';
 import { PackageI } from '../models/package.interface';
 import { NavigationProp } from '@react-navigation/native';
 import { LoadingScreen } from '../firebase/Firestore';
+import { snapshotListener } from '../firebase/Firestore';
 
 const { height, width } = Dimensions.get('window');
 // let navigation: NavigationProp<Record<string, object | undefined>>;
@@ -18,80 +19,86 @@ interface CarouselItem {
 
 interface carruselProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
+  setLoadingSomething: any,
 }
 
 const screenWidth = Dimensions.get('window').width;
 const carouselItemWidth = screenWidth * 0.43; // Ancho de los componentes
 
-export const Carrousel = ({ navigation }: carruselProps) => {
+
+export const Carrousel = ({ navigation, setLoadingSomething }: carruselProps) => {
   const [carouselItems, setCarouselItems] = useState<CarouselItem[]>([]);
   const scrollX = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    const fetchCarouselData = async () => {
-      try {
-        let listPackage: PackageI[] = [];
-        const snapshot = await firestore().collection('package').where('isPublic','==',true).get();
+    const subscribeToChanges = () => {
+      setLoadingSomething(true);
+      const unsubscribe = firestore()
+      .collection('package')
+        .where('isPublic', '==', true)
+        .onSnapshot((snapshot) => {
+          const updatedCarouselItems: CarouselItem[] = [];
+          snapshot.docs.forEach((doc) => {
+            const data = doc.data();
+            const packageTemp: PackageI = {
+              availability: data.availability,
+              description: data.description,
+              id: data.id,
+              location: data.location,
+              mainImageUrl: data.mainImageUrl,
+              name: data.name,
+              price: data.price,
+              rating: data.rating,
+              startDate: data.startDate,
+              endDate: data.endDate,
+              emailEnterprise: data.emailEnterprise,
+              expireDate: data.expireDate,
+              isPublic: data.isPublic,
+            };
+            
+            const customComponent = (
+              <TouchableOpacity style={styles.touchable} onPress={() => {
+                navigation.navigate('DetailsScreenUser', { data: packageTemp });
+              }}>
+                <View style={styles.boxCard}>
+                  <ImageBackground style={styles.reescala} source={{ uri: packageTemp.mainImageUrl }}>
+                    <View style={styles.contenedor3}>
 
-        snapshot.docs.map((doc: any) => {
-          let packageTemp: PackageI = {
-            availability: doc.data().availability,
-            description: doc.data().description,
-            id: doc.data().id,
-            location: doc.data().location,
-            mainImageUrl: doc.data().mainImageUrl,
-            name: doc.data().name,
-            price: doc.data().price,
-            rating: doc.data().rating,
-            // nameEnterprise: doc.data().nameEnterprise,
-            startDate: doc.data().startDate,
-            endDate: doc.data().endDate,
-            emailEnterprise: doc.data().emailEnterprise,
-            expireDate: doc.data().expireDate,
-          };
+                      <View style={styles.ContainerLikes}>
+                        <ButtonLikes packageDetails={packageTemp} />
+                      </View>
 
-          listPackage.push(packageTemp);
-        });
+                      <Califications calification={packageTemp.rating} />
 
-        const firebaseItems: CarouselItem[] = listPackage.map((data: PackageI) => {
-
-          // Crea tu componente personalizado utilizando name, description y mainImageUrl
-          const customComponent = (
-            <TouchableOpacity style={styles.touchable} onPress={() => {
-              navigation.navigate('DetailsScreenUser', { data });
-            }}>
-              <View>
-                <ImageBackground borderRadius={30} style={styles.reescala} source={{ uri: data.mainImageUrl }}>
-                  <View style={styles.contenedor3}>
-                    <View style={styles.ContainerLikes}>
-                      <ButtonLikes packageDetails={data} />
                     </View>
-                    <Califications calification={data.rating} />
-                  </View>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.texto}>{data.name}</Text>
-                    <Text style={styles.texto2}>{data.description}</Text>
-                  </View>
-                </ImageBackground>
-              </View>
-            </TouchableOpacity>
 
-          );
+                    <View style={styles.textContainer}>
+                      <Text style={styles.texto}>{packageTemp.name}</Text>
+                      <Text style={styles.texto2}>{packageTemp.description}</Text>
+                    </View>
+                  </ImageBackground>
+                </View>
+              </TouchableOpacity>
+            );
 
-          return {
-            id: data.id ?? 0,
-            component: customComponent,
-          };
+            updatedCarouselItems.push({
+              id: packageTemp.id ?? 0,
+              component: customComponent,
+            });
+          });
+
+          setCarouselItems(updatedCarouselItems);
         });
 
-        setCarouselItems((prevItems) => [...prevItems, ...firebaseItems]);
-      } catch (error) {
-        console.log('Error fetching carousel data from Firebase:', error);
-      }
-    };
+        setLoadingSomething(false);
+        return unsubscribe; // Devuelve la función para cancelar la suscripción
+      };
 
-    fetchCarouselData();
-  }, []);
+    const unsubscribe = subscribeToChanges();
+    
+    return () => {
+      unsubscribe();};
+  }, [navigation]);
 
   const renderItem = ({ item, index }: { item: CarouselItem; index: number }) => {
     const centerScale = 1.2;
@@ -152,6 +159,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: screenWidth * 0.6,
   },
+
   contentContainer: {
     alignItems: 'center',
   },
@@ -171,22 +179,29 @@ const styles = StyleSheet.create({
     marginTop: 12,
     flexDirection: 'row',
     gap: 60,
+    
+
   },
   reescala: {
-    width: width * 0.4,
-    height: height * 0.23,
+    // width: width * 0.4,
+    // height: height * 0.23,
+    width: '100%',
+    height: '100%',
+    // borderRadius: 30,
+    
   },
   textContainer: {
     position: 'absolute',
     bottom: 0,
-    left: 0,
-    right: 0,
+    // left: 0,
+    // right: 0,
+    width: '100%',
     height: 80,
     gap: 5,
     backgroundColor:
       'linear-gradient(359.78deg, rgba(0, 0, 0, 0.8) 4.2%, rgba(13, 13, 13, 0) 118.3%)',
-    borderBottomStartRadius: 30,
-    borderBottomEndRadius: 30,
+    // borderBottomStartRadius: 30,
+    // borderBottomEndRadius: 30,
   },
   ContainerLikes: {
     justifyContent: 'center',
@@ -222,6 +237,14 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  boxCard:{
+    // borderColor: 'black',
+    // borderWidth: 2,
+    borderRadius: 30,
+    overflow: 'hidden',
+    width: width * 0.4,
+    height: height * 0.23,
   },
 
 });

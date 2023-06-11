@@ -33,6 +33,8 @@ const NavbarScreen = ({ navigation }: any) => {
 
 
   return (
+    <>
+    {isLogged ? (
     <View style={styles.container} >
       <View style={styles.fondo}>
         <View style={styles.info}>
@@ -42,7 +44,7 @@ const NavbarScreen = ({ navigation }: any) => {
               styles={styles}
               destinationNavigationComponentName="LoginScreen"
             />
-            <Text style={styles.txt}>{user?.email}</Text>
+            <Text style={styles.txt}>{user?.displayName}</Text>
           </View>
           <View style={styles.bottomInfo}>
             <View style={styles.linksInfo}>
@@ -105,6 +107,52 @@ const NavbarScreen = ({ navigation }: any) => {
         </View>
       </View>
     </View >
+    ):(
+      <>
+       <View style={styles.container} >
+      <View style={styles.fondo}>
+        <View style={styles.info}>
+          <View style={styles.topInfo}>
+            <PerfilPictureNav
+              navigation={navigation}
+              styles={styles}
+              destinationNavigationComponentName="LoginScreen"
+            />
+            <Text style={styles.txt}>¡Bienvenido!</Text>
+          </View>
+          <View style={styles.bottomInfo}>
+            <View style={styles.linksInfo}>
+              <View style={styles.contenedorLinks}>
+                <SvgXml xml={home} />
+                <Pressable onPress={() => { navigation.navigate('HomeScreen') }}>
+                  <Text style={styles.txtInfo}>Inicio</Text>
+                </Pressable>
+              </View>
+              <View style={styles.contenedorLinks}>
+                <SvgXml xml={helpdesk} />
+                <Pressable onPress={() => { navigation.navigate('HelpdeskScreen') }}>
+                  <Text style={styles.txtInfo}>Atención al cliente</Text>
+                </Pressable>
+              </View>
+              <View style={styles.contenedorLinks}>
+                <SvgXml xml={business} />
+                <Pressable onPress={() => { navigation.navigate('EnterpriseFormScreen') }}>
+                  <Text style={styles.txtInfo}>Registrar empresa</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+          <View style={styles.logout}>
+            <Pressable onPress={() => { navigation.navigate('LoginScreen'); }}>
+              <Text style={styles.title}>Iniciar sesión/Registrarse</Text>
+            </Pressable>
+          </View>
+        </View>
+      </View>
+    </View >
+      </>
+    )}
+    </>
   );
 };
 
@@ -130,7 +178,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     marginTop: 20,
     flexDirection: 'column',
-    gap: 20,
+    gap: 90,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -152,7 +200,8 @@ const styles = StyleSheet.create({
   txt: {
     color: 'black',
     fontSize: 18,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-SemiBold',
+    textAlign: 'center'
   },
   txtInfo: {
     color: 'black',
@@ -160,7 +209,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
   },
   logout: {
-    marginBottom: 25,
+    marginBottom: 35,
   },
   title: {
     color: 'black',
