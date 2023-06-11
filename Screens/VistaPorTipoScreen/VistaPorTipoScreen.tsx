@@ -2,15 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import {useUser, UserProvider} from '../../Context/UserContext';
-import {
-  getFavorites,
-  getPackage,
-  listTipoPackage,
-  LoadingScreen,
-} from '../../firebase/Firestore';
-import {useRoute} from '@react-navigation/native';
-import {Background} from '../../Layouts/Background';
+import { useUser, UserProvider } from "../../Context/UserContext"
+import { getFavorites, getPackage, listTipoPackage, LoadingScreen, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
+import { useRoute } from '@react-navigation/native';
+import { Background } from '../../Layouts/Background';
 
 const VistaPorTipoScreen = () => {
   const route = useRoute();
