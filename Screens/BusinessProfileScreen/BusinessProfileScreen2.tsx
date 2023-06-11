@@ -25,30 +25,50 @@ interface businessProfileProps {
 
 const BusinessProfileScreen = ({navigation, route}: businessProfileProps) => {
   let packageIn: PackageI = route.params.data;
+  const {userData: userData} = route.params;
   const [nameEnterprise, setNameEnterprise] = useState(null);
   const [emailEnterprise, setEmailEnterprise] = useState('');
   const [description, setDescription] = useState(null);
   const [location, setLocation] = useState(null);
   const [empresa, setEmpresa] = useState(null);
+  const [nameEnterprise2, setNameEnterprise2] = useState(null);
+  const [description2, setDescription2] = useState(null);
+  const [location2, setLocation2] = useState(null);
+  const [empresa2, setEmpresa2] = useState(null);
+
+  const [loadingSomeThing, setLoadingSomething] = useState(false);
 
   useEffect(() => {
+    console.log('userData: ', userData);
     const fetchData = async () => {
+      setLoadingSomething(true);
       // console.log('packageIn?.emailEnterprise: ' ,packageIn.emailEnterprise);
       if (packageIn && packageIn.emailEnterprise) {
+        // console.log('meee: ',packageIn.emailEnterprise);
         const querySnapshot = await firestore()
           .collection('users')
           .where('email', '==', packageIn.emailEnterprise)
           .get();
-
         querySnapshot.forEach(doc => {
           // console.log(doc.data().displayName);
+          // console.log(userData.displayName);
           setNameEnterprise(doc.data().displayName);
           setEmailEnterprise(doc.data().responsibleName);
           setEmpresa(doc.data().urlEmpresa);
           setDescription(doc.data().description);
           setLocation(doc.data().location);
         });
+        const pic = await returnEnterpisePic(packageIn.emailEnterprise);
+        if (pic != null) {
+          setEmpresa2(pic.urlEmpresa);
+          console.log(empresa2);
+          console.log('urlEmpresa', pic.urlEmpresa);
+          setDescription2(pic.description);
+          setLocation2(pic.location);
+          setNameEnterprise2(pic.nameEnterprise);
+        }
       }
+      setLoadingSomething(false);
     };
     fetchData();
   }, [packageIn, packageIn.emailEnterprise]);
@@ -57,7 +77,7 @@ const BusinessProfileScreen = ({navigation, route}: businessProfileProps) => {
     <>
       <ScrollView style={styles.scroll}>
         <View style={styles.backGround}>
-          <SvgXml xml={profileVector}/>
+          <SvgXml xml={profileVector} />
         </View>
 
         <View>
@@ -65,11 +85,10 @@ const BusinessProfileScreen = ({navigation, route}: businessProfileProps) => {
             <View style={styles.topInfo}>
               <View style={styles.top}>
                 <View>
-                  {packageIn.mainImageUrl && (
-                    <PhotoProfile
-                      size={100}
-                      imageSource={packageIn.mainImageUrl}
-                    />
+                  {empresa2 && (
+                    <>
+                      <PhotoProfile size={100} imageSource={empresa2} />
+                    </>
                   )}
                 </View>
                 <SvgXml xml={separator} />
@@ -97,13 +116,10 @@ const BusinessProfileScreen = ({navigation, route}: businessProfileProps) => {
                     </View>
                   </Pressable>
                 </View>
-
-
               </View>
 
-
               {packageIn.mainImageUrl && (
-                <Text style={styles.txt}>Empresa: {packageIn.name}</Text>
+                <Text style={styles.txt}>Empresa: {nameEnterprise2}</Text>
               )}
               <View style={styles.containerManager}>
                 <Text style={styles.txt}>Encargado: </Text>
@@ -208,7 +224,7 @@ const styles = StyleSheet.create({
   containerManager: {
     flexDirection: 'row',
   },
-  txtManager:{
+  txtManager: {
     color: '#1881B1',
     fontSize: 16,
     fontFamily: 'Poppins-Medium',
@@ -292,7 +308,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
-    gap: 5
+    gap: 5,
   },
   contenedorPuntaje: {
     flexDirection: 'column',
