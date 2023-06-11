@@ -1,6 +1,13 @@
-import { Text, View, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { SvgXml } from 'react-native-svg';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+  Image,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {SvgXml} from 'react-native-svg';
 // import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 // import EditProfileButton from '../../Components/Profiles/editProfileButton';
@@ -9,14 +16,16 @@ import vectorLocation from '../../vectores/vectorLocation';
 // import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../vectores/separator';
 import star from '../../vectores/star';
-import { NavigationProp } from '@react-navigation/native';
+import {NavigationProp} from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
-import { LoadingScreenTransparentBackground, returnEnterpisePic } from '../../firebase/Firestore';
+import {
+  LoadingScreenTransparentBackground,
+  returnEnterpisePic,
+} from '../../firebase/Firestore';
 import profileVector from '../../vectores/vectorPerfil';
-import { PackageI } from '../../models/package.interface';
+import {PackageI} from '../../models/package.interface';
 import firestore from '@react-native-firebase/firestore';
 import PublishedPackages2 from '../../Components/Profiles/publishedPackages2';
-
 
 interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -25,7 +34,7 @@ interface businessProfileProps {
   // userData?: Partial<Record<string, any>>;
 }
 
-const BusinessProfileScreen = ({ navigation, route }) => {
+const BusinessProfileScreen = ({navigation, route}) => {
   let packageIn: PackageI = route.params.data;
   const {userData: userData} = route.params;
   const [nameEnterprise, setNameEnterprise] = useState(null);
@@ -41,16 +50,17 @@ const BusinessProfileScreen = ({ navigation, route }) => {
   const [loadingSomeThing, setLoadingSomething] = useState(false);
 
   useEffect(() => {
-    console.log('userData: ',userData);
+    console.log('userData: ', userData);
     const fetchData = async () => {
       setLoadingSomething(true);
       // console.log('packageIn?.emailEnterprise: ' ,packageIn.emailEnterprise);
       if (packageIn && packageIn.emailEnterprise) {
-
         // console.log('meee: ',packageIn.emailEnterprise);
-        const querySnapshot = await firestore().collection('users').where('email', '==', packageIn.emailEnterprise).get();
-
-        querySnapshot.forEach((doc) => {
+        const querySnapshot = await firestore()
+          .collection('users')
+          .where('email', '==', packageIn.emailEnterprise)
+          .get();
+        querySnapshot.forEach(doc => {
           // console.log(doc.data().displayName);
           // console.log(userData.displayName);
           setNameEnterprise(doc.data().displayName);
@@ -59,10 +69,10 @@ const BusinessProfileScreen = ({ navigation, route }) => {
           setDescription(doc.data().description);
           setLocation(doc.data().location);
         });
-        // const user = currentLog();
         const pic = await returnEnterpisePic(packageIn.emailEnterprise);
-        if (pic != null){
+        if (pic != null) {
           setEmpresa2(pic.urlEmpresa);
+          console.log(empresa2);
           console.log('urlEmpresa', pic.urlEmpresa);
           setDescription2(pic.description);
           setLocation2(pic.location);
@@ -76,14 +86,11 @@ const BusinessProfileScreen = ({ navigation, route }) => {
 
   return (
     <>
+      {loadingSomeThing && <LoadingScreenTransparentBackground />}
 
-        {loadingSomeThing && (
-            <LoadingScreenTransparentBackground/>
-        )}
-
-    <ScrollView style={styles.scroll}>
+      <ScrollView style={styles.scroll}>
         <View style={styles.backGround}>
-          <SvgXml xml={profileVector}/>
+          <SvgXml xml={profileVector} />
         </View>
 
         <View>
@@ -91,11 +98,11 @@ const BusinessProfileScreen = ({ navigation, route }) => {
             <View style={styles.topInfo}>
               <View style={styles.top}>
                 <View>
-                {empresa2 &&
-            <>
-              <PhotoProfile size={100} imageSource={empresa2}/>
-            </>
-            }
+                  {empresa2 && (
+                    <>
+                      <PhotoProfile size={100} imageSource={empresa2} />
+                    </>
+                  )}
                 </View>
                 <SvgXml xml={separator} />
 
@@ -122,10 +129,7 @@ const BusinessProfileScreen = ({ navigation, route }) => {
                     </View>
                   </Pressable>
                 </View>
-
-
               </View>
-
 
               {packageIn.mainImageUrl && (
                 <Text style={styles.txt}>Empresa: {nameEnterprise2}</Text>
@@ -134,13 +138,11 @@ const BusinessProfileScreen = ({ navigation, route }) => {
                 <Text style={styles.txt}>Encargado: </Text>
                 <Text style={styles.txtManager}>{userData.displayName}</Text>
               </View>
-              <Text style={styles.description}>
-              {description}
-            </Text>
-            <View style={styles.location}>
-              <SvgXml xml={vectorLocation} />
-              <Text style={styles.nameLocation}>{location}</Text>
-            </View>
+              <Text style={styles.description}>{description}</Text>
+              <View style={styles.location}>
+                <SvgXml xml={vectorLocation} />
+                <Text style={styles.nameLocation}>{location}</Text>
+              </View>
               <View style={styles.bottomInfo}>
                 <Text style={styles.titlePack}>Paquetes publicados</Text>
               </View>
@@ -203,15 +205,14 @@ const stylesBtn = StyleSheet.create({
 });
 
 const styles = StyleSheet.create({
-
-  profileView:{
+  profileView: {
     backgroundColor: 'red',
     height: 100,
     width: 100,
     overflow: 'hidden',
   },
 
-  imagesStyles:{
+  imagesStyles: {
     width: '100%',
     height: '100%',
   },
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
   containerManager: {
     flexDirection: 'row',
   },
-  txtManager:{
+  txtManager: {
     color: '#1881B1',
     fontSize: 16,
     fontFamily: 'Poppins-Medium',
@@ -331,7 +332,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
-    gap: 5
+    gap: 5,
   },
   contenedorPuntaje: {
     flexDirection: 'column',

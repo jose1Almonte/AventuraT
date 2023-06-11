@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   textPack: {
     // backgroundColor: 'green',
-    // marginLeft: 5,
+    marginLeft: 8,
     // padding: 3,
     color: 'black',
     fontSize: 12,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 
 const FourOptionsSelector = ({ onSelect }) => {
   const [selectedOption, setSelectedOption] = useState('');
@@ -18,6 +18,10 @@ const FourOptionsSelector = ({ onSelect }) => {
         ]}
         onPress={() => handleOptionPress('Montaña')}
       >
+        <Image
+          style={styles.imageUsed}
+          source={require('../images/mountain.png')}
+        />
         <Text style={styles.optionButtonText}>Montaña</Text>
       </TouchableOpacity>
 
@@ -28,6 +32,10 @@ const FourOptionsSelector = ({ onSelect }) => {
         ]}
         onPress={() => handleOptionPress('Playa')}
       >
+         <Image
+          style={styles.imageUsed}
+          source={require('../images/beach.png')}
+        />
         <Text style={styles.optionButtonText}>Playa</Text>
       </TouchableOpacity>
 
@@ -38,6 +46,10 @@ const FourOptionsSelector = ({ onSelect }) => {
         ]}
         onPress={() => handleOptionPress('Full-Day')}
       >
+         <Image
+          style={styles.imageUsed}
+          source={require('../images/night.png')}
+        />
         <Text style={styles.optionButtonText}>Full-Day</Text>
       </TouchableOpacity>
 
@@ -48,6 +60,10 @@ const FourOptionsSelector = ({ onSelect }) => {
         ]}
         onPress={() => handleOptionPress('Camping')}
       >
+         <Image
+          style={styles.imageUsed}
+          source={require('../images/tent.png')}
+        />
         <Text style={styles.optionButtonText}>Camping</Text>
       </TouchableOpacity>
     </View>
@@ -62,39 +78,50 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 16,
     fontFamily: 'Poppins-Medium',
+    gap: 5
   },
   optionButton: {
-    backgroundColor: '#faa473',
+    backgroundColor: '#05a454',
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 8,
+    width: 92
   },
   optionButton1: {
-    backgroundColor: '#e4ed80',
+    backgroundColor: '#ffec5e',
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 8,
+    width: 92
   },
   optionButton2: {
     backgroundColor: '#fc8b74',
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 8,
+    width: 92
   },
   optionButton3: {
     backgroundColor: '#2d7ffa',
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 8,
+    width: 93
   },
   selectedOption: {
     backgroundColor: '#2dfc7d',
   },
   optionButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 11,
     color: 'black',
+    fontFamily: 'Poppins-SemiBold',
+    textAlign: 'center'
   },
+  imageUsed:{
+    width: 40,
+    height: 40,
+    alignSelf: 'center'
+  }
 });
 
 
