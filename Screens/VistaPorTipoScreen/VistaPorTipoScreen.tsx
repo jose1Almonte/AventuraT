@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { useUser, UserProvider } from "../../Context/UserContext"
@@ -8,7 +8,6 @@ import { useRoute } from '@react-navigation/native';
 import { Background } from '../../Layouts/Background';
 
 const VistaPorTipoScreen = () => {
-
   const route = useRoute();
   const tipo = route.params?.parameter || '';
   const [packages, setPackages] = useState<any[]>([]);
@@ -25,7 +24,7 @@ const VistaPorTipoScreen = () => {
     };
 
     fetchData();
-}, [tipo]);
+  }, [tipo]);
 
   return (
     <>
@@ -36,17 +35,26 @@ const VistaPorTipoScreen = () => {
 
     <ScrollView style={styles.container}>
       <View style={styles.titleBox}>
-        <Text style={styles.title}>Paquetes por Tipo</Text>
+        <Text style={styles.title}>Paquetes por categoría</Text>
       </View>
       {packages.length === 0 ? (
-        <Text style={styles.noFavoritesText}>NO HAY PAQUETES CON ESTE TIPO</Text>
+        <>
+          <Text style={styles.noFavoritesText}>
+            AÚN NO SE HAN AGREGADO PAQUETES EN ESTA CATEGORÍA
+          </Text>
+          <Image
+            style={styles.imageUsed}
+            source={require('../../images/Websearch.png')}
+          />
+        </>
       ) : (
         <View style={styles.cardContainer}>
-        {packages.map((esteitem) => {
+          {packages.map(esteitem => {
             return (
               <View key={esteitem.id} style={styles.card}>
-                <Background style={styles.imageBackground} image={{uri: esteitem?.mainImageUrl}}>
-
+                <Background
+                  style={styles.imageBackground}
+                  image={{uri: esteitem?.mainImageUrl}}>
                   <View style={styles.backgroundColor}>
                     <View style={styles.firstBox}>
                       <Image
@@ -54,31 +62,31 @@ const VistaPorTipoScreen = () => {
                         source={{
                           uri: esteitem?.mainImageUrl,
                         }}
-                        />
+                      />
                     </View>
                     <View style={styles.secondBox}>
-
                       <View style={styles.textBox}>
-                        <Text style={styles.name}>Nombre:</Text>
+                        {/* <Text style={styles.name}>Nombre:</Text> */}
                         <Text style={styles.name}>{esteitem?.name}</Text>
                       </View>
 
                       <View style={styles.textBox}>
-                        <Text style={styles.description}>Descripción:</Text>
-                        <Text style={styles.description}>{esteitem?.description}</Text>
+                        {/* <Text style={styles.description}>Descripción:</Text> */}
+                        <Text style={styles.description}>
+                          {esteitem?.description}
+                        </Text>
                       </View>
 
                       <View style={styles.textBox}>
-                      <Text style={styles.price}>Precio:</Text>
-                      <Text style={styles.price}>{esteitem?.price}</Text>
+                        {/* <Text style={styles.price}>Precio:</Text> */}
+                        <Text style={styles.price}>${esteitem?.price}</Text>
                       </View>
-
                     </View>
-                    </View>
+                  </View>
                 </Background>
               </View>
             );
-        })}
+          })}
         </View>
       )}
     </ScrollView>
@@ -94,7 +102,7 @@ const styles = StyleSheet.create({
     // padding: 16,
   },
 
-  titleBox:{
+  titleBox: {
     alignItems: 'center',
     justifyContent: 'center',
     height: 100,
@@ -103,7 +111,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginTop: 16,
     color: '#FFF',
   },
   noFavoritesText: {
@@ -111,13 +119,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFF',
     textAlign: 'center',
+    alignSelf: 'center',
+    marginTop: 20,
+    width: '80%',
+  },
+  imageUsed: {
+    marginTop: 40,
+    width: 350,
+    height: 350,
+    alignSelf: 'center',
   },
   cardContainer: {
-    marginBottom: 16,
+    marginTop: 16,
     flexWrap: 'wrap',
-    // backgroundColor:'blue',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   card: {
     // backgroundColor: '#FFF',
@@ -127,65 +143,70 @@ const styles = StyleSheet.create({
     width: '45%',
     marginBottom: 16,
     overflow: 'hidden',
-    height: 200,
-    borderColor: 'black',
-    borderWidth: 2,
+    height: 220,
+    // borderColor: 'black',
+    // borderWidth: 1,
     marginHorizontal: '2%',
   },
 
-  imageBackground:{
+  imageBackground: {
     flex: 1,
   },
   name: {
     fontSize: 13,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     marginBottom: 8,
     color: 'black',
+    fontFamily: 'Poppins-SemiBold',
   },
   description: {
-    fontSize: 11,
+    fontSize: 13,
     marginBottom: 8,
     color: 'black',
+    fontFamily: 'Poppins-Regular',
   },
   containerPhotoPack: {
     borderRadius: 20,
     // width: '100%',
-    height: '80%',
+    height: '90%',
     // marginBottom: 8,
-    borderColor: 'black',
-    borderWidth: 1,
+    // borderColor: '#1DB5BE',
+    // borderWidth: 1,
+    // backgroundColor: 'red',
   },
   price: {
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: 'bold',
     color: 'black',
   },
 
-  backgroundColor:{
-    backgroundColor: 'rgba(255,255,255,0.7)',
+  backgroundColor: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     alignItems: 'center',
   },
 
-  firstBox:{
+  firstBox: {
     height: '60%',
-    width: '90%',
+    width: '95%',
     overflow: 'hidden',
     // backgroundColor: 'red',
     justifyContent: 'center',
   },
 
-  secondBox:{
+  secondBox: {
     width: '85%',
     height: '40%',
     // borderColor: 'black',
     // borderWidth: 1,
+    // backgroundColor: 'red',
     justifyContent: 'center',
   },
-  textBox:{
+  textBox: {
     flex: 1,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    // backgroundColor: 'red',
   },
 });
 
