@@ -22,6 +22,8 @@ import MobilePaymentScreen from './Screens/MobilePaymentScreen/MobilePaymentScre
 import CreatePackageFormScreen from './Screens/CreatePackageFormScreen/CreatePackageFormScreen';
 import HelpdeskScreen from './Screens/HelpdeskScreen/HelpdeskScreen';
 import AdministratePackagesScreen from './Screens/AdministratePackagesScreen/AdministratePackagesScreen';
+import PublishedPackages2 from './Components/Profiles/publishedPackages2';
+import PayPremiumScreen from './Screens/PayPremiumScreen/PayPremiumScreen';
 // import PublishedPackages2 from './Components/Profiles/publishedPackages2';
 import VistaPorTipoScreen from './Screens/VistaPorTipoScreen/VistaPorTipoScreen';
 import MobilePaymentConfirmScreen from './Screens/MobilePaymentConfirmScreen/MobilePaymentConfirmScreen';
@@ -56,6 +58,7 @@ export default function App() {
           <Stack.Screen name="FeedbackScreen" component={FeedbackScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EnterpriseFormScreen" component={EnterpriseFormScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EnterpriseSessionScreen" component={EnterpriseSessionScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="PayPremiumScreen" component={PayPremiumScreen} options={{ headerShown: false }} />
           <Stack.Screen name="VistaPorTipoScreen" component={VistaPorTipoScreen} options={{ headerShown: false }} />
 
           <Stack.Screen name="MobilePaymentConfirmScreen" component={MobilePaymentConfirmScreen} options={{ headerShown: false }} />

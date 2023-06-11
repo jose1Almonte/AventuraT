@@ -9,7 +9,7 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from  "react";
 //import RegisterEnterprise from '../../Components/registerEnterprise';
 import {ProfilePicture} from '../../firebase/PerfilPicture';
 // import RegisterEnterprise from '../../Components/registerEnterprise';
@@ -146,24 +146,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
       <View style={styles.Container3}>
         <Text style={styles.title}>Paquetes Populares</Text>
         <View style={styles.ContainerPackages}>
-          <Pressable
-            onPress={() => {
-              Alert.alert('Funcionalidad en desarrollo');
-            }}>
-            <PopularPackages />
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              Alert.alert('Funcionalidad en desarrollo');
-            }}>
-            <PopularPackages />
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              Alert.alert('Funcionalidad en desarrollo');
-            }}>
-            <PopularPackages />
-          </Pressable>
+            <PopularPackages navigation={navigation} />
         </View>
         <TouchableOpacity style={styles.showMore}>
           <Text style={styles.moreText}>Ver más</Text>

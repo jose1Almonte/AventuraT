@@ -5,7 +5,8 @@ import { useUser } from '../../Context/UserContext';
 import { NavigationProp } from '@react-navigation/native';
 import { searchPackagesByEmail, searchPackagesExpiredByEmail } from '../../firebase/SearchPackagesByEmail';
 import { deleteAllByEmail, deleteExpiredDocumentsByEmail, deleteSelectedPackage } from '../../firebase/DeletePackage';
-import { LoadingScreenTransparentBackground, changePackageIsPublicValue } from '../../firebase/Firestore';
+import { changePackageIsPublicValue, checkVIP, makeRegular, makeVIP} from '../../firebase/Firestore';
+import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 // import { NavigationProp } from '@react-navigation/native';
 
@@ -96,6 +97,9 @@ const CardBox = ({data, handleWantPersonallyErase, changeIsPublic, index, setInd
 const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: any, changeIsPublic: any, setSelectedPackage: any}) => {
 
     const [dataIsPublic, setDataIsPublic] = useState(data.isPublic);
+    const {user} = useUser();
+    const [userExists, setUserExists] = useState(true);
+    const [VIP, setVIP] = useState('');
 
     const startDate = data.startDate.toDate();
     const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
@@ -124,9 +128,22 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
     //     // Alert.alert(dataIsPublic.toString());
     // };
 
-    // useEffect(() => {
-    //     Alert.alert('Hello');
-    // }, [dataIsPublic])
+    useEffect(() => {
+        //     Alert.alert('Hello');
+        // }, [dataIsPublic])
+        const checkUserExists = async () => {
+            const exists = await checkVIP(user?.email);
+            setUserExists(exists);
+        };
+        checkUserExists;
+        if (data.vip) {
+            setVIP('VIP');
+        } else {
+            setVIP('Regular');
+        }
+    }, [user?.name, user?.email, data.vip]);
+
+
 
     return (
         <View style={stylesIndividualCard.giantSelectedCard}>
@@ -185,19 +202,42 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                     <Text style={stylesIndividualCard.text}>Precio: </Text>
                                     <Text style={stylesIndividualCard.text}>$ {data.price}</Text>
                                 </View>
-                                <View style={stylesIndividualCard.textBox}>
+                                {/* <View style={stylesIndividualCard.textBox}>
                                     <Text style={stylesIndividualCard.text}>Rating: </Text>
                                     <Text style={stylesIndividualCard.text}>{data.rating} estrellas</Text>
-                                </View>
+                                </View> */}
                                 <View style={stylesIndividualCard.textBox}>
                                     <Text style={stylesIndividualCard.text}>Tipo: </Text>
                                     <Text style={stylesIndividualCard.text}>{data.tipo}</Text>
+                                </View>
+                                <View style={stylesIndividualCard.textBox}>
+                                    <Text style={stylesIndividualCard.text}>Estado: {VIP}</Text>
+                                    {/* <Text style={stylesIndividualCard.text}>{data.tipo}</Text> */}
+                                    {userExists &&
+                                        <>
+                                            {VIP === 'VIP' ?
+                                                <TouchableOpacity onPress={() => { makeRegular(data.id, user.email); setVIP('Regular');}}>
+                                                    <Text style={stylesIndividualCard.textBlue}>Pasar a Regular</Text>
+                                                    {/* <Text>Pasar a Regular</Text> */}
+                                                </TouchableOpacity> :
+                                                <TouchableOpacity onPress={() => { makeVIP(data.id, user.email); setVIP('VIP');}}>
+                                                    <Text style={stylesIndividualCard.textBlue}>Pasar a VIP</Text>
+                                                    {/* <Text>Pasar a VIP</Text> */}
+                                                </TouchableOpacity>
+                                            }
+
+                                        </>
+
+                                    }
                                 </View>
                                 </View>
                             </View>
 
                         </View>
-                    </Background>
+
+                    {/* <Text>Estado: {VIP}</Text> */}
+
+                </Background>
                 </View>
 
             </View>
@@ -332,14 +372,16 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             // Alert.alert(dataIsPublic.toString());
         };
 
-        useEffect(()=>{
+    useEffect(()=>{
             if (!user){
             Alert.alert('Te pasaste man, no estas logeado');
             navigation.navigate('HomeScreen');
         }
     },[user, navigation]);
 
-    useEffect(()=>{
+    useEffect(() => {
+
+
         const handleQuerySnapshot = async () => {
                 setLoadingSomething(true);
                 try {
@@ -822,6 +864,15 @@ const stylesIndividualCard = StyleSheet.create({
     text:{
         fontFamily: 'Poppins-Regular',
         color: 'black',
+        fontWeight: '500',
+        fontSize: 12,
+        lineHeight: 18,
+        display: 'flex',
+    },
+
+    textBlue:{
+        fontFamily: 'Poppins-Regular',
+        color: 'blue',
         fontWeight: '500',
         fontSize: 12,
         lineHeight: 18,

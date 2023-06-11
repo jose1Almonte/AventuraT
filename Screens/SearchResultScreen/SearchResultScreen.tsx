@@ -92,7 +92,7 @@ const SearchResultScreen = ({navigation, route}) => {
                 <View style={styles.info}>
                     <View style={styles.topInfo}>
                         <Text style={styles.txt}> Resultados de Busqueda </Text>
-                        <Text style={styles.txt}> Estas Buscando por: {type} </Text>
+                        <Text style={styles.txt1}> Estas Buscando por: {type} </Text>
                         <InputSearch2 navigation={navigation} areYouInSearchResult={true} defaultValue={initialSearchValue} searchKeyword = {searchKeyword} setSearchKeyword = {setSearchKeyword}/>
 
                         {items.map((document, index) => (
@@ -265,6 +265,12 @@ const styles = StyleSheet.create({
     txt: {
         color: 'black',
         fontSize: 20,
+        fontFamily: 'Poppins-SemiBold',
+    },
+
+    txt1: {
+        color: 'black',
+        fontSize: 16,
         fontFamily: 'Poppins-SemiBold',
     },
     title: {

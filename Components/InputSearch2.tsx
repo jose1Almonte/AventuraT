@@ -102,6 +102,7 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
     setTimeout(async () => {
       setDoNotShow(false);
     }, 5000);
+    navigation.navigate('SearchResultScreen',{name: text, type: 'name'});
   };
 
   return (

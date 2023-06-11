@@ -36,7 +36,7 @@ export const UserProfileScreen = ({
     const checkUserExists = async () => {
       setLoadingSomething(true);
 
-        const userEmail = user?.email;
+      const userEmail = user?.email;
 
       // console.log(userEmail);
       const exists = await checkResponsibleNameExists(userEmail);
@@ -51,89 +51,95 @@ export const UserProfileScreen = ({
   return (
     <>
       {loadingSomeThing && (
-            <LoadingScreenTransparentBackground/>
+        <LoadingScreenTransparentBackground />
       )}
-        
-    <View style={styles.container}>
+
+      <View style={styles.container}>
 
         <View style={styles.backGround}>
           <SvgXml xml={profileVector} />
         </View>
 
-      <View style={styles.info}>
+        <View style={styles.info}>
 
 
-        <View style={styles.topInfo}>
-          <View style={styles.photoBox}>
-            <PhotoProfile size={90} imageSource={user?.photoURL ? user.photoURL : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'}/>
+          <View style={styles.topInfo}>
+            <View style={styles.photoBox}>
+              <PhotoProfile size={90} imageSource={user?.photoURL ? user.photoURL : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'} />
+            </View>
+
+            <View style={styles.detailsUserBox}>
+              <Text style={styles.txt}>{user?.email}</Text>
+            </View>
+
+            <View style={styles.editProfileButtonBox}>
+              <EditProfileButton />
+            </View>
+
           </View>
 
-          <View style = {styles.detailsUserBox}>
-            <Text style={styles.txt}>{user?.email}</Text>
-          </View>
+          <View style={styles.info2}>
 
-          <View style = {styles.editProfileButtonBox}>
-            <EditProfileButton />
-          </View>
+            <Text style={styles.title}>Configuración</Text>
 
-        </View>
-
-        <View style={styles.info2}>
-
-          <Text style={styles.title}>Configuración</Text>
-
-          <View style={styles.containerInfo}>
-            <Text style={styles.txtInfo}>Información personal</Text>
-            <SvgXml xml={profileArrowVector} />
-          </View>
-          <TouchableOpacity style={styles.containerInfo} onPress={() => navigation.navigate('FavoriteScreen')}>
-            <Text style={styles.txtInfo}>Favoritos</Text>
-            <SvgXml xml={profileArrowVector} />
-          </TouchableOpacity>
-          <View style={styles.containerInfo}>
-            <Text style={styles.txtInfo}>Opciones de pago</Text>
-            <SvgXml xml={profileArrowVector} />
-          </View>
-          <TouchableOpacity style={styles.containerInfo} onPress={() => navigation.navigate('ReservedScreen')}>
-            <Text style={styles.txtInfo}>Mis Reservas</Text>
-            <SvgXml xml={profileArrowVector} />
-          </TouchableOpacity>
-          {/* {userExists && (
+            <View style={styles.containerInfo}>
+              <Text style={styles.txtInfo}>Información personal</Text>
+              <SvgXml xml={profileArrowVector} />
+            </View>
+            <TouchableOpacity style={styles.containerInfo} onPress={() => navigation.navigate('FavoriteScreen')}>
+              <Text style={styles.txtInfo}>Favoritos</Text>
+              <SvgXml xml={profileArrowVector} />
+            </TouchableOpacity>
+            <View style={styles.containerInfo}>
+              <Text style={styles.txtInfo}>Opciones de pago</Text>
+              <SvgXml xml={profileArrowVector} />
+            </View>
+            <TouchableOpacity style={styles.containerInfo} onPress={() => navigation.navigate('ReservedScreen')}>
+              <Text style={styles.txtInfo}>Mis Reservas</Text>
+              <SvgXml xml={profileArrowVector} />
+            </TouchableOpacity>
+            {/* {userExists && (
             <TouchableOpacity style={styles.containerInfo} onPress={deleteExpiredDocuments}>
             <Text style={styles.txtInfo1}>Borrar paquetes caducados</Text>
               <SvgXml xml={profileArrowVector} />
             </TouchableOpacity>
           )} */}
-          {userExists && (
-            <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessProfileScreen');}}>
-              <Text style={styles.txtInfo1}>Perfil empresarial</Text>
+            {userExists && (
+              <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessProfileScreen'); }}>
+                <Text style={styles.txtInfo1}>Perfil empresarial</Text>
+                <SvgXml xml={profileArrowVector} />
+              </TouchableOpacity>
+            )}
+
+            {userExists && (
+              <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen'); }}>
+                <Text style={styles.txtInfo1}>Crear paquete</Text>
+                <SvgXml xml={profileArrowVector} />
+              </TouchableOpacity>
+            )}
+
+            {userExists && (
+              <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessReservedScreen'); }}>
+                <Text style={styles.txtInfo1}>Gestión de Pagos de Paquetes</Text>
+              </TouchableOpacity>
+            )}
+
+            {userExists && (
+              <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('PayPremiumScreen'); }}>
+                <Text style={styles.txtInfo1}>Pasar a AventuraT Nitro</Text>
+                <SvgXml xml={profileArrowVector} />
+              </TouchableOpacity>
+            )}
+
+            <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
+              <Text style={styles.txtInfo1}>Cerrar sesión</Text>
               <SvgXml xml={profileArrowVector} />
             </TouchableOpacity>
-          )}
+          </View>
 
-          {userExists && (
-            <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen');}}>
-              <Text style={styles.txtInfo1}>Crear paquete</Text>
-              <SvgXml xml={profileArrowVector} />
-            </TouchableOpacity>
-          )}
-
-          {userExists && (
-            <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessReservedScreen');}}>
-              <Text style={styles.txtInfo1}>Gestión de Pagos de Paquetes</Text>
-              <SvgXml xml={profileArrowVector} />
-            </TouchableOpacity>
-          )}
-
-          <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
-            <Text style={styles.txtInfo1}>Cerrar sesión</Text>
-            <SvgXml xml={profileArrowVector} />
-          </TouchableOpacity>
         </View>
-
       </View>
-    </View>
-  </>
+    </>
   );
 };
 
