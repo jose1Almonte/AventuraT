@@ -5,7 +5,7 @@ import { useUser } from '../../Context/UserContext';
 import { NavigationProp } from '@react-navigation/native';
 import { searchPackagesByEmail, searchPackagesExpiredByEmail } from '../../firebase/SearchPackagesByEmail';
 import { deleteAllByEmail, deleteExpiredDocumentsByEmail, deleteSelectedPackage } from '../../firebase/DeletePackage';
-import { changePackageIsPublicValue, checkResponsibleNameExists, checkVIP, makeRegular, makeVIP} from '../../firebase/Firestore';
+import { changePackageIsPublicValue, checkVIP, makeRegular, makeVIP} from '../../firebase/Firestore';
 import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 // import { NavigationProp } from '@react-navigation/native';
@@ -99,7 +99,7 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
     const [dataIsPublic, setDataIsPublic] = useState(data.isPublic);
     const {user} = useUser();
     const [userExists, setUserExists] = useState(true);
-    const [VIP, setVIP] = useState("");
+    const [VIP, setVIP] = useState('');
 
     const startDate = data.startDate.toDate();
     const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
@@ -137,11 +137,11 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
         };
         checkUserExists;
         if (data.vip) {
-            setVIP("VIP");
+            setVIP('VIP');
         } else {
-            setVIP("Regular");
+            setVIP('Regular');
         }
-    }, [user?.name]);
+    }, [user?.name, user?.email, data.vip]);
 
 
 
