@@ -442,7 +442,7 @@ export const makeRegular = async (packageId: any, email: any) => {
   if (count > 0) {
     
     usersCollection2.doc(enterpriseId).update({
-      VIPCount: count,
+      vipCount: count,
     })
 
     packagesCollection.doc(packageId.toString()).update({
@@ -461,7 +461,7 @@ export const makeVIP = async (packageId: any, email: any) => {
   if (count > 0) {
     
     await usersCollection2.doc(enterpriseId).update({
-      VIPCount: count,
+      vipCount: count,
     });
 
     await packagesCollection.doc(packageId.toString()).update({

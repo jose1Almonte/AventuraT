@@ -73,28 +73,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
                     </View>
                   </View>
                 </Pressable>
-              </View>
-            </View>
-            
-            <View style={stylesBtn.positionContainer}>
-              <Pressable onPress={() => {
-                navigation.navigate('RatingsScreen');
-              }}>
-                <View style={stylesBtn.containerButton}>
-                  <View style={stylesBtn.container}>
-                    <Text style={stylesBtn.txt}>Ver calificaciones</Text>
-                  </View>
                 </View>
-              </Pressable>
-              <Pressable onPress={() => {
-                navigation.navigate('FeedbackScreen');
-              }}>
-                <View style={stylesBtn.containerButton}>
-                  <View style={stylesBtn.container}>
-                    <Text style={stylesBtn.txt}>¡Calificanos!</Text>
-                  </View>
-                </View>
-                </Pressable>
                 
               <Pressable onPress={() => {
                   navigation.navigate("PayPremiumScreen");
@@ -106,13 +85,6 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
                 </View>
               </Pressable>
             </View>
-            <Text style={styles.txt}>{nameEnterprise}</Text>
-            <Text style={styles.description}>
-              {description}
-            </Text>
-            <View style={styles.location}>
-              <SvgXml xml={vectorLocation} />
-              <Text style={styles.nameLocation}>{location}</Text>
 
             <View style={styles.infoUser}>
               <Text style={styles.txt}>{nameEnterprise}</Text>
@@ -135,7 +107,6 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
 
         <View style={styles.containerPack}>
         <PublishedPackages navigation={navigation} setLoadingSomeThing={setLoadingSomeThing}/>
-        </View>
         </View>
       </View>
     </ScrollView>
