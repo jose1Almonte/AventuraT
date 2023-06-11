@@ -9,13 +9,14 @@ import vectorLocation from '../../vectores/vectorLocation';
 // import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../vectores/separator';
 import star from '../../vectores/star';
-import {NavigationProp} from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
 import { LoadingScreenTransparentBackground, returnEnterpisePic } from '../../firebase/Firestore';
 import profileVector from '../../vectores/vectorPerfil';
-import {PackageI} from '../../models/package.interface';
+import { PackageI } from '../../models/package.interface';
 import firestore from '@react-native-firebase/firestore';
 import PublishedPackages2 from '../../Components/Profiles/publishedPackages2';
+
 
 interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -45,10 +46,6 @@ const BusinessProfileScreen = ({ navigation, route }) => {
       setLoadingSomething(true);
       // console.log('packageIn?.emailEnterprise: ' ,packageIn.emailEnterprise);
       if (packageIn && packageIn.emailEnterprise) {
-        const querySnapshot = await firestore()
-          .collection('users')
-          .where('email', '==', packageIn.emailEnterprise)
-          .get();
 
         // console.log('meee: ',packageIn.emailEnterprise);
         const querySnapshot = await firestore().collection('users').where('email', '==', packageIn.emailEnterprise).get();

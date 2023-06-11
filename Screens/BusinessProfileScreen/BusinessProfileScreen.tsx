@@ -1,12 +1,10 @@
+import { Text, View, StyleSheet, Pressable, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, Text, View, StyleSheet, Pressable } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import vectorPerfil from '../../vectores/vectorPerfil';
-import vectorLocation from '../../vectores/vectorLocation';
-import currentLog from '../../firebase/UserData';
-import { returnEnterpisePic } from '../../firebase/Firestore';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import EditProfileButton from '../../Components/Profiles/editProfileButton';
+import vectorLocation from '../../vectores/vectorLocation';
 import EditPackageButton from '../../Components/Profiles/editPackagesButton';
 import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../vectores/separator';
@@ -33,7 +31,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
       setLoadingSomeThing(true);
       const user = currentLog();
       const pic = await returnEnterpisePic(user?.email);
-      if(pic!=null){
+      if (pic!=null){
         setEmpresa(pic.urlEmpresa);
         setDescription(pic.description);
         setLocation(pic.location);
@@ -44,11 +42,11 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
 
     fetchEnterprisePic();
   }, []);
-
   return (
     <>
-
-
+    {loadingSomeThing && (
+        <LoadingScreenTransparentBackground/>
+    )}
     <ScrollView style={styles.scroll}>
       <View style={styles.backGround}>
         <SvgXml xml={vectorPerfil} />
@@ -98,14 +96,11 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
         </View>
 
         <View style={styles.containerPack}>
-          {/* <View style={styles.containerPack2}> */}
-          {/* <View style={styles.containerPack3}> */}
-                <PublishedPackages navigation={navigation} />
-          {/* </View> */}
-          {/* </View> */}
+        <PublishedPackages navigation={navigation} setLoadingSomeThing={setLoadingSomeThing}/>
         </View>
       </View>
     </ScrollView>
+    </>
   );
 };
 
