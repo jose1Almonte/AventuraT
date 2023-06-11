@@ -57,8 +57,13 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
       <View style={styles.navbar}>
         <Pressable
           onPress={() => {
+
+            
             navigation.navigate('NavbarScreen');
           }}>
+
+
+
           <View style={styles.colorRed}>
             <SvgXml xml={menuBar} />
           </View>

@@ -75,11 +75,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontSize: 18,
     textAlign: 'center',
+    color: "black"
   },
   subtitle: {
     fontFamily: 'Poppins-Medium',
     fontSize: 15,
     textAlign: 'center',
+    color: "black"
   },
   containerOptions: {
     marginTop: 10,
