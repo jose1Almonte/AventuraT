@@ -202,35 +202,40 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                     <Text style={stylesIndividualCard.text}>Precio: </Text>
                                     <Text style={stylesIndividualCard.text}>$ {data.price}</Text>
                                 </View>
-                                <View style={stylesIndividualCard.textBox}>
+                                {/* <View style={stylesIndividualCard.textBox}>
                                     <Text style={stylesIndividualCard.text}>Rating: </Text>
                                     <Text style={stylesIndividualCard.text}>{data.rating} estrellas</Text>
-                                </View>
+                                </View> */}
                                 <View style={stylesIndividualCard.textBox}>
                                     <Text style={stylesIndividualCard.text}>Tipo: </Text>
                                     <Text style={stylesIndividualCard.text}>{data.tipo}</Text>
+                                </View>
+                                <View style={stylesIndividualCard.textBox}>
+                                    <Text style={stylesIndividualCard.text}>Estado: {VIP}</Text>
+                                    {/* <Text style={stylesIndividualCard.text}>{data.tipo}</Text> */}
+                                    {userExists &&
+                                        <>
+                                            {VIP === 'VIP' ?
+                                                <TouchableOpacity onPress={() => { makeRegular(data.id, user.email); setVIP('Regular');}}>
+                                                    <Text style={stylesIndividualCard.textBlue}>Pasar a Regular</Text>
+                                                    {/* <Text>Pasar a Regular</Text> */}
+                                                </TouchableOpacity> :
+                                                <TouchableOpacity onPress={() => { makeVIP(data.id, user.email); setVIP('VIP');}}>
+                                                    <Text style={stylesIndividualCard.textBlue}>Pasar a VIP</Text>
+                                                    {/* <Text>Pasar a VIP</Text> */}
+                                                </TouchableOpacity>
+                                            }
+
+                                        </>
+
+                                    }
                                 </View>
                                 </View>
                             </View>
 
                         </View>
 
-                    <Text>Estado: {VIP}</Text>
-                    {userExists && 
-                        <View>
-                            
-                            {VIP === "VIP" ?
-                                <TouchableOpacity onPress={() => { makeRegular(data.id, user.email); setVIP("Regular")}}>
-                                    <Text>Pasar a Regular</Text>
-                                </TouchableOpacity> :
-                                <TouchableOpacity onPress={() => { makeVIP(data.id, user.email); setVIP("VIP")}}>
-                                    <Text>Pasar a VIP</Text>
-                                </TouchableOpacity>
-                            }
-
-                        </View>
-
-                    }
+                    {/* <Text>Estado: {VIP}</Text> */}
 
                 </Background>
                 </View>
@@ -859,6 +864,15 @@ const stylesIndividualCard = StyleSheet.create({
     text:{
         fontFamily: 'Poppins-Regular',
         color: 'black',
+        fontWeight: '500',
+        fontSize: 12,
+        lineHeight: 18,
+        display: 'flex',
+    },
+
+    textBlue:{
+        fontFamily: 'Poppins-Regular',
+        color: 'blue',
         fontWeight: '500',
         fontSize: 12,
         lineHeight: 18,
