@@ -202,7 +202,8 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
             <View style={styles.formContainer}>
             <View style={styles.container2}>
                 <FourOptionsSelector onSelect={handleOptionSelect} />
-                <Text style={styles.labelSelector}>Opción Seleccionada: {selectedOption} !!!</Text>
+                <Text style={styles.label}>Opción Seleccionada: </Text>
+                <Text style={styles.labelSelector}>{selectedOption}</Text>
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Nombre del paquete</Text>
@@ -343,9 +344,9 @@ const styles = StyleSheet.create({
   },
   labelSelector: {
     fontFamily: 'Poppins-Medium',
-    fontSize: 10,
+    fontSize: 14,
     lineHeight: 24,
-    color: 'red',
+    color: '#1881B1',
   },
   label1: {
     fontFamily: 'Poppins-Medium',
