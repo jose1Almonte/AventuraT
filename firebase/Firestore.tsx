@@ -438,7 +438,7 @@ export const checkVIP = async (email: any) => {
 export const makeRegular = async (packageId: any, email: any) => {
   const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
   const enterpriseId = getDoc.docs[0].id;
-  let count = getDoc.docs[0].data().VIPCount + 1;
+  let count = getDoc.docs[0].data().vipCount + 1;
   if (count > 0) {
     
     usersCollection2.doc(enterpriseId).update({
@@ -446,7 +446,7 @@ export const makeRegular = async (packageId: any, email: any) => {
     })
 
     packagesCollection.doc(packageId.toString()).update({
-      isVIP: false,
+      vip: false,
     })
   } else {
     // da error y no se procesa, hay que cambiar esto tambien en administratePackagesScreen para que no procesa si hubo error, linea 161
@@ -456,7 +456,7 @@ export const makeRegular = async (packageId: any, email: any) => {
 export const makeVIP = async (packageId: any, email: any) => {
   const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
   const enterpriseId = getDoc.docs[0].id;
-  let count = getDoc.docs[0].data().VIPCount - 1;
+  let count = getDoc.docs[0].data().vipCount - 1;
   console.log(count)
   if (count > 0) {
     
@@ -465,7 +465,7 @@ export const makeVIP = async (packageId: any, email: any) => {
     });
 
     await packagesCollection.doc(packageId.toString()).update({
-      isVIP: true,
+      vip: true,
     });
   } else {
     // da error y...

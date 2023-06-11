@@ -96,8 +96,8 @@ const CardBox = ({data, handleWantPersonallyErase, changeIsPublic, index, setInd
 
 const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: any, changeIsPublic: any, setSelectedPackage: any}) => {
 
-    const {user} = useUser();
     const [dataIsPublic, setDataIsPublic] = useState(data.isPublic);
+    const {user} = useUser();
     const [userExists, setUserExists] = useState(true);
     const [VIP, setVIP] = useState("");
 
@@ -136,7 +136,7 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
             setUserExists(exists);
         };
         checkUserExists;
-        if (data.isVIP) {
+        if (data.vip) {
             setVIP("VIP");
         } else {
             setVIP("Regular");
@@ -214,22 +214,7 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                             </View>
 
                         </View>
-                        <TouchableOpacity style={stylesIndividualCard.firstRowCenter} onPress={() => {changeIsPublic()}}>
-                            {data.isPublic ? (
-                                <Text style={styles.bigText}>Público</Text>
 
-                                ) : (
-
-                                <Text style={styles.bigText}>Privado</Text>
-                            )
-
-                            }
-                        </TouchableOpacity>
-                        <View style={stylesIndividualCard.firstRowRight}>
-                            <TouchableOpacity style={stylesIndividualCard.firstRowRightBox} onPress={() => {handleSetSelectedPackage()}}>
-                                <Text>Out</Text>
-                            </TouchableOpacity>
-                        </View>
                     <Text>Estado: {VIP}</Text>
                     {userExists && 
                         <View>
@@ -246,11 +231,7 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                         </View>
 
                     }
-                    <View style ={stylesIndividualCard.secondRow}>
-                        <View style ={stylesIndividualCard.secondRowDescriptionBox}>
-                        <Text>{data.name}</Text>
-                        </View>
-                    </View>
+
                 </Background>
                 </View>
 
