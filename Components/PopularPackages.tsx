@@ -1,5 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
-import {View, StyleSheet, Text, Image} from 'react-native';
+import {View, StyleSheet, Text, Image, Dimensions} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import vectorLocation from '../vectores/vectorLocation';
 import {ButtonLikes} from './ButtonLikes';
@@ -13,7 +13,9 @@ interface popularProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
 }
 
-export const PopularPackages = ({navigation}: popularProps) => {
+
+export const PopularPackages = ({ navigation }: popularProps) => {
+  
 
   const [popularPackages, setPopularPackages]: any[] = useState([]);
   const [loading, setLoading] = useState(true)
@@ -32,17 +34,18 @@ export const PopularPackages = ({navigation}: popularProps) => {
 
   return (
     <>
-      {!loading &&
-        popularPackages.map((rawData: any, idx: any) => (
-            <View key={idx}>
-              <PopularPackage data={popularPackages[idx]} navigation={navigation} />
-            </View>
-        ))
-      }
-      {
-        loading &&
-        <Text>Estoy cargandoooooooooooooooooooooooo</Text>
-      }
+
+        {!loading &&
+          popularPackages.map((rawData: any, idx: any) => (
+              <View key={idx} >
+                <PopularPackage data={popularPackages[idx]} navigation={navigation} />
+              </View>
+          ))
+        }
+        {
+          loading &&
+          <Text>Estoy cargandoooooooooooooooooooooooo</Text>
+        }
       </>
       );
     

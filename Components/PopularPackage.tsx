@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet } from 'react-native';
-import { View, Image, Text, TouchableOpacity } from 'react-native';
+import { View, Image, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { ButtonLikes } from './ButtonLikes';
 import { SvgXml } from 'react-native-svg';
 import vectorLocation from '../vectores/vectorLocation';
@@ -29,7 +29,13 @@ interface popularPackageProps {
     navigation: NavigationProp<Record<string, object | undefined>>;
 }
 
+
+
 export default function PopularPackage({ data, navigation }: popularPackageProps) {
+
+
+    
+
     return (
         <>
         <TouchableOpacity style={styles.container} onPress={() => {navigation.navigate('DetailsScreenUser', { data })}}>
@@ -58,7 +64,7 @@ export default function PopularPackage({ data, navigation }: popularPackageProps
 const styles = StyleSheet.create({
     container: {
         width: 115,
-        height: "100%",
+        height: 200,
         backgroundColor: '#ffffff',
         borderRadius: 15,
     },
@@ -76,6 +82,7 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 12,
         fontFamily: 'Poppins-Medium',
+        justifyContent: "center",
     },
     ContainerText: {
         marginTop: 80,

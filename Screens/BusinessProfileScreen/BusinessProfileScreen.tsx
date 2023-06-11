@@ -73,9 +73,8 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
                     </View>
                   </View>
                 </Pressable>
-                </View>
-                
-              <Pressable onPress={() => {
+                  
+                <Pressable onPress={() => {
                   navigation.navigate("PayPremiumScreen");
               }}>
                 <View style={stylesBtn.containerButton}>
@@ -83,7 +82,10 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
                     <Text style={stylesBtn.txt}>AventuraT Nitro</Text>
                   </View>
                 </View>
-              </Pressable>
+                </Pressable>
+              </View>
+                
+
             </View>
 
             <View style={styles.infoUser}>
