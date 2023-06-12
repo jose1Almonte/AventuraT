@@ -36,13 +36,7 @@ export default function PayPremiumScreen() {
                 width={`${screenWidth * 1}`}
                 height={`${screenHeight * 0.511}`}
                 />
-            <View>
-                    <Text>Descripción de lo que hace el paquete premium</Text>
-                    <Text>Beneficio 1!</Text>
-                    <Text>Beneficio 2!</Text>
-                    <Text>Beneficio 3!</Text>
-                    <Text>Beneficio 4!</Text>
-            </View>
+            
 
             <View style={styles.secondBigBox}>
                 <View style={styles.firstBigBox}>
