@@ -11,25 +11,17 @@ interface BusinessReservedScreenProps {
 const BusinessReservedScreen = ({ navigation }: BusinessReservedScreenProps) => {
     //let { isLogged } = useUser();
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                <View style={styles.info}>
-                    <View style={styles.topInfo}>
-                        <Text style={styles.txt}>Gestión de Pagos</Text>
-                        <Text style={styles.txt}>de Paquetes</Text>
-                    </View>
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate('DetailReservedScreen');
-                        /*if (isLogged) {
-                            navigation.navigate('MobilePaymentConfirmScreen');
-                        } else {
-                            Alert.alert('Inicie sesión', 'Para reservar debe iniciar sesión');
-                            navigation.navigate('LoginScreen');
-                        }*/
-                        }}>
-                        <BusinessReservedPackages/>
-                    </TouchableOpacity>
+        <ScrollView style={styles.container}>
+            <View style={styles.info}>
+                <View style={styles.topInfo}>
+                    <Text style={styles.txt}>Gestión de Pagos</Text>
+                    <Text style={styles.txt}>de Paquetes</Text>
                 </View>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate('DetailReservedScreen');
+                    }}>
+                    <BusinessReservedPackages/>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     );
