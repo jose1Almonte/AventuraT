@@ -19,20 +19,22 @@ interface CarouselItem {
 
 interface carruselProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
+  setLoadingSomething: any,
 }
 
 const screenWidth = Dimensions.get('window').width;
 const carouselItemWidth = screenWidth * 0.43; // Ancho de los componentes
 
 
-export const Carrousel = ({ navigation }: carruselProps) => {
+export const Carrousel = ({ navigation, setLoadingSomething }: carruselProps) => {
   const [carouselItems, setCarouselItems] = useState<CarouselItem[]>([]);
   const scrollX = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const subscribeToChanges = () => {
+      setLoadingSomething(true);
       const unsubscribe = firestore()
-        .collection('package')
+      .collection('package')
         .where('isPublic', '==', true)
         .onSnapshot((snapshot) => {
           const updatedCarouselItems: CarouselItem[] = [];
@@ -53,7 +55,7 @@ export const Carrousel = ({ navigation }: carruselProps) => {
               expireDate: data.expireDate,
               isPublic: data.isPublic,
             };
-
+            
             const customComponent = (
               <TouchableOpacity style={styles.touchable} onPress={() => {
                 navigation.navigate('DetailsScreenUser', { data: packageTemp });
@@ -88,10 +90,12 @@ export const Carrousel = ({ navigation }: carruselProps) => {
           setCarouselItems(updatedCarouselItems);
         });
 
-      return unsubscribe; // Devuelve la función para cancelar la suscripción
-    };
+        setLoadingSomething(false);
+        return unsubscribe; // Devuelve la función para cancelar la suscripción
+      };
 
     const unsubscribe = subscribeToChanges();
+    
     return () => {
       unsubscribe();};
   }, [navigation]);

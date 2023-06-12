@@ -1,17 +1,27 @@
-import {Text, View, StyleSheet, Pressable, ScrollView} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+  Image,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {SvgXml} from 'react-native-svg';
-import vectorPerfil from '../../vectores/vectorPerfil';
+// import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
-import EditProfileButton from '../../Components/Profiles/editProfileButton';
+// import EditProfileButton from '../../Components/Profiles/editProfileButton';
 import vectorLocation from '../../vectores/vectorLocation';
-import EditPackageButton from '../../Components/Profiles/editPackagesButton';
-import PublishedPackages from '../../Components/Profiles/publishedPackages';
+// import EditPackageButton from '../../Components/Profiles/editPackagesButton';
+// import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../vectores/separator';
 import star from '../../vectores/star';
 import {NavigationProp} from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
-import {returnEnterpisePic} from '../../firebase/Firestore';
+import {
+  LoadingScreenTransparentBackground,
+  returnEnterpisePic,
+} from '../../firebase/Firestore';
 import profileVector from '../../vectores/vectorPerfil';
 import {PackageI} from '../../models/package.interface';
 import firestore from '@react-native-firebase/firestore';
@@ -21,9 +31,10 @@ interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
   route?: any;
   data?: PackageI;
+  // userData?: Partial<Record<string, any>>;
 }
 
-const BusinessProfileScreen = ({navigation, route}: businessProfileProps) => {
+const BusinessProfileScreen = ({navigation, route}) => {
   let packageIn: PackageI = route.params.data;
   const {userData: userData} = route.params;
   const [nameEnterprise, setNameEnterprise] = useState(null);
@@ -75,6 +86,8 @@ const BusinessProfileScreen = ({navigation, route}: businessProfileProps) => {
 
   return (
     <>
+      {loadingSomeThing && <LoadingScreenTransparentBackground />}
+
       <ScrollView style={styles.scroll}>
         <View style={styles.backGround}>
           <SvgXml xml={profileVector} />
@@ -123,13 +136,13 @@ const BusinessProfileScreen = ({navigation, route}: businessProfileProps) => {
               )}
               <View style={styles.containerManager}>
                 <Text style={styles.txt}>Encargado: </Text>
-                <Text style={styles.txtManager}>{nameEnterprise}</Text>
+                <Text style={styles.txtManager}>{userData.displayName}</Text>
               </View>
-              {/* <Text style={styles.description}>{packageIn.description}</Text> */}
-              {/* <View style={styles.location}>
+              <Text style={styles.description}>{description}</Text>
+              <View style={styles.location}>
                 <SvgXml xml={vectorLocation} />
-                <Text style={styles.nameLocation}>{packageIn.location}</Text>
-              </View> */}
+                <Text style={styles.nameLocation}>{location}</Text>
+              </View>
               <View style={styles.bottomInfo}>
                 <Text style={styles.titlePack}>Paquetes publicados</Text>
               </View>
@@ -192,6 +205,17 @@ const stylesBtn = StyleSheet.create({
 });
 
 const styles = StyleSheet.create({
+  profileView: {
+    backgroundColor: 'red',
+    height: 100,
+    width: 100,
+    overflow: 'hidden',
+  },
+
+  imagesStyles: {
+    width: '100%',
+    height: '100%',
+  },
   backGround: {
     position: 'absolute',
     top: 0,

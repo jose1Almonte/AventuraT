@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 import currentLog from './UserData';
 import { useUser } from '../Context/UserContext';
 import { useEffect } from 'react';
@@ -9,6 +9,8 @@ import React, { useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Text } from 'react-native-svg';
+
+
 
 const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
@@ -35,7 +37,7 @@ export const updateUser = async (array:string[],userId: string, displayName:stri
 
 
 export const addEnterprise = async (nameEnterprise:string, rif:string,
-   responsibleName:string , location:string, description:string, vip:boolean, password:string, phoneNumber:string,urlPersonal:string,urlEmpresa:string) => {
+    responsibleName:string , location:string, description:string, vip:boolean, password:string, phoneNumber:string,urlPersonal:any,urlEmpresa:any) => {
     await usersCollection2.add({
       id: 0, // Inicializa el ID en 0
       nameEnterprise: nameEnterprise,
@@ -43,11 +45,14 @@ export const addEnterprise = async (nameEnterprise:string, rif:string,
       location: location,
       description: description,
       rif:rif,
-      vip:vip,
+      vip: vip,
       password:password,
       phoneNumber:phoneNumber,
       urlPersonal:urlPersonal,
-      urlEmpresa:urlEmpresa
+      urlEmpresa: urlEmpresa,
+      vipCount: 0,
+      isVIP: false,
+      
 
     });
 };
@@ -68,7 +73,7 @@ export const checkIfUserExists = async (email:string) => {
     const querySnapshot = await usersCollection.where('email', '==', email).get();
     return !querySnapshot.empty;};
 
-export const addPackage = async (id, name, availability, price, description, mainImageUrl, location, endDate, startDate, emailEnterprise, rating, expireDate, isPublic, tipo) => {
+export const addPackage = async (id:any, name:any, availability:any, price:any, description:any, mainImageUrl:any, location:any, endDate:any, startDate:any, emailEnterprise:any, rating:any, expireDate:any, isPublic:any, tipo:any) => {
         try {
           const packageData = {
             id,
@@ -86,6 +91,7 @@ export const addPackage = async (id, name, availability, price, description, mai
             expireDate,
             isPublic,
             tipo,
+            vip: false,
           };
 
           await packagesCollection.doc(id.toString()).set(packageData);
@@ -109,7 +115,7 @@ export const changePackageIsPublicValue = async (packageId: { toString: () => st
 
 };
 
-export const checkPackage = async (id) => {
+export const checkPackage = async (id:any) => {
         try {
           const packageDoc = await packagesCollection.doc(id.toString()).get();
           return packageDoc.exists;
@@ -119,7 +125,7 @@ export const checkPackage = async (id) => {
         }
       };
 
-      export const uploadImage = async (imagePath, filename) => {
+      export const uploadImage = async (imagePath:any, filename:any) => {
         try {
           const response = await fetch(imagePath);
           const blob = await response.blob();
@@ -156,7 +162,7 @@ export const getFavorites = async (email: string) => {
 
 
 
-export const getPackage = async (itemId) => {
+export const getPackage = async (itemId:any) => {
   try {
     const documentSnapshot = await firestore()
       .collection('package')
@@ -164,6 +170,34 @@ export const getPackage = async (itemId) => {
       .get();
 
     if (documentSnapshot.exists) {
+      const data = documentSnapshot.data();
+      // Aquí puedes realizar cualquier transformación o ajuste necesario en los datos obtenidos
+      return data;
+    } else {
+      throw new Error(`Package with ID ${itemId} does not exist.`);
+    }
+  } catch (error) {
+    console.log(error);
+    return null; // Si ocurre un error al obtener el paquete, puedes retornar null o un valor predeterminado adecuado.
+  }
+
+};
+
+export const getPublicPackage = async (itemId:any) => {
+  try {
+    const querySnapshot = await firestore()
+      .collection('package')
+      .where('isPublic', '==', true)
+      .get();
+
+    const documentSnapshot = querySnapshot.docs.find(doc => doc.id === itemId);
+
+    // const documentSnapshot = await firestore()
+    //   .collection('package')
+    //   .doc(itemId)
+    //   .get();
+
+    if (documentSnapshot && documentSnapshot.exists) {
       const data = documentSnapshot.data();
       // Aquí puedes realizar cualquier transformación o ajuste necesario en los datos obtenidos
       return data;
@@ -191,19 +225,26 @@ export const getLastEnterpriseId = async () => {
   return 0; // Si no hay paquetes, devuelve 0 como último ID
 };
 
-export const checkEnterpriseExists = async (nameEnterprise) => {
+export const checkEnterpriseExists = async (nameEnterprise:any) => {
     const enterprisesRef = usersCollection2;
     const snapshot = await enterprisesRef.where('nameEnterprise', '==', nameEnterprise).get();
     return !snapshot.empty;
 };
 
-export const checkResponsibleNameExists = async (responsibleName) => {
+export const checkResponsibleNameExists = async (responsibleName:any) => {
     const enterprisesRef = usersCollection2;
-    const snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+    let snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+
+    if (snapshot.empty){
+      responsibleName = responsibleName.charAt(0).toUpperCase() + responsibleName.slice(1);
+      snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+    }
+
+    // console.log('SNAPSHOT: ',snapshot);
     return !snapshot.empty;
 };
 
-export const createUserWithEmailAndPassword = async (email, password, phoneNumber, photoURL,disName) => {
+export const createUserWithEmailAndPassword = async (email:any, password:any, phoneNumber:any, photoURL:any,disName:any) => {
   try {
     const { user } = await auth().createUserWithEmailAndPassword(email, password);
     await user.updateProfile({
@@ -218,7 +259,7 @@ export const createUserWithEmailAndPassword = async (email, password, phoneNumbe
 
 };
 
-export const checkPasswordCorrect = async (email, password) => {
+export const checkPasswordCorrect = async (email:any, password:any) => {
   try {
     // Iniciar sesión con el correo electrónico y la contraseña
     await auth().signInWithEmailAndPassword(email, password);
@@ -229,9 +270,14 @@ export const checkPasswordCorrect = async (email, password) => {
   }
 };
 
-export const returnEnterpisePic = async (responsibleName) => {
+export const returnEnterpisePic = async (responsibleName:any) => {
   const enterprisesRef = usersCollection2;
-  const snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+  let snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+  if (snapshot.empty){
+    responsibleName = responsibleName.charAt(0).toUpperCase() + responsibleName.slice(1);
+    snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
+    console.log('WTF CONTIGO', responsibleName)
+  }
   if (!snapshot.empty) {
     const enterpriseData = snapshot.docs[0].data();
     return enterpriseData;
@@ -240,7 +286,7 @@ export const returnEnterpisePic = async (responsibleName) => {
   }
 };
 
-export const listPackage = async (responsibleName, searchingOnlyPublics) => {
+export const listPackage = async (responsibleName:any, searchingOnlyPublics:any) => {
   let query;
 
   if (searchingOnlyPublics){
@@ -250,7 +296,7 @@ export const listPackage = async (responsibleName, searchingOnlyPublics) => {
 
   }
   const querySnapshot = await query.get();
-  const packages = [];
+  const packages:any[] = [];
   querySnapshot.forEach((doc) => {
     const packageData = doc.data();
     packages.push(packageData);
@@ -259,7 +305,7 @@ export const listPackage = async (responsibleName, searchingOnlyPublics) => {
   return packages;
 };
 
-export const addPaidPackage = async (compradorMail, photoCompradorURL, id, name, availability, price, description, mainImageUrl, location, endDate, startDate, emailEnterprise, rating, expireDate,mobilePayment,nameEnterprise,photoURL) => {
+export const addPaidPackage = async (compradorMail:any, photoCompradorURL:any, id:any, name:any, availability:any, price:any, description:any, mainImageUrl:any, location:any, endDate:any, startDate:any, emailEnterprise:any, rating:any, expireDate:any,mobilePayment:any,nameEnterprise:any,photoURL:any) => {
   try {
     const packageData = {
       compradorMail,
@@ -290,10 +336,10 @@ export const addPaidPackage = async (compradorMail, photoCompradorURL, id, name,
 };
 
 
-export const listPaidPackage = async (id) => {
+export const listPaidPackage = async (id:any) => {
   const query = paidPackages.where('id', '==', id);
   const querySnapshot = await query.get();
-  const packages = [];
+  const packages:any[] = [];
   querySnapshot.forEach((doc) => {
     const packageData = doc.data();
     packages.push(packageData);
@@ -302,10 +348,10 @@ export const listPaidPackage = async (id) => {
   return packages;
 };
 
-export const listTipoPackage = async (id) => {
+export const listTipoPackage = async (id:any) => {
   const query = packagesCollection.where('tipo', '==', id).where('isPublic', '==', true);
   const querySnapshot = await query.get();
-  const packages = [];
+  const packages:any[] = [];
   querySnapshot.forEach((doc) => {
     const packageData = doc.data();
     packages.push(packageData);
@@ -328,6 +374,19 @@ export const LoadingScreen = () => {
     );
   };
 
+export const LoadingScreenTransparentBackground = () => {
+
+    return (
+      <View style={styles.containerTransparent}>
+        <FastImage
+          source={require('../images/cat-cute.gif')}
+          style={styles.loadingGif}
+          resizeMode="contain"
+        />
+      </View>
+    );
+  };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -335,8 +394,80 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#1DB5BE',
   },
+  containerTransparent:{
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: '100%',
+    // backgroundColor: 'blackrgba(0, 0, 0, 0.36)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+
   loadingGif: {
     width: 60,
     height: 60,
   },
 });
+
+export const getPopularPackages = async () => {
+  const packages:any[] = [];
+  let query = await packagesCollection.where("vip", "==", true).where("isPublic", "==", true).limit(6).get();
+  query.docs.forEach((rawData, idx) => {
+    packages.push(rawData.data());
+  })
+  return packages;
+}
+
+export const changePremium = async (email:any) => {
+  const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
+  const id = getDoc.docs[0].id;
+  usersCollection2.doc(id).update({
+    isVIP: true,
+    vipCount: 5,
+  })
+
+}
+
+export const checkVIP = async (email: any) => {
+  return true
+}
+
+export const makeRegular = async (packageId: any, email: any) => {
+  const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
+  const enterpriseId = getDoc.docs[0].id;
+  let count = getDoc.docs[0].data().vipCount + 1;
+  if (count > 0) {
+    
+    usersCollection2.doc(enterpriseId).update({
+      vipCount: count,
+    })
+
+    packagesCollection.doc(packageId.toString()).update({
+      vip: false,
+    })
+  } else {
+    // da error y no se procesa, hay que cambiar esto tambien en administratePackagesScreen para que no procesa si hubo error, linea 161
+  }
+}
+
+export const makeVIP = async (packageId: any, email: any) => {
+  const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
+  const enterpriseId = getDoc.docs[0].id;
+  let count = getDoc.docs[0].data().vipCount - 1;
+  console.log(count)
+  if (count > 0) {
+    
+    await usersCollection2.doc(enterpriseId).update({
+      vipCount: count,
+    });
+
+    await packagesCollection.doc(packageId.toString()).update({
+      vip: true,
+    });
+  } else {
+    // da error y...
+  }
+}

@@ -2,31 +2,37 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import {useUser, UserProvider} from '../../Context/UserContext';
-import {
-  getFavorites,
-  getPackage,
-  listTipoPackage,
-  LoadingScreen,
-} from '../../firebase/Firestore';
-import {useRoute} from '@react-navigation/native';
-import {Background} from '../../Layouts/Background';
+import { useUser, UserProvider } from "../../Context/UserContext"
+import { getFavorites, getPackage, listTipoPackage, LoadingScreen, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
+import { useRoute } from '@react-navigation/native';
+import { Background } from '../../Layouts/Background';
 
 const VistaPorTipoScreen = () => {
   const route = useRoute();
   const tipo = route.params?.parameter || '';
   const [packages, setPackages] = useState<any[]>([]);
 
+  const [loadingSomeThing, setLoadingSomething] = useState(false);
+
+
   useEffect(() => {
     const fetchData = async () => {
+      setLoadingSomething(true);
       const packageList = await listTipoPackage(tipo);
       setPackages(packageList);
+      setLoadingSomething(false);
     };
 
     fetchData();
   }, [tipo]);
 
   return (
+    <>
+
+        {loadingSomeThing && (
+            <LoadingScreenTransparentBackground/>
+        )}
+
     <ScrollView style={styles.container}>
       <View style={styles.titleBox}>
         <Text style={styles.title}>Paquetes por categoría</Text>
@@ -84,6 +90,7 @@ const VistaPorTipoScreen = () => {
         </View>
       )}
     </ScrollView>
+  </>
   );
 };
 

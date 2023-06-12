@@ -10,7 +10,7 @@ import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import currentLog from '../../firebase/UserData';
 import { deleteExpiredDocuments } from '../../firebase/DeletePackage';
-import { checkResponsibleNameExists } from '../../firebase/Firestore'; // Update the path to the FirebaseFunctions file
+import { LoadingScreenTransparentBackground, checkResponsibleNameExists } from '../../firebase/Firestore'; // Update the path to the FirebaseFunctions file
 
 interface UserProfileScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>,
@@ -30,16 +30,30 @@ export const UserProfileScreen = ({
   const user = currentLog();
   const [userExists, setUserExists] = useState(false);
 
+  const [loadingSomeThing, setLoadingSomething] = useState(false);
+
   useEffect(() => {
     const checkUserExists = async () => {
-      const exists = await checkResponsibleNameExists(user?.email);
+      setLoadingSomething(true);
+
+        const userEmail = user?.email;
+
+      // console.log(userEmail);
+      const exists = await checkResponsibleNameExists(userEmail);
+      // console.log(exists);
       setUserExists(exists);
+      setLoadingSomething(false);
     };
 
     checkUserExists();
   }, [user?.email]);
 
   return (
+    <>
+      {loadingSomeThing && (
+            <LoadingScreenTransparentBackground/>
+      )}
+        
     <View style={styles.container}>
 
         <View style={styles.backGround}>
@@ -101,6 +115,13 @@ export const UserProfileScreen = ({
             </TouchableOpacity>
           )}
 
+          {userExists && (
+            <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('PayPremiumScreen');}}>
+              <Text style={styles.txtInfo1}>Pasar a AventuraT Nitro</Text>
+              <SvgXml xml={profileArrowVector} />
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
             <Text style={styles.txtInfo1}>Cerrar sesión</Text>
             <SvgXml xml={profileArrowVector} />
@@ -109,6 +130,7 @@ export const UserProfileScreen = ({
 
       </View>
     </View>
+  </>
   );
 };
 

@@ -10,7 +10,7 @@ import { UserProfileScreen } from './Screens/UserProfileScreen/UserProfileScreen
 import BusinessProfileScreen from './Screens/BusinessProfileScreen/BusinessProfileScreen';
 import BusinessProfileScreen2 from './Screens/BusinessProfileScreen/BusinessProfileScreen2';
 import NavbarScreen from './Screens/NavbarScreen/NavbarScreen';
-import SearchScreen from './Screens/SearchScreen/SearchScreen';
+// import SearchScreen from './Screens/SearchScreen/SearchScreen';
 import FavoriteScreen from './Screens/FavoriteScreen/FavoriteScreen';
 import SearchResultScreen from './Screens/SearchResultScreen/SearchResultScreen';
 import RatingsScreen from './Screens/RatingsScreen/RatingsScreen';
@@ -23,6 +23,8 @@ import CreatePackageFormScreen from './Screens/CreatePackageFormScreen/CreatePac
 import HelpdeskScreen from './Screens/HelpdeskScreen/HelpdeskScreen';
 import AdministratePackagesScreen from './Screens/AdministratePackagesScreen/AdministratePackagesScreen';
 import PublishedPackages2 from './Components/Profiles/publishedPackages2';
+import PayPremiumScreen from './Screens/PayPremiumScreen/PayPremiumScreen';
+// import PublishedPackages2 from './Components/Profiles/publishedPackages2';
 import VistaPorTipoScreen from './Screens/VistaPorTipoScreen/VistaPorTipoScreen';
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +34,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="SearchResultScreen" component={SearchResultScreen} options={{ headerShown: false }} />
           <Stack.Screen name="AdministratePackagesScreen" component={AdministratePackagesScreen} options={{headerShown: false}}/>
           <Stack.Screen name="HelpdeskScreen" component={HelpdeskScreen} options={{ headerShown: false }} />
           <Stack.Screen name="CreatePackageFormScreen" component={CreatePackageFormScreen} options={{ headerShown: false }}/>
@@ -51,6 +54,7 @@ export default function App() {
           <Stack.Screen name="FeedbackScreen" component={FeedbackScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EnterpriseFormScreen" component={EnterpriseFormScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EnterpriseSessionScreen" component={EnterpriseSessionScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="PayPremiumScreen" component={PayPremiumScreen} options={{ headerShown: false }} />
           <Stack.Screen name="VistaPorTipoScreen" component={VistaPorTipoScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>

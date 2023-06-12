@@ -9,7 +9,7 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from  "react";
 //import RegisterEnterprise from '../../Components/registerEnterprise';
 import {ProfilePicture} from '../../firebase/PerfilPicture';
 // import RegisterEnterprise from '../../Components/registerEnterprise';
@@ -22,7 +22,7 @@ import menuBar from '../../vectores/menuBar';
 import {SvgXml} from 'react-native-svg';
 import InputSearch from '../../Components/InputSearch';
 import PopularPackages from '../../Components/PopularPackages';
-import { useUser } from '../../Context/UserContext';
+import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 
 interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -36,6 +36,9 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
   // const handleOpenForm = () => {
   //   setShowForm(true);
   // };
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [loadingSomeThing, setLoadingSomething] = useState(false);
+
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -44,6 +47,12 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
     return () => backHandler.remove();
   }, []);
   return (
+    <>
+
+        {loadingSomeThing && (
+            <LoadingScreenTransparentBackground/>
+        )}
+
     <ScrollView style={styles.background}>
       <View style={styles.navbar}>
         <Pressable
@@ -67,9 +76,8 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
           destinationNavigationComponentName="UserProfileScreen"
         />
       </View>
-
+      <InputSearch navigation={navigation} areYouInSearchResult={false} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} defaultValue={undefined}/>
       <View style={styles.Container2}>
-        <InputSearch />
         <View style={styles.Caracteristicas}>
           <TouchableOpacity
             onPress={() => {
@@ -133,35 +141,19 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
       </View>
       <View style={styles.MyComponent}>
         <Text style={styles.title1}>Destinos Populares</Text>
-        <Carrousel navigation={navigation} />
+        <Carrousel navigation={navigation} setLoadingSomething={setLoadingSomething}/>
       </View>
       <View style={styles.Container3}>
         <Text style={styles.title}>Paquetes Populares</Text>
         <View style={styles.ContainerPackages}>
-          <Pressable
-            onPress={() => {
-              Alert.alert('Funcionalidad en desarrollo');
-            }}>
-            <PopularPackages />
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              Alert.alert('Funcionalidad en desarrollo');
-            }}>
-            <PopularPackages />
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              Alert.alert('Funcionalidad en desarrollo');
-            }}>
-            <PopularPackages />
-          </Pressable>
+            <PopularPackages navigation={navigation} />
         </View>
         <TouchableOpacity style={styles.showMore}>
           <Text style={styles.moreText}>Ver más</Text>
       </TouchableOpacity>
       </View>
     </ScrollView>
+    </>
   );
 };
 
