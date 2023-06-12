@@ -437,7 +437,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             </View>
         )}
 
-        
+
         <View style={styles.usingAlbannyVectorBox}>
             <SvgXml
               xml={vectorHelpdeskScreen}
@@ -446,11 +446,9 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             />
         </View>
 
-        
-        <View style={styles.giantBox}>
-        
 
-        
+        <View style={styles.giantBox}>
+
         <View style={styles.firstBox}>
             <TouchableOpacity style={styles.comebackButtonBox}>
                 <Image source={require('../../images/comeBackLogo.png')}/>
@@ -500,7 +498,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
         </View>
     </>
-  );
+    );
 };
 
 export default AdministratePackagesScreen;
@@ -553,7 +551,7 @@ const styles = StyleSheet.create({
         width:'100%',
         height: '100%',
         // flex: 1,
-        position: 'absolute'
+        position: 'absolute',
 
     },
 
