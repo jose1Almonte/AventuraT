@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Pressable, ScrollView, Alert } from 'react-native';
+import { Text, View, StyleSheet, Pressable, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import vectorPerfil from '../../vectores/vectorPerfil';
@@ -13,6 +13,7 @@ import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
 import { LoadingScreenTransparentBackground, returnEnterpisePic } from '../../firebase/Firestore';
 import profileVector from '../../vectores/vectorPerfil';
+import profileArrowVector from '../../vectores/vectorPerfilFlecha';
 
 interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -25,6 +26,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
   const [nameEnterprise, setNameEnterprise] = useState(null);
 
   const [loadingSomeThing, setLoadingSomeThing] = useState(false);
+  const [userExists, setUserExists] = useState(false);
 
   useEffect(() => {
     const fetchEnterprisePic = async () => {
@@ -100,6 +102,13 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
             <View style={styles.buttons}>
               <EditProfileButton />
               <EditPackageButton navigation={navigation} />
+
+              {userExists && (
+            <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen');}}>
+              <Text style={styles.txtInfo1}>Crear paquete</Text>
+              <SvgXml xml={profileArrowVector} />
+            </TouchableOpacity>
+          )}
             </View>
             <View style={styles.bottomInfo}>
               <Text style={styles.titlePack}>Paquetes publicados</Text>
@@ -244,5 +253,20 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'center',
     gap: 5,
+  },
+  containerInfo: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: 344,
+    borderBottomWidth: 1,
+    borderBottomColor: '#CFD8E2',
+    padding: 2,
+  },
+  txtInfo1: {
+    color: '#1881B1',
+    fontSize: 16,
+    fontFamily: 'Poppins-Regular',
   },
 });

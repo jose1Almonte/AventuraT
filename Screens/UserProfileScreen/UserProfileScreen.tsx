@@ -65,7 +65,7 @@ export const UserProfileScreen = ({
 
         <View style={styles.topInfo}>
           <View style={styles.photoBox}>
-            <PhotoProfile size={90} imageSource={user?.photoURL ? user.photoURL : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'}/>
+            <PhotoProfile size={100} imageSource={user?.photoURL ? user.photoURL : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'}/>
           </View>
 
           <View style = {styles.detailsUserBox}>
@@ -74,7 +74,15 @@ export const UserProfileScreen = ({
 
           <View style = {styles.editProfileButtonBox}>
             <EditProfileButton />
+
+            {userExists && (
+            <TouchableOpacity style={styles.containerButton} onPress={() => { navigation.navigate('BusinessProfileScreen');}}>
+              <Text style={styles.txtButton}>Perfil empresarial</Text>
+            </TouchableOpacity>
+          )}
           </View>
+
+          
 
         </View>
 
@@ -101,12 +109,12 @@ export const UserProfileScreen = ({
               <SvgXml xml={profileArrowVector} />
             </TouchableOpacity>
           )} */}
-          {userExists && (
+          {/* {userExists && (
             <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessProfileScreen');}}>
               <Text style={styles.txtInfo1}>Perfil empresarial</Text>
               <SvgXml xml={profileArrowVector} />
             </TouchableOpacity>
-          )}
+          )} */}
 
           {userExists && (
             <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen');}}>
@@ -179,8 +187,19 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
+    gap: 30
   },
-
+  containerButton: {
+    display: 'flex',
+    alignItems: 'center',
+    height: 40,
+    width: 145,
+    borderRadius: 50,
+    justifyContent: 'center',
+    // alignItems: 'center',
+    backgroundColor: '#1881B1',
+  },
   containerInfo: {
     display: 'flex',
     flexDirection: 'row',
@@ -219,6 +238,11 @@ const styles = StyleSheet.create({
     color: '#1881B1',
     fontSize: 16,
     fontFamily: 'Poppins-Regular',
+  },
+  txtButton: {
+    color: 'white',
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
   },
   container4: {
     flex: 1,
