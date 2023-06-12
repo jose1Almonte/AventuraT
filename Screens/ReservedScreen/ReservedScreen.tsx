@@ -11,26 +11,19 @@ interface ReservedScreenProps {
 const ReservedScreen = ({ navigation }: ReservedScreenProps) => {
     //let { isLogged } = useUser();
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                <View style={styles.info}>
-                    <View style={styles.topInfo}>
-                        <Text style={styles.txt}>Paquetes reservados</Text>
-                    </View>
-                    <Text style={styles.txt2}>(Viajes pendientes)</Text>
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate('MobilePaymentConfirmScreen');
-                        /*
-                        if (isLogged) {
-                            navigation.navigate('MobilePaymentConfirmScreen');
-                        } else {
-                            //Alert.alert('Inicie sesión', 'Para ver sus reservas debe iniciar sesión');
-                            navigation.navigate('LoginScreen');
-                        }*/
-                        }}>
-                        <ReservedPackages/>
-                    </TouchableOpacity>
+        <ScrollView style={styles.container}>
+            <View style={styles.info}>
+                <View style={styles.topInfo}>
+                    <Text style={styles.txt}>Paquetes reservados</Text>
                 </View>
+                <Text style={styles.txt2}>(Viajes pendientes)</Text>
+                <TouchableOpacity onPress={() => {
+                    if (true) { // si es estatus R...
+                        navigation.navigate('MobilePaymentConfirmScreen');
+                    } 
+                    }}>
+                    <ReservedPackages/>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     );
