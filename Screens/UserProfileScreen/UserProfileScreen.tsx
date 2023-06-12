@@ -189,8 +189,19 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
+    gap: 30
   },
-
+  containerButton: {
+    display: 'flex',
+    alignItems: 'center',
+    height: 40,
+    width: 145,
+    borderRadius: 50,
+    justifyContent: 'center',
+    // alignItems: 'center',
+    backgroundColor: '#1881B1',
+  },
   containerInfo: {
     display: 'flex',
     flexDirection: 'row',
@@ -229,6 +240,11 @@ const styles = StyleSheet.create({
     color: '#1881B1',
     fontSize: 16,
     fontFamily: 'Poppins-Regular',
+  },
+  txtButton: {
+    color: 'white',
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
   },
   container4: {
     flex: 1,

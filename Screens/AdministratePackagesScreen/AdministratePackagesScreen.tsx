@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, ScrollView, Dimensions } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Background } from '../../Layouts/Background';
 import { useUser } from '../../Context/UserContext';
@@ -7,6 +7,8 @@ import { searchPackagesByEmail, searchPackagesExpiredByEmail } from '../../fireb
 import { deleteAllByEmail, deleteExpiredDocumentsByEmail, deleteSelectedPackage } from '../../firebase/DeletePackage';
 import { changePackageIsPublicValue, checkVIP, makeRegular, makeVIP} from '../../firebase/Firestore';
 import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
+import { SvgXml } from 'react-native-svg';
+import vectorHelpdeskScreen from '../../vectores/vectorHelpdeskScreen';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 // import { NavigationProp } from '@react-navigation/native';
 
@@ -54,7 +56,6 @@ const CardBox = ({data, handleWantPersonallyErase, changeIsPublic, index, setInd
                         <View style={styles.firstRowLeft}>
                                 <Text style={styles.text}>Caduca {expireDay}/{expireMonth}/{expireYear}</Text>
                         </View>
-
                         <TouchableOpacity style ={styles.firstRowCenter} onPress={() => {changeIsPublic(data, setDataIsPublic);}}>
                             {dataIsPublic ? (
                                     <Text style={styles.text}> Publico </Text>
@@ -155,7 +156,7 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                             <View style={stylesIndividualCard.firstRow}>
                                 <View style={stylesIndividualCard.firstRowLeft}>
                                     <View style={stylesIndividualCard.firstRowLeftBox}>
-                                        <Text>Edit</Text>
+                                        <Text>Editar</Text>
                                     </View>
                                 </View>
                                 <TouchableOpacity style={stylesIndividualCard.firstRowCenter} onPress={() => {changeIsPublic(data, setDataIsPublic);}}>
@@ -270,11 +271,11 @@ const WantEraseView = ({setWantErase, eraseExpired, setEraseExpired, eraseAll, s
         <View style={stylesWantErase.giantWantErase}>
             <View style={stylesWantErase.bigBox}>
                 {eraseExpired && (
-                    <WantEraseViewAuxiliar setWantErase={setWantErase} titleText={'¿Estas segur@ de borrar expirados?'} text1="Si, borra esa vaina" text2="No vale, pobrecito" eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} ifPressYes={handleEraseExpired}/>
+                    <WantEraseViewAuxiliar setWantErase={setWantErase} titleText={'¿Estás seguro de borrar expirados?'} text1="Sí, borrar todo" text2="Cancelar" eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} ifPressYes={handleEraseExpired}/>
                     )
                 }
                 {eraseAll && (
-                    <WantEraseViewAuxiliar setWantErase={setWantErase} titleText={'¿Estas segur@ de borrar todo?'} text1="Si, borra esa vaina" text2="No vale, pobrecito" eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} ifPressYes={handleEraseAll}/>
+                    <WantEraseViewAuxiliar setWantErase={setWantErase} titleText={'¿Estás seguro de borrar todo?'} text1="Sí, borrar todo" text2="Cancelar" eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} ifPressYes={handleEraseAll}/>
                 )}
             </View>
         </View>
@@ -374,7 +375,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
     useEffect(()=>{
             if (!user){
-            Alert.alert('Te pasaste man, no estas logeado');
+            Alert.alert('Debes iniciar sesión');
             navigation.navigate('HomeScreen');
         }
     },[user, navigation]);
@@ -405,6 +406,8 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
             handleQuerySnapshot();
     }, [user?.email, ready, searchingExpiredPackages]);
+    const screenWidth = Dimensions.get('window').width;
+    const screenHeight = Dimensions.get('window').height;
 
 
     return (
@@ -434,16 +437,27 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             </View>
         )}
 
+
+        <View style={styles.usingAlbannyVectorBox}>
+            <SvgXml
+              xml={vectorHelpdeskScreen}
+              width={`${screenWidth * 1}`}
+              height={`${screenHeight * 0.515}`}
+            />
+        </View>
+
+
         <View style={styles.giantBox}>
+
         <View style={styles.firstBox}>
-            <TouchableOpacity style={styles.comebackButtonBox}>
+            <TouchableOpacity style={styles.comebackButtonBox} onPress={()=>{navigation.goBack();}}>
                 <Image source={require('../../images/comeBackLogo.png')}/>
             </TouchableOpacity>
             <View style={styles.titleBox}>
                 <Text style={styles.title}>AventuraT con tus Paquetes</Text>
             </View>
             <View style={styles.profilePictureBox}>
-                <TouchableOpacity style={styles.profilePictureMiniBox}>
+                <TouchableOpacity style={styles.profilePictureMiniBox} onPress={() => {navigation.navigate('UserProfileScreen');}}>
                 <Image source={{uri: user?.photoURL || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAhFBMVEX///8rLzInKy5FSEogJSh8fX8WHCAkKSwdIiYjJysYHiIUGh4hJikXHSGAgoMbICTf4ODu7u4PFhugoaL5+fnU1NVbXmBKTU8ADRPKy8u4ubqEhYc2OTyVlperrK3n5+dQU1XGxsZsbnCwsbKMjo9kZmg7P0G8vb5wcnSRk5UxNTlWWlsvAbyPAAAGZ0lEQVR4nO2dWXuiShCGQ8uOsgthXFCjaMz//38HxqPRDCpIF1XM1HuVi1z093RTW1eXb28MwzAMwzAMwzAMwzAMwzAMwzD/GP56Odsk6Wg0SpPNbLn2sRcklWmUKKZum2NDVBhj09ZNJYmm2AuTQ+ZOQs9Q/sTwwombYS+vK3l0DNUadWfU8Bjl2IvsgO96tnigr0LYnjvUbzJ3PfOJvBOm5w5xH+NINNP3W6OIYuwFt2Wa6o31VejpwAzrwq6zno8w7AX2olsQfLXbwP+38SvAXnhTpsojB3EfVRnISV2HzzzEPUS4xl58E36FL+qrCH9hL/85H04HgYrifGALeMbe6yRQUbw9toTHZOqr3+AZoZIOxnOlq8BSokI4hItTq7NARbFSuhGca0sQqCi2iy3kHut3KQIV5Z2oW4xlHNETFs1zqjXPlp5hathi6ph2c/W3OBQj1K+2+dIjjC9sOX+ylrmF5SbSMzZSt5DiJmav5LyP0KkFb4exZIXjA7akW/LXsvqHEmmFp5GceO0aO8IWdcNKrp2pMFbYoq7xu1Qu7hFSKvYDHFJix3Qn/5CWx3SHLeubWL4lrVDpZBi+rMTwlnc6H+LHBEThhE5lcSsvM7zG3GILu5BAGJrS1CTYwi4cu9cQ6xBHbGEXIPx9RYgt7EwMY0pLY0rFXeRgCqmkF0DukJBDBIm7K8jE3v+Awr/+lAZgCsk0Z4ApxBZ2ASL/rbCxhV0YAUVtI2xhFzayi6UnxhtsYRcWQNkTnU63vdxbmTMOncYToMCUTFhaMocwNWKOLesKF6LYplJqyfgF8SE6lLr4ApA9JBOzVQB4RELesKJTU2k9xFpNA+nWVMxJHdK3t23XvtKfeHTKwSd8eS1fJywq2e8FiT1fFQT7vny51nRMbgvf3mYyN9GcYcupIZDa10bMkJ5YyvOJ4RJbTD0rWfbUWmFLuUMuqyJlE0oMb5EUuxGL126YyehQ1Cna0TPxrrvLMHdUbg1rCTq/KbFSko7im3zezS0ac7JW5kwuukg0BHmBVar4eklDpZYU1hOsXvWL9moQAkuLqr1WenM00lb0hkhtb1ItlVI/6VPajlQY4FCFeBG22UYrXAznhJ7xk/em9TfxnhBM6RuQpWET32iEKbX3Mc1ZJ575eCOF6SX0HnG1wd8Wzt0X7EJ1iu0wz+c1ceamnq4atzKFoepe6mbDsy+1xP6Hm8yd0Jl4nul5k/KveeJ++H+JvDNBPt0vo8ViES3303wg4RnDDJu2VmRgVifONENr4+h8zdIG5DmC5SpUS2++2zdbc7zfOaqihulyGBY2WMydk3e3nGL2dGPibFY4pzRE6MdP+hqDxfFqGKQwJ8Vhf/+4+vtDMbmKXIWnbIlrjBTvRxAqxrpVHJbZT5l+tjwUhj7+GbN6CuVUPyv02iBbWLauT46rjbYtY5qttlkdJ7puW/UR+WRONdkIDo9TXiEs1axQLfH4H983JI/q3pB3za1a9K6fAu3lWYJ1iFAjto3TkfSOoRGp2ttSBZipoBK6zHeB+ryptNDGXzBPuUu/QeMhcFDAzBuoMAsC9safy+7Zu2aMf2EKK7C6E0auNkILRJfY9da+CVaBeFCDAuZJ1w+JI7zkP4WzoteoKyyBB9mR2j08pMlmC5hIpo4QJStey56y9wgdISnOgQaa1CMQPP+uHytzRu19LFbU30d4wun5U/RhXv4+wuw3tvnqw9XfMu51oqnEtvzm9NnAH/fpKL6Z9Be9uf1/hRVmb1UNsHk0z+htXs0GOie8R18PZ6dQo0yeY/dTQwWa89GEfjZx2lfOVIfXxyZq/Qakt6g9PC3N+0wp/qSH1wogI4ObAz9cOAaamNQUAf4jNBmWtz8TQvcTg8xpaQP0TJcY94z+BvaYrrEPaXlMYYtS6Ie0PKawT0yx5SnVr5ZBCpxCTUhsA+hETGR3f8KGrGaA/EJAW0B/UQDfklYADsEGGzbbDsAPEWg+YlsA5yl+4tTYfmJ+gilMsEpQtwCaGpABkO2BGxkZU/AVFWA/AIlw4VQP2DVURiGiqbChsuBeb+4fAXar/0FGIdRP7ESYteBrPKiCGxGHD+jypU7V6wLYRD4CJYwTYPU21BuLa8BuL1hhb7BCVsgK8WGFrPC+Qk/QwINSOCtGNCgoTzhlGIZhGIZhGIZhGIZhGIZhGIa5x3/FNXoPH1MmUAAAAABJRU5ErkJggg=='}} style={styles.image}/>
                 </TouchableOpacity>
             </View>
@@ -484,23 +498,41 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
         </View>
     </>
-  );
+    );
 };
 
 export default AdministratePackagesScreen;
 
 const styles = StyleSheet.create({
+
+    usingAlbannyVectorBox:{
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        width: '100%',
+        // backgroundColor: 'yellow',
+        zIndex: 0.1,
+
+    },
     giantBox:{
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        // backgroundColor: '#a01d1d',
+        // position: 'absolute'
+        zIndex: 0.2,
     },
 
     firstBox:{
-        flex: 10.25,
-        // backgroundColor: 'yellow',
+        flex: 10.5,
+        // backgroundColor: "black",
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-end',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        // alignContent: 'center',
+        alignItems: 'center',
+        width:'100%',
+        // height: 80,
+        // marginBottom: 50
+        // position: 'absolute'
     },
 
     secondBox:{
@@ -511,8 +543,16 @@ const styles = StyleSheet.create({
 
     thirdBox:{
         flex: 67.25,
-        backgroundColor: '#1DB5BE',
+        // backgroundColor: '#1DB5BE',
         alignItems: 'center',
+    },
+    contenedorInfo:{
+        // backgroundColor: "red",
+        width:'100%',
+        height: '100%',
+        // flex: 1,
+        position: 'absolute',
+
     },
 
     scrollView:{
@@ -529,8 +569,8 @@ const styles = StyleSheet.create({
         width: '16.25%',
         // backgroundColor:'black',
         alignItems: 'center',
-        justifyContent: 'center',
-        height: '73.17%',
+        // justifyContent: 'center',
+        // height: '73.17%',
     },
     titleBox:{
         width: '67.5%',
@@ -538,25 +578,27 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         alignItems:'center',
         justifyContent: 'center',
-        height: '73.17%',
+        // height: '20%',
     },
     profilePictureBox:{
-        width: '16.25%',
+        width: 80,
         // backgroundColor:'black',
-        height: '73.17%',
+        height: 80,
         // borderRadius: 50,
         // overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
     },
     title:{
-        // fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Medium',
         // fontStyle: 'normal',
+        width: '70%',
         fontWeight: '600',
         fontSize: 20,
         lineHeight: 30,
         textAlign: 'center',
-        color: '#000000',
+        color: 'black',
+        // backgroundColor: 'red',
     },
 
     buttonsBox:{
@@ -745,7 +787,7 @@ const styles = StyleSheet.create({
     backgroundColorCard:{
         flex: 1,
         width: '100%',
-        backgroundColor: 'rgba(0,0,0,0.3)',
+        backgroundColor: 'rgba(40, 92, 99, 0.3)',
     },
 
 });

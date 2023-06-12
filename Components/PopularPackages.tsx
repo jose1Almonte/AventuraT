@@ -44,7 +44,7 @@ export const PopularPackages = ({ navigation }: popularProps) => {
         }
         {
           loading &&
-          <Text>Estoy cargandoooooooooooooooooooooooo</Text>
+          <Text style={styles.text}>Cargando...</Text>
         }
       </>
       );
@@ -53,7 +53,11 @@ export const PopularPackages = ({ navigation }: popularProps) => {
 
 
 const styles = StyleSheet.create({
-
+text:{
+  fontFamily: 'Poppins-Regular',
+  fontSize: 12,
+  color: 'black'
+}
 });
 
 export default PopularPackages;

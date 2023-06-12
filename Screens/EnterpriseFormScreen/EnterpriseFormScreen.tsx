@@ -99,7 +99,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
     }
 
     if (resourcePath === '' || resourcePath2 === '') {
-      Alert.alert('Error', 'Dude introduce pictures vale');
+      Alert.alert('Error', 'Agrega una imagen');
       setLoading(false);
     } else {
 
