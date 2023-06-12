@@ -19,10 +19,10 @@ export const ReservedPackages = ({ item, navigation }: reservedProps) => {
           Alert.alert('Su pago está siendo revisado...');
           break;
         case 'R':
-          navigation.navigate('MobilePaymentConfirmScreen', { data : item});
+          navigation.navigate('MobilePaymentConfirmScreen', { data: item.data(), id: item.id });
           break;
         default:
-          navigation.navigate('DetailsScreenUser', {data : item.data(), reserved: true});
+          navigation.navigate('DetailsScreenUser', { data: item.data(), reserved: true });
           break;
       }
     }}>

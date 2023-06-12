@@ -10,9 +10,9 @@ interface ReservedProps {
 }
 
 export const BusinessReservedPackages = ({ paids, navigation }: ReservedProps) => {
-  const packageTemp: any = paids.paids[0].data();
+  const packageTemp: any = paids.paids[0].data;
   return (
-    <TouchableOpacity onPress={() => { navigation.navigate('DetailReservedScreen', { data: paids.paids }) }}>
+    <TouchableOpacity onPress={() => { navigation.navigate('DetailReservedScreen', { info: paids.paids }) }}>
       <View style={styles.containerPrim}>
         <View style={styles.container}>
           <View style={styles.container1}>

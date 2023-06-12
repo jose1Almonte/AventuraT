@@ -8,8 +8,7 @@ interface ReservedCardProps {
 
 const ReservedCard = ({ paid }: ReservedCardProps) => {
     const [confirm, setConfirm] = useState(false);
-    let tempPaid: any = paid.data();
-
+    let tempPaid: any = paid.data;
 
     return (
         <>

@@ -33,7 +33,7 @@ const BusinessReservedScreen = ({ navigation }: BusinessReservedScreenProps) => 
                 if (!allIdPackagePaid.includes(doc.data().id)) {
                     let idTemp = doc.data().id;
                     let paidsTemp: any = [];
-                    querySnapshot.forEach(docPaid => docPaid.data().id == idTemp ? paidsTemp.push(docPaid) : paidsTemp = paidsTemp);
+                    querySnapshot.forEach(docPaid => docPaid.data().id == idTemp ? paidsTemp.push({ data: docPaid.data(), id: docPaid.id }) : paidsTemp = paidsTemp);
                     tempDataPaid = { idPackage: idTemp, paids: paidsTemp };
                     dataPaids.push(tempDataPaid);
                     allIdPackagePaid.push(idTemp);

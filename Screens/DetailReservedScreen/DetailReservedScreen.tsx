@@ -10,8 +10,8 @@ interface DetailReservedScreenProps {
 
 const DetailReservedScreen = ({ route }: DetailReservedScreenProps) => {
     //@ts-ignore
-    let tempPackage: any = route.params.data[0].data();
-    let data: any[] = route.params.data;
+    let tempPackage: any = route.params.info[0].data;
+    let data: any[] = route.params.info;
 
     const renderItem = ({ item }: any) => {
         return (<ReservedCard paid={item} />);
@@ -25,7 +25,7 @@ const DetailReservedScreen = ({ route }: DetailReservedScreenProps) => {
                     <Text style={styles.txt2}>{tempPackage.name}</Text>
                     <FlatList
                         data={data}
-                        keyExtractor={(item) => item.data().compradorMail}
+                        keyExtractor={(item) => item.id}
                         renderItem={renderItem}
                     />
                 </View>
