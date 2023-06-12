@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Alert, FlatList} from 'react-native';
 import React, { useEffect , useState } from 'react';
 import { NavigationProp } from '@react-navigation/native';
 import ReservedPackages from '../../Components/ReservedPackages';
@@ -26,24 +26,22 @@ const ReservedScreen = ({ navigation }: ReservedScreenProps) => {
     }, []);
 
     const renderItem = ({item}: any) => {
-        return (<ReservedPackages item={item.data()}/>);
+        return (<ReservedPackages item={item} navigation={navigation}/>);
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.info}>
                 <View style={styles.topInfo}>
                     <Text style={styles.txt}>Paquetes reservados</Text>
                 </View>
                 <Text style={styles.txt2}>(Viajes pendientes)</Text>
-                <TouchableOpacity onPress={() => {
-                    if (true) { // si es estatus R...
-                        navigation.navigate('MobilePaymentConfirmScreen');
-                    } 
-                    }}>
-                </TouchableOpacity>
+                <FlatList
+                    data={data}
+                    renderItem={renderItem}
+                />
             </View>
-        </ScrollView>
+        </View>
     );
 };
 

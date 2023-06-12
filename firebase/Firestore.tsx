@@ -339,10 +339,18 @@ export const addPaidPackage = async (compradorMail: any, photoCompradorURL: any,
   }
 };
 
-export const updatePaidPackage = async (id: string, status: string) => {
-  await paidPackages.doc(id).update({
-    status: status
-  });
+export const updatePaidPackage = async (id: string, status: string, newRef?: any) => {
+  if (newRef) {
+    await paidPackages.doc(id).update({
+      status: status,
+      mobilePayment: newRef
+    });
+  } else {
+    await paidPackages.doc(id).update({
+      status: status
+    });
+  }
+  
 };
 
 

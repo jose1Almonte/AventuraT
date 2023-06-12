@@ -24,6 +24,10 @@ interface detailProps {
 const DetailsScreenUser = ({ navigation, route }: detailProps) => {
   let { isLogged } = useUser();
   let packageIn: PackageI = route.params.data;
+  let packageReserved: boolean = false;
+  if (route.params.reserved) {
+    packageReserved = route.params.reserved;
+  }
 
   const startDate = packageIn.startDate.toDate();
   const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
@@ -45,7 +49,6 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoadingSomething(true);
-      // console.log('packageIn?.emailEnterprise: ' ,packageIn.emailEnterprise);
       if (packageIn && packageIn.emailEnterprise) {
 
         let querySnapshot = await firestore().collection('users').where('email', '==', packageIn.emailEnterprise).get();
@@ -56,14 +59,9 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         }
 
         querySnapshot.forEach((doc) => {
-          // console.log(doc.data().displayName);
-          // console.log(doc.data())
           setFullData(doc.data());
-          // console.log('dataaa: ',doc.data().displayName);
-          // console.log(doc.data)
           setNameEnterprise(doc.data().displayName);
           setPhotoUrl(doc.data().photoURL);
-          console.log('email enterprise', packageIn.emailEnterprise);
         });
       }
       setLoadingSomething(false);
@@ -142,8 +140,10 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         <View style={styles.contenedorLikes}>
           <ButtonLikes packageDetails={packageIn} />
         </View>
-        <Pressable onPress={() => {
-          if (isLogged) {
+        <TouchableOpacity onPress={() => {
+          if (packageReserved) {
+            Alert.alert('Este paquete ya fue reservado');
+          } else if (isLogged) {
             navigation.navigate('MobilePaymentScreen',{data:packageIn});
           } else {
             Alert.alert('Inicie sesión', 'Para reservar debe iniciar sesión');
@@ -153,7 +153,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
           <View style={styles.buttonReserva}>
             <Text style={styles.titulo}>Pagar</Text>
           </View>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </ScrollView>
     </>

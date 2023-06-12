@@ -13,7 +13,7 @@ import {
   import { NavigationProp } from '@react-navigation/native';
   import { useUser } from '../../Context/UserContext';
   import { PackageI } from '../../models/package.interface';
-  import { addPaidPackage } from '../../firebase/Firestore';
+  import { updatePaidPackage } from '../../firebase/Firestore';
   import firestore from '@react-native-firebase/firestore';
   import { SvgXml } from 'react-native-svg';
   import vectorHelpdeskScreen from '../../vectores/vectorHelpdeskScreen';
@@ -30,7 +30,7 @@ import {
   
   const MobilePaymentConfirmScreen = ({ navigation, route }: PackaI) => {
     const { user, isLogged } = useUser();
-    let packageIn: PackageI = route.params.data;
+    let packageIn: PackageI = route.params.data.data();
     const [nameEnterprise, setNameEnterprise] = useState('');
     const [photoURL, setPhotoUrl] = useState('');
     const [mobilePayment, setMobilePayment] = useState<MobilePayment>({
@@ -68,28 +68,10 @@ import {
           );
   
           if (packageIn) {
-            await addPaidPackage(
-              user.email,
-              user.photoURL,
-              packageIn.id,
-              packageIn.name,
-              packageIn.availability,
-              packageIn.price,
-              packageIn.description,
-              packageIn.mainImageUrl,
-              packageIn.location,
-              packageIn.endDate,
-              packageIn.startDate,
-              packageIn.emailEnterprise,
-              packageIn.rating,
-              packageIn.expireDate,
-              mobilePayment,
-              nameEnterprise,
-              photoURL,
-            );
+            // @ts-ignore
+            await updatePaidPackage(route.params.data.id, 'E', mobilePayment);
             navigation.navigate('HomeScreen');
           } else {
-            console.log(packageIn);
             Alert.alert('Package data not available');
           }
         }
@@ -188,6 +170,7 @@ import {
       alignItems: 'center',
       justifyContent: 'center',
       marginBottom: '3%',
+      color: '#000'
     },
     fifthBigBox: {
       flex: 11.25,
@@ -245,11 +228,12 @@ import {
       marginBottom: 8,
     },
     inputReferenceNumber: {
+      color: '#000',
       borderBottomColor: '#1881B1',
       borderBottomWidth: 1,
       width: 260,
       fontSize: 18,
-      textAlign: 'center',
+      textAlign: 'center'
     },
     buttonIPaid: {
       backgroundColor: '#1881B1',
