@@ -2,14 +2,12 @@ import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Alert} from 'reac
 import React from 'react';
 import { NavigationProp } from '@react-navigation/native';
 import ReservedPackages from '../../Components/ReservedPackages';
-//import { useUser } from '../../Context/UserContext';
 
 interface ReservedScreenProps {
     navigation: NavigationProp<Record<string, object | undefined>>;
 }
 
 const ReservedScreen = ({ navigation }: ReservedScreenProps) => {
-    //let { isLogged } = useUser();
     return (
         <ScrollView style={styles.container}>
             <View style={styles.info}>
