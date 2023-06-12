@@ -78,19 +78,17 @@ const styles = StyleSheet.create({
         height: 12,
     },
     textPack: {
-        padding: 6,
+        // padding: 6,
         color: 'black',
         fontSize: 12,
         fontFamily: 'Poppins-Medium',
         justifyContent: "center",
     },
     ContainerText: {
-        marginTop: 80,
+        marginTop: 90,
         display: 'flex',
+        marginLeft: 8,
         justifyContent: 'center',
-        alignContent: "flex-end",
-        alignSelf: "flex-end",
-        alignItems: 'flex-start',
     },
     img: {
         marginTop: 3,
@@ -103,8 +101,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         display: 'flex',
         alignItems: 'center',
-        gap: 3,
-        marginLeft: 12,
+        gap: 5,
     },
     ContainerLikes: {
         justifyContent: 'center',
@@ -119,7 +116,7 @@ const styles = StyleSheet.create({
     textLocation: {
         color: 'rgba(0, 0, 0, 0.74)',
         fontFamily: 'Poppins-Regular',
-        fontSize: 10,
+        fontSize: 11,
     },
 });
 
