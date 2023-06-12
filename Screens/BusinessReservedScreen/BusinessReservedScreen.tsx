@@ -1,27 +1,68 @@
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
-import React from 'react';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { NavigationProp } from '@react-navigation/native';
 import BusinessReservedPackages from '../../Components/BusinessReservedPackages';
+import firestore from '@react-native-firebase/firestore';
 
 interface BusinessReservedScreenProps {
     navigation: NavigationProp<Record<string, object | undefined>>;
 }
 
+interface DataPaid {
+    idPackage: string;
+    paids: any[];
+}
+
 const BusinessReservedScreen = ({ navigation }: BusinessReservedScreenProps) => {
+
+    const [data, setData] = useState();
+    let allIdPackagePaid: string[] = [];
+    let dataPaids: DataPaid[] = [];
+    let tempDataPaid: DataPaid;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const querySnapshot = await firestore()
+                .collection('paidPackage')
+                .where('emailEnterprise', '==', 'jose.almonte@correo.unimet.edu.ve')
+                .where('status', '==', 'E')
+                .get();
+
+            querySnapshot.forEach((doc) => {
+
+                if (!allIdPackagePaid.includes(doc.data().id)) {
+                    let idTemp = doc.data().id;
+                    let paidsTemp: any = [];
+                    querySnapshot.forEach(docPaid => docPaid.data().id == idTemp ? paidsTemp.push(docPaid) : paidsTemp = paidsTemp);
+                    tempDataPaid = { idPackage: idTemp, paids: paidsTemp };
+                    dataPaids.push(tempDataPaid);
+                    allIdPackagePaid.push(idTemp);
+                }
+
+            });
+            // @ts-ignore
+            setData(dataPaids);
+        };
+        fetchData();
+    }, []);
+
+    const renderItem = ({ item }: any) => {
+        return (<BusinessReservedPackages paids={item} navigation={navigation} />);
+    };
+
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.info}>
                 <View style={styles.topInfo}>
                     <Text style={styles.txt}>Gestión de Pagos</Text>
                     <Text style={styles.txt}>de Paquetes</Text>
                 </View>
-                <TouchableOpacity onPress={() => {
-                    navigation.navigate('DetailReservedScreen');
-                    }}>
-                    <BusinessReservedPackages/>
-                </TouchableOpacity>
+                <FlatList
+                    data={data}
+                    renderItem={renderItem}
+                />
             </View>
-        </ScrollView>
+        </View>
     );
 };
 

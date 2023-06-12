@@ -28,7 +28,7 @@ interface PackaI {
   data?: PackageI;
 }
 
-const MobilePaymentScreen = ({ navigation, route }: PackaI) => {
+const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
   const { user, isLogged } = useUser();
   let packageIn: PackageI = route.params.data;
   const [nameEnterprise, setNameEnterprise] = useState('');
@@ -86,7 +86,9 @@ const MobilePaymentScreen = ({ navigation, route }: PackaI) => {
             mobilePayment,
             nameEnterprise,
             photoURL,
+            'E'
           );
+          Alert.alert('¡Pago enviado! Puede ver su status en Mis Reservas');
           navigation.navigate('HomeScreen');
         } else {
           console.log(packageIn);
@@ -120,7 +122,7 @@ const MobilePaymentScreen = ({ navigation, route }: PackaI) => {
         />
         {/* <Text style={styles.textTotal}>Total a pagar</Text><Text style={styles.textTotal}>Total a pagar</Text> */}
       </View>
-      
+
       <View style={styles.containerPrice}>
         <Text style={styles.textTotal}>Total a pagar</Text>
         <Text style={styles.textPrice}>$ {packageIn.price}</Text>
@@ -256,6 +258,7 @@ const styles = StyleSheet.create({
     width: 260,
     fontSize: 18,
     textAlign: 'center',
+    color: '#000'
   },
   buttonIPaid: {
     backgroundColor: '#1881B1',

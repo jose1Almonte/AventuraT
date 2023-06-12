@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, Text, Image} from 'react-native';
-import {SvgXml} from 'react-native-svg';
+import React, { Component } from 'react';
+import { View, StyleSheet, Text, Image } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 import vectorLocation from '../vectores/vectorLocation';
 interface reservedProps {
   item: any
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   containerPrim: {
     display: 'flex',
     marginTop: 25,
-    alignItems:'center',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   container: {
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     //gap: 6,
     alignItems: 'center',
-    marginBottom:40,
+    marginBottom: 40,
   },
   textPack: {
     color: 'black',
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
   },
   textPack2: {
-    paddingRight:20,
+    paddingRight: 20,
     padding: 2,
     color: 'red',
     fontSize: 12,

@@ -121,6 +121,7 @@ export const UserProfileScreen = ({
             {userExists && (
               <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessReservedScreen'); }}>
                 <Text style={styles.txtInfo1}>Gestión de Pagos de Paquetes</Text>
+                <SvgXml xml={profileArrowVector} />
               </TouchableOpacity>
             )}
 
