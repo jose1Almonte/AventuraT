@@ -137,13 +137,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#1DB5BE',
     padding: 16,
   },
-
   titleBox:{
     alignItems: 'center',
     justifyContent: 'center',
     height: 100,
   },
-
   title: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -162,12 +160,9 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#FFF',
     borderRadius: 20,
-    // padding: 16,
-    height: 120,
+    height: 130,
     marginBottom: 16,
     overflow: 'hidden',
-    // borderColor: 'black',
-    // borderWidth: 2,
   },
   imageUsed: {
     marginTop: 40,
@@ -176,78 +171,59 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   name: {
-    fontSize: 13,
-    // fontWeight: 'bold',
+    fontSize: 15,
+    width: '100%',
     marginTop: 4,
     color: 'black',
     fontFamily: 'Poppins-SemiBold',
-    // backgroundColor: 'red'
   },
   description: {
-    fontSize: 13,
-    // marginBottom: 6,
-    // backgroundColor: 'blue',
-    // height: '110%',
+    fontSize: 14,
+    width: '100%',
+    height: '115%',
     color: 'black',
     fontFamily: 'Poppins-Regular',
   },
+  price: {
+    marginTop: 6,
+    fontSize: 15,
+    alignSelf: 'center',
+    width: '100%',
+    color: 'black',
+    fontFamily: 'Poppins-SemiBold',
+  },
   containerPhotoPack: {
-    // borderRadius: 50,
-    // width: '100%',
-    // height: 200,
-    // marginBottom: 8,
     flex: 1,
   },
-
   layer:{
     backgroundColor: 'rgba(255,255,255,0.9)',
     width: '100%',
     flex: 1,
     flexDirection: 'row',
   },
-
-  price: {
-    marginTop: 4,
-    fontSize: 16,
-    // fontWeight: 'bold',
-    color: 'black',
-    fontFamily: 'Poppins-SemiBold',
-    // backgroundColor: 'green'
-  },
-
   firstBox:{
     width: '50%',
-    // backgroundColor: 'blue',
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 4
   },
-
   textBox:{
     width: '90%',
     height: 37,
     flexDirection: 'row',
     justifyContent:'space-between',
-    // backgroundColor: 'green',
   },
-
   secondBox:{
     width: '50%',
-    // backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
   },
-
   rightImage:{
     height:'95%',
     width: '95%',
     borderRadius: 20,
-    // backgroundColor: 'yellow',
-    // borderBottomEndRadius: 10
-    // borderColor: 'black',
-    // borderWidth: 1,
   },
 });
 
