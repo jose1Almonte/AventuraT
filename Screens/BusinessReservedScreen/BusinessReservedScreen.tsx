@@ -1,15 +1,13 @@
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import React from 'react';
 import { NavigationProp } from '@react-navigation/native';
 import BusinessReservedPackages from '../../Components/BusinessReservedPackages';
-//import { useUser } from '../../Context/UserContext';
 
 interface BusinessReservedScreenProps {
     navigation: NavigationProp<Record<string, object | undefined>>;
 }
 
 const BusinessReservedScreen = ({ navigation }: BusinessReservedScreenProps) => {
-    //let { isLogged } = useUser();
     return (
         <ScrollView style={styles.container}>
             <View style={styles.info}>
