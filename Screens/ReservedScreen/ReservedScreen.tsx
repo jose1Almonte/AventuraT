@@ -1,13 +1,34 @@
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Alert} from 'react-native';
-import React from 'react';
+import React, { useEffect , useState } from 'react';
 import { NavigationProp } from '@react-navigation/native';
 import ReservedPackages from '../../Components/ReservedPackages';
+import firestore from '@react-native-firebase/firestore';
+import { useUser } from '../../Context/UserContext';
 
 interface ReservedScreenProps {
     navigation: NavigationProp<Record<string, object | undefined>>;
 }
 
 const ReservedScreen = ({ navigation }: ReservedScreenProps) => {
+    const {user} = useUser();
+    const [data, setData] = useState();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const querySnapshot = await firestore()
+              .collection('paidPackage')
+              .where('compradorMail', '==', user.email)
+              .get();
+            //@ts-ignore
+            setData(querySnapshot.docs);
+        };
+        fetchData();
+    }, []);
+
+    const renderItem = ({item}: any) => {
+        return (<ReservedPackages item={item.data()}/>);
+    };
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.info}>
@@ -20,7 +41,6 @@ const ReservedScreen = ({ navigation }: ReservedScreenProps) => {
                         navigation.navigate('MobilePaymentConfirmScreen');
                     } 
                     }}>
-                    <ReservedPackages/>
                 </TouchableOpacity>
             </View>
         </ScrollView>

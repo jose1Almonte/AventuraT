@@ -2,33 +2,40 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import vectorLocation from '../vectores/vectorLocation';
+interface reservedProps {
+  item: any
+}
 
-class ReservedPackages extends Component {
-  render() {
-    return (
-        <View style={styles.containerPrim}>
-            <View style={styles.container}>
-                <View style={styles.container1}>
-                <Image
-                    style={styles.img}
-                    source={{
-                    uri: 'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
-                    }}
-                    alt="photo"
-                />
-                </View>
-                <View style={styles.ContainerText}>
-                <Text style={styles.textPack}>Full-Day Bahia de Cata</Text>
-                <View style={styles.ContainerLocation}>
-                    <SvgXml xml={vectorLocation} height={12} width={12} />
-                    <Text style={styles.textLocation}>Aragua</Text>
-                </View>
-                </View>
-                <Text style={styles.textPack2}>Esperando Confirmación...</Text>
+export const ReservedPackages = ({ item }: reservedProps) => {
+  return (
+    <View style={styles.containerPrim}>
+        <View style={styles.container}>
+            <View style={styles.container1}>
+            <Image
+                style={styles.img}
+                source={{
+                uri: 'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
+                }}
+                alt="photo"
+            />
             </View>
+            <View style={styles.ContainerText}>
+            <Text style={styles.textPack}>{item.name}</Text>
+            <View style={styles.ContainerLocation}>
+                <SvgXml xml={vectorLocation} height={12} width={12} />
+                <Text style={styles.textLocation}>{item.location}</Text>
+            </View>
+            </View>
+            if({item.location}=='E'){
+              <Text style={styles.textPack}>Esperando Confirmación de Pago...</Text>
+            }else if({item.location}=='C'){
+              <Text style={styles.textPack3}>Pago Confirmado</Text>
+            }else{
+              <Text style={styles.textPack2}>Pago Rechazado</Text>
+            }
         </View>
-    );
-  }
+    </View>
+  );  
 }
 
 const styles = StyleSheet.create({
@@ -63,6 +70,14 @@ const styles = StyleSheet.create({
     paddingRight:20,
     padding: 2,
     color: 'red',
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+    textAlign: 'right',
+  },
+  textPack3: {
+    paddingRight:20,
+    padding: 2,
+    color: 'green',
     fontSize: 12,
     fontFamily: 'Poppins-Medium',
     textAlign: 'right',
