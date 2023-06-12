@@ -175,9 +175,9 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
   },
   price: {
-    fontSize: 13,
-    fontWeight: 'bold',
+    fontSize: 16,
     color: 'black',
+    fontFamily: 'Poppins-SemiBold'
   },
 
   backgroundColor: {

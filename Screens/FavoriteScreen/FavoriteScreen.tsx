@@ -67,10 +67,16 @@ const FavoriteScreen = () => {
 
       <ScrollView style={styles.container}>
         <View style={styles.titleBox}>
-          <Text style={styles.title}>FavoriteScreen</Text>
+          <Text style={styles.title}>Paquetes favoritos</Text>
         </View>
         {favorites.length === 0 ? (
-          <Text style={styles.noFavoritesText}>NO HAY FAVORITOS</Text>
+          <>
+          <Text style={styles.noFavoritesText}>NO TIENES PAQUETES FAVORITOS</Text>
+          <Image
+            style={styles.imageUsed}
+            source={require('../../images/favorites.png')}
+          />
+          </>
         ) : (
           <View style={styles.cardContainer}>
             {favorites.map((esteitem) => {
@@ -84,18 +90,18 @@ const FavoriteScreen = () => {
                       <View style = {styles.firstBox}>
                         <View style={styles.textBox}>
 
-                          <Text style={styles.name}>Nombre:</Text>
+                          {/* <Text style={styles.name}>Nombre:</Text> */}
                           <Text style={styles.name} >{packages[String(esteitem)]?.name}</Text>
                         </View>
                         <View style={styles.textBox}>
 
-                          <Text style={styles.description}>Descripción:</Text>
+                          {/* <Text style={styles.description}>Descripción:</Text> */}
                           <Text style={styles.description} >{packages[String(esteitem)]?.description}</Text>
                         </View>
                         <View style={styles.textBox}>
 
-                          <Text style={styles.price}>Precio:</Text>
-                          <Text style={styles.price} >{packages[String(esteitem)]?.price}</Text>
+                          {/* <Text style={styles.price}>Precio:</Text> */}
+                          <Text style={styles.price} >${packages[String(esteitem)]?.price}</Text>
                         </View>
 
                       </View>
@@ -160,19 +166,30 @@ const styles = StyleSheet.create({
     height: 120,
     marginBottom: 16,
     overflow: 'hidden',
-    borderColor: 'black',
-    borderWidth: 2,
+    // borderColor: 'black',
+    // borderWidth: 2,
+  },
+  imageUsed: {
+    marginTop: 40,
+    width: 350,
+    height: 350,
+    alignSelf: 'center',
   },
   name: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
+    fontSize: 13,
+    // fontWeight: 'bold',
+    marginTop: 4,
     color: 'black',
+    fontFamily: 'Poppins-SemiBold',
+    // backgroundColor: 'red'
   },
   description: {
-    fontSize: 16,
-    marginBottom: 8,
+    fontSize: 13,
+    // marginBottom: 6,
+    // backgroundColor: 'blue',
+    // height: '110%',
     color: 'black',
+    fontFamily: 'Poppins-Regular',
   },
   containerPhotoPack: {
     // borderRadius: 50,
@@ -183,46 +200,54 @@ const styles = StyleSheet.create({
   },
 
   layer:{
-    backgroundColor: 'rgba(255,255,255,0.7)',
+    backgroundColor: 'rgba(255,255,255,0.9)',
     width: '100%',
     flex: 1,
     flexDirection: 'row',
   },
 
   price: {
+    marginTop: 4,
     fontSize: 16,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     color: 'black',
+    fontFamily: 'Poppins-SemiBold',
+    // backgroundColor: 'green'
   },
 
   firstBox:{
     width: '50%',
-    // backgroundColor: 'red',
+    // backgroundColor: 'blue',
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    gap: 4
   },
 
   textBox:{
     width: '90%',
+    height: 37,
     flexDirection: 'row',
     justifyContent:'space-between',
+    // backgroundColor: 'green',
   },
 
   secondBox:{
     width: '50%',
-    // backgroundColor: 'green',
+    // backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
   },
 
   rightImage:{
-    height:'90%',
-    width: '90%',
+    height:'95%',
+    width: '95%',
     borderRadius: 20,
-    borderColor: 'black',
-    borderWidth: 1,
+    // backgroundColor: 'yellow',
+    // borderBottomEndRadius: 10
+    // borderColor: 'black',
+    // borderWidth: 1,
   },
 });
 
