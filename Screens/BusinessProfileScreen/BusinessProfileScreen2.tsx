@@ -107,7 +107,7 @@ const BusinessProfileScreen = ({navigation, route}) => {
                 <SvgXml xml={separator} />
 
                 <View style={stylesBtn.positionContainer}>
-                  <Pressable
+                  {/* <Pressable
                     onPress={() => {
                       navigation.navigate('RatingsScreen');
                     }}>
@@ -116,8 +116,8 @@ const BusinessProfileScreen = ({navigation, route}) => {
                         <Text style={stylesBtn.txt}>Ver calificaciones</Text>
                       </View>
                     </View>
-                  </Pressable>
-                  <Pressable
+                  </Pressable> */}
+                  {/* <Pressable
                     onPress={() => {
                       navigation.navigate('FeedbackScreen');
                     }}>
@@ -127,7 +127,7 @@ const BusinessProfileScreen = ({navigation, route}) => {
                         <SvgXml xml={star} width={20} height={20} />
                       </View>
                     </View>
-                  </Pressable>
+                  </Pressable> */}
                 </View>
               </View>
 

@@ -148,9 +148,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           <View style={styles.ContainerPackages}>
             <PopularPackages navigation={navigation} />
           </View>
-          <TouchableOpacity style={styles.showMore}>
+          {/* <TouchableOpacity style={styles.showMore}>
             <Text style={styles.moreText}>Ver más</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </>

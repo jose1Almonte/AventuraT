@@ -51,7 +51,7 @@ export const UserProfileScreen = ({
   return (
     <>
 
-      <ScrollView>
+      <ScrollView style = {styles.scrollBox}>
         {loadingSomeThing && (
           <LoadingScreenTransparentBackground />
         )}
@@ -74,7 +74,7 @@ export const UserProfileScreen = ({
               </View>
 
               <View style={styles.editProfileButtonBox}>
-                <EditProfileButton />
+                {/* <EditProfileButton /> */}
                 {userExists && (
             <TouchableOpacity style={styles.containerButton} onPress={() => { navigation.navigate('BusinessProfileScreen');}}>
               <Text style={styles.txtButton}>Perfil empresarial</Text>
@@ -88,18 +88,18 @@ export const UserProfileScreen = ({
 
               <Text style={styles.title}>Configuración</Text>
 
-              <View style={styles.containerInfo}>
+              {/* <View style={styles.containerInfo}>
                 <Text style={styles.txtInfo}>Información personal</Text>
                 <SvgXml xml={profileArrowVector} />
-              </View>
+              </View> */}
               <TouchableOpacity style={styles.containerInfo} onPress={() => navigation.navigate('FavoriteScreen')}>
                 <Text style={styles.txtInfo}>Favoritos</Text>
                 <SvgXml xml={profileArrowVector} />
               </TouchableOpacity>
-              <View style={styles.containerInfo}>
+              {/* <View style={styles.containerInfo}>
                 <Text style={styles.txtInfo}>Opciones de pago</Text>
                 <SvgXml xml={profileArrowVector} />
-              </View>
+              </View> */}
               <TouchableOpacity style={styles.containerInfo} onPress={() => navigation.navigate('ReservedScreen')}>
                 <Text style={styles.txtInfo}>Mis Reservas</Text>
                 <SvgXml xml={profileArrowVector} />
@@ -154,6 +154,9 @@ export const UserProfileScreen = ({
 
 
 const styles = StyleSheet.create({
+  scrollBox:{
+    backgroundColor: 'white',
+  },
   container: {
     flex: 1,
     backgroundColor: '#1DB5BE',

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
 import { View, StyleSheet, Image } from 'react-native';
+import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 
 interface PhotoProfileProps {
   size?: number;
@@ -10,8 +11,12 @@ interface PhotoProfileProps {
 const PhotoProfile = ({ size, imageSource }: PhotoProfileProps) => {
   const [photoURL, setPhotoURL] = useState<string | undefined>(undefined);
 
+  const [loadingSomeThing, setLoadingSomething] = useState(false);
+
   useEffect(() => {
+    setLoadingSomething(true);
     fetchUserPhoto();
+    setLoadingSomething(false);
   }, []);
 
   const fetchUserPhoto = () => {
@@ -28,15 +33,18 @@ const PhotoProfile = ({ size, imageSource }: PhotoProfileProps) => {
   const imgSize = containerSize;
 
   return (
+    <>
+    {loadingSomeThing && <LoadingScreenTransparentBackground />}
     <View style={[styles.container, { width: containerSize, height: containerSize }]}>
       <View style={[styles.photoContainer, { width: containerSize, height: containerSize }]}>
         <Image
           style={[styles.img, { width: imgSize, height: imgSize, borderRadius: imgSize / 2 }]}
           source={{ uri: imageSource || photoURL || '' }}
           alt="photo"
-        />
+          />
       </View>
     </View>
+    </>
   );
 };
 
