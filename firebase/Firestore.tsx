@@ -432,7 +432,7 @@ const styles = StyleSheet.create({
 
 export const getPopularPackages = async () => {
   const packages: any[] = [];
-  let query = await packagesCollection.where("vip", "==", true).where("isPublic", "==", true).limit(6).get();
+  let query = await packagesCollection.where("vip", "==", true).where("isPublic", "==", true).limit(3).get();
   query.docs.forEach((rawData, idx) => {
     packages.push(rawData.data());
   })
