@@ -26,6 +26,10 @@ import PublishedPackages2 from './Components/Profiles/publishedPackages2';
 import PayPremiumScreen from './Screens/PayPremiumScreen/PayPremiumScreen';
 // import PublishedPackages2 from './Components/Profiles/publishedPackages2';
 import VistaPorTipoScreen from './Screens/VistaPorTipoScreen/VistaPorTipoScreen';
+import MobilePaymentConfirmScreen from './Screens/MobilePaymentConfirmScreen/MobilePaymentConfirmScreen';
+import ReservedScreen from './Screens/ReservedScreen/ReservedScreen';
+import BusinessReservedScreen from './Screens/BusinessReservedScreen/BusinessReservedScreen';
+import DetailReservedScreen from './Screens/DetailReservedScreen/DetailReservedScreen';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -56,6 +60,11 @@ export default function App() {
           <Stack.Screen name="EnterpriseSessionScreen" component={EnterpriseSessionScreen} options={{ headerShown: false }} />
           <Stack.Screen name="PayPremiumScreen" component={PayPremiumScreen} options={{ headerShown: false }} />
           <Stack.Screen name="VistaPorTipoScreen" component={VistaPorTipoScreen} options={{ headerShown: false }} />
+
+          <Stack.Screen name="MobilePaymentConfirmScreen" component={MobilePaymentConfirmScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="ReservedScreen" component={ReservedScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="BusinessReservedScreen" component={BusinessReservedScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="DetailReservedScreen" component={DetailReservedScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

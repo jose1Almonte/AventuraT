@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import { PackageI } from '../../models/package.interface';
-import { addPaidPackage } from '../../firebase/Firestore';
+import { updatePaidPackage } from '../../firebase/Firestore';
 import firestore from '@react-native-firebase/firestore';
 import { SvgXml } from 'react-native-svg';
 import vectorHelpdeskScreen from '../../vectores/vectorHelpdeskScreen';
@@ -28,9 +28,10 @@ interface PackaI {
   data?: PackageI;
 }
 
-const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
+const MobilePaymentConfirmScreen = ({ navigation, route }: PackaI) => {
   const { user, isLogged } = useUser();
   let packageIn: PackageI = route.params.data;
+  let idPkg: any = route.params.id;
   const [nameEnterprise, setNameEnterprise] = useState('');
   const [photoURL, setPhotoUrl] = useState('');
   const [mobilePayment, setMobilePayment] = useState<MobilePayment>({
@@ -68,30 +69,10 @@ const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
         );
 
         if (packageIn) {
-          await addPaidPackage(
-            user.email,
-            user.photoURL,
-            packageIn.id,
-            packageIn.name,
-            packageIn.availability,
-            packageIn.price,
-            packageIn.description,
-            packageIn.mainImageUrl,
-            packageIn.location,
-            packageIn.endDate,
-            packageIn.startDate,
-            packageIn.emailEnterprise,
-            packageIn.rating,
-            packageIn.expireDate,
-            mobilePayment,
-            nameEnterprise,
-            photoURL,
-            'E'
-          );
-          Alert.alert('¡Pago enviado! Puede ver su status en Mis Reservas');
+          // @ts-ignore
+          await updatePaidPackage(idPkg, 'E', mobilePayment);
           navigation.navigate('HomeScreen');
         } else {
-          console.log(packageIn);
           Alert.alert('Package data not available');
         }
       }
@@ -114,7 +95,7 @@ const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
 
       <View style={styles.secondBigBox}>
         <View style={styles.firstBigBox}>
-          <Text style={styles.title}>Método de Pago</Text>
+          <Text style={styles.title}>Confirma tu pago</Text>
         </View>
         <Image
           style={styles.imageUsed}
@@ -123,25 +104,19 @@ const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
         {/* <Text style={styles.textTotal}>Total a pagar</Text><Text style={styles.textTotal}>Total a pagar</Text> */}
       </View>
 
-      <View style={styles.containerPrice}>
-        <Text style={styles.textTotal}>Total a pagar</Text>
-        <Text style={styles.textPrice}>$ {packageIn.price}</Text>
-      </View>
-
       <View style={styles.thirdBigBox}>
         <View style={styles.textBox}>
           <Text style={styles.paragraph}>
-            Realiza el pago tomando en cuenta los siguientes datos:
+            La empresa no pudo verificar la información que ingresaste anteriormente. Es posible que se deba a un error. Por favor, reingresa la información para revalidar.
           </Text>
-          <Text style={styles.bulletText}>
-            • Nro. de teléfono: 0424-1166-178
-          </Text>
-          <Text style={styles.bulletText}>
-            • Banco: Banco Venezolano de Crédito
-          </Text>
-          <Text style={styles.bulletText}>• Cédula: V- 27.624.189</Text>
         </View>
       </View>
+
+      <View style={styles.containerPrice}>
+        <Text style={styles.textTotal}>Total pagado</Text>
+        <Text style={styles.textPrice}>$ {packageIn.price}</Text>
+      </View>
+
 
       <View style={styles.fourthBigBox}>
         <TextInput
@@ -155,14 +130,14 @@ const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
 
       <View style={styles.fifthBigBox}>
         <TouchableOpacity style={styles.buttonIPaid} onPress={upToFirebase}>
-          <Text style={styles.textIPaid}>Ya pagué</Text>
+          <Text style={styles.textIPaid}>Listo</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
 };
 
-export default MobilePaymentScreen;
+export default MobilePaymentConfirmScreen;
 
 const styles = StyleSheet.create({
   giantBox: {
@@ -196,6 +171,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: '3%',
+    color: '#000'
   },
   fifthBigBox: {
     flex: 11.25,
@@ -253,12 +229,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   inputReferenceNumber: {
+    color: '#000',
     borderBottomColor: '#1881B1',
     borderBottomWidth: 1,
     width: 260,
     fontSize: 18,
-    textAlign: 'center',
-    color: '#000'
+    textAlign: 'center'
   },
   buttonIPaid: {
     backgroundColor: '#1881B1',

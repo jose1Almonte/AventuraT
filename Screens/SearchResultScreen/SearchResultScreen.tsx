@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ScrollView, Image, } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, Image, TouchableOpacity, } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import vectorPerfil from '../../vectores/vectorPerfil';
@@ -7,7 +7,7 @@ import EditProfileButton from '../../Components/Profiles/editProfileButton';
 import VectorPerfilFlecha from '../../vectores/vectorPerfilFlecha';
 import InputSearch from '../../Components/InputSearch';
 import PackagesSearch from '../../Components/packagesSearch';
-import options from '../../vectores/options';
+//import options from '../../vectores/options';
 // import { NavigationProp } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import InputSearch2 from '../../Components/InputSearch2';
@@ -22,34 +22,36 @@ import InputSearch2 from '../../Components/InputSearch2';
 //     mainImageUrl: string;
 //   }
 
-const CardBoxView = ({data}:{data: any}) => {
+const CardBoxView = ({ data, navigation }: any) => {
     return (
-        <View style={styles.bigBox}>
-            <View style={styles.leftBox}>
-                <View style={styles.imageBox}>
-                    <Image style={styles.image} source={{uri: data?.mainImageUrl}}/>
+        <TouchableOpacity onPress={() => { navigation.navigate('DetailsScreenUser', { data: data }); }}>
+            <View style={styles.bigBox}>
+                <View style={styles.leftBox}>
+                    <View style={styles.imageBox}>
+                        <Image style={styles.image} source={{ uri: data?.mainImageUrl }} />
+                    </View>
+                </View>
+                <View style={styles.rightBox}>
+                    <View style={styles.textBox}>
+                        <Text style={styles.text}> {data.name} </Text>
+                    </View>
+                    <View style={styles.textBox}>
+                        <Text style={styles.textBlue}> {data.description} </Text>
+                    </View>
+                    <View style={styles.textBox}>
+                        <Text style={styles.textBlue}> $ {data.price} p/p </Text>
+                    </View>
+                    <View style={styles.textBox}>
+                        <Text style={styles.miniText}> {data.rating} | {data.location} </Text>
+                    </View>
                 </View>
             </View>
-            <View style={styles.rightBox}>
-                <View style={styles.textBox}>
-                    <Text style={styles.text}> {data.name} </Text>
-                </View>
-                <View style={styles.textBox}>
-                    <Text style={styles.textBlue}> {data.description} </Text>
-                </View>
-                <View style={styles.textBox}>
-                    <Text style={styles.textBlue}> $ {data.price} p/p </Text>
-                </View>
-                <View style={styles.textBox}>
-                    <Text style={styles.miniText}> {data.rating} | {data.location} </Text>
-                </View>
-            </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
-const SearchResultScreen = ({navigation, route}) => {
-    const {name: initialSearchValue, type: type} = route.params;
+const SearchResultScreen = ({ navigation, route }: any) => {
+    const { name: initialSearchValue, type: type } = route.params;
     const [searchKeyword, setSearchKeyword] = useState(initialSearchValue);
     const [items, setItems] = useState<Document[]>([]);
     // const [resultOffset, setResultOffset] = useState(0);
@@ -69,15 +71,12 @@ const SearchResultScreen = ({navigation, route}) => {
                 .orderBy(type)
                 .get();
 
-            console.log('searchKeyword', searchKeyword);
             // snapshot.forEach((doc) => {
 
             //      console.log('doc:', doc);
             //  });
             const docs = snapshot.docs.map((doc) => doc.data());
             setItems(docs);
-
-            console.log(items);
         };
 
         fetchData();
@@ -93,11 +92,11 @@ const SearchResultScreen = ({navigation, route}) => {
                     <View style={styles.topInfo}>
                         <Text style={styles.txt}> Resultados de Busqueda </Text>
                         <Text style={styles.txt1}> Estas Buscando por: {type} </Text>
-                        <InputSearch2 navigation={navigation} areYouInSearchResult={true} defaultValue={initialSearchValue} searchKeyword = {searchKeyword} setSearchKeyword = {setSearchKeyword}/>
+                        <InputSearch2 navigation={navigation} areYouInSearchResult={true} defaultValue={initialSearchValue} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} />
 
                         {items.map((document, index) => (
-                    <CardBoxView key={index} data={document}/>
-                    ))}
+                            <CardBoxView key={index} data={document} navigation={navigation} />
+                        ))}
 
                     </View>
                 </View>
@@ -110,7 +109,7 @@ export default SearchResultScreen;
 
 const styles = StyleSheet.create({
 
-    textBox:{
+    textBox: {
         width: '95%',
         flex: 1,
         // backgroundColor: 'yellow',
@@ -119,33 +118,33 @@ const styles = StyleSheet.create({
         // borderWidth: 1,
     },
 
-    imageBox:{
+    imageBox: {
         width: '90%',
         height: '90%',
         borderRadius: 4,
         overflow: 'hidden',
     },
 
-    image:{
+    image: {
         width: '100%',
         height: '100%',
     },
 
-    text:{
+    text: {
         fontFamily: 'Poppins',
         fontStyle: 'normal',
         fontSize: 16,
         lineHeight: 24,
         color: '#000000',
     },
-    miniText:{
+    miniText: {
         fontFamily: 'Poppins',
         fontStyle: 'normal',
         fontSize: 12,
         lineHeight: 16,
         color: '#000000',
     },
-    textBlue:{
+    textBlue: {
         fontFamily: 'Poppins',
         fontStyle: 'normal',
         fontSize: 16,
@@ -153,7 +152,7 @@ const styles = StyleSheet.create({
         color: 'rgba(24, 129, 177, 1)',
     },
 
-    leftBox:{
+    leftBox: {
         width: '45.93%',
         height: '100%',
         alignItems: 'center',
@@ -163,13 +162,13 @@ const styles = StyleSheet.create({
 
     },
 
-    rightBox:{
+    rightBox: {
         width: '54.07%',
         // backgroundColor: 'green',
         alignItems: 'flex-end',
     },
 
-    bigBox:{
+    bigBox: {
         height: 124,
         width: '85%',
         flexDirection: 'row',
