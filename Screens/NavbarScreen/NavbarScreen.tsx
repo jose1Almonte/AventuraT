@@ -79,12 +79,12 @@ const NavbarScreen = ({ navigation }: any) => {
                   <Text style={styles.txtInfo}>Mi perfil</Text>
                 </Pressable>
               </View>
-              <View style={styles.contenedorLinks}>
+              {/* <View style={styles.contenedorLinks}>
                 <SvgXml xml={historial} />
                 <Pressable onPress={() => { navigation.navigate('HomeScreen') }}>
                   <Text style={styles.txtInfo}>Mi historial</Text>
                 </Pressable>
-              </View>
+              </View> */}
               <View style={styles.contenedorLinks}>
                 <SvgXml xml={helpdesk} />
                 <Pressable onPress={() => { navigation.navigate('HelpdeskScreen') }}>
