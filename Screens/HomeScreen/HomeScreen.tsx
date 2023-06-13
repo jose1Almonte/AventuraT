@@ -9,17 +9,17 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
-import React, { useEffect, useState } from  "react";
+import React, { useEffect, useState } from "react";
 //import RegisterEnterprise from '../../Components/registerEnterprise';
-import {ProfilePicture} from '../../firebase/PerfilPicture';
+import { ProfilePicture } from '../../firebase/PerfilPicture';
 // import RegisterEnterprise from '../../Components/registerEnterprise';
-import {Image} from 'react-native';
+import { Image } from 'react-native';
 //import UserProfileScreen from '../UserProfileScreen/UserProfileScreen';
 //import UserProfileScreen from '../BusinessProfileScreen/BusinessProfileScreen';
-import {Carrousel} from '../../Components/Carrousel';
-import {NavigationProp} from '@react-navigation/native';
+import { Carrousel } from '../../Components/Carrousel';
+import { NavigationProp } from '@react-navigation/native';
 import menuBar from '../../vectores/menuBar';
-import {SvgXml} from 'react-native-svg';
+import { SvgXml } from 'react-native-svg';
 import InputSearch from '../../Components/InputSearch';
 import PopularPackages from '../../Components/PopularPackages';
 import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
@@ -28,9 +28,9 @@ interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
 }
 
-const {height} = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
-const HomeScreen = ({navigation}: HomeScreenProps) => {
+const HomeScreen = ({ navigation }: HomeScreenProps) => {
   // const [showForm, setShowForm] = useState(false);
 
   // const handleOpenForm = () => {
@@ -49,110 +49,110 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
   return (
     <>
 
-        {loadingSomeThing && (
-            <LoadingScreenTransparentBackground/>
-        )}
+      {loadingSomeThing && (
+        <LoadingScreenTransparentBackground />
+      )}
 
-    <ScrollView style={styles.background}>
-      <View style={styles.navbar}>
-        <Pressable
-          onPress={() => {
-
-            
-            navigation.navigate('NavbarScreen');
-          }}>
+      <ScrollView style={styles.background}>
+        <View style={styles.navbar}>
+          <Pressable
+            onPress={() => {
 
 
+              navigation.navigate('NavbarScreen');
+            }}>
 
-          <View style={styles.colorRed}>
-            <SvgXml xml={menuBar} />
+
+
+            <View style={styles.colorRed}>
+              <SvgXml xml={menuBar} />
+            </View>
+          </Pressable>
+          <Text style={styles.Central}>AventuraT</Text>
+
+          <ProfilePicture
+            navigation={navigation}
+            styles={styles}
+            destinationNavigationComponentName="UserProfileScreen"
+          />
+        </View>
+        <InputSearch navigation={navigation} areYouInSearchResult={false} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} defaultValue={undefined} />
+        <View style={styles.Container2}>
+          <View style={styles.Caracteristicas}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('VistaPorTipoScreen', { parameter: 'Montaña' });
+              }}>
+              <View style={styles.Sepa}>
+                <View style={styles.Redondos}>
+                  <Image
+                    style={styles.Escalado}
+                    source={require('../../images/tt.jpg')}
+                  />
+                </View>
+                <Text style={styles.letras}>Montaña</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('VistaPorTipoScreen', { parameter: 'Playa' });
+              }}>
+              <View style={styles.Sepa}>
+                <View style={styles.Redondos}>
+                  <Image
+                    style={styles.Escalado}
+                    source={require('../../images/mas.jpg')}
+                  />
+                </View>
+                <Text style={styles.letras}>Playa</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('VistaPorTipoScreen', {
+                  parameter: 'Full-Day'
+                });
+              }}>
+              <View style={styles.Sepa}>
+                <View style={styles.Redondos}>
+                  <Image
+                    style={styles.Escalado}
+                    source={require('../../images/para.jpg')}
+                  />
+                </View>
+                <Text style={styles.letras}>Full-Day</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('VistaPorTipoScreen', { parameter: 'Camping' });
+              }}>
+              <View style={styles.Sepa}>
+                <View style={styles.Redondos}>
+                  <Image
+                    style={styles.Escalado}
+                    source={require('../../images/lol.jpg')}
+                  />
+                </View>
+                <Text style={styles.letras}>Camping</Text>
+              </View>
+            </TouchableOpacity>
           </View>
-        </Pressable>
-        <Text style={styles.Central}>AventuraT</Text>
-
-        <ProfilePicture
-          navigation={navigation}
-          styles={styles}
-          destinationNavigationComponentName="UserProfileScreen"
-        />
-      </View>
-      <InputSearch navigation={navigation} areYouInSearchResult={false} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} defaultValue={undefined}/>
-      <View style={styles.Container2}>
-        <View style={styles.Caracteristicas}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('VistaPorTipoScreen', {parameter: 'Montaña'});
-            }}>
-            <View style={styles.Sepa}>
-              <View style={styles.Redondos}>
-                <Image
-                  style={styles.Escalado}
-                  source={require('../../images/tt.jpg')}
-                />
-              </View>
-              <Text style={styles.letras}>Montaña</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('VistaPorTipoScreen', {parameter: 'Playa'});
-            }}>
-            <View style={styles.Sepa}>
-              <View style={styles.Redondos}>
-                <Image
-                  style={styles.Escalado}
-                  source={require('../../images/mas.jpg')}
-                />
-              </View>
-              <Text style={styles.letras}>Playa</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('VistaPorTipoScreen', {
-                parameter: 'Full-Day',
-              });
-            }}>
-            <View style={styles.Sepa}>
-              <View style={styles.Redondos}>
-                <Image
-                  style={styles.Escalado}
-                  source={require('../../images/para.jpg')}
-                />
-              </View>
-              <Text style={styles.letras}>Full-Day</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('VistaPorTipoScreen', {parameter: 'Camping'});
-            }}>
-            <View style={styles.Sepa}>
-              <View style={styles.Redondos}>
-                <Image
-                  style={styles.Escalado}
-                  source={require('../../images/lol.jpg')}
-                />
-              </View>
-              <Text style={styles.letras}>Camping</Text>
-            </View>
-          </TouchableOpacity>
         </View>
-      </View>
-      <View style={styles.MyComponent}>
-        <Text style={styles.title1}>Destinos Populares</Text>
-        <Carrousel navigation={navigation} setLoadingSomething={setLoadingSomething}/>
-      </View>
-      <View style={styles.Container3}>
-        <Text style={styles.title}>Paquetes Recomendados</Text>
-        <View style={styles.ContainerPackages}>
+        <View style={styles.MyComponent}>
+          <Text style={styles.title1}>Destinos Populares</Text>
+          <Carrousel navigation={navigation} setLoadingSomething={setLoadingSomething} />
+        </View>
+        <View style={styles.Container3}>
+          <Text style={styles.title}>Paquetes Recomendados</Text>
+          <View style={styles.ContainerPackages}>
             <PopularPackages navigation={navigation} />
+          </View>
+          <TouchableOpacity style={styles.showMore}>
+            <Text style={styles.moreText}>Ver más</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.showMore}>
-          <Text style={styles.moreText}>Ver más</Text>
-      </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </ScrollView>
     </>
   );
 };
@@ -250,7 +250,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 12
   },
-  moreText:{
+  moreText: {
     color: 'black',
     fontSize: 12,
     fontFamily: 'Poppins-SemiBold',

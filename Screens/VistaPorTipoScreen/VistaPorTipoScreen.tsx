@@ -1,15 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, Touchable, TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { useUser, UserProvider } from "../../Context/UserContext"
 import { getFavorites, getPackage, listTipoPackage, LoadingScreen, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
-import { useRoute } from '@react-navigation/native';
+import { NavigationProp, useRoute } from '@react-navigation/native';
 import { Background } from '../../Layouts/Background';
 
-const VistaPorTipoScreen = () => {
+interface vistaTipoProps {
+  navigation: NavigationProp<Record<string, object | undefined>>;
+}
+
+const VistaPorTipoScreen = ({ navigation }: vistaTipoProps) => {
   const route = useRoute();
+
+  // @ts-ignore
   const tipo = route.params?.parameter || '';
+  // @ts-ignore
   const [packages, setPackages] = useState<any[]>([]);
 
   const [loadingSomeThing, setLoadingSomething] = useState(false);
@@ -29,68 +36,71 @@ const VistaPorTipoScreen = () => {
   return (
     <>
 
-        {loadingSomeThing && (
-            <LoadingScreenTransparentBackground/>
-        )}
-
-    <ScrollView style={styles.container}>
-      <View style={styles.titleBox}>
-        <Text style={styles.title}>Paquetes por categoría</Text>
-      </View>
-      {packages.length === 0 ? (
-        <>
-          <Text style={styles.noFavoritesText}>
-            AÚN NO SE HAN AGREGADO PAQUETES EN ESTA CATEGORÍA
-          </Text>
-          <Image
-            style={styles.imageUsed}
-            source={require('../../images/Websearch.png')}
-          />
-        </>
-      ) : (
-        <View style={styles.cardContainer}>
-          {packages.map(esteitem => {
-            return (
-              <View key={esteitem.id} style={styles.card}>
-                <Background
-                  style={styles.imageBackground}
-                  image={{uri: esteitem?.mainImageUrl}}>
-                  <View style={styles.backgroundColor}>
-                    <View style={styles.firstBox}>
-                      <Image
-                        style={styles.containerPhotoPack}
-                        source={{
-                          uri: esteitem?.mainImageUrl,
-                        }}
-                      />
-                    </View>
-                    <View style={styles.secondBox}>
-                      <View style={styles.textBox}>
-                        {/* <Text style={styles.name}>Nombre:</Text> */}
-                        <Text style={styles.name}>{esteitem?.name}</Text>
-                      </View>
-
-                      <View style={styles.textBox}>
-                        {/* <Text style={styles.description}>Descripción:</Text> */}
-                        <Text style={styles.description}>
-                          {esteitem?.description}
-                        </Text>
-                      </View>
-
-                      <View style={styles.textBox}>
-                        {/* <Text style={styles.price}>Precio:</Text> */}
-                        <Text style={styles.price}>${esteitem?.price}</Text>
-                      </View>
-                    </View>
-                  </View>
-                </Background>
-              </View>
-            );
-          })}
-        </View>
+      {loadingSomeThing && (
+        <LoadingScreenTransparentBackground />
       )}
-    </ScrollView>
-  </>
+
+      <ScrollView style={styles.container}>
+        <View style={styles.titleBox}>
+          <Text style={styles.title}>Paquetes por categoría</Text>
+        </View>
+        {packages.length === 0 ? (
+          <>
+            <Text style={styles.noFavoritesText}>
+              AÚN NO SE HAN AGREGADO PAQUETES EN ESTA CATEGORÍA
+            </Text>
+            <Image
+              style={styles.imageUsed}
+              source={require('../../images/Websearch.png')}
+            />
+          </>
+        ) : (
+          <View style={styles.cardContainer}>
+            {packages.map(esteitem => {
+              return (
+                <TouchableOpacity key={esteitem.id} style={styles.card}
+                  onPress={() => { navigation.navigate('DetailsScreenUser', { data: esteitem }) }}
+                >
+                  <Background
+                    style={styles.imageBackground}
+                    image={{ uri: esteitem?.mainImageUrl }}>
+                    <View style={styles.backgroundColor}>
+                      <View style={styles.firstBox}>
+                        <Image
+                          style={styles.containerPhotoPack}
+                          source={{
+                            uri: esteitem?.mainImageUrl,
+                          }}
+                        />
+                      </View>
+                      <View style={styles.secondBox}>
+                        <View style={styles.textBox}>
+                          {/* <Text style={styles.name}>Nombre:</Text> */}
+                          <Text style={styles.name}>{esteitem?.name}</Text>
+                        </View>
+
+                        <View style={styles.textBox}>
+                          {/* <Text style={styles.description}>Descripción:</Text> */}
+                          <Text style={styles.description}>
+                            {esteitem?.description}
+                          </Text>
+                        </View>
+
+                        <View style={styles.textBox}>
+                          {/* <Text style={styles.price}>Precio:</Text> */}
+                          <Text style={styles.price}>${esteitem?.price}</Text>
+                        </View>
+                      </View>
+                    </View>
+                  </Background>
+                </TouchableOpacity>
+
+              );
+            })}
+          </View>
+        )}
+      </ScrollView>
+    </>
   );
 };
 
