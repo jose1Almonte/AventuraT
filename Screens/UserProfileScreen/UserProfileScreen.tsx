@@ -5,12 +5,13 @@ import profileVector from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import EditProfileButton from '../../Components/Profiles/editProfileButton';
 import profileArrowVector from '../../vectores/vectorPerfilFlecha';
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import currentLog from '../../firebase/UserData';
 import { deleteExpiredDocuments } from '../../firebase/DeletePackage';
 import { LoadingScreenTransparentBackground, checkResponsibleNameExists } from '../../firebase/Firestore'; // Update the path to the FirebaseFunctions file
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 interface UserProfileScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>,
@@ -22,6 +23,13 @@ export const UserProfileScreen = ({
 
   const { setUser, setLogged } = useUser();
   const logout = async (): Promise<void> => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+    }
+    catch {
+
+    }
     await auth().signOut();
     setUser(null);
     setLogged(false);

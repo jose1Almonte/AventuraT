@@ -21,6 +21,7 @@ import {
 import auth from '@react-native-firebase/auth';
 import currentLog from '../../firebase/UserData';
 import {useUser} from '../../Context/UserContext';
+import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 interface EnterpriseSessionScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -108,8 +109,13 @@ const LoginScreenEnterprise = ({navigation}: EnterpriseSessionScreenProps) => {
     }
   };
 
+  const handleScreenPress = () => {
+    Keyboard.dismiss(); // Ocultar el teclado al pulsar en la pantalla
+  };
+
   return (
-    <View style={styles.bigBox}>
+    <TouchableWithoutFeedback style={styles.bigBox} onPress={handleScreenPress}>
+      <View style={{ flex: 1 }}>
       <Background
         image={require('../../images/loginLayout.png')}
         style={styles.backGround}>
@@ -157,7 +163,8 @@ const LoginScreenEnterprise = ({navigation}: EnterpriseSessionScreenProps) => {
           </View>
         </Gradient>
       </Background>
-    </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
