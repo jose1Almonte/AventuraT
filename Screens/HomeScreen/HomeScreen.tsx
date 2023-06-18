@@ -68,8 +68,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
               <SvgXml xml={menuBar} />
             </View>
           </Pressable>
+          <TouchableOpacity onPress={() => {
+                navigation.navigate('HomeScreen');
+              }}>
           <Text style={styles.Central}>AventuraT</Text>
-
+          </TouchableOpacity>
           <ProfilePicture
             navigation={navigation}
             styles={styles}

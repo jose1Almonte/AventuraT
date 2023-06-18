@@ -89,6 +89,9 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
 
   const handleSearchKeywordChange = (text: string) => {
     setSearchKeyword(text);
+    if (text === ''){
+      setDoNotShow(false);
+    }
     // Alert.alert(text);
   };
 
@@ -98,9 +101,7 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
     defaultValue = text;
     setDoNotShow(true);
     // Alert.alert(text);
-    setTimeout(async () => {
-      setDoNotShow(false);
-    }, 5000);
+
   };
 
   return (
@@ -164,7 +165,7 @@ export const InputSearch = ({navigation, areYouInSearchResult, defaultValue, sea
         navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
       } else {
         // navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
-        Alert.alert('Escribe algo gafo', 'tututututu');
+        Alert.alert('El campo está vacío', 'Por favor escriba algo');
       }
     } else {
       // Alert.alert('Hola, ya estoy')

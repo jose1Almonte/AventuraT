@@ -54,7 +54,7 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
   const [resultOffset, setResultOffset] = useState(0);
   // const [type, setType] = useState('name');
   const [isOpen, setIsOpen] = useState(false);
-  const [doNotShow, setDoNotShow] = useState(false);
+  const [doNotShow, setDoNotShow] = useState(true);
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -90,6 +90,9 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
 
   const handleSearchKeywordChange = (text: string) => {
     setSearchKeyword(text);
+    if (text === ''){
+      setDoNotShow(false);
+    }
     // Alert.alert(text);
   };
 
@@ -99,9 +102,6 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
     defaultValue = text;
     setDoNotShow(true);
     // Alert.alert(text);
-    setTimeout(async () => {
-      setDoNotShow(false);
-    }, 5000);
     navigation.navigate('SearchResultScreen',{name: text, type: 'name'});
   };
 
@@ -166,7 +166,7 @@ export const InputSearch = ({navigation, areYouInSearchResult, defaultValue, sea
         navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
       } else {
         // navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
-        Alert.alert('Escribe algo gafo', 'tututututu');
+        Alert.alert('Campo vacio', 'Por favor escriba algo');
       }
     } else {
       // Alert.alert('Hola, ya estoy')
