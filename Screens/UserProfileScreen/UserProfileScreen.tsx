@@ -59,7 +59,7 @@ export const UserProfileScreen = ({
   return (
     <>
 
-      <ScrollView>
+      <ScrollView style={styles.container}>
         {loadingSomeThing && (
           <LoadingScreenTransparentBackground />
         )}
@@ -83,11 +83,6 @@ export const UserProfileScreen = ({
 
               <View style={styles.editProfileButtonBox}>
                 <EditProfileButton />
-                {userExists && (
-            <TouchableOpacity style={styles.containerButton} onPress={() => { navigation.navigate('BusinessProfileScreen');}}>
-              <Text style={styles.txtButton}>Perfil empresarial</Text>
-            </TouchableOpacity>
-          )}
               </View>
 
             </View>
@@ -96,6 +91,12 @@ export const UserProfileScreen = ({
 
               <Text style={styles.title}>Configuración</Text>
 
+              {userExists && (
+            <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessProfileScreen');}}>
+              <Text style={styles.txtInfo}>Perfil empresarial</Text>
+              <SvgXml xml={profileArrowVector} />
+            </TouchableOpacity>
+          )}
               <View style={styles.containerInfo}>
                 <Text style={styles.txtInfo}>Información personal</Text>
                 <SvgXml xml={profileArrowVector} />
@@ -139,12 +140,12 @@ export const UserProfileScreen = ({
                 </TouchableOpacity>
               )}
 
-              {userExists && (
+              {/*userExists && (
                 <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('PayPremiumScreen'); }}>
                   <Text style={styles.txtInfo1}>Pasar a AventuraT Nitro</Text>
                   <SvgXml xml={profileArrowVector} />
                 </TouchableOpacity>
-              )}
+              )*/}
 
               <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
                 <Text style={styles.txtInfo1}>Cerrar sesión</Text>
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
   },
   info2: {
     flex: 5,
-    marginTop: 30,
+    marginTop: 10,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -208,8 +209,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    gap: 30,
-    marginTop: 20
+    gap: 20,
+    marginTop: 10,
   },
   containerButton: {
     display: 'flex',
