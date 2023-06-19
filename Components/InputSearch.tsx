@@ -66,6 +66,7 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
         setItems([]);
         return;
       }
+      const lowercaseKeyword = searchKeyword;
       const uppercaseKeyword = searchKeyword.charAt(0).toUpperCase() + searchKeyword.slice(1);
 
       const snapshot = await firestore()
@@ -75,12 +76,26 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
         .orderBy(type)
         .get();
 
+        const snapshot2 = await firestore()
+        .collection('package')
+        .where(type, '>=', lowercaseKeyword)
+        .where(type, '<=', lowercaseKeyword + '\uf8ff')
+        .orderBy(type)
+        .get();
+
+      const data2: Item[] = snapshot2.docs.map((doc) => ({
+          id: doc.id,
+          name: doc.data().name,
+          description: doc.data().description,
+      }));
+
       const data: Item[] = snapshot.docs.map((doc) => ({
         id: doc.id,
         name: doc.data().name,
         description: doc.data().description,
       }));
-      setItems(data);
+
+      setItems(data.concat(data2));
       setResultOffset(0);
     };
 
