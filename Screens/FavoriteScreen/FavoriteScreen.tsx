@@ -69,7 +69,7 @@ const FavoriteScreen = () => {
         <View style={styles.titleBox}>
           <Text style={styles.title}>Paquetes favoritos</Text>
         </View>
-        {favorites.length === 0 ? (
+        {favorites.length === 1 ? (
           <>
           <Text style={styles.noFavoritesText}>NO TIENES PAQUETES FAVORITOS</Text>
           <Image
