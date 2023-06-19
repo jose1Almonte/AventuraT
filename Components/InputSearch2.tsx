@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   txt: {
     color: 'white',
     fontFamily: 'Poppins-medium',
-    fontSize: 16,
+    fontSize: 12,
   },
   settings:{
     height: '100%',
