@@ -72,6 +72,17 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
       return;
     }
 
+      const passwordInt = parseInt(data.password);
+
+      const phoneNumberInt = parseInt(data.phoneNumber);
+
+      if (Number.isInteger(passwordInt) && Number.isInteger(phoneNumberInt) ){}
+      else {
+        Alert.alert('Revise el rif o el numero de teléfono no son números');
+        setLoading(false);
+        return;
+      }
+
     if (data.rif.trim().length < 6){
       Alert.alert('Error','El Rif es demasiado corto');
       setLoading(false);
