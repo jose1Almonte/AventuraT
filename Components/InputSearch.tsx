@@ -10,6 +10,7 @@ import firestore from '@react-native-firebase/firestore';
 import { NavigationProp } from '@react-navigation/native';
 // import settings from '../../vectores/settings';
 // import { SvgXml } from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
 
 interface Item {
   id: string;
@@ -48,6 +49,7 @@ const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
 };
 
 const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: string) => void; areYouInSearchResult: boolean, defaultValue: string, type: string, setType: any }> = ({searchKeyword, setSearchKeyword, areYouInSearchResult, defaultValue, type, setType}) => {
+  const navigation = useNavigation();
   const [items, setItems] = useState<Item[]>([]);
   // const [searchKeyword, setSearchKeyword] = useState('');
   const [resultOffset, setResultOffset] = useState(0);
@@ -119,6 +121,14 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
 
   };
 
+  const handleOnSubmitEditing = () => {
+    if (searchKeyword.trim() !== '') {
+      navigation.navigate('SearchResultScreen', { name: searchKeyword, type: type });
+    } else {
+      Alert.alert('El campo está vacío', 'Por favor escriba algo');
+    }
+  };
+
   return (
     <>
       {isOpen ? (
@@ -128,12 +138,12 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
           <View style={styles.container}>
             {areYouInSearchResult ? (
               <>
-              <TextInput value={searchKeyword} placeholder="Ingrese una palabra clave" onChangeText={handleSearchKeywordChange} style={styles.txt} />
+              <TextInput value={searchKeyword} placeholder="Ingrese una palabra clave" onChangeText={handleSearchKeywordChange} style={styles.txt} onSubmitEditing={handleOnSubmitEditing}/>
               {/* <TextInput placeholder="Ingrese una palabra clave" value={searchKeyword} onChangeText={handleSearchKeywordChange} style={styles.txt}/> */}
               </>
 
             ) : (
-              <TextInput placeholder="Ingrese una palabra clave" value={searchKeyword} onChangeText={handleSearchKeywordChange} style={styles.txt}/>
+              <TextInput placeholder="Ingrese una palabra clave" value={searchKeyword} onChangeText={handleSearchKeywordChange} style={styles.txt} onSubmitEditing={handleOnSubmitEditing}/>
             )}
 
             {searchKeyword.trim() !== '' && (
@@ -141,7 +151,7 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
                 <View style={{ height: resultOffset }} />
                 {doNotShow === false && items.map((item, index) => (
                   <TouchableOpacity
-                  onPress={() => handleSearchKeywordChange2(item.name)}
+                  onPress={() => {handleSearchKeywordChange2(item.name); navigation.navigate('SearchResultScreen', { name: searchKeyword, type: type }); }}
                     key={`${item.id}-${index}`}
                     style={[
                       styles.resultItem,
