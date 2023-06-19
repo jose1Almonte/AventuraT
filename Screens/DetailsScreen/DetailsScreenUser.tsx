@@ -228,7 +228,7 @@ marginBottom:'3%'},
     marginTop: '2%',
     marginRight:'5%',
     marginLeft: '5%',
-    backgroundColor: '#1881B1',
+    backgroundColor: 'rgba(24, 129, 177, 0.4)',
     borderRadius: 8,
   },
   info: {
