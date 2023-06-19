@@ -84,13 +84,13 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
         .get();
 
       const data2: Item[] = snapshot2.docs.map((doc) => ({
-          id: doc.id,
+          id: doc.data().id,
           name: doc.data().name,
           description: doc.data().description,
       }));
 
       const data: Item[] = snapshot.docs.map((doc) => ({
-        id: doc.id,
+        id: doc.data().id,
         name: doc.data().name,
         description: doc.data().description,
       }));
@@ -142,7 +142,7 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
                 {doNotShow === false && items.map((item, index) => (
                   <TouchableOpacity
                   onPress={() => handleSearchKeywordChange2(item.name)}
-                    key={item.id}
+                    key={`${item.id}-${index}`}
                     style={[
                       styles.resultItem,
                       { top: index * 30 }, // Espaciado vertical entre resultados
