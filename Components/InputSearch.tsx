@@ -29,19 +29,19 @@ const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
   return (
     <View style={styles.filterOptionsBox}>
       <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); toggleMenu(); }}>
-        <Text>Nombre</Text>
+        <Text style={styles.txtOptions}>Nombre</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); toggleMenu(); }}>
-        <Text>Descripcion</Text>
+        <Text style={styles.txtOptions}>Descripción</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); toggleMenu(); }}>
-        <Text>Location</Text>
+        <Text style={styles.txtOptions}>Ubicación</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); toggleMenu(); }}>
-        <Text>price</Text>
+        <Text style={styles.txtOptions}>Precio</Text>
       </TouchableOpacity>
     </View>
   );
@@ -221,20 +221,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#1881B1',
     borderRadius: 25,
-    width: 350,
-    height: 60,
+    width: 355,
+    height: 50,
     gap: 20,
   },
   barSizes: {
     justifyContent: 'space-around',
     alignItems: 'center',
     flexDirection: 'row',
-    gap:10,
+    gap: 6,
   },
   txt: {
     color: 'white',
     fontFamily: 'Poppins-medium',
     fontSize: 16,
+  },
+  txtOptions: {
+    color: '#d6d6e6',
+    fontFamily: 'Poppins-Regular',
+    fontSize: 12,
+    marginLeft: 6,
   },
   settings:{
     height: '100%',
@@ -244,7 +250,7 @@ const styles = StyleSheet.create({
   },
   container: {
     height: '100%',
-    width: '75%',
+    width: '80%',
   },
   txt2: {
     width: '130%',
@@ -278,19 +284,21 @@ const styles = StyleSheet.create({
   optionsPills: {
     backgroundColor: 'rgba(0,0,0,0.5)',
     borderRadius: 5,
-    marginBottom: '7%',
-    height: '40%',
+    // marginBottom: '7%',
+    height: '60%',
     justifyContent: 'center',
     alignItems: 'flex-start',
     width: '70%',
   },
   filterOptionsBox: {
     position: 'relative',
+    gap: 9,
     // height: 90,
     // backgroundColor: 'red',
     // marginLeft: '80%',
     // paddingTop: 160,
     width: '75%',
+    marginTop: '8%',
     // zIndex: 999,
     justifyContent: 'center',
     alignItems: 'center',
