@@ -132,6 +132,18 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
       return;
     }
 
+    const priceInt = parseInt(data.price);
+
+    const availabilityInt = parseInt(data.availability);
+
+    if (Number.isInteger(priceInt) && Number.isInteger(availabilityInt) ){}
+    else {
+      Alert.alert('Revise los cupos disponibles o el precio, no son números');
+      setLoading(false);
+      return;
+    }
+
+
     data.endDate = endDate;
     data.startDate = startDate;
     data.expireDate = expireDate;
