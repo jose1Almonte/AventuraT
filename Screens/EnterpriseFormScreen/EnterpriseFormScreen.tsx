@@ -132,9 +132,9 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
           );
         if (resourcePath2 !== ''){
           // setLoading(true);
-          await createUserWithEmailAndPassword(data.responsibleName.toLowerCase(), data.password,data.phoneNumber,url1, data.disName);
-          if (await checkIfUserExists(data.responsibleName.toLowerCase()) === false && url1) {
-            await addUser([''],data.disName,data.responsibleName.toLowerCase(),false,url1);
+          await createUserWithEmailAndPassword(data.responsibleName.toLowerCase(), data.password,data.phoneNumber,url2, data.disName);
+          if (await checkIfUserExists(data.responsibleName.toLowerCase()) === false && url2) {
+            await addUser([''],data.disName,data.responsibleName.toLowerCase(),false,url2);
           }
           loadLastId();
           setUser(currentLog());
