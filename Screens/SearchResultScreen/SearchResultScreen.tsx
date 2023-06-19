@@ -62,6 +62,8 @@ const SearchResultScreen = ({ navigation, route }: any) => {
                 setItems([]);
                 return;
             }
+            
+            const lowercaseKeyword = searchKeyword;
             const uppercaseKeyword = searchKeyword.charAt(0).toUpperCase() + searchKeyword.slice(1);
 
             const snapshot = await firestore()
@@ -76,7 +78,19 @@ const SearchResultScreen = ({ navigation, route }: any) => {
             //      console.log('doc:', doc);
             //  });
             const docs = snapshot.docs.map((doc) => doc.data());
-            setItems(docs);
+            const snapshot2 = await firestore()
+                .collection('package')
+                .where(type, '>=', lowercaseKeyword)
+                .where(type, '<=', lowercaseKeyword + '\uf8ff')
+                .orderBy(type)
+                .get();
+
+            // snapshot.forEach((doc) => {
+
+            //      console.log('doc:', doc);
+            //  });
+            const docs2 = snapshot2.docs.map((doc) => doc.data());
+            setItems(docs.concat(docs2));
         };
 
         fetchData();
