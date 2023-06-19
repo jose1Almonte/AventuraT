@@ -53,50 +53,55 @@ const CardBoxView = ({ data, navigation }: any) => {
 const SearchResultScreen = ({ navigation, route }: any) => {
     const { name: initialSearchValue, type: type } = route.params;
     const [searchKeyword, setSearchKeyword] = useState(initialSearchValue);
-    const [items, setItems] = useState<Document[]>([]);
+    const [items, setItems] = useState([]);
     // const [resultOffset, setResultOffset] = useState(0);
 
     useEffect(() => {
+        setItems([]);
         const fetchData = async () => {
             if (searchKeyword.trim() === '') {
                 setItems([]);
                 return;
             }
-            
+    
             const lowercaseKeyword = searchKeyword;
             const uppercaseKeyword = searchKeyword.charAt(0).toUpperCase() + searchKeyword.slice(1);
-
+    
             const snapshot = await firestore()
                 .collection('package')
                 .where(type, '>=', uppercaseKeyword)
                 .where(type, '<=', uppercaseKeyword + '\uf8ff')
                 .orderBy(type)
                 .get();
-
-            // snapshot.forEach((doc) => {
-
-            //      console.log('doc:', doc);
-            //  });
+    
             const docs = snapshot.docs.map((doc) => doc.data());
+    
             const snapshot2 = await firestore()
                 .collection('package')
                 .where(type, '>=', lowercaseKeyword)
                 .where(type, '<=', lowercaseKeyword + '\uf8ff')
                 .orderBy(type)
                 .get();
-
-            // snapshot.forEach((doc) => {
-
-            //      console.log('doc:', doc);
-            //  });
+    
             const docs2 = snapshot2.docs.map((doc) => doc.data());
-            setItems(docs.concat(docs2));
+    
+            const uniqueItems = {};
+    
+            docs.forEach((item) => {
+                uniqueItems[item.id] = item;
+            });
+    
+            docs2.forEach((item) => {
+                uniqueItems[item.id] = item;
+            });
+    
+            const combinedDocs = Object.values(uniqueItems);
+    
+            setItems(combinedDocs);
         };
-
+    
         fetchData();
-
     }, [searchKeyword]);
-
 
     return (
         <View style={styles.container}>
@@ -108,10 +113,19 @@ const SearchResultScreen = ({ navigation, route }: any) => {
                         <Text style={styles.txt1}> Estas Buscando por: {type} </Text>
                         <InputSearch2 navigation={navigation} areYouInSearchResult={true} defaultValue={initialSearchValue} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} />
 
-                        {items.map((document, index) => (
-                            <CardBoxView key={index} data={document} navigation={navigation} />
-                        ))}
-
+                        {items.length === 0 ? (
+                            <View style={styles.als}>
+                    <Text style={styles.txt1}>NO HAY DOCUMENTOS</Text>
+                    <Image
+                        style={styles.imageUsed}
+                        source={require('../../images/favorites.png')}
+                    />
+                </View>
+                ) : (
+                items.map((document, index) => (
+                    <CardBoxView key={index} data={document} navigation={navigation} />
+                ))
+                )}
                     </View>
                 </View>
             </ScrollView>
@@ -151,6 +165,10 @@ const styles = StyleSheet.create({
         lineHeight: 24,
         color: '#000000',
     },
+    als:{
+        alignContent:'center',
+        alignItems:'center',
+    },
     miniText: {
         fontFamily: 'Poppins',
         fontStyle: 'normal',
@@ -164,6 +182,13 @@ const styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 24,
         color: 'rgba(24, 129, 177, 1)',
+    },
+
+    imageUsed: {
+        marginTop: '5%',
+        width: 350,
+        height: 350,
+        alignSelf: 'center',
     },
 
     leftBox: {

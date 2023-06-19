@@ -63,6 +63,7 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
   // const defaultReallyValue = defaultValue;
 
   useEffect(() => {
+    setItems([]);
     const fetchData = async () => {
       if (searchKeyword.trim() === '') {
         setItems([]);
@@ -96,7 +97,6 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
         name: doc.data().name,
         description: doc.data().description,
       }));
-
       setItems(data.concat(data2));
       setResultOffset(0);
     };
@@ -113,6 +113,7 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
   };
 
   const handleSearchKeywordChange2 = async (text: string) => {
+    setItems([]);
     setType('name');
     setSearchKeyword(text);
     defaultValue = text;

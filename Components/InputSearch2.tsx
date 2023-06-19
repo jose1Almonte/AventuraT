@@ -33,15 +33,15 @@ const FilterOptions = ({ setType, toggleMenu,navigation }: FilterOptionsProps) =
         <Text>Nombre</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'description'});; }}>
+      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'description'}); }}>
         <Text>Descripcion</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'location'});; }}>
+      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'location'}); }}>
         <Text>Location</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'price'});; }}>
+      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'price'}); }}>
         <Text>price</Text>
       </TouchableOpacity>
     </View>
@@ -63,6 +63,7 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
 
   useEffect(() => {
     const fetchData = async () => {
+      setItems([]);
       if (searchKeyword.trim() === '') {
         setItems([]);
         return;
@@ -171,6 +172,7 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
 
 export const InputSearch = ({navigation, areYouInSearchResult, defaultValue, searchKeyword, setSearchKeyword}:{navigation: any, areYouInSearchResult: boolean, defaultValue: any, searchKeyword: string, setSearchKeyword: any}) => {
   // const [searchKeyword, setSearchKeyword] = useState('');
+
   const inSearch = areYouInSearchResult;
   const [type, setType] = useState('name');
 
