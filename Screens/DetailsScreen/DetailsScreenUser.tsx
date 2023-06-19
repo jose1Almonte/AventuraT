@@ -12,6 +12,7 @@ import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import firestore from '@react-native-firebase/firestore';
 import { LoadingScreen, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
+import profileArrowVector2 from '../../vectores/vectorPerfilFlecha2';
 
 interface detailProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -106,6 +107,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
           />
             {/* <Text style={styles.text}>{packageIn.nameEnterprise}</Text> */}
             <Text style={styles.textooo}>{nameEnterprise}</Text>
+            <SvgXml xml={profileArrowVector2}  />
             </View>
             </View>
           </TouchableOpacity>
@@ -228,7 +230,7 @@ marginBottom:'3%'},
     marginTop: '2%',
     marginRight:'5%',
     marginLeft: '5%',
-    backgroundColor: 'rgba(24, 129, 177, 0.4)',
+    backgroundColor: 'rgba(24, 129, 177, 0.2)',
     borderRadius: 8,
   },
   info: {
