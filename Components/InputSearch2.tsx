@@ -183,7 +183,7 @@ export const InputSearch = ({navigation, areYouInSearchResult, defaultValue, sea
         navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
       } else {
         // navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
-        Alert.alert('Campo vacio', 'Por favor escriba algo');
+        Alert.alert('Campo vacío', 'Por favor escriba algo');
       }
     } else {
       // Alert.alert('Hola, ya estoy')
@@ -239,15 +239,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#1881B1',
     borderRadius: 25,
-    width: 350,
-    height: 60,
+    width: 355,
+    height: 50,
     gap: 20,
   },
   barSizes: {
     justifyContent: 'space-around',
     alignItems: 'center',
     flexDirection: 'row',
-    gap:10,
+    gap: 6,
   },
   txt: {
     color: 'white',
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
   },
   container: {
     height: '100%',
-    width: '75%',
+    width: '80%',
   },
   txt2: {
     width: '130%',

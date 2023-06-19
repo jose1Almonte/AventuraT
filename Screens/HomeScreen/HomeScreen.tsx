@@ -174,6 +174,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     height: '12%',
+    // backgroundColor: 'blue'
   },
   Central: {
     fontFamily: 'Sansation',
@@ -191,14 +192,18 @@ export const styles = StyleSheet.create({
     marginBottom: height * 0.01,
     justifyContent: 'center',
     alignItems: 'center',
+    alignContent: 'center',
+    // backgroundColor: 'red',
+    // alignSelf: 'center'
   },
   Caracteristicas: {
     height: height * 0.07,
-    marginTop: 60,
+    marginTop: 40,
     marginBottom: 20,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    // backgroundColor: 'blue'
   },
   Sepa: {
     padding: 5,
