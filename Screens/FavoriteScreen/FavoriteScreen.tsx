@@ -5,8 +5,10 @@ import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { useUser } from '../../Context/UserContext';
 import { getFavorites,  getPublicPackage, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 import { Background } from '../../Layouts/Background';
+import { useNavigation } from '@react-navigation/native';
 
 const FavoriteScreen = () => {
+  const navigation = useNavigation();
   // const [loadingFavorites, setLoadingFavorites] = useState(true);
   const [favorites, setFavorites] = useState([]);
   // const [loading, setLoading] = useState(true);
@@ -178,7 +180,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
   },
   description: {
-    fontSize: 14,
+    fontSize: 8,
     width: '100%',
     height: '115%',
     color: 'black',
