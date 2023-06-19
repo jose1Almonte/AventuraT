@@ -5,6 +5,7 @@ import { ButtonLikes } from './ButtonLikes';
 import { SvgXml } from 'react-native-svg';
 import vectorLocation from '../vectores/vectorLocation';
 import { NavigationProp } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 interface Package {
     availability?: string;
@@ -39,6 +40,10 @@ export default function PopularPackage({ data, navigation }: popularPackageProps
     return (
         <>
         <TouchableOpacity style={styles.container} onPress={() => {navigation.navigate('DetailsScreenUser', { data })}}>
+        <FastImage
+        source={require('../images/backgroundGif.gif')}
+        resizeMode="contain"
+        style={styles.loadingGif}>
             <View style={styles.container1}>
                 <View style={styles.ContainerLikes}>
                 <ButtonLikes packageDetails={data} />
@@ -56,6 +61,7 @@ export default function PopularPackage({ data, navigation }: popularPackageProps
                 <Text style={styles.textLocation}>{data.location}</Text>
                 </View>
             </View>
+        </FastImage>
         </TouchableOpacity>
         </>
     );
@@ -65,7 +71,7 @@ const styles = StyleSheet.create({
     container: {
         width: 115,
         height: 200,
-        backgroundColor: '#ffffff',
+        backgroundColor: '#ebfffb',
         borderRadius: 15,
     },
     container1: {
@@ -73,16 +79,22 @@ const styles = StyleSheet.create({
         gap: 6,
         alignItems: 'center',
     },
+    loadingGif:{
+        width:'100%',
+        height:'130%',
+      },
     star: {
         width: 12,
         height: 12,
     },
     textPack: {
         // padding: 6,
-        color: 'black',
-        fontSize: 12,
+        color: '#a80f35',
+        fontSize: 8,
         fontFamily: 'Poppins-Medium',
         justifyContent: "center",
+        backgroundColor:'#ffffff',
+        marginRight:'5%',
     },
     ContainerText: {
         marginTop: 90,
@@ -102,6 +114,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         gap: 5,
+        backgroundColor:'#ffffff',
     },
     ContainerLikes: {
         justifyContent: 'center',
@@ -114,9 +127,11 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     textLocation: {
-        color: 'rgba(0, 0, 0, 0.74)',
+        color: '#a80f35',
         fontFamily: 'Poppins-Regular',
-        fontSize: 11,
+        fontSize: 8,
+        backgroundColor:'#ffffff',
+        marginRight:'5%',
     },
 });
 

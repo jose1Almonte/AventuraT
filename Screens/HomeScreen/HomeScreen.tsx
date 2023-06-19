@@ -23,6 +23,7 @@ import { SvgXml } from 'react-native-svg';
 import InputSearch from '../../Components/InputSearch';
 import PopularPackages from '../../Components/PopularPackages';
 import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
+import FastImage from 'react-native-fast-image';
 
 interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;

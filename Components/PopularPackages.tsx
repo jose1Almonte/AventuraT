@@ -7,6 +7,7 @@ import { PackageI } from '../models/package.interface';
 import { getPopularPackages } from '../firebase/Firestore';
 import PopularPackage from './PopularPackage';
 import { NavigationProp } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 
 interface popularProps {
@@ -38,6 +39,7 @@ export const PopularPackages = ({ navigation }: popularProps) => {
         {!loading &&
           popularPackages.map((rawData: any, idx: any) => (
               <View key={idx} >
+                
                 <PopularPackage data={popularPackages[idx]} navigation={navigation} />
               </View>
           ))
@@ -56,8 +58,12 @@ const styles = StyleSheet.create({
 text:{
   fontFamily: 'Poppins-Regular',
   fontSize: 12,
-  color: 'black'
-}
+  color: 'black',
+},
+loadingGif:{
+  width:60,
+  height:60,
+},
 });
 
 export default PopularPackages;
