@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
   txt: {
     color: 'white',
     fontFamily: 'Poppins-medium',
-    fontSize: 12,
+    fontSize: 14,
   },
   txtOptions: {
     color: '#d6d6e6',
