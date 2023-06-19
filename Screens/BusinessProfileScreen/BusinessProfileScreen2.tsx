@@ -34,7 +34,7 @@ interface businessProfileProps {
   // userData?: Partial<Record<string, any>>;
 }
 
-const BusinessProfileScreen = ({navigation, route}) => {
+const BusinessProfileScreen = ({route},{navigation}:businessProfileProps) => {
   let packageIn: PackageI = route.params.data;
   const {userData: userData} = route.params;
   const [nameEnterprise, setNameEnterprise] = useState(null);
@@ -150,7 +150,7 @@ const BusinessProfileScreen = ({navigation, route}) => {
           </View>
           <View style={styles.containerPack}>
             {packageIn.emailEnterprise !== undefined && (
-              <PublishedPackages2 email={packageIn.emailEnterprise} />
+              <PublishedPackages2 email={packageIn.emailEnterprise} navigation={navigation} />
             )}
           </View>
         </View>
