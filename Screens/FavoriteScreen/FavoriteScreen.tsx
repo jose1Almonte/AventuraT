@@ -6,6 +6,7 @@ import { useUser } from '../../Context/UserContext';
 import { getFavorites,  getPublicPackage, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 import { Background } from '../../Layouts/Background';
 import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
 
 const FavoriteScreen = () => {
   const navigation = useNavigation();
@@ -84,7 +85,9 @@ const FavoriteScreen = () => {
             {favorites.map((esteitem) => {
               if (packages[String(esteitem)]) {
                 return (
-                  <View key={esteitem} style={styles.card}>
+                  <TouchableOpacity key={esteitem} style={styles.card} onPress={() => {
+                    navigation.navigate('DetailsScreenUser', { data: packages[String(esteitem)] });
+                  }}>
                     <Background style={styles.containerPhotoPack} image={{uri: packages[String(esteitem)]?.mainImageUrl}}>
 
                     <View style={styles.layer}>
@@ -121,7 +124,7 @@ const FavoriteScreen = () => {
                         /> */}
                     </View>
                     </Background>
-                  </View>
+                  </TouchableOpacity>
                 );
               }
               return null; // Omitir tarjeta si no se encuentra el índice
