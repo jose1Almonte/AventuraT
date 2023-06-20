@@ -64,7 +64,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
               <SvgXml xml={separator} />
 
               <View style={stylesBtn.positionContainer}>
-                <Pressable
+                <TouchableOpacity
                   onPress={() => {
                     navigation.navigate('RatingsScreen');
                   }}
@@ -74,9 +74,9 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
                       <Text style={stylesBtn.txt}>Ver calificaciones</Text>
                     </View>
                   </View>
-                </Pressable>
+                </TouchableOpacity>
                   
-                <Pressable onPress={() => {
+                <TouchableOpacity onPress={() => {
                   navigation.navigate("PayPremiumScreen");
               }}>
                 <View style={stylesBtn.containerButton}>
@@ -84,7 +84,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
                     <Text style={stylesBtn.txt}>AventuraT Nitro</Text>
                   </View>
                 </View>
-                </Pressable>
+                </TouchableOpacity>
               </View>
                 
 

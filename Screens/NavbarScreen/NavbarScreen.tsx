@@ -1,5 +1,5 @@
-import { Text, View, StyleSheet, Pressable, Alert } from 'react-native';
-import React from 'react';
+import { Text, View, StyleSheet, Pressable, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import { Svg } from 'react-native-svg';
 import home from '../../vectores/home';
@@ -14,22 +14,51 @@ import auth from '@react-native-firebase/auth';
 import { PerfilPictureNav } from '../../firebase/PerfilPictureNav';
 import UserData from '../../firebase/UserData';
 import currentLog from '../../firebase/UserData';
+import { checkResponsibleNameExists } from '../../firebase/Firestore';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 interface navigationProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
 }
 
+
 const NavbarScreen = ({ navigation }: any) => {
 
   const { setUser, setLogged } = useUser();
+
   const logout = async (): Promise<void> => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+    }
+    catch {
+
+    }
     await auth().signOut();
     setUser(null);
     setLogged(false);
   };
 
   let { isLogged } = useUser();
-  const user = currentLog()
+
+  const user = currentLog();
+  const [userExists, setUserExists] = useState(false);
+
+  const [loadingSomeThing, setLoadingSomething] = useState(false);
+
+  useEffect(() => {
+    const checkUserExists = async () => {
+      setLoadingSomething(true);
+      try {
+        const userEmail = user?.email;
+        const exists = await checkResponsibleNameExists(userEmail);
+        setUserExists(exists);
+      } catch (error) {
+      }
+      setLoadingSomething(false);
+    };
+    checkUserExists();
+  }, [user?.email]);
 
 
   return (
@@ -38,37 +67,62 @@ const NavbarScreen = ({ navigation }: any) => {
     <View style={styles.container} >
       <View style={styles.fondo}>
         <View style={styles.info}>
-          <View style={styles.topInfo}>
+          <TouchableOpacity style={styles.topInfo} onPress={() => { navigation.navigate('UserProfileScreen') }}>
             <PerfilPictureNav
               navigation={navigation}
               styles={styles}
               destinationNavigationComponentName="LoginScreen"
             />
             <Text style={styles.txt}>{user?.displayName}</Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.bottomInfo}>
-            <View style={styles.linksInfo}>
-              <View style={styles.contenedorLinks}>
-                <SvgXml xml={home} />
-                <Pressable onPress={() => { navigation.navigate('HomeScreen') }}>
+            <ScrollView style={styles.linksInfo}>
+              <View>
+                <TouchableOpacity style={styles.contenedorLinks} onPress={() => { navigation.navigate('HomeScreen'); }}>
+                  <SvgXml xml={home} />
                   <Text style={styles.txtInfo}>Inicio</Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
-              <View style={styles.contenedorLinks}>
-                <SvgXml xml={favorites} />
-                <Pressable onPress={() => {
+              {userExists && (
+                <View>
+                <TouchableOpacity style={styles.contenedorLinks} onPress={() => { navigation.navigate('BusinessProfileScreen'); }}>
+                  <SvgXml xml={business} />
+                  <Text style={styles.txtInfo2}>Perfil empresarial</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.contenedorLinks} onPress={() => {
+                  navigation.navigate("PayPremiumScreen");
+              }}>
+                <SvgXml xml={business} />
+                <Text style={styles.txtInfo2}>Pagar Nitro</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.contenedorLinks} onPress={() => { navigation.navigate('CreatePackageFormScreen');}}>
+                <SvgXml xml={business} />
+                <Text style={styles.txtInfo2}>Crear paquete</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.contenedorLinks} onPress={() => { navigation.navigate('BusinessReservedScreen'); }}>
+                  <SvgXml xml={business} />
+                  <Text style={styles.txtInfo2}>Gestión de Pagos</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.contenedorLinks} onPress={() => {navigation.navigate('AdministratePackagesScreen');}}>
+                  <SvgXml xml={business} />
+                  <Text style={styles.txtInfo2}>Editar paquetes</Text>
+                </TouchableOpacity>
+                </View>
+              )}
+              <View>
+                <TouchableOpacity style={styles.contenedorLinks} onPress={() => {
                   if (isLogged) {
                     navigation.navigate('FavoriteScreen')
                   } else {
                     navigation.navigate('LoginScreen');
                   }
                 }}>
+                  <SvgXml xml={favorites} />
                   <Text style={styles.txtInfo}>Mis favoritos</Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
-              <View style={styles.contenedorLinks}>
-                <SvgXml xml={profile} />
-                <Pressable onPress={() => {
+              <View>
+                <TouchableOpacity style={styles.contenedorLinks} onPress={() => {
                   if (isLogged) {
                     navigation.navigate('UserProfileScreen')
                   } else {
@@ -76,33 +130,44 @@ const NavbarScreen = ({ navigation }: any) => {
                   }
 
                 }}>
+                  <SvgXml xml={profile} />
                   <Text style={styles.txtInfo}>Mi perfil</Text>
-                </Pressable>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.contenedorLinks} onPress={() => navigation.navigate('ReservedScreen')}>
+                  <SvgXml xml={business} />
+                  <Text style={styles.txtInfo}>Mis Reservas</Text>
+                </TouchableOpacity>
               </View>
-              <View style={styles.contenedorLinks}>
+              {/*<View style={styles.contenedorLinks}>
                 <SvgXml xml={historial} />
                 <Pressable onPress={() => { navigation.navigate('HomeScreen') }}>
                   <Text style={styles.txtInfo}>Mi historial</Text>
                 </Pressable>
-              </View>
-              <View style={styles.contenedorLinks}>
-                <SvgXml xml={helpdesk} />
-                <Pressable onPress={() => { navigation.navigate('HelpdeskScreen') }}>
+              </View>*/}
+              <View>
+                <TouchableOpacity style={styles.contenedorLinks} onPress={() => { navigation.navigate('HelpdeskScreen') }}>
+                  <SvgXml xml={helpdesk} />
                   <Text style={styles.txtInfo}>Atención al cliente</Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
-              <View style={styles.contenedorLinks}>
-                <SvgXml xml={business} />
-                <Pressable onPress={() => { navigation.navigate('EnterpriseFormScreen') }}>
+              <View>
+                <TouchableOpacity style={styles.contenedorLinks} onPress={() => { navigation.navigate('EnterpriseFormScreen') }}>
+                  <SvgXml xml={business} />
                   <Text style={styles.txtInfo}>Registrar empresa</Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
-            </View>
+            </ScrollView>
           </View>
           <View style={styles.logout}>
-            <Pressable onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
+              <Text style={styles.title}>[▼ Desplaza para +]</Text>
+              <Text style={styles.txtInfo3}>◉ Opciones de empresa</Text>
+              <Text style={styles.txtInfo4}>◉ Opciones de usuario</Text>
+          </View>
+         
+          <View style={styles.logout}>
+            <TouchableOpacity onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
               <Text style={styles.title}>Cerrar sesión</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -121,31 +186,32 @@ const NavbarScreen = ({ navigation }: any) => {
             <Text style={styles.txt}>¡Bienvenido!</Text>
           </View>
           <View style={styles.bottomInfo}>
-            <View style={styles.linksInfo}>
-              <View style={styles.contenedorLinks}>
-                <SvgXml xml={home} />
-                <Pressable onPress={() => { navigation.navigate('HomeScreen') }}>
+            <ScrollView style={styles.linksInfo}>
+              <View>
+                <TouchableOpacity style={styles.contenedorLinks} onPress={() => { navigation.navigate('HomeScreen') }}>
+                  <SvgXml xml={home} />
                   <Text style={styles.txtInfo}>Inicio</Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
-              <View style={styles.contenedorLinks}>
-                <SvgXml xml={helpdesk} />
-                <Pressable onPress={() => { navigation.navigate('HelpdeskScreen') }}>
+              <View>
+                <TouchableOpacity style={styles.contenedorLinks} onPress={() => { navigation.navigate('HelpdeskScreen') }}>
+                  <SvgXml xml={helpdesk} />
                   <Text style={styles.txtInfo}>Atención al cliente</Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
               <View style={styles.contenedorLinks}>
+              {user && (
+                <TouchableOpacity style={styles.contenedorLinks} onPress={() => { navigation.navigate('EnterpriseFormScreen') }}>
                 <SvgXml xml={business} />
-                <Pressable onPress={() => { navigation.navigate('EnterpriseFormScreen') }}>
                   <Text style={styles.txtInfo}>Registrar empresa</Text>
-                </Pressable>
+                </TouchableOpacity>)}
               </View>
-            </View>
+            </ScrollView>
           </View>
           <View style={styles.logout}>
-            <Pressable onPress={() => { navigation.navigate('LoginScreen'); }}>
+            <TouchableOpacity onPress={() => { navigation.navigate('LoginScreen'); }}>
               <Text style={styles.title}>Iniciar sesión/Registrarse</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -189,12 +255,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   contenedorLinks: {
+    marginBottom:'10%',
     display: 'flex',
     flexDirection: 'row',
     alignContent: 'center',
     gap: 20,
   },
   linksInfo: {
+    marginBottom:'10%',
     gap: 20,
   },
   txt: {
@@ -208,6 +276,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Poppins-Regular',
   },
+  txtInfo2: {
+    color: '#1881B1',
+    fontSize: 16,
+    fontFamily: 'Poppins-Regular',
+  },
+  txtInfo3: {
+    color: '#1881B1',
+    fontSize: 10,
+    fontFamily: 'Poppins-Regular',
+  },
+  txtInfo4: {
+    color: 'black',
+    fontSize: 10,
+    fontFamily: 'Poppins-Regular',
+  },
   logout: {
     marginBottom: 35,
   },
@@ -215,5 +298,6 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     fontFamily: 'Poppins-Medium',
+    marginBottom:'10%',
   },
 });
