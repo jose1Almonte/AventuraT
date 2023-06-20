@@ -56,19 +56,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
       <ScrollView style={styles.background}>
         <View style={styles.navbar}>
-          <Pressable
-            onPress={() => {
-
-
-              navigation.navigate('NavbarScreen');
-            }}>
-
-
-
-            <View style={styles.colorRed}>
+          <View>
+            <TouchableOpacity style={styles.colorRed} onPress={() => { navigation.navigate('NavbarScreen');}}>
               <SvgXml xml={menuBar} />
-            </View>
-          </Pressable>
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity onPress={() => {
                 navigation.navigate('HomeScreen');
               }}>
@@ -186,6 +178,7 @@ export const styles = StyleSheet.create({
     color: '#FFFFFF',
     opacity: 0.8,
     height: height * 0.13,
+    marginLeft:'20%',
   },
   Container2: {
     marginTop: height * 0.03,
@@ -210,9 +203,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   colorRed: {
-    height: '20%',
+    height: '30%',
     width: '200%',
     marginLeft: '5%',
+    marginTop:'30%',
     justifyContent: 'center',
     alignItems: 'center',
   },

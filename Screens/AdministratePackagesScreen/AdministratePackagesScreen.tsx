@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, ScrollView, Dimensions, BackHandler } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Background } from '../../Layouts/Background';
 import { useUser } from '../../Context/UserContext';
@@ -298,6 +298,9 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
     const [dataToErasePersonally, setDataToErasePersonally] = useState<Partial<Record<string, any>>>({});
     const [loadingSomeThing, setLoadingSomething] = useState(false);
 
+    const screenWidth = Dimensions.get('window').width;
+    const screenHeight = Dimensions.get('window').height;
+
     const handleWantPersonallyErase = (data: Partial<Record<string, any>>) => {
         setDataToErasePersonally(data);
         setWantPersonallyErase(true);
@@ -323,7 +326,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
         setEraseAll(true);
         setWantErase(true);
     };
-
+    
     const handleSetConfirmationToEraseExpired = async () => {
         setEraseExpired(true);
         setWantErase(true);
@@ -331,11 +334,11 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
     const handleEraseExpired = async () => {
         setLoadingSomething(true);
-            const emailEnterprise = user?.email;
-            const packagesExist = await deleteExpiredDocumentsByEmail(emailEnterprise);
-
-            if (!ready){
-                setReady(true);
+        const emailEnterprise = user?.email;
+        const packagesExist = await deleteExpiredDocumentsByEmail(emailEnterprise);
+        
+        if (!ready){
+            setReady(true);
             } else {
                 setReady(false);
             }
@@ -406,8 +409,26 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
             handleQuerySnapshot();
     }, [user?.email, ready, searchingExpiredPackages]);
-    const screenWidth = Dimensions.get('window').width;
-    const screenHeight = Dimensions.get('window').height;
+
+    useEffect(() => {
+        const handleBackButton = () => {
+          switch (true) {
+            case selectedPackage:
+                setSelectedPackage(false);
+              return true;
+
+            default:
+                Alert.alert('No case on switch', 'line 422 AdministratePackagesScreen');
+              return false; // Permitir el comportamiento predeterminado de retroceso
+          }
+        };
+
+        BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+
+        return () => {
+          BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+        };
+      }, [selectedPackage]);
 
 
     return (
