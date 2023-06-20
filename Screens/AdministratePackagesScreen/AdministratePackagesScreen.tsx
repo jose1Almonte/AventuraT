@@ -428,7 +428,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
               return true;
 
             default:
-                Alert.alert('No case on switch', 'line 422 AdministratePackagesScreen');
+                // Alert.alert('No case on switch', 'line 422 AdministratePackagesScreen');
               return false; // Permitir el comportamiento predeterminado de retroceso
           }
         };
