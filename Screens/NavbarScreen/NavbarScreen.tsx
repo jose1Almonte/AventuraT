@@ -159,9 +159,12 @@ const NavbarScreen = ({ navigation }: any) => {
             </ScrollView>
           </View>
           <View style={styles.logout}>
+              {userExists && (
+                <View>
               <Text style={styles.title}>[▼ Desplaza para +]</Text>
               <Text style={styles.txtInfo3}>◉ Opciones de empresa</Text>
               <Text style={styles.txtInfo4}>◉ Opciones de usuario</Text>
+              </View>)}
           </View>
          
           <View style={styles.logout}>
