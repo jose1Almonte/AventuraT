@@ -1,10 +1,13 @@
 import React, {Component, useEffect, useState} from 'react';
-import {View, StyleSheet, Text, Image} from 'react-native';
+import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import calendar from '../../vectores/calendar';
 import {SvgXml} from 'react-native-svg';
 import { listPackage } from '../../firebase/Firestore';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
-function PublishedPackages(email) {
+
+const PublishedPackages2 = (email) => {
+  const navigation = useNavigation();
     const [packages, setPackages] = useState<any[]>([]);
 
   useEffect(() => {
@@ -19,7 +22,13 @@ function PublishedPackages(email) {
     return (
       <>
       {packages != null && packages.map((packageData, index) => (
-      <View style={styles.container} key={index} >
+      <TouchableOpacity
+      style={styles.container}
+      key={index}
+      onPress={() => {
+        navigation.navigate('DetailsScreenUser', { data: packageData });
+      }}
+    >
         <View style={styles.containerPack}>
           <View style={styles.containerText}>
             <Text style={styles.textPack}>{packageData.name}</Text>
@@ -34,10 +43,10 @@ function PublishedPackages(email) {
             alt="photo"
           />
         </View>
-      </View>))}
+      </TouchableOpacity>))}
       </>
     );
-}
+};
 
 const styles = StyleSheet.create({
   containerPack: {
@@ -94,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PublishedPackages;
+export default PublishedPackages2;

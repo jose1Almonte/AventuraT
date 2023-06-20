@@ -60,6 +60,16 @@ const CreateForm = () => {
     date: null,
   });
 
+  const priceInt = parseInt(data.price);
+
+  const availabilityInt = parseInt(data.availability);
+
+  if (Number.isInteger(priceInt) && Number.isInteger(availabilityInt) ){}
+  else {
+    Alert.alert('Revise el precio o la disponibilidad, no son números');
+    return;
+  }
+
   useEffect(() => {
     // Carga el último ID de Firebase al cargar el componente
     loadLastId();

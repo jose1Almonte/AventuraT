@@ -10,6 +10,7 @@ import firestore from '@react-native-firebase/firestore';
 import { NavigationProp } from '@react-navigation/native';
 // import settings from '../../vectores/settings';
 // import { SvgXml } from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
 
 interface Item {
   id: string;
@@ -48,6 +49,7 @@ const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
 };
 
 const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: string) => void; areYouInSearchResult: boolean, defaultValue: string, type: string, setType: any }> = ({searchKeyword, setSearchKeyword, areYouInSearchResult, defaultValue, type, setType}) => {
+  const navigation = useNavigation();
   const [items, setItems] = useState<Item[]>([]);
   // const [searchKeyword, setSearchKeyword] = useState('');
   const [resultOffset, setResultOffset] = useState(0);
@@ -61,11 +63,13 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
   // const defaultReallyValue = defaultValue;
 
   useEffect(() => {
+    setItems([]);
     const fetchData = async () => {
       if (searchKeyword.trim() === '') {
         setItems([]);
         return;
       }
+      const lowercaseKeyword = searchKeyword;
       const uppercaseKeyword = searchKeyword.charAt(0).toUpperCase() + searchKeyword.slice(1);
 
       const snapshot = await firestore()
@@ -75,12 +79,25 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
         .orderBy(type)
         .get();
 
+        const snapshot2 = await firestore()
+        .collection('package')
+        .where(type, '>=', lowercaseKeyword)
+        .where(type, '<=', lowercaseKeyword + '\uf8ff')
+        .orderBy(type)
+        .get();
+
+      const data2: Item[] = snapshot2.docs.map((doc) => ({
+          id: doc.data().id,
+          name: doc.data().name,
+          description: doc.data().description,
+      }));
+
       const data: Item[] = snapshot.docs.map((doc) => ({
-        id: doc.id,
+        id: doc.data().id,
         name: doc.data().name,
         description: doc.data().description,
       }));
-      setItems(data);
+      setItems(data.concat(data2));
       setResultOffset(0);
     };
 
@@ -96,12 +113,21 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
   };
 
   const handleSearchKeywordChange2 = async (text: string) => {
+    setItems([]);
     setType('name');
     setSearchKeyword(text);
     defaultValue = text;
     setDoNotShow(true);
     // Alert.alert(text);
 
+  };
+
+  const handleOnSubmitEditing = () => {
+    if (searchKeyword.trim() !== '') {
+      navigation.navigate('SearchResultScreen', { name: searchKeyword, type: type });
+    } else {
+      Alert.alert('El campo está vacío', 'Por favor escriba algo');
+    }
   };
 
   return (
@@ -113,12 +139,12 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
           <View style={styles.container}>
             {areYouInSearchResult ? (
               <>
-              <TextInput value={searchKeyword} placeholder="Ingrese una palabra clave" onChangeText={handleSearchKeywordChange} style={styles.txt} />
+              <TextInput value={searchKeyword} placeholder="Ingrese una palabra clave" onChangeText={handleSearchKeywordChange} style={styles.txt} onSubmitEditing={handleOnSubmitEditing}/>
               {/* <TextInput placeholder="Ingrese una palabra clave" value={searchKeyword} onChangeText={handleSearchKeywordChange} style={styles.txt}/> */}
               </>
 
             ) : (
-              <TextInput placeholder="Ingrese una palabra clave" value={searchKeyword} onChangeText={handleSearchKeywordChange} style={styles.txt}/>
+              <TextInput placeholder="Ingrese una palabra clave" value={searchKeyword} onChangeText={handleSearchKeywordChange} style={styles.txt} onSubmitEditing={handleOnSubmitEditing}/>
             )}
 
             {searchKeyword.trim() !== '' && (
@@ -126,8 +152,8 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
                 <View style={{ height: resultOffset }} />
                 {doNotShow === false && items.map((item, index) => (
                   <TouchableOpacity
-                  onPress={() => handleSearchKeywordChange2(item.name)}
-                    key={item.id}
+                  onPress={() => {handleSearchKeywordChange2(item.name); navigation.navigate('SearchResultScreen', { name: searchKeyword, type: type }); }}
+                    key={`${item.id}-${index}`}
                     style={[
                       styles.resultItem,
                       { top: index * 30 }, // Espaciado vertical entre resultados
@@ -234,7 +260,7 @@ const styles = StyleSheet.create({
   txt: {
     color: 'white',
     fontFamily: 'Poppins-medium',
-    fontSize: 16,
+    fontSize: 15,
   },
   txtOptions: {
     color: '#d6d6e6',

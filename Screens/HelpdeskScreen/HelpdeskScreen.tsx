@@ -19,6 +19,7 @@ export default class HelpdeskScreen extends Component {
 
     return (
       <ScrollView style={styles.container}>
+        <View style={styles.paVe}>
         <SvgXml
           xml={vectorHelpdeskScreen}
           width={`${screenWidth * 1}`}
@@ -44,6 +45,7 @@ export default class HelpdeskScreen extends Component {
             <ButtonWhatsApp />
           </View>
         </View>
+        </View>
       </ScrollView>
     );
   }
@@ -59,6 +61,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 406,
   },
+  paVe:{marginTop:'-6%'},
   img: {
     marginTop: 90,
     width: '100%',

@@ -70,15 +70,18 @@ const CardBoxView = ({data, navigation}: any) => {
 const SearchResultScreen = ({navigation, route}: any) => {
   const {name: initialSearchValue, type: type} = route.params;
   const [searchKeyword, setSearchKeyword] = useState(initialSearchValue);
-  const [items, setItems] = useState<Document[]>([]);
+  const [items, setItems] = useState([]);
   // const [resultOffset, setResultOffset] = useState(0);
 
   useEffect(() => {
+    setItems([]);
     const fetchData = async () => {
       if (searchKeyword.trim() === '') {
         setItems([]);
         return;
       }
+
+      const lowercaseKeyword = searchKeyword;
       const uppercaseKeyword =
         searchKeyword.charAt(0).toUpperCase() + searchKeyword.slice(1);
 
@@ -89,12 +92,30 @@ const SearchResultScreen = ({navigation, route}: any) => {
         .orderBy(type)
         .get();
 
-      // snapshot.forEach((doc) => {
-
-      //      console.log('doc:', doc);
-      //  });
       const docs = snapshot.docs.map(doc => doc.data());
-      setItems(docs);
+
+      const snapshot2 = await firestore()
+        .collection('package')
+        .where(type, '>=', lowercaseKeyword)
+        .where(type, '<=', lowercaseKeyword + '\uf8ff')
+        .orderBy(type)
+        .get();
+
+      const docs2 = snapshot2.docs.map(doc => doc.data());
+
+      const uniqueItems = {};
+
+      docs.forEach(item => {
+        uniqueItems[item.id] = item;
+      });
+
+      docs2.forEach(item => {
+        uniqueItems[item.id] = item;
+      });
+
+      const combinedDocs = Object.values(uniqueItems);
+
+      setItems(combinedDocs);
     };
 
     fetchData();
@@ -115,15 +136,25 @@ const SearchResultScreen = ({navigation, route}: any) => {
               setSearchKeyword={setSearchKeyword}
             />
 
-            <View style={styles.containerCard}>
-              {items.map((document, index) => (
-                <CardBoxView
-                  key={index}
-                  data={document}
-                  navigation={navigation}
+            {items.length === 0 ? (
+              <View style={styles.als}>
+                <Text style={styles.txt1}>NO HAY RESULTADOS</Text>
+                <Image
+                  style={styles.imageUsed}
+                  source={require('../../images/favorites.png')}
                 />
-              ))}
-            </View>
+              </View>
+            ) : (
+              <View style={styles.containerCard}>
+                {items.map((document, index) => (
+                  <CardBoxView
+                    key={index}
+                    data={document}
+                    navigation={navigation}
+                  />
+                ))}
+              </View>
+            )}
           </View>
         </View>
       </ScrollView>
@@ -148,6 +179,17 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+  },
+  imageUsed: {
+    marginTop: '5%',
+    width: 350,
+    height: 350,
+    alignSelf: 'center',
+  },
+  als: {
+    marginTop: 15,
+    alignContent: 'center',
+    alignItems: 'center',
   },
   text: {
     fontFamily: 'Poppins-SemiBold',

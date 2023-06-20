@@ -5,8 +5,11 @@ import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { useUser } from '../../Context/UserContext';
 import { getFavorites,  getPublicPackage, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 import { Background } from '../../Layouts/Background';
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
 
 const FavoriteScreen = () => {
+  const navigation = useNavigation();
   // const [loadingFavorites, setLoadingFavorites] = useState(true);
   const [favorites, setFavorites] = useState([]);
   // const [loading, setLoading] = useState(true);
@@ -69,7 +72,7 @@ const FavoriteScreen = () => {
         <View style={styles.titleBox}>
           <Text style={styles.title}>Paquetes favoritos</Text>
         </View>
-        {favorites.length === 0 ? (
+        {favorites.length === 1 ? (
           <>
           <Text style={styles.noFavoritesText}>NO TIENES PAQUETES FAVORITOS</Text>
           <Image
@@ -82,7 +85,9 @@ const FavoriteScreen = () => {
             {favorites.map((esteitem) => {
               if (packages[String(esteitem)]) {
                 return (
-                  <View key={esteitem} style={styles.card}>
+                  <TouchableOpacity key={esteitem} style={styles.card} onPress={() => {
+                    navigation.navigate('DetailsScreenUser', { data: packages[String(esteitem)] });
+                  }}>
                     <Background style={styles.containerPhotoPack} image={{uri: packages[String(esteitem)]?.mainImageUrl}}>
 
                     <View style={styles.layer}>
@@ -119,7 +124,7 @@ const FavoriteScreen = () => {
                         /> */}
                     </View>
                     </Background>
-                  </View>
+                  </TouchableOpacity>
                 );
               }
               return null; // Omitir tarjeta si no se encuentra el índice
@@ -178,7 +183,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
   },
   description: {
-    fontSize: 14,
+    fontSize: 8,
     width: '100%',
     height: '115%',
     color: 'black',

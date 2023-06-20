@@ -12,6 +12,7 @@ import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import firestore from '@react-native-firebase/firestore';
 import { LoadingScreen, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
+import profileArrowVector2 from '../../vectores/vectorPerfilFlecha2';
 
 interface detailProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -96,6 +97,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         </View>
       </View>
 
+      <TouchableOpacity style={styles.tr} onPress={() => { navigation.navigate('BusinessProfileScreen2',{data:packageIn, userData:fullData});}}>
       <View style={styles.containerInfoBusiness}>
         <View style={styles.info}>
           <PhotoProfile
@@ -103,26 +105,23 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
             // imageSource={'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'}
             imageSource={photoURL ? photoURL : 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9c64cfe3-bb3b-4ae8-b5a6-d2f39d21ff87/d3jme6i-8c702ad4-4b7a-4763-9901-99f8b4f038b0.png/v1/fill/w_600,h_400/fondo_transparente_png_by_imsnowbieber_d3jme6i-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDAwIiwicGF0aCI6IlwvZlwvOWM2NGNmZTMtYmIzYi00YWU4LWI1YTYtZDJmMzlkMjFmZjg3XC9kM2ptZTZpLThjNzAyYWQ0LTRiN2EtNDc2My05OTAxLTk5ZjhiNGYwMzhiMC5wbmciLCJ3aWR0aCI6Ijw9NjAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.Ymv-MHRcmXXpzmL3f0xZ0mCcyU85lCLnk0jbOnCO8Zg'}
           />
-          <TouchableOpacity onPress={() => { navigation.navigate('BusinessProfileScreen2',{data:packageIn, userData:fullData});}}>
             {/* <Text style={styles.text}>{packageIn.nameEnterprise}</Text> */}
-            <Text style={styles.text}>{nameEnterprise}</Text>
+            <Text style={styles.textooo}>{nameEnterprise}</Text>
+            <SvgXml xml={profileArrowVector2}  />
+            </View>
+            </View>
           </TouchableOpacity>
-        </View>
-      </View>
 
       <View style={styles.contenedorInfo}>
         <View style={styles.contenedorInformacion}>
-          <SvgXml xml={vectorSalida} />
           <Text style={styles.titulo}>Salida</Text>
           <Text style={styles.subtitulo}>{startDay}/{startMonth}/{startYear}</Text>
         </View>
         <View style={styles.contenedorInformacion}>
-          <SvgXml xml={vectorRetorno} />
           <Text style={styles.titulo}>Retorno</Text>
           <Text style={styles.subtitulo}>{endDay}/{endMonth}/{endYear}</Text>
         </View>
         <View style={styles.contenedorInformacion}>
-          <SvgXml xml={vectorPrecio} />
           <Text style={styles.titulo}>Precio</Text>
           <Text style={styles.subtitulo}>$ {packageIn.price}</Text>
         </View>
@@ -172,6 +171,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 360,
   },
+  tr:{marginTop:'3%',
+marginBottom:'3%'},
   containerPhotoPack: {
     width: '100%',
     height: 350,
@@ -225,18 +226,28 @@ const styles = StyleSheet.create({
     display: 'flex',
   },
   containerInfoBusiness: {
-    height: 60,
-    margin: 20,
+    height: 46,
+    marginTop: '2%',
+    marginRight:'5%',
+    marginLeft: '5%',
+    backgroundColor: 'rgba(24, 129, 177, 0.2)',
+    borderRadius: 8,
   },
   info: {
     flexDirection: 'row',
-    alignItems: 'center',
     gap: 15,
-    marginTop: 5,
+    marginTop:3,
     marginLeft: 20,
+    borderRadius: 8,
+    alignItems: 'center',
   },
   text: {
     color: 'black',
+    fontSize: 16,
+    fontFamily: 'Poppins-Medium',
+  },
+  textooo: {
+    color: 'white',
     fontSize: 16,
     fontFamily: 'Poppins-Medium',
   },

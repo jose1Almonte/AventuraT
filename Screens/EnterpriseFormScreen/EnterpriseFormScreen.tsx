@@ -77,6 +77,17 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
       return;
     }
 
+      const passwordInt = parseInt(data.password);
+
+      const phoneNumberInt = parseInt(data.phoneNumber);
+
+      if (Number.isInteger(passwordInt) && Number.isInteger(phoneNumberInt) ){}
+      else {
+        Alert.alert('Revise el rif o el numero de teléfono no son números');
+        setLoading(false);
+        return;
+      }
+
     if (data.rif.trim().length < 6){
       Alert.alert('Error','El Rif es demasiado corto');
       setLoading(false);
@@ -124,6 +135,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
     if (resourcePath === '' || resourcePath2 === '') {
       Alert.alert('Error', 'Agrega una imagen');
       setLoading(false);
+      return;
     } else {
 
       const url1 = await uploadImage(resourcePath, filename);
@@ -140,7 +152,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
           data.phoneNumber,
           url1,
           url2
-          )
+          );
         if (resourcePath2 !== ''){
           // setLoading(true);
           await createUserWithEmailAndPassword(data.responsibleName.toLowerCase(), data.password,data.phoneNumber,url2, data.disName);
@@ -222,10 +234,13 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>RIF</Text>
-              <TextInput
-                style={styles.input}
-                onChangeText={(text) => setData((prevData) => ({ ...prevData, rif: text, password: text }))}
-              />
+              <View style={styles.flexEnRaw}>
+              <Text style={styles.label2}>J-</Text>
+                <TextInput
+                  style={styles.input2}
+                  onChangeText={(text) => setData((prevData) => ({ ...prevData, rif: text, password: text }))}
+                />
+              </View>
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Nombre de la persona responsable</Text>
@@ -269,7 +284,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button} onPress={selectImage2}>
-              <Text style={styles.buttonText}>Subir imagen/propia</Text>
+              <Text style={styles.buttonText}>Subir imagen/Responsable</Text>
             </TouchableOpacity>
             {resourcePath === '' ? (
               <></>
@@ -320,6 +335,12 @@ const styles = StyleSheet.create({
     borderBottomColor: 'black',
     marginTop: 22,
   },
+  flexEnRaw:{
+    flexDirection:'row',
+    alignItems:'center',
+    gap:8,
+
+  },
   title: {
     fontWeight: '600',
     fontSize: 24,
@@ -334,12 +355,27 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: 'black',
   },
+  label2: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 12,
+    lineHeight: 18,
+    color: 'black',
+
+  },
   input: {
     marginTop: 8,
     fontFamily: 'Poppins-Regular',
-    fontSize: 14,
+    fontSize: 10,
     lineHeight: 24,
     color: 'black',
+  },
+  input2: {
+    marginTop: 8,
+    fontFamily: 'Poppins-Regular',
+    fontSize: 10,
+    lineHeight: 16,
+    color: 'black',
+    width:'100%',
   },
   button: {
     display: 'flex',
@@ -349,7 +385,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     backgroundColor: '#1881B1',
-    marginTop: 40,
+    marginTop: '3%',
+    marginBottom:'3%',
   },
   buttonText: {
     color: 'white',

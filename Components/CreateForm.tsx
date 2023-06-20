@@ -132,6 +132,16 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
       return;
     }
 
+    const priceInt = parseInt(data.price);
+
+    const availabilityInt = parseInt(data.availability);
+
+    if (Number.isInteger(priceInt) && Number.isInteger(availabilityInt) ){}
+    else {
+      Alert.alert('Revise el precio o la disponibilidad, no son números');
+      return;
+    }
+
     data.endDate = endDate;
     data.startDate = startDate;
     data.expireDate = expireDate;
@@ -170,6 +180,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
           await loadLastId();
         }
   };
+
 
   const selectImage = () => {
     launchImageLibrary({ mediaType: 'photo' }, response => {

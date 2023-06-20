@@ -33,15 +33,15 @@ const FilterOptions = ({ setType, toggleMenu,navigation }: FilterOptionsProps) =
         <Text>Nombre</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'description'});; }}>
+      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'description'}); }}>
         <Text>Descripcion</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'location'});; }}>
+      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'location'}); }}>
         <Text>Location</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'price'});; }}>
+      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'price'}); }}>
         <Text>price</Text>
       </TouchableOpacity>
     </View>
@@ -63,10 +63,12 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
 
   useEffect(() => {
     const fetchData = async () => {
+      setItems([]);
       if (searchKeyword.trim() === '') {
         setItems([]);
         return;
       }
+      const lowercaseKeyword = searchKeyword;
       const uppercaseKeyword = searchKeyword.charAt(0).toUpperCase() + searchKeyword.slice(1);
 
       const snapshot = await firestore()
@@ -76,12 +78,26 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
         .orderBy(type)
         .get();
 
+        const snapshot2 = await firestore()
+        .collection('package')
+        .where(type, '>=', lowercaseKeyword)
+        .where(type, '<=', lowercaseKeyword + '\uf8ff')
+        .orderBy(type)
+        .get();
+
+      const data2: Item[] = snapshot2.docs.map((doc) => ({
+          id: doc.data().id,
+          name: doc.data().name,
+          description: doc.data().description,
+      }));
+
       const data: Item[] = snapshot.docs.map((doc) => ({
-        id: doc.id,
+        id: doc.data().id,
         name: doc.data().name,
         description: doc.data().description,
       }));
-      setItems(data);
+
+      setItems(data.concat(data2));
       setResultOffset(0);
     };
 
@@ -128,7 +144,7 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
                 {doNotShow === false && items.map((item, index) => (
                   <TouchableOpacity
                   onPress={() => handleSearchKeywordChange2(item.name)}
-                    key={item.id}
+                    key={`${item.id}-${index}`}
                     style={[
                       styles.resultItem,
                       { top: index * 30 }, // Espaciado vertical entre resultados
@@ -156,6 +172,7 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
 
 export const InputSearch = ({navigation, areYouInSearchResult, defaultValue, searchKeyword, setSearchKeyword}:{navigation: any, areYouInSearchResult: boolean, defaultValue: any, searchKeyword: string, setSearchKeyword: any}) => {
   // const [searchKeyword, setSearchKeyword] = useState('');
+
   const inSearch = areYouInSearchResult;
   const [type, setType] = useState('name');
 
@@ -235,7 +252,7 @@ const styles = StyleSheet.create({
   txt: {
     color: 'white',
     fontFamily: 'Poppins-medium',
-    fontSize: 16,
+    fontSize: 15,
   },
   settings:{
     height: '100%',
