@@ -9,6 +9,10 @@ import { changePackageIsPublicValue, checkVIP, makeRegular, makeVIP} from '../..
 import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 import { SvgXml } from 'react-native-svg';
 import vectorHelpdeskScreen from '../../vectores/vectorHelpdeskScreen';
+import cancel from '../../vectores/cancel';
+import edit from '../../vectores/edit';
+// import { WebView } from 'react-native-webview';
+
 // import { SafeAreaView } from 'react-native-safe-area-context';
 // import { NavigationProp } from '@react-navigation/native';
 
@@ -156,7 +160,8 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                             <View style={stylesIndividualCard.firstRow}>
                                 <View style={stylesIndividualCard.firstRowLeft}>
                                     <View style={stylesIndividualCard.firstRowLeftBox}>
-                                        <Text>Editar</Text>
+                                        <SvgXml xml={edit} />
+                                        {/* <Text>Editar</Text> */}
                                     </View>
                                 </View>
                                 <TouchableOpacity style={stylesIndividualCard.firstRowCenter} onPress={() => {changeIsPublic(data, setDataIsPublic);}}>
@@ -172,7 +177,12 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                 </TouchableOpacity>
                                 <View style={stylesIndividualCard.firstRowRight}>
                                     <TouchableOpacity style={stylesIndividualCard.firstRowRightBox} onPress={() => {handleSetSelectedPackage();}}>
-                                        <Text>Out</Text>
+                                        {/* <Text>Out</Text> */}
+                                        {/* <WebView
+                                          source={{ html: cancel }}
+                                          style={{ width: 26, height: 26 }}
+                                        /> */}
+                                        <SvgXml xml={cancel} />
                                     </TouchableOpacity>
                                 </View>
                             </View>
