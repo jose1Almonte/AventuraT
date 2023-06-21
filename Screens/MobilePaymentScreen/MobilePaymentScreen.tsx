@@ -147,6 +147,7 @@ const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
         <TextInput
           style={styles.inputReferenceNumber}
           placeholder="Ingrese nro. de referencia"
+          placeholderTextColor="grey"
           onChangeText={(text) =>
             setMobilePayment({ ...mobilePayment, mobilePaymentRef: text })
           }
@@ -168,6 +169,7 @@ const styles = StyleSheet.create({
   giantBox: {
     flex: 1,
     backgroundColor: '#ffffff',
+    marginTop:'-10%',
   },
   firstBigBox: {
     marginTop: 10,
@@ -253,12 +255,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   inputReferenceNumber: {
+    color:'black',
     borderBottomColor: '#1881B1',
     borderBottomWidth: 1,
     width: 260,
-    fontSize: 18,
+    fontSize: 12,
     textAlign: 'center',
-    color: '#000'
   },
   buttonIPaid: {
     backgroundColor: '#1881B1',

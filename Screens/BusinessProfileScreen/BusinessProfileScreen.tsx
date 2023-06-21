@@ -9,22 +9,26 @@ import EditPackageButton from '../../Components/Profiles/editPackagesButton';
 import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../vectores/separator';
 import star from '../../vectores/star';
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
 import { LoadingScreenTransparentBackground, returnEnterpisePic } from '../../firebase/Firestore';
 import profileVector from '../../vectores/vectorPerfil';
 import profileArrowVector from '../../vectores/vectorPerfilFlecha';
+import { PackageI } from '../../models/package.interface';
 
 interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
+  route?: any;
+  data?: PackageI;
 }
 
-const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
+const BusinessProfileScreen = ({ route,navigation }: businessProfileProps) => {
+  
   const [empresa, setEmpresa] = useState(null);
   const [description, setDescription] = useState(null);
   const [location, setLocation] = useState(null);
   const [nameEnterprise, setNameEnterprise] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [nameResp, setNameResp] = useState(null);
   const [loadingSomeThing, setLoadingSomeThing] = useState(false);
   const [userExists, setUserExists] = useState(false);
 
@@ -38,7 +42,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
         setDescription(pic.description);
         setLocation(pic.location);
         setNameEnterprise(pic.nameEnterprise);
-        setPhoneNumber(pic.phoneNumber)
+        setNameResp(user?.displayName);
       }
       setLoadingSomeThing(false);
     };
@@ -58,6 +62,9 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
       <View style={styles.container}>
         <View style={styles.info}>
           <View style={styles.topInfo}>
+          {nameEnterprise && (
+                <Text style={styles.txt3}>{nameEnterprise}</Text>
+              )}
             <View style={styles.top}>
               <View>
                 {empresa && <PhotoProfile size={100} imageSource={empresa} />}
@@ -67,12 +74,15 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
               <View style={stylesBtn.positionContainer}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate('RatingsScreen');
+                    navigation.navigate('RatingsScreen', {
+                      route: route,
+                      packageI: packageIn,
+                    });
                   }}
                 >
                   <View style={stylesBtn.containerButton}>
                     <View style={stylesBtn.container}>
-                      <Text style={stylesBtn.txt}>Ver calificaciones</Text>
+                      <Text style={stylesBtn.txt}>Calificaciones</Text>
                     </View>
                   </View>
                 </TouchableOpacity>
@@ -92,7 +102,11 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
             </View>
 
             <View style={styles.infoUser}>
-              <Text style={styles.txt}>{nameEnterprise}, {phoneNumber}</Text>
+            <View style={styles.containerManager}>
+                <Text style={styles.txt}>Encargado: </Text>
+                <Text style={styles.txtManager}>{nameResp}</Text>
+              </View>
+              
               <Text style={styles.description}>{description}</Text>
               <View style={styles.location}>
                 <SvgXml xml={vectorLocation} />
@@ -152,13 +166,14 @@ const stylesBtn = StyleSheet.create({
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFE403',
+    backgroundColor: '#660066',
   },
   txt: {
     color: 'white',
     fontSize: 12,
     fontFamily: 'Poppins-Medium',
   },
+  
 });
 
 const styles = StyleSheet.create({
@@ -177,11 +192,24 @@ const styles = StyleSheet.create({
   info: {
     flex: 1,
   },
+  txt3: {
+    color: 'white',
+    fontSize: 25,
+    fontFamily: 'Poppins-Medium',
+  },
   scroll: {
     backgroundColor: 'white',
   },
   infoUser: {
     gap: 8,
+  },
+  containerManager: {
+    flexDirection: 'row',
+  },
+  txtManager: {
+    color: '#1881B1',
+    fontSize: 16,
+    fontFamily: 'Poppins-Medium',
   },
   top: {
     marginTop: 110,

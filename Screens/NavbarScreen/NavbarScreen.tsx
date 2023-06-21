@@ -16,6 +16,7 @@ import UserData from '../../firebase/UserData';
 import currentLog from '../../firebase/UserData';
 import { checkResponsibleNameExists } from '../../firebase/Firestore';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import ScrollViewIndicator from 'react-native-scroll-indicator';
 
 interface navigationProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -76,7 +77,11 @@ const NavbarScreen = ({ navigation }: any) => {
             <Text style={styles.txt}>{user?.displayName}</Text>
           </TouchableOpacity>
           <View style={styles.bottomInfo}>
-            <ScrollView style={styles.linksInfo}>
+            <ScrollViewIndicator
+    shouldIndicatorHide={false}
+    flexibleIndicator={false}
+    scrollIndicatorStyle={{ backgroundColor: '#1881B1' }}
+    scrollIndicatorContainerStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}>
               <View>
                 <TouchableOpacity style={styles.contenedorLinks} onPress={() => { navigation.navigate('HomeScreen'); }}>
                   <SvgXml xml={home} />
@@ -95,17 +100,13 @@ const NavbarScreen = ({ navigation }: any) => {
                 <SvgXml xml={business} />
                 <Text style={styles.txtInfo2}>Pagar Nitro</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.contenedorLinks} onPress={() => { navigation.navigate('CreatePackageFormScreen');}}>
-                <SvgXml xml={business} />
-                <Text style={styles.txtInfo2}>Crear paquete</Text>
-              </TouchableOpacity>
               <TouchableOpacity style={styles.contenedorLinks} onPress={() => { navigation.navigate('BusinessReservedScreen'); }}>
                   <SvgXml xml={business} />
                   <Text style={styles.txtInfo2}>Gestión de Pagos</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.contenedorLinks} onPress={() => {navigation.navigate('AdministratePackagesScreen');}}>
                   <SvgXml xml={business} />
-                  <Text style={styles.txtInfo2}>Editar paquetes</Text>
+                  <Text style={styles.txtInfo2}>Mis paquetes</Text>
                 </TouchableOpacity>
                 </View>
               )}
@@ -156,12 +157,11 @@ const NavbarScreen = ({ navigation }: any) => {
                   <Text style={styles.txtInfo}>Registrar empresa</Text>
                 </TouchableOpacity>
               </View>
-            </ScrollView>
+            </ScrollViewIndicator>
           </View>
           <View style={styles.logout}>
               {userExists && (
                 <View>
-              <Text style={styles.title}>[▼ Desplaza para +]</Text>
               <Text style={styles.txtInfo3}>◉ Opciones de empresa</Text>
               <Text style={styles.txtInfo4}>◉ Opciones de usuario</Text>
               </View>)}
@@ -252,10 +252,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bottomInfo: {
-    flex: 1,
-    marginTop: 50,
-    display: 'flex',
-    flexDirection: 'column',
+    width:'107%',
+    height:'40%',
+    marginTop: '20%',
+    marginBottom:'20%',
+    maxHeight:'35%',
   },
   contenedorLinks: {
     marginBottom:'10%',
@@ -302,5 +303,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Poppins-Medium',
     marginBottom:'10%',
+  },
+  scrollViewContent: {
+    backgroundColor:'#7affe4',
+    paddingBottom: 20,
   },
 });

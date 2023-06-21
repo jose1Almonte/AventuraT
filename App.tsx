@@ -30,7 +30,7 @@ import MobilePaymentConfirmScreen from './Screens/MobilePaymentConfirmScreen/Mob
 import ReservedScreen from './Screens/ReservedScreen/ReservedScreen';
 import BusinessReservedScreen from './Screens/BusinessReservedScreen/BusinessReservedScreen';
 import DetailReservedScreen from './Screens/DetailReservedScreen/DetailReservedScreen';
-import EditProfileScreen from './Screens/EditProfileScreen/EditProfileScreen';
+import Tutorial from './Screens/Tutorial/Tutorial';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -61,7 +61,7 @@ export default function App() {
           <Stack.Screen name="EnterpriseSessionScreen" component={EnterpriseSessionScreen} options={{ headerShown: false }} />
           <Stack.Screen name="PayPremiumScreen" component={PayPremiumScreen} options={{ headerShown: false }} />
           <Stack.Screen name="VistaPorTipoScreen" component={VistaPorTipoScreen} options={{ headerShown: false }} />
-
+          <Stack.Screen name="Tutorial" component={Tutorial} options={{ headerShown: false }} />
           <Stack.Screen name="MobilePaymentConfirmScreen" component={MobilePaymentConfirmScreen} options={{ headerShown: false }} />
           <Stack.Screen name="ReservedScreen" component={ReservedScreen} options={{ headerShown: false }} />
           <Stack.Screen name="BusinessReservedScreen" component={BusinessReservedScreen} options={{ headerShown: false }} />

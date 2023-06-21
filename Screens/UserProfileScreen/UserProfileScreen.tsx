@@ -56,13 +56,15 @@ export const UserProfileScreen = ({
     checkUserExists();
   }, [user?.email]);
 
+  if (loadingSomeThing){
+    return (
+      <LoadingScreenTransparentBackground />
+    );}
+
   return (
     <>
 
       <ScrollView style={styles.container}>
-        {loadingSomeThing && (
-          <LoadingScreenTransparentBackground />
-        )}
         <View style={styles.container}>
 
           <View style={styles.backGround}>
@@ -117,13 +119,6 @@ export const UserProfileScreen = ({
                   <SvgXml xml={profileArrowVector} />
                 </TouchableOpacity>
               )} */}
-
-              {userExists && (
-                <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen'); }}>
-                  <Text style={styles.txtInfo1}>Crear paquete</Text>
-                  <SvgXml xml={profileArrowVector} />
-                </TouchableOpacity>
-              )}
 
               {userExists && (
                 <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessReservedScreen'); }}>

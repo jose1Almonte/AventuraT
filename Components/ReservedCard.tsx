@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { updatePaidPackage } from '../firebase/Firestore';
+import { useNavigation } from '@react-navigation/native';
 
 interface ReservedCardProps {
+   
     paid: any;
 }
 
 const ReservedCard = ({ paid }: ReservedCardProps) => {
+    const navigation = useNavigation();
     const [confirm, setConfirm] = useState(false);
     let tempPaid: any = paid.data;
 
@@ -33,12 +36,14 @@ const ReservedCard = ({ paid }: ReservedCardProps) => {
                                 <TouchableOpacity onPress={() => {
                                     updatePaidPackage(paid.id, 'C');
                                     setConfirm(true);
+                                    navigation.navigate('BusinessReservedScreen');
                                 }}>
                                     <Text style={styles.button1}>Confirmar</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => {
                                     updatePaidPackage(paid.id, 'R');
                                     setConfirm(true);
+                                    navigation.navigate('BusinessReservedScreen');
                                 }}>
                                     <Text style={styles.button2}>Rechazar</Text>
                                 </TouchableOpacity>

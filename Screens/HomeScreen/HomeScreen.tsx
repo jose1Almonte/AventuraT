@@ -140,13 +140,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           <Carrousel navigation={navigation} setLoadingSomething={setLoadingSomething} />
         </View>
         <View style={styles.Container3}>
-          <Text style={styles.title}>Paquetes Recomendados</Text>
           <View style={styles.ContainerPackages}>
             <PopularPackages navigation={navigation} />
           </View>
-          <TouchableOpacity style={styles.showMore}>
-            <Text style={styles.moreText}>Ver más</Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
     </>

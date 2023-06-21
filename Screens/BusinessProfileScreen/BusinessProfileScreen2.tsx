@@ -35,7 +35,7 @@ interface businessProfileProps {
   // userData?: Partial<Record<string, any>>;
 }
 
-const BusinessProfileScreen = ({route},{navigation}:businessProfileProps) => {
+const BusinessProfileScreen = ({route,navigation}:businessProfileProps) => {
   let packageIn: PackageI = route.params.data;
   const {userData: userData} = route.params;
   const [nameEnterprise, setNameEnterprise] = useState(null);
@@ -47,6 +47,7 @@ const BusinessProfileScreen = ({route},{navigation}:businessProfileProps) => {
   const [description2, setDescription2] = useState(null);
   const [location2, setLocation2] = useState(null);
   const [empresa2, setEmpresa2] = useState(null);
+
 
   const [loadingSomeThing, setLoadingSomething] = useState(false);
 
@@ -112,7 +113,10 @@ const BusinessProfileScreen = ({route},{navigation}:businessProfileProps) => {
                 <View style={stylesBtn.positionContainer}>
                   <Pressable
                     onPress={() => {
-                      navigation.navigate('RatingsScreen');
+                      navigation.navigate('RatingsScreen', {
+                        route: route,
+                        packageI: packageIn,
+                      });
                     }}>
                     <View style={stylesBtn.containerButton}>
                       <View style={stylesBtn.container}>
@@ -122,7 +126,10 @@ const BusinessProfileScreen = ({route},{navigation}:businessProfileProps) => {
                   </Pressable>
                   <Pressable
                     onPress={() => {
-                      navigation.navigate('FeedbackScreen');
+                      navigation.navigate('FeedbackScreen', {
+                        route: route,
+                        packageI: packageIn,
+                      });
                     }}>
                     <View style={stylesBtn.containerButton}>
                       <View style={stylesBtn.container2}>
