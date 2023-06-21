@@ -1,8 +1,27 @@
 import {Text, StyleSheet, View, TextInput, TouchableOpacity} from 'react-native';
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import {NavigationProp} from '@react-navigation/native';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import currentLog from '../../firebase/UserData';
+import { useUser } from '../../Context/UserContext';
+import { LoadingScreenTransparentBackground, returnEnterpisePic } from '../../firebase/Firestore';
+
+interface UserDataForm{
+    disName: string;
+    responsibleName: string;
+    phoneNumber: string
+}
+
+const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+
+const validateNumber= (rif: string): boolean => {
+    const numberRegExp = /^[0-9]+$/;
+    return numberRegExp.test(rif);
+  }
 
 const EditProfileScreen = ({
   navigation,
@@ -11,12 +30,36 @@ const EditProfileScreen = ({
 }) => {
   const user = currentLog();
   const [userExists, setUserExists] = useState(false);
+  const { setUser, setLogged } = useUser();
+  const [loadingSomeThing, setLoadingSomething] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [data, setData] = useState<UserDataForm>({
+    responsibleName: '',
+    phoneNumber: '',
+    disName:'',
+  });
+
+
+  useEffect(() => {
+    const fetchEnterprisePic = async () => {
+    setLoadingSomething(true);
+      const user = currentLog();
+      const phone = await returnEnterpisePic(user?.email);
+      if (phone!=null){
+
+        setPhoneNumber(phone.phoneNumber)
+      }
+      setLoadingSomething(false);
+    };
+
+    fetchEnterprisePic();
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.info}>
         <View style={styles.topInfo}>
-          <Text style={styles.text}>Editar</Text>
+          <Text style={styles.text}>Editar información</Text>
           <PhotoProfile
             size={100}
             imageSource={
@@ -29,17 +72,19 @@ const EditProfileScreen = ({
         <View style={styles.bottomInfo}>
           <View style={styles.inputContainer}>
             <Text style={styles.textLabel}>Nombre completo</Text>
-            <TextInput style={styles.input} placeholder='Nombre completo'/>
+            <TextInput style={styles.input}>{user?.displayName}</TextInput> 
           </View>
 
           <View style={styles.inputContainer}>
             <Text style={styles.textLabel}>Correo electrónico</Text>
-            <TextInput style={styles.input} placeholder='Correo electrónico'/>
+            <TextInput style={styles.input}>{user?.email}</TextInput>
           </View>
 
           <View style={styles.inputContainer}>
             <Text style={styles.textLabel}>Número de teléfono</Text>
-            <TextInput style={styles.input} placeholder='Número de teléfono'/>
+            <TextInput style={styles.input}>
+                {phoneNumber}
+            </TextInput> 
           </View>
         </View>
 
@@ -56,6 +101,7 @@ const EditProfileScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white'
     // backgroundColor: 'green',
   },
   info: {
@@ -84,7 +130,7 @@ const styles = StyleSheet.create({
     marginBottom: 3
   },
   inputContainer: {
-    height: 52,
+    height: 56,
     width: '90%',
     justifyContent: 'center',
     borderBottomWidth: 1,
@@ -100,7 +146,7 @@ const styles = StyleSheet.create({
     width: 200,
     borderRadius: 50,
     justifyContent: 'center',
-    backgroundColor: '#1881B1',
+    backgroundColor: '#1881b1c3',
     marginTop: '3%',
     marginBottom:'3%',
     alignSelf: 'center'

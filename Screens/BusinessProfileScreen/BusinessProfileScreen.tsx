@@ -24,7 +24,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
   const [description, setDescription] = useState(null);
   const [location, setLocation] = useState(null);
   const [nameEnterprise, setNameEnterprise] = useState(null);
-
+  const [phoneNumber, setPhoneNumber] = useState(null);
   const [loadingSomeThing, setLoadingSomeThing] = useState(false);
   const [userExists, setUserExists] = useState(false);
 
@@ -38,6 +38,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
         setDescription(pic.description);
         setLocation(pic.location);
         setNameEnterprise(pic.nameEnterprise);
+        setPhoneNumber(pic.phoneNumber)
       }
       setLoadingSomeThing(false);
     };
@@ -91,7 +92,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
             </View>
 
             <View style={styles.infoUser}>
-              <Text style={styles.txt}>{nameEnterprise}</Text>
+              <Text style={styles.txt}>{nameEnterprise}, {phoneNumber}</Text>
               <Text style={styles.description}>{description}</Text>
               <View style={styles.location}>
                 <SvgXml xml={vectorLocation} />
