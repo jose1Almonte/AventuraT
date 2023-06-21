@@ -103,21 +103,24 @@ loadingGif2:{
   width:150,
   height:150,
 },
+
+
 showMore: {
   width: 100,
   height: 35,
   marginTop: '10%',
   marginBottom: '20%',
-  backgroundColor: 'white',
+  backgroundColor: '#1881B1',
   justifyContent: 'center',
   alignItems: 'center',
   alignSelf: 'center',
-  borderRadius: 12
+  borderRadius: 8,
 },
 moreText: {
-  color: 'black',
+  color: '#FFFFFF',
   fontSize: 12,
-  fontFamily: 'Poppins-SemiBold',
+  lineHeight: 19,
+  fontFamily: 'Poppins-Bold',
 },
 });
 
