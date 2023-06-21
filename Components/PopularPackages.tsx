@@ -35,7 +35,7 @@ export const PopularPackages = ({ navigation }: popularProps) => {
 
 
   return (
-    <View>
+    <View style={styles.pos}>
         {popularPackages.length > 0 ? (
           <Text style={styles.title}>Paquetes Recomendados</Text>
         ):(
@@ -80,15 +80,22 @@ text:{
 flexrow:{
   flex:1,
   flexDirection:'row',
+  
 },
 margin:{
+  alignContent:'center',
+  alignItems:'center',
   marginLeft:'2%',
+  marginRight:'-2%',
 },
 title: {
   marginBottom: 15,
   fontFamily: 'Poppins-Bold',
   fontSize: 18,
   color: 'white',
+},
+pos:{
+  marginLeft:'-4%',
 },
 center:{
   alignContent:'center',
@@ -110,6 +117,7 @@ showMore: {
   height: 35,
   marginTop: '10%',
   marginBottom: '20%',
+  marginLeft:'3%',
   backgroundColor: '#1881B1',
   justifyContent: 'center',
   alignItems: 'center',

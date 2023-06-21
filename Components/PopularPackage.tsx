@@ -73,6 +73,8 @@ const styles = StyleSheet.create({
         height: 200,
         backgroundColor: 'black',
         borderRadius: 15,
+        margin:'1%',
+
     },
     container1: {
         flexDirection: 'column',

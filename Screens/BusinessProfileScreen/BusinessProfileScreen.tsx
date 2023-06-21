@@ -24,7 +24,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
   const [description, setDescription] = useState(null);
   const [location, setLocation] = useState(null);
   const [nameEnterprise, setNameEnterprise] = useState(null);
-
+  const [nameResp, setNameResp] = useState(null);
   const [loadingSomeThing, setLoadingSomeThing] = useState(false);
   const [userExists, setUserExists] = useState(false);
 
@@ -38,6 +38,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
         setDescription(pic.description);
         setLocation(pic.location);
         setNameEnterprise(pic.nameEnterprise);
+        setNameResp(user?.displayName);
       }
       setLoadingSomeThing(false);
     };
@@ -57,6 +58,9 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
       <View style={styles.container}>
         <View style={styles.info}>
           <View style={styles.topInfo}>
+          {nameEnterprise && (
+                <Text style={styles.txt3}>{nameEnterprise}</Text>
+              )}
             <View style={styles.top}>
               <View>
                 {empresa && <PhotoProfile size={100} imageSource={empresa} />}
@@ -71,7 +75,7 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
                 >
                   <View style={stylesBtn.containerButton}>
                     <View style={stylesBtn.container}>
-                      <Text style={stylesBtn.txt}>Ver calificaciones</Text>
+                      <Text style={stylesBtn.txt}>Calificaciones</Text>
                     </View>
                   </View>
                 </TouchableOpacity>
@@ -91,7 +95,11 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
             </View>
 
             <View style={styles.infoUser}>
-              <Text style={styles.txt}>{nameEnterprise}</Text>
+            <View style={styles.containerManager}>
+                <Text style={styles.txt}>Encargado: </Text>
+                <Text style={styles.txtManager}>{nameResp}</Text>
+              </View>
+              
               <Text style={styles.description}>{description}</Text>
               <View style={styles.location}>
                 <SvgXml xml={vectorLocation} />
@@ -151,13 +159,14 @@ const stylesBtn = StyleSheet.create({
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFE403',
+    backgroundColor: '#660066',
   },
   txt: {
     color: 'white',
     fontSize: 12,
     fontFamily: 'Poppins-Medium',
   },
+  
 });
 
 const styles = StyleSheet.create({
@@ -176,11 +185,24 @@ const styles = StyleSheet.create({
   info: {
     flex: 1,
   },
+  txt3: {
+    color: 'white',
+    fontSize: 25,
+    fontFamily: 'Poppins-Medium',
+  },
   scroll: {
     backgroundColor: 'white',
   },
   infoUser: {
     gap: 8,
+  },
+  containerManager: {
+    flexDirection: 'row',
+  },
+  txtManager: {
+    color: '#1881B1',
+    fontSize: 16,
+    fontFamily: 'Poppins-Medium',
   },
   top: {
     marginTop: 110,
