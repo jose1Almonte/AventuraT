@@ -1,8 +1,9 @@
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity, FlatList } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavigationProp } from '@react-navigation/native';
 import BusinessReservedPackages from '../../Components/BusinessReservedPackages';
 import firestore from '@react-native-firebase/firestore';
+import { useUser } from '../../Context/UserContext';
 
 interface BusinessReservedScreenProps {
     navigation: NavigationProp<Record<string, object | undefined>>;
@@ -16,15 +17,17 @@ interface DataPaid {
 const BusinessReservedScreen = ({ navigation }: BusinessReservedScreenProps) => {
 
     const [data, setData] = useState();
+    const { user } = useUser();
     let allIdPackagePaid: string[] = [];
     let dataPaids: DataPaid[] = [];
     let tempDataPaid: DataPaid;
 
     useEffect(() => {
         const fetchData = async () => {
+            const email = user.email;
             const querySnapshot = await firestore()
                 .collection('paidPackage')
-                .where('emailEnterprise', '==', 'jose.almonte@correo.unimet.edu.ve')
+                .where('emailEnterprise', '==', email)
                 .where('status', '==', 'E')
                 .get();
 
