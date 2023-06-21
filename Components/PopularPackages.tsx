@@ -23,15 +23,16 @@ export const PopularPackages = ({ navigation }: popularProps) => {
 
   useEffect(() => {
 
-    fetchPackages();
-  }, [])
-
-  const fetchPackages = async () => {
+    const fetchPackages = async () => {
     
-    const packages = await getPopularPackages();
-    setPopularPackages(packages);
-    setLoading(false);
-  }
+      const packages = await getPopularPackages();
+      setPopularPackages(packages);
+      setLoading(false);
+    };
+
+    fetchPackages();
+  }, [popularPackages]);
+
 
   return (
     <>

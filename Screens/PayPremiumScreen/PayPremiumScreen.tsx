@@ -14,8 +14,10 @@ import currentLog from '../../firebase/UserData';
 import {changePremium} from '../../firebase/Firestore';
 import {SvgXml} from 'react-native-svg';
 import vectorHelpdeskScreen from '../../vectores/vectorHelpdeskScreen';
+import { useNavigation } from '@react-navigation/native';
 
 export default function PayPremiumScreen() {
+  const navigation = useNavigation();
   const [paymentRef, setPaymentRef] = useState('');
   const user = currentLog();
 
@@ -30,6 +32,8 @@ export default function PayPremiumScreen() {
       );
     } else {
       changePremium(user?.email);
+      Alert.alert('NITROOOOO!!!', 'Usted tiene cinco paquetes disponibles para VIP NITRO');
+      navigation.navigate('Tutorial');
     }
   };
   return (
@@ -293,6 +297,7 @@ const styles = StyleSheet.create({
     width: 260,
     fontSize: 12,
     textAlign: 'center',
+    color:'black',
   },
   buttonIPaid: {
     backgroundColor: '#1881B1',
