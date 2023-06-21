@@ -36,17 +36,27 @@ export const PopularPackages = ({ navigation }: popularProps) => {
 
   return (
     <View>
-        {popularPackages.length > 0 && (
+        {popularPackages.length > 0 ? (
           <Text style={styles.title}>Paquetes Recomendados</Text>
+        ):(
+          <View style={styles.center}>
+            <Text style={styles.title}> RECOMENDADOS PRONTO!!!</Text>
+          <FastImage
+            source={require('../images/dance.gif')}
+            style={styles.loadingGif2}
+            resizeMode="contain"
+          />
+          </View>
         )}
+        <View style={styles.flexrow}>
         {!loading &&
           popularPackages.map((rawData: any, idx: any) => (
-              <View key={idx} >
-                
+              <View key={idx} style={styles.margin}>
                 <PopularPackage data={popularPackages[idx]} navigation={navigation} />
               </View>
           ))
         }
+        </View>
         {
           loading &&
           <Text style={styles.text}>Cargando...</Text>
@@ -67,16 +77,31 @@ text:{
   fontSize: 12,
   color: 'black',
 },
-
+flexrow:{
+  flex:1,
+  flexDirection:'row',
+},
+margin:{
+  marginLeft:'2%',
+},
 title: {
   marginBottom: 15,
   fontFamily: 'Poppins-Bold',
   fontSize: 18,
   color: 'white',
 },
+center:{
+  alignContent:'center',
+  alignItems:'center',
+  justifyContent:'center',
+},
 loadingGif:{
   width:60,
   height:60,
+},
+loadingGif2:{
+  width:150,
+  height:150,
 },
 showMore: {
   width: 100,

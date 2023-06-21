@@ -41,8 +41,7 @@ export default function PopularPackage({ data, navigation }: popularPackageProps
         <>
         <TouchableOpacity style={styles.container} onPress={() => {navigation.navigate('DetailsScreenUser', { data })}}>
         <FastImage
-        source={require('../images/backgroundGif.gif')}
-        resizeMode="contain"
+        source={require('../images/fiesta.gif')}
         style={styles.loadingGif}>
             <View style={styles.container1}>
                 <View style={styles.ContainerLikes}>
@@ -81,7 +80,9 @@ const styles = StyleSheet.create({
     },
     loadingGif:{
         width:'100%',
-        height:'130%',
+        height:'100%',
+        borderRadius:15,
+
       },
     star: {
         width: 12,
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Medium',
         justifyContent: "center",
         backgroundColor:'#ffffff',
-        marginRight:'5%',
+        marginRight:'6%',
     },
     ContainerText: {
         marginTop: 90,
@@ -115,6 +116,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 5,
         backgroundColor:'#ffffff',
+        marginRight:'6%',
     },
     ContainerLikes: {
         justifyContent: 'center',
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Regular',
         fontSize: 8,
         backgroundColor:'#ffffff',
-        marginRight:'5%',
+        marginRight:'30%',
     },
 });
 
