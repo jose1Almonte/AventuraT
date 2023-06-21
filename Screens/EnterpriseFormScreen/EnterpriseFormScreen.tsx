@@ -145,6 +145,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
           data.nameEnterprise,
           data.rif,
           data.responsibleName.toLowerCase(),
+          data.disName,
           data.location,
           data.description,
           data.vip,

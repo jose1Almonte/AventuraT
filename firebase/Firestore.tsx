@@ -39,11 +39,12 @@ export const updateUser = async (array: string[], userId: string, displayName: s
 
 
 export const addEnterprise = async (nameEnterprise: string, rif: string,
-  responsibleName: string, location: string, description: string, vip: boolean, password: string, phoneNumber: string, urlPersonal: any, urlEmpresa: any) => {
+  responsibleName: string, disName: string, location: string, description: string, vip: boolean, password: string, phoneNumber: string, urlPersonal: any, urlEmpresa: any) => {
   await usersCollection2.add({
     id: 0, // Inicializa el ID en 0
     nameEnterprise: nameEnterprise,
     responsibleName: responsibleName,
+    disName: disName,
     location: location,
     description: description,
     rif: rif,
@@ -59,13 +60,21 @@ export const addEnterprise = async (nameEnterprise: string, rif: string,
   });
 };
 
-export const updateEnterprise = async (enterpriseId: string, enterpriseName: string, rif: string, personResponsible: string) => {
-  await usersCollection2.doc(enterpriseId).set({
+export const updateEnterprise = async (id: string, enterpriseName: string, rif: string, personResponsible: string) => {
+  await usersCollection2.doc(id).set({
     enterpriseName: enterpriseName,
     rif: rif,
     personResponsible: personResponsible
   });
 };
+
+export const updateResponsibleData = async (responsibleName: string, phoneNumber: string, disName: string) => {
+  await usersCollection2.doc(responsibleName).set({
+    responsibleName: responsibleName,
+    phoneNumber: phoneNumber,
+    disName: disName,
+  });
+}; 
 
 export const getUser = async (userId: string) => {
   const documentSnapshot = await usersCollection.doc(userId).get();
