@@ -48,33 +48,45 @@ export default function PayPremiumScreen() {
 
               <Text style={styles.textNitro}>Cuenta Nitro</Text>
               <View style={styles.containerCheck}>
+                <View style={styles.palFlex}>
                 <Image
                   style={styles.check}
                   source={require('../../images/check.png')}
                 />
+                <View style={styles.peque}>
                 <Text style={styles.textCheck}>
                   Mayor visibilidad en la app
                 </Text>
+                </View>
+                </View>
               </View>
 
               <View style={styles.containerCheck}>
+              <View style={styles.palFlex}>
                 <Image
                   style={styles.check}
                   source={require('../../images/check.png')}
                 />
+                <View style={styles.peque}>
                 <Text style={styles.textCheck}>
                   Mostrar hasta 5 paquetes en recomendados de la app
                 </Text>
+                </View>
+                </View>
               </View>
 
               <View style={styles.containerCheck}>
+              <View style={styles.palFlex}>
                 <Image
                   style={styles.check}
                   source={require('../../images/check.png')}
                 />
+                <View style={styles.peque}>
                 <Text style={styles.textCheck}>
                   Soporte técnico prioritario
                 </Text>
+                </View>
+                </View>
               </View>
             </View>
           </View>
@@ -100,6 +112,7 @@ export default function PayPremiumScreen() {
           <TextInput
             style={styles.inputReferenceNumber}
             placeholder="Ingrese nro. de referencia"
+            placeholderTextColor="grey"
             onChangeText={text => {
               setPaymentRef(text);
             }}
@@ -166,15 +179,15 @@ const styles = StyleSheet.create({
     margin: 15
   },
   containerPopular: {
-    width: 120,
-    height: 30,
+    width: '60%',
     backgroundColor: '#1881B1',
     borderRadius: 16,
     alignSelf: 'flex-end',
-    marginTop: 15
+    alignContent:'center',
+    alignItems:'center',
+    marginTop: '10%',
   },
   info: {
-    flexDirection: 'column',
     gap: 15,
   },
   check: {
@@ -185,6 +198,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
   },
+  palFlex:{
+    flexDirection:'row',
+    alignContent:'center',
+    alignItems:'center',
+  },
   datosPrecio: {
     flexDirection: 'row',
     gap: 10,
@@ -193,10 +211,16 @@ const styles = StyleSheet.create({
   },
   textCheck: {
     fontFamily: 'Poppins-Medium',
-    fontSize: 14,
-    lineHeight: 36,
+    fontSize: 10,
+    lineHeight: 18,
     textAlign: 'center',
     color: '#ffffff',
+  },
+  peque:{
+    justifyContent:'center',
+    alignContent:'center',
+    alignItems:'center',
+    marginLeft:'5%',
   },
   textTotal: {
     fontFamily: 'Poppins-Medium',
@@ -223,7 +247,7 @@ const styles = StyleSheet.create({
   },
   textNitro: {
     fontFamily: 'Poppins-Medium',
-    fontSize: 30,
+    fontSize: 25,
     lineHeight: 36,
     borderBottomColor: '#ffffff',
     borderBottomWidth: 1,
@@ -267,7 +291,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#1881B1',
     borderBottomWidth: 1,
     width: 260,
-    fontSize: 18,
+    fontSize: 12,
     textAlign: 'center',
   },
   buttonIPaid: {
