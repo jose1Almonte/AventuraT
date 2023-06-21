@@ -1,5 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
-import {View, StyleSheet, Text, Image, Dimensions} from 'react-native';
+import {View, StyleSheet, Text, Image, Dimensions, TouchableOpacity} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import vectorLocation from '../vectores/vectorLocation';
 import {ButtonLikes} from './ButtonLikes';
@@ -35,8 +35,10 @@ export const PopularPackages = ({ navigation }: popularProps) => {
 
 
   return (
-    <>
-
+    <View>
+        {popularPackages.length > 0 && (
+          <Text style={styles.title}>Paquetes Recomendados</Text>
+        )}
         {!loading &&
           popularPackages.map((rawData: any, idx: any) => (
               <View key={idx} >
@@ -49,7 +51,11 @@ export const PopularPackages = ({ navigation }: popularProps) => {
           loading &&
           <Text style={styles.text}>Cargando...</Text>
         }
-      </>
+         {popularPackages.length > 0 && (
+        <TouchableOpacity style={styles.showMore}>
+            <Text style={styles.moreText}>Ver más</Text>
+          </TouchableOpacity>)}
+      </View>
       );
     
   }
@@ -61,9 +67,32 @@ text:{
   fontSize: 12,
   color: 'black',
 },
+
+title: {
+  marginBottom: 15,
+  fontFamily: 'Poppins-Bold',
+  fontSize: 18,
+  color: 'white',
+},
 loadingGif:{
   width:60,
   height:60,
+},
+showMore: {
+  width: 100,
+  height: 35,
+  marginTop: '10%',
+  marginBottom: '20%',
+  backgroundColor: 'white',
+  justifyContent: 'center',
+  alignItems: 'center',
+  alignSelf: 'center',
+  borderRadius: 12
+},
+moreText: {
+  color: 'black',
+  fontSize: 12,
+  fontFamily: 'Poppins-SemiBold',
 },
 });
 
