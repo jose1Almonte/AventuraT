@@ -100,17 +100,13 @@ const NavbarScreen = ({ navigation }: any) => {
                 <SvgXml xml={business} />
                 <Text style={styles.txtInfo2}>Pagar Nitro</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.contenedorLinks} onPress={() => { navigation.navigate('CreatePackageFormScreen');}}>
-                <SvgXml xml={business} />
-                <Text style={styles.txtInfo2}>Crear paquete</Text>
-              </TouchableOpacity>
               <TouchableOpacity style={styles.contenedorLinks} onPress={() => { navigation.navigate('BusinessReservedScreen'); }}>
                   <SvgXml xml={business} />
                   <Text style={styles.txtInfo2}>Gestión de Pagos</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.contenedorLinks} onPress={() => {navigation.navigate('AdministratePackagesScreen');}}>
                   <SvgXml xml={business} />
-                  <Text style={styles.txtInfo2}>Editar paquetes</Text>
+                  <Text style={styles.txtInfo2}>Mis paquetes</Text>
                 </TouchableOpacity>
                 </View>
               )}

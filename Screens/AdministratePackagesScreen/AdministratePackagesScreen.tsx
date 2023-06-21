@@ -840,7 +840,7 @@ const styles = StyleSheet.create({
     text4:{
         color: 'white',
         fontWeight: '500',
-        fontSize: 12,
+        fontSize: 10,
         lineHeight: 14,
         marginBottom: '5%',
     },
@@ -848,7 +848,7 @@ const styles = StyleSheet.create({
     text5:{
         color: 'white',
         fontWeight: '500',
-        fontSize: 12,
+        fontSize: 10,
         lineHeight: 14,
     },
     cont:{
