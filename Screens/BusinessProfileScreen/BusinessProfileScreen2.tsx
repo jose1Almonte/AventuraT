@@ -113,7 +113,10 @@ const BusinessProfileScreen = ({route,navigation}:businessProfileProps) => {
                 <View style={stylesBtn.positionContainer}>
                   <Pressable
                     onPress={() => {
-                      navigation.navigate('RatingsScreen');
+                      navigation.navigate('RatingsScreen', {
+                        route: route,
+                        packageI: packageIn,
+                      });
                     }}>
                     <View style={stylesBtn.containerButton}>
                       <View style={stylesBtn.container}>
@@ -123,7 +126,10 @@ const BusinessProfileScreen = ({route,navigation}:businessProfileProps) => {
                   </Pressable>
                   <Pressable
                     onPress={() => {
-                      navigation.navigate('FeedbackScreen');
+                      navigation.navigate('FeedbackScreen', {
+                        route: route,
+                        packageI: packageIn,
+                      });
                     }}>
                     <View style={stylesBtn.containerButton}>
                       <View style={stylesBtn.container2}>

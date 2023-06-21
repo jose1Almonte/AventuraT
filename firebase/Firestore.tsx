@@ -16,6 +16,7 @@ const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
 const packagesCollection = firestore().collection('package');
 const paidPackages = firestore().collection('paidPackage');
+const starsdb = firestore().collection('stars');
 
 export const addUser = async (array: string[], displayName: string, email: string, emailVerified: boolean, photoURL: string) => {
   await usersCollection.add({
@@ -505,3 +506,31 @@ export const purgarHistory = async (ids: string[]) => {
   } catch (error) {
   }
 };
+
+export const saveStarsToFirestore = async (counter, name, email) => {
+  await starsdb.add({
+    counter,
+    name,
+    email,
+  })
+    .then(() => {
+      console.log('Datos guardados en Cloud Firestore');
+    })
+    .catch();
+};
+
+export const checkStarsInFirestore = async (email, name) => {
+  try {
+    const querySnapshot = await starsdb.where('email', '==', email)
+      .where('name', '==', name)
+      .get();
+
+    if (!querySnapshot.empty) {
+      return querySnapshot[0];
+    } else {
+      return null;
+    }
+  } catch (error) {
+  }
+};
+

@@ -9,17 +9,21 @@ import EditPackageButton from '../../Components/Profiles/editPackagesButton';
 import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../vectores/separator';
 import star from '../../vectores/star';
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
 import { LoadingScreenTransparentBackground, returnEnterpisePic } from '../../firebase/Firestore';
 import profileVector from '../../vectores/vectorPerfil';
 import profileArrowVector from '../../vectores/vectorPerfilFlecha';
+import { PackageI } from '../../models/package.interface';
 
 interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
+  route?: any;
+  data?: PackageI;
 }
 
-const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
+const BusinessProfileScreen = ({ route,navigation }: businessProfileProps) => {
+  
   const [empresa, setEmpresa] = useState(null);
   const [description, setDescription] = useState(null);
   const [location, setLocation] = useState(null);
@@ -70,7 +74,10 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
               <View style={stylesBtn.positionContainer}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate('RatingsScreen');
+                    navigation.navigate('RatingsScreen', {
+                      route: route,
+                      packageI: packageIn,
+                    });
                   }}
                 >
                   <View style={stylesBtn.containerButton}>
