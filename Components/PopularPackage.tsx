@@ -6,6 +6,7 @@ import { SvgXml } from 'react-native-svg';
 import vectorLocation from '../vectores/vectorLocation';
 import { NavigationProp } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
+import vectorLocation2 from '../vectores/vectorLocation2';
 
 interface Package {
     availability?: string;
@@ -56,7 +57,7 @@ export default function PopularPackage({ data, navigation }: popularPackageProps
             <View style={styles.ContainerText}>
                 <Text style={styles.textPack}>{data.name}</Text>
                 <View style={styles.ContainerLocation}>
-                <SvgXml xml={vectorLocation} height={12} width={12} />
+                <SvgXml style={styles.textLocation2} xml={vectorLocation2} height={12} width={12} />
                 <Text style={styles.textLocation}>{data.location}</Text>
                 </View>
             </View>
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     container: {
         width: 115,
         height: 200,
-        backgroundColor: '#ebfffb',
+        backgroundColor: 'black',
         borderRadius: 15,
     },
     container1: {
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
         fontSize: 8,
         fontFamily: 'Poppins-Medium',
         justifyContent: "center",
-        backgroundColor:'#ffffff',
+        backgroundColor:'black',
         marginRight:'6%',
     },
     ContainerText: {
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         gap: 5,
-        backgroundColor:'#ffffff',
+        backgroundColor:'black',
         marginRight:'6%',
     },
     ContainerLikes: {
@@ -129,11 +130,17 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     textLocation: {
-        color: '#a80f35',
+        color: 'white',
         fontFamily: 'Poppins-Regular',
         fontSize: 8,
-        backgroundColor:'#ffffff',
+        backgroundColor:'black',
         marginRight:'30%',
+    },
+    textLocation2: {
+        color: 'white',
+        fontFamily: 'Poppins-Regular',
+        fontSize: 8,
+        backgroundColor:'black',
     },
 });
 
