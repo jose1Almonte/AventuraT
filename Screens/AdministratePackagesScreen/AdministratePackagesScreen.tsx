@@ -481,9 +481,9 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
         <View style={styles.giantBox}>
 
         <View style={styles.firstBox}>
-            <TouchableOpacity style={styles.comebackButtonBox} onPress={()=>{navigation.goBack();}}>
-                <Image source={require('../../images/comeBackLogo.png')}/>
-            </TouchableOpacity>
+            <View>
+                <Text> </Text>
+            </View>
             <View style={styles.titleBox}>
                 <Text style={styles.title}>AventuraT con tus Paquetes</Text>
             </View>
@@ -493,9 +493,13 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
                 </TouchableOpacity>
             </View>
         </View>
+        <View style={styles.secondBox2}>
+            <Text style={styles.text4}>Crear Paquetes:</Text>
+            <Button buttonStyle={styles.newbutton} buttonTextStyle={styles.buttonText} text="Crear Paquete" onPress={()=>{navigation.navigate('CreatePackageFormScreen')}}/>
+        </View>
 
         <View style={styles.secondBox}>
-
+            <Text style={styles.text4}>Eliminar Paquetes:</Text>
             <View style={styles.buttonsBox}>
 
                 <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Todos los paquetes" onPress={()=>{setSearchingExpiredPackages(false);}}/>
@@ -512,6 +516,9 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
 
         <View style={styles.thirdBox}>
+            <View style={styles.cont}>
+            <Text style={styles.text5}>Editar Paquetes:</Text>
+            </View>
             <ScrollView style={styles.scrollView} contentContainerStyle = {styles.scrollViewContentContainerStyle}>
 
                 {documents.map((document, index) => (
@@ -543,9 +550,11 @@ const styles = StyleSheet.create({
         width: '100%',
         // backgroundColor: 'yellow',
         zIndex: 0.1,
+        marginTop:'-10%',
 
     },
     giantBox:{
+        marginTop:'10%',
         flex: 1,
         // backgroundColor: '#a01d1d',
         // position: 'absolute'
@@ -564,12 +573,20 @@ const styles = StyleSheet.create({
         // height: 80,
         // marginBottom: 50
         // position: 'absolute'
+        marginRight:'15%',
     },
 
     secondBox:{
         flex: 22.5,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+
+    secondBox2:{
+        flex: 22.5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop:'2%',
     },
 
     thirdBox:{
@@ -609,6 +626,7 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         alignItems:'center',
         justifyContent: 'center',
+        marginLeft:'25%',
         // height: '20%',
     },
     profilePictureBox:{
@@ -619,6 +637,8 @@ const styles = StyleSheet.create({
         // overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
+
+        marginLeft:'-5%',
     },
     title:{
         fontFamily: 'Poppins-Medium',
@@ -628,7 +648,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         lineHeight: 30,
         textAlign: 'center',
-        color: 'black',
+        color: 'white',
         // backgroundColor: 'red',
     },
 
@@ -650,10 +670,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    newbutton:{
+        height: '25%',
+        width: '30%',
+        backgroundColor: '#1881B1',
+        borderRadius: 8,
+        marginBottom: '-5%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     buttonEraseExpired:{
         height: '37.72%',
         width: '41.35%',
-        backgroundColor: '#0B6087',
+        backgroundColor: '#1881B1',
         borderRadius: 8,
         marginBottom: '8.2%',
         alignItems: 'center',
@@ -807,6 +836,28 @@ const styles = StyleSheet.create({
         fontSize: 9,
         lineHeight: 14,
         margin: '1%',
+    },
+    text4:{
+        color: 'white',
+        fontWeight: '500',
+        fontSize: 12,
+        lineHeight: 14,
+        marginBottom: '5%',
+    },
+
+    text5:{
+        color: 'white',
+        fontWeight: '500',
+        fontSize: 12,
+        lineHeight: 14,
+    },
+    cont:{
+        marginTop:'5%',
+        width:'100%',
+        height:'10%',
+        alignItems:'center',
+        justifyContent:'center',
+        backgroundColor:'#1DB5BE',
     },
 
     profilePictureMiniBox:{
