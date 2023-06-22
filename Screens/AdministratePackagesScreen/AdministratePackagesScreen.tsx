@@ -203,7 +203,7 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                         <View style={stylesIndividualCard.textBox}>
                                             <Text style={stylesIndividualCard.text}>Nombre de empresa:</Text>
                                             {/* <Text style={stylesIndividualCard.text}>{data.name}</Text> */}
-                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.name}/>
+                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={String(data.name)} onChange={(event) => {data.name = event.nativeEvent.text;}}/>
                                         </View>
                                         <View style={stylesIndividualCard.textBox}>
                                             <Text style={stylesIndividualCard.text}>Descripción: </Text>
