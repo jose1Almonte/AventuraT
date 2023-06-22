@@ -17,8 +17,7 @@ const FeedbackScreen = ({ route, navigation }: FeedbackScreenProps) => {
     const name = route.params.packageI.name;
     const email = route.params.emailEnterprise;
     const [counter, setCounter] = useState(0);
-
-    saveStarsToFirestore(counter,name,email);
+    /*saveStarsToFirestore(counter,name,email);*/
     return (
         <View style={styles.container}>
             <View style={styles.info}>
