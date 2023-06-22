@@ -11,6 +11,8 @@ import { SvgXml } from 'react-native-svg';
 import vectorHelpdeskScreen from '../../vectores/vectorHelpdeskScreen';
 import cancel from '../../vectores/cancel';
 import edit from '../../vectores/edit';
+import Gradient, { hexToRGBA } from '../../Layouts/Gradient';
+import comeBackScreenButton from '../../vectores/comeBackScreenButton';
 // import { WebView } from 'react-native-webview';
 
 // import { SafeAreaView } from 'react-native-safe-area-context';
@@ -481,8 +483,11 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
         <View style={styles.giantBox}>
 
         <View style={styles.firstBox}>
-            <View>
-                <Text> </Text>
+            <View style={styles.comebackButtonBox}>
+                <TouchableOpacity style={styles.profilePictureMiniBox} onPress={() => {navigation.goBack();}}>
+                    {/* <Image source={require('../../images/comeBackLogo.png')} style={styles.image}/> */}
+                    <SvgXml xml={comeBackScreenButton} />
+                </TouchableOpacity>
             </View>
             <View style={styles.titleBox}>
                 <Text style={styles.title}>AventuraT con tus Paquetes</Text>
@@ -494,12 +499,12 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             </View>
         </View>
         <View style={styles.secondBox2}>
-            <Text style={styles.text4}>Crear Paquetes:</Text>
+            {/* <Text style={styles.normalText}>Crear Paquetes:</Text> */}
             <Button buttonStyle={styles.newbutton} buttonTextStyle={styles.buttonText} text="Crear Paquete" onPress={()=>{navigation.navigate('CreatePackageFormScreen')}}/>
         </View>
 
         <View style={styles.secondBox}>
-            <Text style={styles.text4}>Eliminar Paquetes:</Text>
+            <Text style={styles.normalText}>Filtrado y eliminación de Paquetes:</Text>
             <View style={styles.buttonsBox}>
 
                 <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Todos los paquetes" onPress={()=>{setSearchingExpiredPackages(false);}}/>
@@ -516,8 +521,21 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
 
         <View style={styles.thirdBox}>
-            <View style={styles.cont}>
-            <Text style={styles.text5}>Editar Paquetes:</Text>
+            <View style={styles.editPackageTitleBox}>
+                <Gradient
+                colors={[
+                    '#1DB5BE',
+                    hexToRGBA('#1DB5BE',0.8),
+                    hexToRGBA('#1DB5BE',0.6),
+                    hexToRGBA('#1DB5BE',0.5),
+                    hexToRGBA('#1DB5BE',0.1),
+                  ]}
+                  locations={[0, 0.25, 0.8, 0.9, 1]}
+                  style={styles.linearGradient}
+                >
+
+                    <Text style={styles.editPackageTitle}>Tus Paquetes:</Text>
+                </Gradient>
             </View>
             <ScrollView style={styles.scrollView} contentContainerStyle = {styles.scrollViewContentContainerStyle}>
 
@@ -543,6 +561,13 @@ export default AdministratePackagesScreen;
 
 const styles = StyleSheet.create({
 
+    linearGradient: {
+        flex: 1,
+        width: '100%',
+        alignItems:'center',
+        justifyContent:'center',
+      },
+
     usingAlbannyVectorBox:{
         position: 'absolute',
         top: 0,
@@ -565,7 +590,7 @@ const styles = StyleSheet.create({
         flex: 10.5,
         // backgroundColor: "black",
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignSelf: 'center',
         // alignContent: 'center',
         alignItems: 'center',
@@ -573,7 +598,8 @@ const styles = StyleSheet.create({
         // height: 80,
         // marginBottom: 50
         // position: 'absolute'
-        marginRight:'15%',
+        // marginRight:'15%',
+        // backgroundColor: 'red',
     },
 
     secondBox:{
@@ -583,10 +609,12 @@ const styles = StyleSheet.create({
     },
 
     secondBox2:{
-        flex: 22.5,
-        justifyContent: 'center',
+        // flex: 22.5,
+        flex: 16,
+        // backgroundColor: 'blue',
+        justifyContent: 'flex-end',
         alignItems: 'center',
-        marginTop:'2%',
+        // marginTop:'2%',
     },
 
     thirdBox:{
@@ -619,6 +647,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // justifyContent: 'center',
         // height: '73.17%',
+        // backgroundColor:'yellow',
     },
     titleBox:{
         width: '67.5%',
@@ -626,19 +655,22 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         alignItems:'center',
         justifyContent: 'center',
-        marginLeft:'25%',
+        // marginLeft:'25%',
         // height: '20%',
+        // backgroundColor: 'green'
     },
     profilePictureBox:{
-        width: 80,
+        // backgroundColor:'red',
+        width: '16.25%',
         // backgroundColor:'black',
-        height: 80,
+        // height: '100%',
         // borderRadius: 50,
         // overflow: 'hidden',
+        // backgroundColor: 'yellow',
         alignItems: 'center',
         justifyContent: 'center',
 
-        marginLeft:'-5%',
+        // marginLeft:'-5%',
     },
     title:{
         fontFamily: 'Poppins-Medium',
@@ -650,6 +682,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: 'white',
         // backgroundColor: 'red',
+        
     },
 
     buttonsBox:{
@@ -662,7 +695,7 @@ const styles = StyleSheet.create({
     },
 
     button:{
-        height: '37.72%',
+        height: 35,
         width: '41.35%',
         backgroundColor: '#1881B1',
         borderRadius: 8,
@@ -671,11 +704,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     newbutton:{
-        height: '25%',
+        height: 35,
         width: '30%',
         backgroundColor: '#1881B1',
         borderRadius: 8,
-        marginBottom: '-5%',
+        marginBottom: '5%',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -837,7 +870,7 @@ const styles = StyleSheet.create({
         lineHeight: 14,
         margin: '1%',
     },
-    text4:{
+    normalText:{
         color: 'white',
         fontWeight: '500',
         fontSize: 10,
@@ -845,19 +878,22 @@ const styles = StyleSheet.create({
         marginBottom: '5%',
     },
 
-    text5:{
+    editPackageTitle:{
         color: 'white',
         fontWeight: '500',
         fontSize: 10,
         lineHeight: 14,
     },
-    cont:{
+    editPackageTitleBox:{
         marginTop:'5%',
-        width:'100%',
+        width:'86.67%',
         height:'10%',
         alignItems:'center',
         justifyContent:'center',
-        backgroundColor:'#1DB5BE',
+        // backgroundColor:'#1DB5BE',
+        borderTopStartRadius: 20,
+        borderTopEndRadius: 20,
+        overflow: 'hidden',
     },
 
     profilePictureMiniBox:{
