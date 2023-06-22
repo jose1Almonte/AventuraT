@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import star2 from '../vectores/star2';
@@ -7,61 +7,42 @@ import { PackageI } from '../models/package.interface';
 import { checkStarsInFirestore, saveStarsToFirestore } from '../firebase/Firestore';
 
 interface StarProps {
+  index: number;
   counter: number;
   setCounter: React.Dispatch<React.SetStateAction<number>>;
-  route?: any;
-  data?: PackageI;
 }
 
-const StarField = ({ counter, setCounter }: StarProps) => {
-  const [cambia, setCambia] = useState(false);
-
-  const change = async () => {
-    try {
-      if (cambia) {
-        setCambia(false);
-        setCounter((prevCounter) => prevCounter - 1);
-        console.log(counter);
-      } else {
-        setCambia(true);
-        setCounter((prevCounter) => prevCounter + 1);
-        console.log(counter);
-      }
-    } catch {
-
-    }
+const StarField = ({ index, counter, setCounter }: StarProps) => {
+  const handlePress = () => {
+    setCounter(index);
+    console.log(counter);
   };
 
   return (
-    <View>
-      {cambia ? (
-        <TouchableOpacity onPress={change}>
-          <SvgXml xml={star} width={22} height={22} />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity onPress={change}>
-          <SvgXml xml={star2} width={22} height={22} />
-        </TouchableOpacity>
-      )}
-    </View>
+    <TouchableOpacity onPress={handlePress}>
+      <SvgXml xml={index <= counter ? star : star2} width={22} height={22} />
+    </TouchableOpacity>
   );
 };
 
-interface StarFinalProps {
+interface StarsProps {
   counter: number;
   setCounter: React.Dispatch<React.SetStateAction<number>>;
-  route?: any;
-  data?: PackageI;
 }
 
-const Stars = ({ counter, setCounter }: StarFinalProps) => {
+const Stars = ({ counter, setCounter }: StarsProps) => {
+  const stars = Array.from({ length: 5 }, (_, index) => index + 1);
+
   return (
     <View style={styles.container}>
-      <StarField counter={counter} setCounter={setCounter} />
-      <StarField counter={counter} setCounter={setCounter} />
-      <StarField counter={counter} setCounter={setCounter} />
-      <StarField counter={counter} setCounter={setCounter} />
-      <StarField counter={counter} setCounter={setCounter} />
+      {stars.map((index) => (
+        <StarField
+          key={index}
+          index={index}
+          counter={counter}
+          setCounter={setCounter}
+        />
+      ))}
     </View>
   );
 };
