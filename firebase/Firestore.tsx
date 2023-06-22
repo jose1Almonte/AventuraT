@@ -61,21 +61,46 @@ export const addEnterprise = async (nameEnterprise: string, rif: string,
   });
 };
 
-export const updateEnterprise = async (id: string, enterpriseName: string, rif: string, personResponsible: string) => {
-  await usersCollection2.doc(id).set({
+export const updateEnterprise = async (userId: string, enterpriseName: string, rif: string, personResponsible: string) => {
+  await usersCollection2.doc(userId).set({
     enterpriseName: enterpriseName,
     rif: rif,
     personResponsible: personResponsible
   });
 };
 
-export const updateResponsibleData = async (responsibleName: string, phoneNumber: string, disName: string) => {
-  await usersCollection2.doc(responsibleName).set({
-    responsibleName: responsibleName,
-    phoneNumber: phoneNumber,
-    disName: disName,
-  });
-}; 
+//para actualizar los datos del responsable de la empresa en la colección enterprise
+export const fetchUserId = async (responsibleName: string) => {
+  const querySnapshot = await usersCollection2.where('responsibleName', '==', responsibleName).get();
+  if (querySnapshot.empty) {
+    // No se encontró ningún documento con el correo electrónico especificado
+    return null;
+  }
+
+  // Solo debería haber un documento con el correo electrónico especificado
+  const doc = querySnapshot.docs[0];
+  return doc.id;
+};
+
+//para actualizar los datos en la colección users
+export const fetchUserId2 = async (responsibleName: string) => {
+  const querySnapshot = await usersCollection.where('responsibleName', '==', responsibleName).get();
+  if (querySnapshot.empty) {
+    // No se encontró ningún documento con el correo electrónico especificado
+    return null;
+  }
+
+  // Solo debería haber un documento con el correo electrónico especificado
+  const doc = querySnapshot.docs[0];
+  return doc.id;
+};
+
+export const updateResponsibleData = async (
+  userId: string,
+  data: { responsibleEmail?: string; phoneNumber?: string; name?: string }
+) => {
+  await usersCollection2.doc(userId).update(data);
+};
 
 export const getUser = async (userId: string) => {
   const documentSnapshot = await usersCollection.doc(userId).get();

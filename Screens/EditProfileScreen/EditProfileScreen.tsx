@@ -1,3 +1,4 @@
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -5,37 +6,26 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Alert
+  Alert,
 } from 'react-native';
-import React, {Component, useState, useEffect} from 'react';
 import {NavigationProp} from '@react-navigation/native';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import currentLog from '../../firebase/UserData';
 import {useUser} from '../../Context/UserContext';
 import {
-  LoadingScreenTransparentBackground,
-  returnEnterpisePic, updateResponsibleData } from '../../firebase/Firestore';
-  import firestore from '@react-native-firebase/firestore';
+  fetchUserId,
+  returnEnterpisePic,
+  updateResponsibleData,
+} from '../../firebase/Firestore';
 
-// import firebase from 'firebase';
-// import 'firebase/firestore';
-
-
-interface UserDataForm {
-    id: number
-  disName: string;
-  responsibleName: string;
-  phoneNumber: string;
-}
-
-const validateEmail = (email: string): boolean => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+const validateNumber = (number: string): boolean => {
+  const numberRegExp = /^[0-9]+$/;
+  return numberRegExp.test(number);
 };
 
-const validateNumber = (rif: string): boolean => {
-  const numberRegExp = /^[0-9]+$/;
-  return numberRegExp.test(rif);
+const validateLetters = (letter: string): boolean => {
+  const ExpRegSoloLetras = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/;
+  return ExpRegSoloLetras.test(letter);
 };
 
 
@@ -46,8 +36,6 @@ const EditProfileScreen = ({
   navigation: NavigationProp<Record<string, object | undefined>>;
 }) => {
   const user = currentLog();
-  const [userExists, setUserExists] = useState(false);
-  const {setUser, setLogged} = useUser();
   const [loadingSomeThing, setLoadingSomething] = useState(false);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
@@ -55,33 +43,13 @@ const EditProfileScreen = ({
   const [responsibleEmail, setResponsibleEmail] = useState('');
   const [isFormEdited, setFormEdited] = useState(false);
 
-  //   const [ phoneNumber, s]
-
-  //   const [data, setData] = useState<UserDataForm>({
-  //     responsibleName: '',
-  //     phoneNumber: '',
-  //     disName:'',
-  //   });
-
-  //   const handleChange = (text: string) => {
-  //     setName(text);
-  //     setPhoneNumber(text);
-  //     setResponsibleEmail(text)
-  //   };
-
   const handleNameChange = (text: string) => {
-    // disName:'';
     setName(text);
     setFormEdited(true);
   };
 
   const handlePhoneNumberChange = (text: string) => {
     setPhoneNumber(text);
-    setFormEdited(true);
-  };
-
-  const handleResponsibleEmailChange = (text: string) => {
-    setResponsibleEmail(text);
     setFormEdited(true);
   };
 
@@ -92,8 +60,8 @@ const EditProfileScreen = ({
       const email = await returnEnterpisePic(user?.email);
       if (email != null) {
         setPhoneNumber(email.phoneNumber);
-        setName(user?.displayName);
-        setResponsibleEmail(user?.email)
+        setName(email.disName);
+        setResponsibleEmail(user?.email);
       }
       setLoadingSomething(false);
     };
@@ -101,89 +69,89 @@ const EditProfileScreen = ({
     fetchEnterprisePic();
   }, []);
 
-//   const [data, setData] = useState<UserDataForm>({
-//     id: 0,
-//     responsibleName: '',
-//     phoneNumber: '',
-//     disName:'',
-//   });
-
-  const handleSaveChanges = async () => {
-    try {
-      setLoadingSomething(true);
-  const usersCollection2 = firestore().collection('enterprise');
-      // Obtenemos la referencia al documento del usuario en la base de datos
-      const userRef = usersCollection2
-  
-      // Realizamos la actualización de los campos necesarios
-      await updateResponsibleData({
-        responsibleName: name,
-        phoneNumber: phoneNumber,
-        disName: responsibleEmail,
-      });
-  
-      // Actualizamos los estados necesarios o realiza alguna acción adicional
-  
-      setLoadingSomething(false);
-      // Mostrar mensaje de éxito, navegar a otra pantalla, etc.
-    } catch (error) {
-      console.error('Error al guardar los cambios:', error);
-      // Mostrar mensaje de error al usuario
-      setLoadingSomething(false);
-    }
-  };
-
   const submit = async () => {
-    let isDone = false;
-    setLoading(true);
-
     if (
       name.trim() === '' ||
       phoneNumber.trim() === '' ||
       responsibleEmail.trim() === ''
     ) {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
-      setLoading(false);
       return;
     }
 
-    if (phoneNumber.trim().length < 11 || phoneNumber.trim().length > 11){
-      Alert.alert('Error','Por favor, ingrese un número de teléfono válido (11 dígitos)');
-      setLoading(false);
+    if (phoneNumber.trim().length !== 11) {
+      Alert.alert(
+        'Error',
+        'Por favor, ingrese un número de teléfono válido (11 dígitos)',
+      );
       return;
     }
 
     if (!validateNumber(phoneNumber.toString())) {
-      Alert.alert('Número Teléfono Inválido', 'Por favor, ingrese un número de teléfono válido (11 dígitos)');
-      setLoading(false);
+      Alert.alert(
+        'Número Teléfono Inválido',
+        'Por favor, ingrese un número de teléfono válido (11 dígitos)',
+      );
       return;
     }
 
-    if (!validateEmail(responsibleEmail.toLowerCase()) ) {
-      Alert.alert('Correo Electrónico Inválido', 'Por favor, ingrese un correo electrónico válido');
-      setLoading(false);
+    if(!validateLetters(name.toString())){
+      Alert.alert(
+        'Dato Inválido',
+        'Por favor, ingrese un nombre válido',
+      );
       return;
     }
 
+    Alert.alert(
+      'Confirmar Actualización',
+      '¿Estás seguro de que deseas guardar los cambios?',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Aceptar',
+          onPress: async () => {
+            setLoading(true);
 
-    updateResponsibleData(
-        responsibleEmail.toLowerCase(),
-        phoneNumber,
-        name.toLowerCase(),
-        );
-    //   console.log(name)
-      console.log(phoneNumber)
-    isDone = true;
-    Alert.alert('Cambios guardados', 'Los datos se han guardado exitosamente');
-    //   // setLoading(false);
-    //   setLoading(false);
-    //   if (isDone) {navigation.navigate('HomeScreen');}
-    }
-    
+            const userId = await fetchUserId(responsibleEmail.toLowerCase());
+            if (userId) {
+              const dataToUpdate = {
+                // responsibleName: responsibleEmail.toLowerCase(),
+                disName: name,
+                phoneNumber: phoneNumber,
+                
+              };
 
-    
+              await updateResponsibleData(userId, dataToUpdate);
+              // console.log(responsibleEmail);
+              console.log(name)
+              console.log(user?.displayName)
 
+              Alert.alert(
+                'Actualización Exitosa',
+                'Los cambios se han guardado correctamente',
+              );
 
+              setLoading(false);
+              setFormEdited(false);
+            } else {
+              console.log(
+                'No se encontró ningún usuario con el correo electrónico especificado',
+              );
+              Alert.alert(
+                'Usuario no encontrado',
+                'No se encontró ningún usuario con el correo electrónico especificado',
+              );
+              setLoading(false);
+            }
+          },
+        },
+      ],
+    );
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -205,19 +173,18 @@ const EditProfileScreen = ({
             <TextInput
               style={styles.input}
               onChangeText={handleNameChange}
-              value={name}></TextInput>
-
-
-              
+              value={name}
+            />
           </View>
 
           <View style={styles.inputContainer}>
             <Text style={styles.textLabel}>Correo electrónico</Text>
             <TextInput
-              style={styles.input}
-              onChangeText={handleResponsibleEmailChange}
+              style={styles.textEmail}
+              //No es editable porque se está utilizando el correo electrónico como Id del usuario para acceder a sus datos en la base de datos
+              editable={false}
               value={responsibleEmail}
-              ></TextInput>
+            />
           </View>
 
           <View style={styles.inputContainer}>
@@ -225,7 +192,8 @@ const EditProfileScreen = ({
             <TextInput
               style={styles.input}
               onChangeText={handlePhoneNumberChange}
-              value={phoneNumber}></TextInput>
+              value={phoneNumber}
+            />
           </View>
         </View>
 
@@ -236,7 +204,6 @@ const EditProfileScreen = ({
               isFormEdited ? styles.buttonContainerActive : null,
             ]}>
             <Text style={styles.textButton}>Guardar cambios</Text>
-            
           </View>
         </TouchableOpacity>
       </View>
@@ -248,22 +215,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    // backgroundColor: 'green',
   },
   info: {
-    // backgroundColor: 'red',
     justifyContent: 'center',
     alignContent: 'center',
-    // alignItems:
   },
   topInfo: {
-    // backgroundColor: 'purple',
     marginTop: '20%',
     alignItems: 'center',
     gap: 25,
   },
   bottomInfo: {
-    // backgroundColor: 'blueviolet',
     margin: '10%',
     gap: 10,
   },
@@ -282,12 +244,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'black',
     marginTop: 22,
-    // gap: 15
   },
   buttonContainer: {
     display: 'flex',
     alignItems: 'center',
-    // alignContent: 'center',
     height: 40,
     width: 200,
     borderRadius: 50,
@@ -298,7 +258,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   buttonContainerActive: {
-    backgroundColor: '#1881b1', // Cambia el color a tu elección
+    backgroundColor: '#1881b1',
   },
   text: {
     fontFamily: 'Poppins-SemiBold',
@@ -310,12 +270,19 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontSize: 14,
     color: 'black',
-    // textAlign: 'center',
   },
   textButton: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 14,
     color: 'white',
+  },
+  textEmail: {
+    color: '#787272',
+    marginTop: 8,
+    fontFamily: 'Poppins-Regular',
+    fontSize: 13,
+    lineHeight: 24,
+    marginBottom: 3,
   },
 });
 

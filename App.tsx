@@ -31,6 +31,7 @@ import ReservedScreen from './Screens/ReservedScreen/ReservedScreen';
 import BusinessReservedScreen from './Screens/BusinessReservedScreen/BusinessReservedScreen';
 import DetailReservedScreen from './Screens/DetailReservedScreen/DetailReservedScreen';
 import Tutorial from './Screens/Tutorial/Tutorial';
+import EditProfileScreen from './Screens/EditProfileScreen/EditProfileScreen';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
