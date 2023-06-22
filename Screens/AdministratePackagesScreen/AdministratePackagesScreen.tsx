@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, ScrollView, Dimensions, BackHandler } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, ScrollView, Dimensions, BackHandler, TextInput } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Background } from '../../Layouts/Background';
 import { useUser } from '../../Context/UserContext';
@@ -13,6 +13,7 @@ import cancel from '../../vectores/cancel';
 import edit from '../../vectores/edit';
 import Gradient, { hexToRGBA } from '../../Layouts/Gradient';
 import comeBackScreenButton from '../../vectores/comeBackScreenButton';
+import check from '../../vectores/check';
 // import { WebView } from 'react-native-webview';
 
 // import { SafeAreaView } from 'react-native-safe-area-context';
@@ -107,6 +108,7 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
     const {user} = useUser();
     const [userExists, setUserExists] = useState(true);
     const [VIP, setVIP] = useState('');
+    const [isEditting, setIsEditting] = useState(false);
 
     const startDate = data.startDate.toDate();
     const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
@@ -122,6 +124,7 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
     const expireDay = expireDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
     const expireMonth = (expireDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
     const expireYear = expireDate.getFullYear();
+
 
     const handleSetSelectedPackage = async () => {
         await setSelectedPackage(false);
@@ -161,10 +164,18 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
 
                             <View style={stylesIndividualCard.firstRow}>
                                 <View style={stylesIndividualCard.firstRowLeft}>
-                                    <View style={stylesIndividualCard.firstRowLeftBox}>
-                                        <SvgXml xml={edit} />
+                                        {!isEditting ? (
+                                            <TouchableOpacity style={stylesIndividualCard.firstRowLeftBox} onPress={() => {setIsEditting(true);}}>
+                                                <SvgXml xml={edit} />
+                                            </TouchableOpacity>
+
+                                            ) : (
+                                            <TouchableOpacity style={stylesIndividualCard.firstRowLeftBoxUsingCheck} onPress={() => {setIsEditting(false);}}>
+                                                <SvgXml xml={check} />
+                                            </TouchableOpacity>
+
+                                        )}
                                         {/* <Text>Editar</Text> */}
-                                    </View>
                                 </View>
                                 <TouchableOpacity style={stylesIndividualCard.firstRowCenter} onPress={() => {changeIsPublic(data, setDataIsPublic);}}>
                                     {dataIsPublic ? (
@@ -179,11 +190,6 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                 </TouchableOpacity>
                                 <View style={stylesIndividualCard.firstRowRight}>
                                     <TouchableOpacity style={stylesIndividualCard.firstRowRightBox} onPress={() => {handleSetSelectedPackage();}}>
-                                        {/* <Text>Out</Text> */}
-                                        {/* <WebView
-                                          source={{ html: cancel }}
-                                          style={{ width: 26, height: 26 }}
-                                        /> */}
                                         <SvgXml xml={cancel} />
                                     </TouchableOpacity>
                                 </View>
@@ -191,58 +197,115 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
 
                             <View style ={stylesIndividualCard.secondRow}>
                                 <View style ={stylesIndividualCard.secondRowDescriptionBox}>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Nombre de empresa:</Text>
-                                    <Text style={stylesIndividualCard.text}>{data.name}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Descripción: </Text>
-                                    <Text style={stylesIndividualCard.text}>{data.description}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Fecha inicio: </Text>
-                                    <Text style={stylesIndividualCard.text}>{startDay}/{startMonth}/{startYear}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Fecha fin: </Text>
-                                    <Text style={stylesIndividualCard.text}>{endDay}/{endMonth}/{endYear}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Fecha expira: </Text>
-                                    <Text style={stylesIndividualCard.text}>{expireDay}/{expireMonth}/{expireYear}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Precio: </Text>
-                                    <Text style={stylesIndividualCard.text}>$ {data.price}</Text>
-                                </View>
-                                {/* <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Rating: </Text>
-                                    <Text style={stylesIndividualCard.text}>{data.rating} estrellas</Text>
-                                </View> */}
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Tipo: </Text>
-                                    <Text style={stylesIndividualCard.text}>{data.tipo}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Estado: {VIP}</Text>
-                                    {/* <Text style={stylesIndividualCard.text}>{data.tipo}</Text> */}
-                                    {userExists &&
-                                        <>
-                                            {VIP === 'VIP' ?
-                                                <TouchableOpacity onPress={() => { makeRegular(data.id, user.email); setVIP('Regular');}}>
-                                                    <Text style={stylesIndividualCard.textBlue}>Pasar a Regular</Text>
-                                                    {/* <Text>Pasar a Regular</Text> */}
-                                                </TouchableOpacity> :
-                                                <TouchableOpacity onPress={() => { makeVIP(data.id, user.email); setVIP('VIP');}}>
-                                                    <Text style={stylesIndividualCard.textBlue}>Pasar a VIP</Text>
-                                                    {/* <Text>Pasar a VIP</Text> */}
-                                                </TouchableOpacity>
-                                            }
 
-                                        </>
+                                { isEditting ? (
+                                    <>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text}>Nombre de empresa:</Text>
+                                            {/* <Text style={stylesIndividualCard.text}>{data.name}</Text> */}
+                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.name}/>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text}>Descripción: </Text>
+                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.description}/>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text}>Fecha inicio: </Text>
+                                            <Text style={stylesIndividualCard.text}>{startDay}/{startMonth}/{startYear}</Text>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text}>Fecha fin: </Text>
+                                            <Text style={stylesIndividualCard.text}>{endDay}/{endMonth}/{endYear}</Text>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text}>Fecha expira: </Text>
+                                            <Text style={stylesIndividualCard.text}>{expireDay}/{expireMonth}/{expireYear}</Text>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text}>Precio: </Text>
+                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.price}/>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text}>Tipo: </Text>
+                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.tipo}/>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Estado: {VIP}</Text>
+                                        {/* <Text style={stylesIndividualCard.text}>{data.tipo}</Text> */}
+                                        {userExists &&
+                                            <>
+                                                {VIP === 'VIP' ?
+                                                    <TouchableOpacity onPress={() => { makeRegular(data.id, user.email); setVIP('Regular');}}>
+                                                        <Text style={stylesIndividualCard.textBlue}>Pasar a Regular</Text>
+                                                        {/* <Text>Pasar a Regular</Text> */}
+                                                    </TouchableOpacity> :
+                                                    <TouchableOpacity onPress={() => { makeVIP(data.id, user.email); setVIP('VIP');}}>
+                                                        <Text style={stylesIndividualCard.textBlue}>Pasar a VIP</Text>
+                                                        {/* <Text>Pasar a VIP</Text> */}
+                                                    </TouchableOpacity>
+                                                }
 
-                                    }
-                                </View>
+                                            </>
+
+                                        }
+                                    </View>
+                                    </>
+                                ) : (
+                                  <>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Nombre de empresa:</Text>
+                                        <Text style={stylesIndividualCard.text}>{data.name}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Descripción: </Text>
+                                        <Text style={stylesIndividualCard.text}>{data.description}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Fecha inicio: </Text>
+                                        <Text style={stylesIndividualCard.text}>{startDay}/{startMonth}/{startYear}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Fecha fin: </Text>
+                                        <Text style={stylesIndividualCard.text}>{endDay}/{endMonth}/{endYear}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Fecha expira: </Text>
+                                        <Text style={stylesIndividualCard.text}>{expireDay}/{expireMonth}/{expireYear}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Precio: </Text>
+                                        <Text style={stylesIndividualCard.text}>$ {data.price}</Text>
+                                    </View>
+                                    {/* <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Rating: </Text>
+                                        <Text style={stylesIndividualCard.text}>{data.rating} estrellas</Text>
+                                    </View> */}
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Tipo: </Text>
+                                        <Text style={stylesIndividualCard.text}>{data.tipo}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Estado: {VIP}</Text>
+                                        {/* <Text style={stylesIndividualCard.text}>{data.tipo}</Text> */}
+                                        {userExists &&
+                                            <>
+                                                {VIP === 'VIP' ?
+                                                    <TouchableOpacity onPress={() => { makeRegular(data.id, user.email); setVIP('Regular');}}>
+                                                        <Text style={stylesIndividualCard.textBlue}>Pasar a Regular</Text>
+                                                        {/* <Text>Pasar a Regular</Text> */}
+                                                    </TouchableOpacity> :
+                                                    <TouchableOpacity onPress={() => { makeVIP(data.id, user.email); setVIP('VIP');}}>
+                                                        <Text style={stylesIndividualCard.textBlue}>Pasar a VIP</Text>
+                                                        {/* <Text>Pasar a VIP</Text> */}
+                                                    </TouchableOpacity>
+                                                }
+
+                                            </>
+
+                                        }
+                                    </View>
+                                  </>  
+                                )}
                                 </View>
                             </View>
 
@@ -926,7 +989,8 @@ const stylesIndividualCard = StyleSheet.create({
 
     card:{
         width: '85%',
-        height: '47.125%',
+        // height: '47.125%',
+        height: 445,
         backgroundColor: 'white',
         borderRadius: 20,
         borderColor: 'black',
@@ -955,6 +1019,16 @@ const stylesIndividualCard = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        // backgroundColor:'red',
+
+    },
+    firstRowLeftBoxUsingCheck:{
+        width: '70%',
+        height: '70%',
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 1)',
         // backgroundColor:'red',
 
     },
@@ -1017,8 +1091,9 @@ const stylesIndividualCard = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         // backgroundColor: 'rgba(255,255,255,0.3)',
-        padding: '2%',
+        // padding: '2%',
         marginVertical: '1%',
+        // overflow: 'hidden',
     },
 
     text:{
@@ -1028,6 +1103,21 @@ const stylesIndividualCard = StyleSheet.create({
         fontSize: 12,
         lineHeight: 18,
         display: 'flex',
+    },
+
+    inputText: {
+        // backgroundColor: 'red',
+        color: 'blue',
+        fontFamily: 'Poppins-Regular',
+        fontWeight: '500',
+        fontSize: 12,
+        lineHeight: 18,
+        // height: 'auto',
+        width: 'auto',
+        textAlign: 'right',
+        textAlignVertical: 'bottom',
+        borderBottomColor: 'rgba(0,0,0,0.5)',
+        borderBottomWidth: 1,
     },
 
     textBlue:{
