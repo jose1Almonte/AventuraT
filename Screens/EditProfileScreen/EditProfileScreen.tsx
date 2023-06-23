@@ -71,6 +71,11 @@ const EditProfileScreen = ({
         setName(email.disName);
         setResponsibleEmail(user?.email);
         setFileName(user?.photoURL);
+      } else {
+        setPhoneNumber();
+        setName(user?.displayName);
+        setResponsibleEmail(user?.email);
+        setFileName(user?.photoURL);
       }
       setLoading(false);
       setLoadingSomething(false);
