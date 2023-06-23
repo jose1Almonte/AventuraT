@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import currentLog from './UserData';
 import auth from '@react-native-firebase/auth';
 import { Image, PixelRatio, TouchableOpacity, Dimensions } from 'react-native';
 import { onGoogleButtonPress } from './gmail';
 import { ContinueWithName } from '../Screens/LoginScreen/LoginScreen';
-import { addUser, checkIfUserExists, checkResponsibleNameExists } from '../firebase/Firestore';
+import { addUser, checkIfUserExists } from '../firebase/Firestore';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../Context/UserContext';
 
@@ -19,33 +19,9 @@ interface ProfilePictureProps {
 export const ProfilePicture = ({
     navigation,
 }: ProfilePictureProps) => {
-    const { isLogged } = useUser();
+    const { user, setUser, isLogged } = useUser();
     // const userOn = currentLog();
     let route: string = 'UserProfileScreen';
-
-    const [user,setUser] = useState(currentLog());
-    const [userExists, setUserExists] = useState(false);
-
-    const [loadingSomeThing, setLoadingSomething] = useState(false);
-
-  useEffect(() => {
-    const checkUserExists = async () => {
-      setLoadingSomething(true);
-        const newUs= currentLog();
-        setUser(newUs);
-      const userEmail = user?.email;
-      
-
-      // console.log(userEmail);
-      const exists = await checkResponsibleNameExists(userEmail);
-      // console.log(exists);
-      setUserExists(exists);
-      setLoadingSomething(false);
-    };
-
-    checkUserExists();
-  }, [user?.email, user?.displayName,user?.photoURL]);
-
     return (
         <>
             {isLogged ? (
