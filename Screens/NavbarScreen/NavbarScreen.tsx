@@ -20,10 +20,11 @@ import ScrollViewIndicator from 'react-native-scroll-indicator';
 
 interface navigationProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
+  actualizaPerfil: boolean;
 }
 
 
-const NavbarScreen = ({ navigation }: any) => {
+const NavbarScreen = ({ navigation}: any , {actualizaPerfil}:navigationProps) => {
 
   const { setUser, setLogged } = useUser();
   const [loadingSomeThing, setLoadingSomething] = useState(false);

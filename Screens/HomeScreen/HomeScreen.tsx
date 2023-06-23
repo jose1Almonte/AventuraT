@@ -39,7 +39,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   // };
   const [searchKeyword, setSearchKeyword] = useState('');
   const [loadingSomeThing, setLoadingSomething] = useState(false);
-
+  const [actualizaPerfil, setActualizaPerfil] = useState(false);
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -57,7 +57,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       <ScrollView style={styles.background}>
         <View style={styles.navbar}>
           <View>
-            <TouchableOpacity style={styles.colorRed} onPress={() => { navigation.navigate('NavbarScreen');}}>
+            <TouchableOpacity style={styles.colorRed} onPress={() => { navigation.navigate('NavbarScreen', {actualizaPerfil: actualizaPerfil});}}>
               <SvgXml xml={menuBar} />
             </TouchableOpacity>
           </View>
@@ -70,6 +70,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             navigation={navigation}
             styles={styles}
             destinationNavigationComponentName="UserProfileScreen"
+            actualizaPerfil= {actualizaPerfil}
+            setActualizaPerfil = {setActualizaPerfil}
           />
         </View>
         <InputSearch navigation={navigation} areYouInSearchResult={false} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} defaultValue={undefined} />

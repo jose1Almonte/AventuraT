@@ -15,12 +15,15 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 interface UserProfileScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>,
+  actualizaPerfil: boolean,
+  setActualizaPerfil:any,
 }
 
 export const UserProfileScreen = ({
-  navigation,
+  navigation, actualizaPerfil, setActualizaPerfil,
 }: UserProfileScreenProps) => {
 
+  console.log(actualizaPerfil);
   const { setUser, setLogged } = useUser();
   const logout = async (): Promise<void> => {
     try {
@@ -82,7 +85,7 @@ export const UserProfileScreen = ({
               </View>
 
               {userExists && (
-              <TouchableOpacity style={styles.editProfileButtonBox} onPress={() => { navigation.navigate('EditProfileScreen');}}>
+              <TouchableOpacity style={styles.editProfileButtonBox} onPress={() => { navigation.navigate('EditProfileScreen',{actualizaPerfil:actualizaPerfil},{setActualizaPerfil: setActualizaPerfil});}}>
                 <EditProfileButton />
               </TouchableOpacity>
               )}
@@ -137,11 +140,11 @@ export const UserProfileScreen = ({
                   <SvgXml xml={profileArrowVector} />
                 </TouchableOpacity>
               )*/}
-
+              {userExists &&
               <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
                 <Text style={styles.txtInfo1}>Cerrar sesión</Text>
                 <SvgXml xml={profileArrowVector} />
-              </TouchableOpacity>
+              </TouchableOpacity>}
             </View>
 
           </View>
