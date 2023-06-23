@@ -27,8 +27,8 @@ export const ProfilePicture = ({
         return user?.photoURL;
     };
     useEffect(() => {
-        PhotoUser();
         setUser(currentLog());
+        PhotoUser();
     }, [actualizaPerfil]);
     let UserProfileScreenRoute: string = 'UserProfileScreen';
     return (
