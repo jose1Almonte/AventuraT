@@ -17,6 +17,7 @@ import {
   returnEnterpisePic,
   updateResponsibleData,
 } from '../../firebase/Firestore';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const validateNumber = (number: string): boolean => {
   const numberRegExp = /^[0-9]+$/;
@@ -152,6 +153,25 @@ const EditProfileScreen = ({
       ],
     );
   };
+  const [resourcePath, setResourcePath] = useState('');
+  const [filename, setFileName] = useState('');
+
+  const selectImage = () => {
+    launchImageLibrary({ mediaType: 'photo' }, (response) => {
+      if (response.didCancel) {
+        Alert.alert('Not Image', 'No se ha elegido una imagen');
+      } else if (response.errorCode) {
+        Alert.alert('ImagePicker Error', response.errorMessage || 'Error');
+      } else {
+        const selectedAsset = response.assets && response.assets[0];
+        if (selectedAsset && selectedAsset.uri) {
+          setResourcePath(selectedAsset.uri);
+          setFileName(selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1));
+          Alert.alert('Done', 'Image uploaded');
+        }
+      }
+    });
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -196,6 +216,10 @@ const EditProfileScreen = ({
             />
           </View>
         </View>
+
+        <TouchableOpacity style={styles.button} onPress={selectImage}>
+          <Text style={styles.buttonText}>Cambiar imagen</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={submit}>
           <View
@@ -244,6 +268,23 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'black',
     marginTop: 22,
+  },
+  button: {
+    display: 'flex',
+    alignItems: 'center',
+    height: 40,
+    width: 200,
+    borderRadius: 5,
+    justifyContent: 'center',
+    backgroundColor: '#1881B1',
+    marginTop: '3%',
+    marginBottom:'3%',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+    textAlign: 'center',
   },
   buttonContainer: {
     display: 'flex',

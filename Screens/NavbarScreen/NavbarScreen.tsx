@@ -14,7 +14,7 @@ import auth from '@react-native-firebase/auth';
 import { PerfilPictureNav } from '../../firebase/PerfilPictureNav';
 import UserData from '../../firebase/UserData';
 import currentLog from '../../firebase/UserData';
-import { checkResponsibleNameExists } from '../../firebase/Firestore';
+import { LoadingScreenTransparentBackground, checkResponsibleNameExists } from '../../firebase/Firestore';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import ScrollViewIndicator from 'react-native-scroll-indicator';
 
@@ -26,8 +26,9 @@ interface navigationProps {
 const NavbarScreen = ({ navigation }: any) => {
 
   const { setUser, setLogged } = useUser();
-
+  const [loadingSomeThing, setLoadingSomething] = useState(false);
   const logout = async (): Promise<void> => {
+    setLoadingSomething(true);
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
@@ -38,6 +39,7 @@ const NavbarScreen = ({ navigation }: any) => {
     await auth().signOut();
     setUser(null);
     setLogged(false);
+    setLoadingSomething(false);
   };
 
   let { isLogged } = useUser();
@@ -45,7 +47,7 @@ const NavbarScreen = ({ navigation }: any) => {
   const user = currentLog();
   const [userExists, setUserExists] = useState(false);
 
-  const [loadingSomeThing, setLoadingSomething] = useState(false);
+
 
   useEffect(() => {
     const checkUserExists = async () => {
@@ -64,8 +66,12 @@ const NavbarScreen = ({ navigation }: any) => {
 
   return (
     <>
-    {isLogged ? (
+    {LoadingScreenTransparentBackground ? (
+
     <View style={styles.container} >
+       {loadingSomeThing && (
+      <LoadingScreenTransparentBackground />
+      )}
       <View style={styles.fondo}>
         <View style={styles.info}>
           <TouchableOpacity style={styles.topInfo} onPress={() => { navigation.navigate('UserProfileScreen') }}>

@@ -34,7 +34,7 @@ const validateLetters = (letter: string): boolean => {
 
 
 
-const EditProfileScreenUser = ({
+const EditProfileEnterprise = ({
   navigation,
 }: {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -232,6 +232,9 @@ useEffect(() => {
               value={phoneNumber}
             />
           </View>
+          <TouchableOpacity style={styles.button} onPress={selectImage}>
+              <Text style={styles.buttonText}>Subir imagen/logo principal de la empresa</Text>
+            </TouchableOpacity>
         </View>
 
         <TouchableOpacity onPress={submit}>
@@ -323,4 +326,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditProfileScreenUser;
+export default EditProfileEnterprise;

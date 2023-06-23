@@ -56,14 +56,12 @@ export const UserProfileScreen = ({
     checkUserExists();
   }, [user?.email]);
 
-  if (loadingSomeThing){
-    return (
-      <LoadingScreenTransparentBackground />
-    );}
 
   return (
     <>
-
+    {loadingSomeThing && (
+      <LoadingScreenTransparentBackground />
+    )}
       <ScrollView style={styles.container}>
         <View style={styles.container}>
 
