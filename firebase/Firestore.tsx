@@ -6,7 +6,7 @@ import { useUser } from '../Context/UserContext';
 import { useEffect } from 'react';
 import { usersCollection3 } from './DeletePackage';
 import React, { useState } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Alert } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Text } from 'react-native-svg';
 
@@ -573,5 +573,37 @@ export const checkStarsInFirestore = async (email, name) => {
     }
   } catch (error) {
   }
+};
+
+export const updateProfile = async (displayName: string, photoURL: string) => {
+  const user = firebase.auth().currentUser;
+
+  if (user) {
+    try {
+      await user.updateProfile({
+        displayName,
+        photoURL,
+      });
+      Alert.alert('GENIAL','Perfil actualizado con éxito');
+    } catch (error) {
+      Alert.alert('ERROR','Error al actualizar el perfil:');
+    }
+  }
+};
+
+export const updateUserDataByEmail = async (email: string, displayName: string, photoURL: string) => {
+  try {
+    const querySnapshot = await usersCollection.where('email', '==', email).get();
+    if (querySnapshot.size > 0) {
+      const doc = querySnapshot.docs[0];
+      await doc.ref.update({
+        displayName,
+        photoURL,
+      });
+      console.log('Datos de usuario actualizados con éxito');
+    } else {
+      console.log('No se encontró ningún usuario con el correo electrónico proporcionado');
+    }
+  } catch {}
 };
 

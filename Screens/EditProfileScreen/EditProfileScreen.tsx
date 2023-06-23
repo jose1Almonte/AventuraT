@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   StyleSheet,
@@ -8,14 +8,17 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import {NavigationProp} from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import currentLog from '../../firebase/UserData';
-import {useUser} from '../../Context/UserContext';
+import { useUser } from '../../Context/UserContext';
 import {
   fetchUserId,
   returnEnterpisePic,
+  updateProfile,
   updateResponsibleData,
+  updateUserDataByEmail,
+  uploadImage,
 } from '../../firebase/Firestore';
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -29,13 +32,13 @@ const validateLetters = (letter: string): boolean => {
   return ExpRegSoloLetras.test(letter);
 };
 
-
-
 const EditProfileScreen = ({
   navigation,
 }: {
   navigation: NavigationProp<Record<string, object | undefined>>;
 }) => {
+  const [resourcePath, setResourcePath] = useState('');
+  const [filename, setFileName] = useState('');
   const user = currentLog();
   const [loadingSomeThing, setLoadingSomething] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -63,6 +66,7 @@ const EditProfileScreen = ({
         setPhoneNumber(email.phoneNumber);
         setName(email.disName);
         setResponsibleEmail(user?.email);
+        setFileName(user?.photoURL);
       }
       setLoadingSomething(false);
     };
@@ -96,7 +100,7 @@ const EditProfileScreen = ({
       return;
     }
 
-    if(!validateLetters(name.toString())){
+    if (!validateLetters(name.toString())) {
       Alert.alert(
         'Dato Inválido',
         'Por favor, ingrese un nombre válido',
@@ -104,6 +108,14 @@ const EditProfileScreen = ({
       return;
     }
 
+    if (resourcePath === '') {
+      Alert.alert(
+        'No se permite un campo vacío',
+        'Por favor seleccione la foto',
+      );
+      return;
+    }
+    const url1 = await uploadImage(resourcePath, filename);
     Alert.alert(
       'Confirmar Actualización',
       '¿Estás seguro de que deseas guardar los cambios?',
@@ -120,16 +132,12 @@ const EditProfileScreen = ({
             const userId = await fetchUserId(responsibleEmail.toLowerCase());
             if (userId) {
               const dataToUpdate = {
-                // responsibleName: responsibleEmail.toLowerCase(),
                 disName: name,
                 phoneNumber: phoneNumber,
-                
+                photoURL: url1,
               };
 
               await updateResponsibleData(userId, dataToUpdate);
-              // console.log(responsibleEmail);
-              console.log(name)
-              console.log(user?.displayName)
 
               Alert.alert(
                 'Actualización Exitosa',
@@ -148,13 +156,13 @@ const EditProfileScreen = ({
               );
               setLoading(false);
             }
+            await updateUserDataByEmail(user?.email, name, url1);
+            await updateProfile(name, url1);
           },
         },
       ],
     );
   };
-  const [resourcePath, setResourcePath] = useState('');
-  const [filename, setFileName] = useState('');
 
   const selectImage = () => {
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
@@ -181,9 +189,8 @@ const EditProfileScreen = ({
           <PhotoProfile
             size={100}
             imageSource={
-              user?.photoURL
-                ? user.photoURL
-                : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'
+              user?.photoURL ||
+              'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'
             }
           />
         </View>
@@ -226,7 +233,8 @@ const EditProfileScreen = ({
             style={[
               styles.buttonContainer,
               isFormEdited ? styles.buttonContainerActive : null,
-            ]}>
+            ]}
+          >
             <Text style={styles.textButton}>Guardar cambios</Text>
           </View>
         </TouchableOpacity>
@@ -278,7 +286,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#1881B1',
     marginTop: '3%',
-    marginBottom:'3%',
+    marginBottom: '3%',
   },
   buttonText: {
     color: 'white',
