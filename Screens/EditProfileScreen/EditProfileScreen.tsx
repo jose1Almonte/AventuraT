@@ -87,7 +87,6 @@ const EditProfileScreen = ({
       responsibleEmail.trim() === ''
     ) {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
-      setLoading(false);
       return;
     }
 
