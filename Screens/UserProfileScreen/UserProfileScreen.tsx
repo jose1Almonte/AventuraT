@@ -15,14 +15,14 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 interface UserProfileScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>,
-  actualizaPerfil: boolean,
-  setActualizaPerfil:any,
+  route: any,
 }
 
 export const UserProfileScreen = ({
-  navigation, actualizaPerfil, setActualizaPerfil,
+  navigation, route,
 }: UserProfileScreenProps) => {
 
+  const {actualizaPerfil, setActualizaPerfil} = route.params;
   console.log(actualizaPerfil);
   const { setUser, setLogged } = useUser();
   const logout = async (): Promise<void> => {
