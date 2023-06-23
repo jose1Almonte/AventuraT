@@ -32,6 +32,7 @@ import BusinessReservedScreen from './Screens/BusinessReservedScreen/BusinessRes
 import DetailReservedScreen from './Screens/DetailReservedScreen/DetailReservedScreen';
 import Tutorial from './Screens/Tutorial/Tutorial';
 import EditProfileScreen from './Screens/EditProfileScreen/EditProfileScreen';
+import EditProfileScreenUser from './Screens/EditProfileScreen/EditProfileScreenUser';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -68,6 +69,7 @@ export default function App() {
           <Stack.Screen name="BusinessReservedScreen" component={BusinessReservedScreen} options={{ headerShown: false }} />
           <Stack.Screen name="DetailReservedScreen" component={DetailReservedScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="EditProfileScreenUser" component={EditProfileScreenUser} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

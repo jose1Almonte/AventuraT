@@ -83,8 +83,8 @@ export const fetchUserId = async (responsibleName: string) => {
 };
 
 //para actualizar los datos en la colección users
-export const fetchUserId2 = async (responsibleName: string) => {
-  const querySnapshot = await usersCollection.where('responsibleName', '==', responsibleName).get();
+export const fetchUserId2 = async (email: string) => {
+  const querySnapshot = await usersCollection.where('email', '==', email).get();
   if (querySnapshot.empty) {
     // No se encontró ningún documento con el correo electrónico especificado
     return null;
@@ -100,6 +100,13 @@ export const updateResponsibleData = async (
   data: { responsibleEmail?: string; phoneNumber?: string; name?: string }
 ) => {
   await usersCollection2.doc(userId).update(data);
+};
+
+export const updateDataUser = async (
+  userId: string,
+  data: { email?: string; phoneNumber?: string; name?: string }
+) => {
+  await usersCollection.doc(userId).update(data);
 };
 
 export const getUser = async (userId: string) => {
