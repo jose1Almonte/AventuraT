@@ -28,6 +28,7 @@ export const ProfilePicture = ({
     };
     useEffect(() => {
         PhotoUser();
+        setUser(currentLog());
     }, [actualizaPerfil]);
     let UserProfileScreenRoute: string = 'UserProfileScreen';
     return (
