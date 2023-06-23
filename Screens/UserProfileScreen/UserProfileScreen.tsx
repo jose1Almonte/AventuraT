@@ -36,6 +36,7 @@ export const UserProfileScreen = ({
     await auth().signOut();
     setUser(null);
     setLogged(false);
+    setLoadingSomething(false);
   };
 
   const user = currentLog();
