@@ -14,6 +14,7 @@ import edit from '../../vectores/edit';
 import Gradient, { hexToRGBA } from '../../Layouts/Gradient';
 import comeBackScreenButton from '../../vectores/comeBackScreenButton';
 import check from '../../vectores/check';
+import {Picker} from '@react-native-picker/picker';
 // import { WebView } from 'react-native-webview';
 
 // import { SafeAreaView } from 'react-native-safe-area-context';
@@ -109,6 +110,9 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
     const [userExists, setUserExists] = useState(true);
     const [VIP, setVIP] = useState('');
     const [isEditting, setIsEditting] = useState(false);
+    const [descriptionEditting, setDescriptionEditting] = useState('');
+    const [priceEditting, setPriceEditting] = useState(0);
+    const [tipoEditting, setTipoEditting] = useState(data.tipo);
 
     const startDate = data.startDate.toDate();
     const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
@@ -201,13 +205,13 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                 { isEditting ? (
                                     <>
                                         <View style={stylesIndividualCard.textBox}>
-                                            <Text style={stylesIndividualCard.text}>Nombre de empresa:</Text>
-                                            {/* <Text style={stylesIndividualCard.text}>{data.name}</Text> */}
-                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={String(data.name)} onChange={(event) => {data.name = event.nativeEvent.text;}}/>
+                                            <Text style={stylesIndividualCard.text}>Nombre del paquete:</Text>
+                                            <Text style={stylesIndividualCard.text}>{data.name}</Text>
                                         </View>
+
                                         <View style={stylesIndividualCard.textBox}>
                                             <Text style={stylesIndividualCard.text}>Descripción: </Text>
-                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.description}/>
+                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.description} onChange={(event) => {data.description = event.nativeEvent.text;}}/>
                                         </View>
                                         <View style={stylesIndividualCard.textBox}>
                                             <Text style={stylesIndividualCard.text}>Fecha inicio: </Text>
@@ -223,11 +227,25 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                         </View>
                                         <View style={stylesIndividualCard.textBox}>
                                             <Text style={stylesIndividualCard.text}>Precio: </Text>
-                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.price}/>
+                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.price} onChange={(event) => {data.price = event.nativeEvent.text;}}/>
                                         </View>
                                         <View style={stylesIndividualCard.textBox}>
                                             <Text style={stylesIndividualCard.text}>Tipo: </Text>
-                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.tipo}/>
+                                            {/* <TextInput style={stylesIndividualCard.inputText} defaultValue={data.tipo} onChange={(event) => {data.tipo = event.nativeEvent.text;}}/> */}
+                                            <Picker
+                                                selectedValue={tipoEditting}
+                                                onValueChange={(itemValue: string) =>
+                                                {
+                                                    console.log(tipoEditting);
+                                                    setTipoEditting(itemValue);
+                                            }
+                                                } style={stylesIndividualCard.pickerStyle}>
+                                                <Picker.Item label="Montaña" value="Montaña" />
+                                                <Picker.Item label="Playa" value="Playa" />
+                                                <Picker.Item label="Full-Day" value="Full-Day" />
+                                                <Picker.Item label="Camping" value="Camping" />
+                                                {/* <Picker.Item label="G" value="gobernante" /> */}
+                                            </Picker>
                                         </View>
                                         <View style={stylesIndividualCard.textBox}>
                                         <Text style={stylesIndividualCard.text}>Estado: {VIP}</Text>
@@ -253,7 +271,7 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                 ) : (
                                   <>
                                     <View style={stylesIndividualCard.textBox}>
-                                        <Text style={stylesIndividualCard.text}>Nombre de empresa:</Text>
+                                        <Text style={stylesIndividualCard.text}>Nombre del paquete:</Text>
                                         <Text style={stylesIndividualCard.text}>{data.name}</Text>
                                     </View>
                                     <View style={stylesIndividualCard.textBox}>
@@ -1118,6 +1136,18 @@ const stylesIndividualCard = StyleSheet.create({
         textAlignVertical: 'bottom',
         borderBottomColor: 'rgba(0,0,0,0.5)',
         borderBottomWidth: 1,
+    },
+    
+    pickerStyle:{
+        color: 'black',
+        width: '70%',
+        height: '100%',
+        fontFamily: 'Poppins-Regular',
+        fontWeight: '500',
+        fontSize: 12,
+        lineHeight: 18,
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        
     },
 
     textBlue:{
