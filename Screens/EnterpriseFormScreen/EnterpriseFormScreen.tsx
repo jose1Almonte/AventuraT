@@ -25,6 +25,11 @@ const validateEmail = (email: string): boolean => {
   return emailRegex.test(email);
 };
 
+const validateNumber= (rif: string): boolean => {
+  const numberRegExp = /^[0-9]+$/;
+  return numberRegExp.test(rif);
+}
+
 const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<string, object | undefined>>}) => {
   const [resourcePath, setResourcePath] = useState('');
   const [resourcePath2, setResourcePath2] = useState('');
@@ -89,6 +94,24 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
       return;
     }
 
+    if (!validateNumber(data.rif.toString())) {
+      Alert.alert('Rif Inválido', 'Por favor, ingrese un rif válido (Sólo caracteres numéricos)');
+      setLoading(false);
+      return;
+    }
+
+    if (data.phoneNumber.trim().length < 11 || data.phoneNumber.trim().length > 11){
+      Alert.alert('Error','Por favor, ingrese un número de teléfono válido (11 dígitos)');
+      setLoading(false);
+      return;
+    }
+
+    if (!validateNumber(data.phoneNumber.toString())) {
+      Alert.alert('Número Teléfono Inválido', 'Por favor, ingrese un número de teléfono válido (11 dígitos)');
+      setLoading(false);
+      return;
+    }
+
     if (!validateEmail(data.responsibleName.toLowerCase()) ) {
       Alert.alert('Correo Electrónico Inválido', 'Por favor, ingrese un correo electrónico válido');
       setLoading(false);
@@ -122,6 +145,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
           data.nameEnterprise,
           data.rif,
           data.responsibleName.toLowerCase(),
+          data.disName,
           data.location,
           data.description,
           data.vip,
