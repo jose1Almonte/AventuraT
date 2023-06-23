@@ -114,7 +114,7 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
     const [VIP, setVIP] = useState('');
     const [isEditting, setIsEditting] = useState(false);
     const [descriptionEditting, setDescriptionEditting] = useState(data.description);
-    const [priceEditting, setPriceEditting] = useState(0);
+    // const [priceEditting, setPriceEditting] = useState(0);
     const [tipoEditting, setTipoEditting] = useState(data.tipo);
 
     const startDate = data.startDate.toDate();
@@ -141,16 +141,30 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
     const handleChangePackageInfo = async () => {
         setLoadingSomething(true);
         const isDone = await changePackageValues(data.id,descriptionEditting, tipoEditting);
-        
+
         if (isDone) {
             Alert.alert('DONE');
-            data.description = descriptionEditting,
-            data.tipo = tipoEditting,
+            data.description = descriptionEditting;
+            data.tipo = tipoEditting;
             setIsEditting(false);
-            
+
         } else {
             Alert.alert('NOT DONE');
         }
+        setLoadingSomething(false);
+    };
+
+    const handleMakeRegular = async () => {
+        setLoadingSomething(true);
+        await makeRegular(data.id, user.email);
+        setVIP('Regular');
+        setLoadingSomething(false);
+    };
+
+    const handleMakeVIP = async () => {
+        setLoadingSomething(true);
+        await makeVIP(data.id, user.email);
+        setVIP('VIP');
         setLoadingSomething(false);
     };
 
@@ -287,11 +301,11 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
                                         {userExists &&
                                             <>
                                                 {VIP === 'VIP' ?
-                                                    <TouchableOpacity onPress={() => { makeRegular(data.id, user.email); setVIP('Regular');}}>
+                                                    <TouchableOpacity onPress={() => {handleMakeRegular();}}>
                                                         <Text style={stylesIndividualCard.textBlue}>Pasar a Regular</Text>
                                                         {/* <Text>Pasar a Regular</Text> */}
                                                     </TouchableOpacity> :
-                                                    <TouchableOpacity onPress={() => { makeVIP(data.id, user.email); setVIP('VIP');}}>
+                                                    <TouchableOpacity onPress={() => {handleMakeVIP();}}>
                                                         <Text style={stylesIndividualCard.textBlue}>Pasar a VIP</Text>
                                                         {/* <Text>Pasar a VIP</Text> */}
                                                     </TouchableOpacity>
@@ -343,11 +357,11 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
                                             <>
                                                 {VIP === 'VIP' ?
                                                     <View>
-                                                        <Text style={stylesIndividualCard.text}>Eres regular</Text>
+                                                        <Text style={stylesIndividualCard.text}>¡Eres VIP!</Text>
                                                         {/* <Text>Pasar a Regular</Text> */}
                                                     </View> :
                                                     <View>
-                                                        <Text style={stylesIndividualCard.text}>¡Eres VIP!</Text>
+                                                        <Text style={stylesIndividualCard.text}>Eres regular</Text>
                                                         {/* <Text>Pasar a VIP</Text> */}
                                                     </View>
                                                 }
