@@ -33,7 +33,12 @@ import DetailReservedScreen from './Screens/DetailReservedScreen/DetailReservedS
 import Tutorial from './Screens/Tutorial/Tutorial';
 import EditProfileScreen from './Screens/EditProfileScreen/EditProfileScreen';
 import EditProfileEnterprise from './Screens/EditProfileScreen/EditProfileEnterprise';
+import { LogBox } from 'react-native';
 const Stack = createNativeStackNavigator();
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 export default function App() {
   return (
