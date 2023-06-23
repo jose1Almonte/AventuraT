@@ -155,11 +155,27 @@ export const changePackageIsPublicValue = async (packageId: { toString: () => st
     });
 
     console.log('DONE: ', `isPublic was successfully changed to ${newIsPublic}`);
+    return true;
   } catch (error) {
     console.log(error);
+    return false;
   }
 
 };
+
+export const changePackageValues = async (packageId: { toString: () => string | undefined; }, packageDescription: string, packageTipo) => {
+  try {
+    await usersCollection3.doc(packageId?.toString()).update({
+      description: packageDescription,
+      tipo: packageTipo,
+    });
+    console.log('DONE: ', `package Values were successfully changed to: description: ${packageDescription}  & tipo: ${packageTipo}` )
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
 
 export const checkPackage = async (id: any) => {
   try {

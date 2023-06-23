@@ -5,7 +5,7 @@ import { useUser } from '../../Context/UserContext';
 import { NavigationProp } from '@react-navigation/native';
 import { searchPackagesByEmail, searchPackagesExpiredByEmail } from '../../firebase/SearchPackagesByEmail';
 import { deleteAllByEmail, deleteExpiredDocumentsByEmail, deleteSelectedPackage } from '../../firebase/DeletePackage';
-import { changePackageIsPublicValue, checkVIP, makeRegular, makeVIP} from '../../firebase/Firestore';
+import { changePackageIsPublicValue, changePackageValues, checkVIP, makeRegular, makeVIP} from '../../firebase/Firestore';
 import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 import { SvgXml } from 'react-native-svg';
 import vectorHelpdeskScreen from '../../vectores/vectorHelpdeskScreen';
@@ -103,14 +103,17 @@ const CardBox = ({data, handleWantPersonallyErase, changeIsPublic, index, setInd
     );
 };
 
-const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: any, changeIsPublic: any, setSelectedPackage: any}) => {
+const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSelectedPackage}:{data: any, setLoadingSomething: any, changeIsPublic: any, setSelectedPackage: any}) => {
 
     const [dataIsPublic, setDataIsPublic] = useState(data.isPublic);
+    const [dataTipo, setDataTipo] = useState(data.tipo);
+    const [dataDescription, setDataDescription] = useState(data.description);
+
     const {user} = useUser();
     const [userExists, setUserExists] = useState(true);
     const [VIP, setVIP] = useState('');
     const [isEditting, setIsEditting] = useState(false);
-    const [descriptionEditting, setDescriptionEditting] = useState('');
+    const [descriptionEditting, setDescriptionEditting] = useState(data.description);
     const [priceEditting, setPriceEditting] = useState(0);
     const [tipoEditting, setTipoEditting] = useState(data.tipo);
 
@@ -135,6 +138,32 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
         // setReady(ready);
     };
 
+    const handleChangePackageInfo = async () => {
+        setLoadingSomething(true);
+        const isDone = await changePackageValues(data.id,descriptionEditting, tipoEditting);
+        
+        if (isDone) {
+            Alert.alert('DONE');
+            data.description = descriptionEditting,
+            data.tipo = tipoEditting,
+            setIsEditting(false);
+            
+        } else {
+            Alert.alert('NOT DONE');
+        }
+        setLoadingSomething(false);
+    };
+
+    useEffect(() => {
+        const handleChangeValuesOfData = () => {
+
+            setDataDescription(data.description);
+            setDataTipo(data.tipo);
+            console.log('TAMO ON FIRE');
+        };
+        handleChangeValuesOfData();
+    }, [data]);
+
     // const changeIsPublic = async () => {
     //     await changePackageIsPublicValue(data.id, !data.isPublic);
     //     data.isPublic = !data.isPublic;
@@ -157,6 +186,11 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
         }
     }, [user?.name, user?.email, data.vip]);
 
+    useEffect(()=>{
+        console.log('descriptionEditting value: ', descriptionEditting);
+        console.log('TipoEditting value: ', tipoEditting);
+    },[descriptionEditting, tipoEditting]);
+
 
 
     return (
@@ -174,7 +208,7 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                             </TouchableOpacity>
 
                                             ) : (
-                                            <TouchableOpacity style={stylesIndividualCard.firstRowLeftBoxUsingCheck} onPress={() => {setIsEditting(false);}}>
+                                            <TouchableOpacity style={stylesIndividualCard.firstRowLeftBoxUsingCheck} onPress={() => {handleChangePackageInfo();}}>
                                                 <SvgXml xml={check} />
                                             </TouchableOpacity>
 
@@ -211,7 +245,8 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
 
                                         <View style={stylesIndividualCard.textBox}>
                                             <Text style={stylesIndividualCard.text}>Descripción: </Text>
-                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.description} onChange={(event) => {data.description = event.nativeEvent.text;}}/>
+                                            {/* <TextInput style={stylesIndividualCard.inputText} defaultValue={data.description} onChange={(event) => {data.description = event.nativeEvent.text;}}/> */}
+                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.description} onChange={(event) => {setDescriptionEditting(event.nativeEvent.text);}}/>
                                         </View>
                                         <View style={stylesIndividualCard.textBox}>
                                             <Text style={stylesIndividualCard.text}>Fecha inicio: </Text>
@@ -227,7 +262,7 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                         </View>
                                         <View style={stylesIndividualCard.textBox}>
                                             <Text style={stylesIndividualCard.text}>Precio: </Text>
-                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.price} onChange={(event) => {data.price = event.nativeEvent.text;}}/>
+                                            <Text style={stylesIndividualCard.text}>$ {data.price}</Text>
                                         </View>
                                         <View style={stylesIndividualCard.textBox}>
                                             <Text style={stylesIndividualCard.text}>Tipo: </Text>
@@ -236,7 +271,6 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                                 selectedValue={tipoEditting}
                                                 onValueChange={(itemValue: string) =>
                                                 {
-                                                    console.log(tipoEditting);
                                                     setTipoEditting(itemValue);
                                             }
                                                 } style={stylesIndividualCard.pickerStyle}>
@@ -308,21 +342,21 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                         {userExists &&
                                             <>
                                                 {VIP === 'VIP' ?
-                                                    <TouchableOpacity onPress={() => { makeRegular(data.id, user.email); setVIP('Regular');}}>
-                                                        <Text style={stylesIndividualCard.textBlue}>Pasar a Regular</Text>
+                                                    <View>
+                                                        <Text style={stylesIndividualCard.text}>Eres regular</Text>
                                                         {/* <Text>Pasar a Regular</Text> */}
-                                                    </TouchableOpacity> :
-                                                    <TouchableOpacity onPress={() => { makeVIP(data.id, user.email); setVIP('VIP');}}>
-                                                        <Text style={stylesIndividualCard.textBlue}>Pasar a VIP</Text>
+                                                    </View> :
+                                                    <View>
+                                                        <Text style={stylesIndividualCard.text}>¡Eres VIP!</Text>
                                                         {/* <Text>Pasar a VIP</Text> */}
-                                                    </TouchableOpacity>
+                                                    </View>
                                                 }
 
                                             </>
 
                                         }
                                     </View>
-                                  </>  
+                                  </>
                                 )}
                                 </View>
                             </View>
@@ -462,9 +496,10 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
         const changeIsPublic = async (data: { id: { toString: () => string | undefined; }; isPublic: boolean; }, setDataIsPublic: (arg0: boolean) => void) => {
             setLoadingSomething(true);
-            await changePackageIsPublicValue(data.id, !data.isPublic);
+            const isDone = await changePackageIsPublicValue(data.id, !data.isPublic);
             data.isPublic = !data.isPublic;
-            setDataIsPublic(data.isPublic);
+            if (isDone) {setDataIsPublic(data.isPublic);}
+
             setLoadingSomething(false);
             // Alert.alert(dataIsPublic.toString());
         };
@@ -534,7 +569,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
         )}
 
         {selectedPackage && (
-            <SelectedPackageView data={documents[indexSelectedPackage]} changeIsPublic={changeIsPublic} setSelectedPackage={setSelectedPackage}/>
+            <SelectedPackageView data={documents[indexSelectedPackage]} setLoadingSomething={setLoadingSomething} changeIsPublic={changeIsPublic} setSelectedPackage={setSelectedPackage}/>
         )}
 
         {wantPersonallyErase && (
@@ -1141,11 +1176,11 @@ const stylesIndividualCard = StyleSheet.create({
     pickerStyle:{
         color: 'black',
         width: '70%',
-        height: '100%',
-        fontFamily: 'Poppins-Regular',
-        fontWeight: '500',
-        fontSize: 12,
-        lineHeight: 18,
+        height: '50%',
+        // fontFamily: 'Poppins-Regular',
+        // fontWeight: '500',
+        // fontSize: 12,
+        // lineHeight: 18,
         backgroundColor: 'rgba(0,0,0,0.3)',
         
     },
