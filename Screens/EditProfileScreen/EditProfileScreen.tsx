@@ -63,7 +63,6 @@ const EditProfileScreen = ({
   useEffect(() => {
     const fetchEnterprisePic = async () => {
       setLoadingSomething(true);
-      const user = currentLog();
       const email = await returnEnterpisePic(user?.email);
       if (email != null) {
         setPhoneNumber(email.phoneNumber);
@@ -76,6 +75,12 @@ const EditProfileScreen = ({
 
     fetchEnterprisePic();
   }, []);
+
+  useEffect(() => {
+    if (submitComplete) {
+      navigation.navigate('HomeScreen');
+    }
+  }, [submitComplete]);
 
   const submit = async () => {
     setLoadingSomething(true);
@@ -155,6 +160,7 @@ const EditProfileScreen = ({
 
               setLoading(false);
               setFormEdited(false);
+              setSubmitComplete(true); // Set submitComplete to true to trigger the useEffect
             } else {
               console.log(
                 'No se encontró ningún usuario con el correo electrónico especificado',
@@ -169,8 +175,9 @@ const EditProfileScreen = ({
             await updateProfile(name, url1);
           },
         },
-      ], 
-    ); setLoadingSomething(false);
+      ],
+    );
+    setLoadingSomething(false);
   };
 
   const selectImage = () => {
@@ -193,68 +200,67 @@ const EditProfileScreen = ({
   };
 
   return (
-    <>{loadingSomeThing && (
-      <LoadingScreenTransparentBackground/>
-      )}
-    
-    <ScrollView style={styles.container}>
-      <View style={styles.info}>
-        <View style={styles.topInfo}>
-          <Text style={styles.text}>Editar información</Text>
-          <PhotoProfile
-            size={100}
-            imageSource={
-              user?.photoURL ||
-              'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'
-            }
-          />
+    <>
+      {loadingSomeThing && <LoadingScreenTransparentBackground />}
+
+      <ScrollView style={styles.container}>
+        <View style={styles.info}>
+          <View style={styles.topInfo}>
+            <Text style={styles.text}>Editar información</Text>
+            <PhotoProfile
+              size={100}
+              imageSource={
+                user?.photoURL ||
+                'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'
+              }
+            />
+          </View>
+          <View style={styles.bottomInfo}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.textLabel}>Nombre completo</Text>
+              <TextInput
+                style={styles.input}
+                onChangeText={handleNameChange}
+                value={name}
+              />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.textLabel}>Correo electrónico</Text>
+              <TextInput
+                style={styles.textEmail}
+                //No es editable porque se está utilizando el correo electrónico como Id del usuario para acceder a sus datos en la base de datos
+                editable={false}
+                value={responsibleEmail}
+              />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.textLabel}>Número de teléfono</Text>
+              <TextInput
+                style={styles.input}
+                onChangeText={handlePhoneNumberChange}
+                value={phoneNumber}
+              />
+            </View>
+          </View>
+
+          <TouchableOpacity style={styles.button} onPress={selectImage}>
+            <Text style={styles.buttonText}>Cambiar imagen</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={submit}>
+            <View
+              style={[
+                styles.buttonContainer,
+                isFormEdited ? styles.buttonContainerActive : null,
+              ]}
+            >
+              <Text style={styles.textButton}>Guardar cambios</Text>
+            </View>
+          </TouchableOpacity>
         </View>
-        <View style={styles.bottomInfo}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.textLabel}>Nombre completo</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={handleNameChange}
-              value={name}
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.textLabel}>Correo electrónico</Text>
-            <TextInput
-              style={styles.textEmail}
-              //No es editable porque se está utilizando el correo electrónico como Id del usuario para acceder a sus datos en la base de datos
-              editable={false}
-              value={responsibleEmail}
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.textLabel}>Número de teléfono</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={handlePhoneNumberChange}
-              value={phoneNumber}
-            />
-          </View>
-        </View>
-
-        <TouchableOpacity style={styles.button} onPress={selectImage}>
-          <Text style={styles.buttonText}>Cambiar imagen</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={submit}>
-          <View
-            style={[
-              styles.buttonContainer,
-              isFormEdited ? styles.buttonContainerActive : null,
-            ]}
-          >
-            <Text style={styles.textButton}>Guardar cambios</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </ScrollView>
     </>
   );
 };
