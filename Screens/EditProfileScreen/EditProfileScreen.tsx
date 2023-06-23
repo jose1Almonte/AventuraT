@@ -87,6 +87,7 @@ const EditProfileScreen = ({
       responsibleEmail.trim() === ''
     ) {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
+      setLoading(false);
       return;
     }
 
@@ -95,6 +96,7 @@ const EditProfileScreen = ({
         'Error',
         'Por favor, ingrese un número de teléfono válido (11 dígitos)',
       );
+      setLoading(false);
       return;
     }
 
@@ -103,6 +105,7 @@ const EditProfileScreen = ({
         'Número Teléfono Inválido',
         'Por favor, ingrese un número de teléfono válido (11 dígitos)',
       );
+      setLoading(false);
       return;
     }
 
@@ -111,6 +114,7 @@ const EditProfileScreen = ({
         'Dato Inválido',
         'Por favor, ingrese un nombre válido',
       );
+      setLoading(false);
       return;
     }
 
@@ -119,6 +123,7 @@ const EditProfileScreen = ({
         'No se permite un campo vacío',
         'Por favor seleccione la foto',
       );
+      setLoading(false);
       return;
     }
     const url1 = await uploadImage(resourcePath, filename);
