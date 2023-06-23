@@ -13,6 +13,7 @@ import PhotoProfile from '../../Components/Profiles/photoProfile';
 import currentLog from '../../firebase/UserData';
 import { useUser } from '../../Context/UserContext';
 import {
+  LoadingScreenTransparentBackground,
   fetchUserId,
   returnEnterpisePic,
   updateProfile,
@@ -60,6 +61,7 @@ const EditProfileScreen = ({
   useEffect(() => {
     const fetchEnterprisePic = async () => {
       setLoadingSomething(true);
+      setLoading(true);
       const email = await returnEnterpisePic(user?.email);
       if (email != null) {
         setPhoneNumber(email.phoneNumber);
@@ -67,6 +69,7 @@ const EditProfileScreen = ({
         setResponsibleEmail(user?.email);
         setFileName(user?.photoURL);
       }
+      setLoading(false);
       setLoadingSomething(false);
     };
 
@@ -74,6 +77,7 @@ const EditProfileScreen = ({
   }, []);
 
   const submit = async () => {
+    setLoading(true);
     if (
       name.trim() === '' ||
       phoneNumber.trim() === '' ||
@@ -115,6 +119,7 @@ const EditProfileScreen = ({
       return;
     }
     const url1 = await uploadImage(resourcePath, filename);
+    setLoading(false);
     Alert.alert(
       'Confirmar Actualización',
       '¿Estás seguro de que deseas guardar los cambios?',
@@ -182,6 +187,10 @@ const EditProfileScreen = ({
   };
 
   return (
+    <>
+    {loading && (
+      <LoadingScreenTransparentBackground/>
+      )}
     <ScrollView style={styles.container}>
       <View style={styles.info}>
         <View style={styles.topInfo}>
@@ -240,7 +249,7 @@ const EditProfileScreen = ({
         </TouchableOpacity>
       </View>
     </ScrollView>
-  );
+    </> );
 };
 
 const styles = StyleSheet.create({
