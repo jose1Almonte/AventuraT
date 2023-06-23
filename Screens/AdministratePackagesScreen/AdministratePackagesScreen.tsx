@@ -159,7 +159,7 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
 
             setDataDescription(data.description);
             setDataTipo(data.tipo);
-            console.log('TAMO ON FIRE');
+            // console.log('TAMO ON FIRE');
         };
         handleChangeValuesOfData();
     }, [data]);
@@ -186,10 +186,10 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
         }
     }, [user?.name, user?.email, data.vip]);
 
-    useEffect(()=>{
-        console.log('descriptionEditting value: ', descriptionEditting);
-        console.log('TipoEditting value: ', tipoEditting);
-    },[descriptionEditting, tipoEditting]);
+    // useEffect(()=>{
+    //     console.log('descriptionEditting value: ', descriptionEditting);
+    //     console.log('TipoEditting value: ', tipoEditting);
+    // },[descriptionEditting, tipoEditting]);
 
 
 
