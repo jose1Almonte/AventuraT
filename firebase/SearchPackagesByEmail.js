@@ -18,4 +18,10 @@ export const searchPackagesExpiredByEmail = async (userEmail) => {
 
 };
 
+// export const searchAnSpecificPackage = async (packageId) => {
+//     const querySnapshot = ((await usersCollection3.where('id', '==', packageId).get()));
+
+//     return querySnapshot;
+// };
+
 
