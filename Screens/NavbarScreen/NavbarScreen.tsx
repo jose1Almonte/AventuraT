@@ -173,12 +173,20 @@ const NavbarScreen = ({ navigation}: any , {actualizaPerfil}:navigationProps) =>
               <Text style={styles.txtInfo4}>◉ Opciones de usuario</Text>
               </View>)}
           </View>
-         
+         { user ?(
           <View style={styles.logout}>
             <TouchableOpacity onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
               <Text style={styles.title}>Cerrar sesión</Text>
             </TouchableOpacity>
           </View>
+          ) : (
+          <View style={styles.logout}>
+            <TouchableOpacity onPress={() => { navigation.navigate('LoginScreen'); }}>
+              <Text style={styles.title}>Iniciar sesión/Registrarse</Text>
+            </TouchableOpacity>
+          </View>
+
+          )}
         </View>
       </View>
     </View >

@@ -87,6 +87,7 @@ const EditProfileScreen = ({
       responsibleEmail.trim() === ''
     ) {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
+      setLoading(false);
       return;
     }
 
@@ -200,6 +201,7 @@ const EditProfileScreen = ({
       <View style={styles.info}>
         <View style={styles.topInfo}>
           <Text style={styles.text}>Editar información</Text>
+          <TouchableOpacity onPress={selectImage}>
           <PhotoProfile
             size={100}
             imageSource={
@@ -207,6 +209,10 @@ const EditProfileScreen = ({
               'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'
             }
           />
+          </TouchableOpacity>
+          <TouchableOpacity style={ styles.buttonContainer2} onPress={selectImage}>
+          <Text style={styles.textButton2}>Cambiar imagen</Text>
+        </TouchableOpacity>
         </View>
         <View style={styles.bottomInfo}>
           <View style={styles.inputContainer}>
@@ -238,9 +244,6 @@ const EditProfileScreen = ({
           </View>
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={selectImage}>
-          <Text style={styles.buttonText}>Cambiar imagen</Text>
-        </TouchableOpacity>
 
         <TouchableOpacity onPress={submit}>
           <View
@@ -315,6 +318,18 @@ const styles = StyleSheet.create({
     width: 200,
     borderRadius: 50,
     justifyContent: 'center',
+    backgroundColor: '#1881B1',
+    marginTop: '3%',
+    marginBottom: '3%',
+    alignSelf: 'center',
+  },
+  buttonContainer2: {
+    display: 'flex',
+    alignItems: 'center',
+    height: 40,
+    width: 200,
+    borderRadius: 50,
+    justifyContent: 'center',
     backgroundColor: '#1881b1a6',
     marginTop: '3%',
     marginBottom: '3%',
@@ -335,6 +350,11 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   textButton: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 14,
+    color: 'white',
+  },
+  textButton2: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 14,
     color: 'white',
