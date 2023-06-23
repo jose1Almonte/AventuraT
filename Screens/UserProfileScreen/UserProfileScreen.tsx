@@ -85,7 +85,7 @@ export const UserProfileScreen = ({
               </View>
 
               {userExists && (
-              <TouchableOpacity style={styles.editProfileButtonBox} onPress={() => { navigation.navigate('EditProfileScreen',{actualizaPerfil:actualizaPerfil},{setActualizaPerfil: setActualizaPerfil});}}>
+              <TouchableOpacity style={styles.editProfileButtonBox} onPress={() => { navigation.navigate('EditProfileScreen',{actualizaPerfil:actualizaPerfil,setActualizaPerfil: setActualizaPerfil});}}>
                 <EditProfileButton />
               </TouchableOpacity>
               )}

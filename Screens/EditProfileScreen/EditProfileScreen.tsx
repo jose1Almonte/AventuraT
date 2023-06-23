@@ -33,15 +33,14 @@ const validateLetters = (letter: string): boolean => {
   return ExpRegSoloLetras.test(letter);
 };
 interface EditProfileScreenProps{
-  actualizaPerfil: boolean;
-  setActualizaPerfil: any;
+  navigation: NavigationProp<Record<string, object | undefined>>
+  route:any
 }
 
 const EditProfileScreen = ({
-  navigation,
-}: {
-  navigation: NavigationProp<Record<string, object | undefined>>;
-},{actualizaPerfil,setActualizaPerfil}:EditProfileScreenProps) => {
+  navigation, route,
+}: EditProfileScreenProps) => {
+  const {actualizaPerfil, setActualizaPerfil} = route.params;
   const [resourcePath, setResourcePath] = useState('');
   const [filename, setFileName] = useState('');
   const user = currentLog();
@@ -167,8 +166,8 @@ const EditProfileScreen = ({
             await updateUserDataByEmail(user?.email, name, url1);
             await updateProfile(name, url1);
             console.log(actualizaPerfil);
-            /*await setActualizaPerfil(!actualizaPerfil);
-            */navigation.navigate('HomeScreen');
+            await setActualizaPerfil(!actualizaPerfil);
+            navigation.navigate('HomeScreen');
           },
         },
       ],
