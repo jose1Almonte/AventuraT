@@ -13,6 +13,7 @@ import PhotoProfile from '../../Components/Profiles/photoProfile';
 import currentLog from '../../firebase/UserData';
 import { useUser } from '../../Context/UserContext';
 import {
+  LoadingScreenTransparentBackground,
   fetchUserId,
   returnEnterpisePic,
   updateProfile,
@@ -21,6 +22,7 @@ import {
   uploadImage,
 } from '../../firebase/Firestore';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { UserProfileScreen } from '../UserProfileScreen/UserProfileScreen';
 
 const validateNumber = (number: string): boolean => {
   const numberRegExp = /^[0-9]+$/;
@@ -46,6 +48,7 @@ const EditProfileScreen = ({
   const [phoneNumber, setPhoneNumber] = useState('');
   const [responsibleEmail, setResponsibleEmail] = useState('');
   const [isFormEdited, setFormEdited] = useState(false);
+  const [submitComplete, setSubmitComplete] = useState(false);
 
   const handleNameChange = (text: string) => {
     setName(text);
@@ -75,12 +78,14 @@ const EditProfileScreen = ({
   }, []);
 
   const submit = async () => {
+    setLoadingSomething(true);
     if (
       name.trim() === '' ||
       phoneNumber.trim() === '' ||
       responsibleEmail.trim() === ''
     ) {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
+      setLoadingSomething(false);
       return;
     }
 
@@ -89,6 +94,7 @@ const EditProfileScreen = ({
         'Error',
         'Por favor, ingrese un número de teléfono válido (11 dígitos)',
       );
+      setLoadingSomething(false);
       return;
     }
 
@@ -97,6 +103,7 @@ const EditProfileScreen = ({
         'Número Teléfono Inválido',
         'Por favor, ingrese un número de teléfono válido (11 dígitos)',
       );
+      setLoadingSomething(false);
       return;
     }
 
@@ -105,6 +112,7 @@ const EditProfileScreen = ({
         'Dato Inválido',
         'Por favor, ingrese un nombre válido',
       );
+      setLoadingSomething(false);
       return;
     }
 
@@ -113,6 +121,7 @@ const EditProfileScreen = ({
         'No se permite un campo vacío',
         'Por favor seleccione la foto',
       );
+      setLoadingSomething(false);
       return;
     }
     const url1 = await uploadImage(resourcePath, filename);
@@ -160,11 +169,12 @@ const EditProfileScreen = ({
             await updateProfile(name, url1);
           },
         },
-      ],
-    );
+      ], 
+    ); setLoadingSomething(false);
   };
 
   const selectImage = () => {
+    setLoadingSomething(true);
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
       if (response.didCancel) {
         Alert.alert('Not Image', 'No se ha elegido una imagen');
@@ -179,9 +189,14 @@ const EditProfileScreen = ({
         }
       }
     });
+    setLoadingSomething(false);
   };
 
   return (
+    <>{loadingSomeThing && (
+      <LoadingScreenTransparentBackground/>
+      )}
+    
     <ScrollView style={styles.container}>
       <View style={styles.info}>
         <View style={styles.topInfo}>
@@ -240,6 +255,7 @@ const EditProfileScreen = ({
         </TouchableOpacity>
       </View>
     </ScrollView>
+    </>
   );
 };
 
