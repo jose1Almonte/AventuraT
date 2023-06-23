@@ -322,7 +322,7 @@ export const returnEnterpisePic = async (responsibleName: any) => {
   if (snapshot.empty) {
     responsibleName = responsibleName.charAt(0).toUpperCase() + responsibleName.slice(1);
     snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
-    console.log('WTF CONTIGO', responsibleName)
+    console.log('Correo', responsibleName)
   }
   if (!snapshot.empty) {
     const enterpriseData = snapshot.docs[0].data();
