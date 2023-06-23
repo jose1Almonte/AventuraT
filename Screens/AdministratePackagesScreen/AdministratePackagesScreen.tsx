@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, ScrollView, Dimensions, BackHandler } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, ScrollView, Dimensions, BackHandler, TextInput } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Background } from '../../Layouts/Background';
 import { useUser } from '../../Context/UserContext';
@@ -11,6 +11,10 @@ import { SvgXml } from 'react-native-svg';
 import vectorHelpdeskScreen from '../../vectores/vectorHelpdeskScreen';
 import cancel from '../../vectores/cancel';
 import edit from '../../vectores/edit';
+import Gradient, { hexToRGBA } from '../../Layouts/Gradient';
+import comeBackScreenButton from '../../vectores/comeBackScreenButton';
+import check from '../../vectores/check';
+import {Picker} from '@react-native-picker/picker';
 // import { WebView } from 'react-native-webview';
 
 // import { SafeAreaView } from 'react-native-safe-area-context';
@@ -105,6 +109,10 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
     const {user} = useUser();
     const [userExists, setUserExists] = useState(true);
     const [VIP, setVIP] = useState('');
+    const [isEditting, setIsEditting] = useState(false);
+    const [descriptionEditting, setDescriptionEditting] = useState('');
+    const [priceEditting, setPriceEditting] = useState(0);
+    const [tipoEditting, setTipoEditting] = useState(data.tipo);
 
     const startDate = data.startDate.toDate();
     const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
@@ -120,6 +128,7 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
     const expireDay = expireDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
     const expireMonth = (expireDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
     const expireYear = expireDate.getFullYear();
+
 
     const handleSetSelectedPackage = async () => {
         await setSelectedPackage(false);
@@ -159,10 +168,18 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
 
                             <View style={stylesIndividualCard.firstRow}>
                                 <View style={stylesIndividualCard.firstRowLeft}>
-                                    <View style={stylesIndividualCard.firstRowLeftBox}>
-                                        <SvgXml xml={edit} />
+                                        {!isEditting ? (
+                                            <TouchableOpacity style={stylesIndividualCard.firstRowLeftBox} onPress={() => {setIsEditting(true);}}>
+                                                <SvgXml xml={edit} />
+                                            </TouchableOpacity>
+
+                                            ) : (
+                                            <TouchableOpacity style={stylesIndividualCard.firstRowLeftBoxUsingCheck} onPress={() => {setIsEditting(false);}}>
+                                                <SvgXml xml={check} />
+                                            </TouchableOpacity>
+
+                                        )}
                                         {/* <Text>Editar</Text> */}
-                                    </View>
                                 </View>
                                 <TouchableOpacity style={stylesIndividualCard.firstRowCenter} onPress={() => {changeIsPublic(data, setDataIsPublic);}}>
                                     {dataIsPublic ? (
@@ -177,11 +194,6 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                 </TouchableOpacity>
                                 <View style={stylesIndividualCard.firstRowRight}>
                                     <TouchableOpacity style={stylesIndividualCard.firstRowRightBox} onPress={() => {handleSetSelectedPackage();}}>
-                                        {/* <Text>Out</Text> */}
-                                        {/* <WebView
-                                          source={{ html: cancel }}
-                                          style={{ width: 26, height: 26 }}
-                                        /> */}
                                         <SvgXml xml={cancel} />
                                     </TouchableOpacity>
                                 </View>
@@ -189,58 +201,129 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
 
                             <View style ={stylesIndividualCard.secondRow}>
                                 <View style ={stylesIndividualCard.secondRowDescriptionBox}>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Nombre de empresa:</Text>
-                                    <Text style={stylesIndividualCard.text}>{data.name}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Descripción: </Text>
-                                    <Text style={stylesIndividualCard.text}>{data.description}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Fecha inicio: </Text>
-                                    <Text style={stylesIndividualCard.text}>{startDay}/{startMonth}/{startYear}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Fecha fin: </Text>
-                                    <Text style={stylesIndividualCard.text}>{endDay}/{endMonth}/{endYear}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Fecha expira: </Text>
-                                    <Text style={stylesIndividualCard.text}>{expireDay}/{expireMonth}/{expireYear}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Precio: </Text>
-                                    <Text style={stylesIndividualCard.text}>$ {data.price}</Text>
-                                </View>
-                                {/* <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Rating: </Text>
-                                    <Text style={stylesIndividualCard.text}>{data.rating} estrellas</Text>
-                                </View> */}
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Tipo: </Text>
-                                    <Text style={stylesIndividualCard.text}>{data.tipo}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Estado: {VIP}</Text>
-                                    {/* <Text style={stylesIndividualCard.text}>{data.tipo}</Text> */}
-                                    {userExists &&
-                                        <>
-                                            {VIP === 'VIP' ?
-                                                <TouchableOpacity onPress={() => { makeRegular(data.id, user.email); setVIP('Regular');}}>
-                                                    <Text style={stylesIndividualCard.textBlue}>Pasar a Regular</Text>
-                                                    {/* <Text>Pasar a Regular</Text> */}
-                                                </TouchableOpacity> :
-                                                <TouchableOpacity onPress={() => { makeVIP(data.id, user.email); setVIP('VIP');}}>
-                                                    <Text style={stylesIndividualCard.textBlue}>Pasar a VIP</Text>
-                                                    {/* <Text>Pasar a VIP</Text> */}
-                                                </TouchableOpacity>
+
+                                { isEditting ? (
+                                    <>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text}>Nombre del paquete:</Text>
+                                            <Text style={stylesIndividualCard.text}>{data.name}</Text>
+                                        </View>
+
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text}>Descripción: </Text>
+                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.description} onChange={(event) => {data.description = event.nativeEvent.text;}}/>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text}>Fecha inicio: </Text>
+                                            <Text style={stylesIndividualCard.text}>{startDay}/{startMonth}/{startYear}</Text>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text}>Fecha fin: </Text>
+                                            <Text style={stylesIndividualCard.text}>{endDay}/{endMonth}/{endYear}</Text>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text}>Fecha expira: </Text>
+                                            <Text style={stylesIndividualCard.text}>{expireDay}/{expireMonth}/{expireYear}</Text>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text}>Precio: </Text>
+                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.price} onChange={(event) => {data.price = event.nativeEvent.text;}}/>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text}>Tipo: </Text>
+                                            {/* <TextInput style={stylesIndividualCard.inputText} defaultValue={data.tipo} onChange={(event) => {data.tipo = event.nativeEvent.text;}}/> */}
+                                            <Picker
+                                                selectedValue={tipoEditting}
+                                                onValueChange={(itemValue: string) =>
+                                                {
+                                                    console.log(tipoEditting);
+                                                    setTipoEditting(itemValue);
                                             }
+                                                } style={stylesIndividualCard.pickerStyle}>
+                                                <Picker.Item label="Montaña" value="Montaña" />
+                                                <Picker.Item label="Playa" value="Playa" />
+                                                <Picker.Item label="Full-Day" value="Full-Day" />
+                                                <Picker.Item label="Camping" value="Camping" />
+                                                {/* <Picker.Item label="G" value="gobernante" /> */}
+                                            </Picker>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Estado: {VIP}</Text>
+                                        {/* <Text style={stylesIndividualCard.text}>{data.tipo}</Text> */}
+                                        {userExists &&
+                                            <>
+                                                {VIP === 'VIP' ?
+                                                    <TouchableOpacity onPress={() => { makeRegular(data.id, user.email); setVIP('Regular');}}>
+                                                        <Text style={stylesIndividualCard.textBlue}>Pasar a Regular</Text>
+                                                        {/* <Text>Pasar a Regular</Text> */}
+                                                    </TouchableOpacity> :
+                                                    <TouchableOpacity onPress={() => { makeVIP(data.id, user.email); setVIP('VIP');}}>
+                                                        <Text style={stylesIndividualCard.textBlue}>Pasar a VIP</Text>
+                                                        {/* <Text>Pasar a VIP</Text> */}
+                                                    </TouchableOpacity>
+                                                }
 
-                                        </>
+                                            </>
 
-                                    }
-                                </View>
+                                        }
+                                    </View>
+                                    </>
+                                ) : (
+                                  <>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Nombre del paquete:</Text>
+                                        <Text style={stylesIndividualCard.text}>{data.name}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Descripción: </Text>
+                                        <Text style={stylesIndividualCard.text}>{data.description}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Fecha inicio: </Text>
+                                        <Text style={stylesIndividualCard.text}>{startDay}/{startMonth}/{startYear}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Fecha fin: </Text>
+                                        <Text style={stylesIndividualCard.text}>{endDay}/{endMonth}/{endYear}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Fecha expira: </Text>
+                                        <Text style={stylesIndividualCard.text}>{expireDay}/{expireMonth}/{expireYear}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Precio: </Text>
+                                        <Text style={stylesIndividualCard.text}>$ {data.price}</Text>
+                                    </View>
+                                    {/* <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Rating: </Text>
+                                        <Text style={stylesIndividualCard.text}>{data.rating} estrellas</Text>
+                                    </View> */}
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Tipo: </Text>
+                                        <Text style={stylesIndividualCard.text}>{data.tipo}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Estado: {VIP}</Text>
+                                        {/* <Text style={stylesIndividualCard.text}>{data.tipo}</Text> */}
+                                        {userExists &&
+                                            <>
+                                                {VIP === 'VIP' ?
+                                                    <TouchableOpacity onPress={() => { makeRegular(data.id, user.email); setVIP('Regular');}}>
+                                                        <Text style={stylesIndividualCard.textBlue}>Pasar a Regular</Text>
+                                                        {/* <Text>Pasar a Regular</Text> */}
+                                                    </TouchableOpacity> :
+                                                    <TouchableOpacity onPress={() => { makeVIP(data.id, user.email); setVIP('VIP');}}>
+                                                        <Text style={stylesIndividualCard.textBlue}>Pasar a VIP</Text>
+                                                        {/* <Text>Pasar a VIP</Text> */}
+                                                    </TouchableOpacity>
+                                                }
+
+                                            </>
+
+                                        }
+                                    </View>
+                                  </>  
+                                )}
                                 </View>
                             </View>
 
@@ -481,8 +564,11 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
         <View style={styles.giantBox}>
 
         <View style={styles.firstBox}>
-            <View>
-                <Text> </Text>
+            <View style={styles.comebackButtonBox}>
+                <TouchableOpacity style={styles.profilePictureMiniBox} onPress={() => {navigation.goBack();}}>
+                    {/* <Image source={require('../../images/comeBackLogo.png')} style={styles.image}/> */}
+                    <SvgXml xml={comeBackScreenButton} />
+                </TouchableOpacity>
             </View>
             <View style={styles.titleBox}>
                 <Text style={styles.title}>AventuraT con tus Paquetes</Text>
@@ -494,12 +580,12 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             </View>
         </View>
         <View style={styles.secondBox2}>
-            <Text style={styles.text4}>Crear Paquetes:</Text>
+            {/* <Text style={styles.normalText}>Crear Paquetes:</Text> */}
             <Button buttonStyle={styles.newbutton} buttonTextStyle={styles.buttonText} text="Crear Paquete" onPress={()=>{navigation.navigate('CreatePackageFormScreen')}}/>
         </View>
 
         <View style={styles.secondBox}>
-            <Text style={styles.text4}>Eliminar Paquetes:</Text>
+            <Text style={styles.normalText}>Filtrado y eliminación de Paquetes:</Text>
             <View style={styles.buttonsBox}>
 
                 <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Todos los paquetes" onPress={()=>{setSearchingExpiredPackages(false);}}/>
@@ -516,8 +602,21 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
 
         <View style={styles.thirdBox}>
-            <View style={styles.cont}>
-            <Text style={styles.text5}>Editar Paquetes:</Text>
+            <View style={styles.editPackageTitleBox}>
+                <Gradient
+                colors={[
+                    '#1DB5BE',
+                    hexToRGBA('#1DB5BE',0.8),
+                    hexToRGBA('#1DB5BE',0.6),
+                    hexToRGBA('#1DB5BE',0.5),
+                    hexToRGBA('#1DB5BE',0.1),
+                  ]}
+                  locations={[0, 0.25, 0.8, 0.9, 1]}
+                  style={styles.linearGradient}
+                >
+
+                    <Text style={styles.editPackageTitle}>Tus Paquetes:</Text>
+                </Gradient>
             </View>
             <ScrollView style={styles.scrollView} contentContainerStyle = {styles.scrollViewContentContainerStyle}>
 
@@ -543,6 +642,13 @@ export default AdministratePackagesScreen;
 
 const styles = StyleSheet.create({
 
+    linearGradient: {
+        flex: 1,
+        width: '100%',
+        alignItems:'center',
+        justifyContent:'center',
+      },
+
     usingAlbannyVectorBox:{
         position: 'absolute',
         top: 0,
@@ -565,7 +671,7 @@ const styles = StyleSheet.create({
         flex: 10.5,
         // backgroundColor: "black",
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignSelf: 'center',
         // alignContent: 'center',
         alignItems: 'center',
@@ -573,7 +679,8 @@ const styles = StyleSheet.create({
         // height: 80,
         // marginBottom: 50
         // position: 'absolute'
-        marginRight:'15%',
+        // marginRight:'15%',
+        // backgroundColor: 'red',
     },
 
     secondBox:{
@@ -583,10 +690,12 @@ const styles = StyleSheet.create({
     },
 
     secondBox2:{
-        flex: 22.5,
-        justifyContent: 'center',
+        // flex: 22.5,
+        flex: 16,
+        // backgroundColor: 'blue',
+        justifyContent: 'flex-end',
         alignItems: 'center',
-        marginTop:'2%',
+        // marginTop:'2%',
     },
 
     thirdBox:{
@@ -619,6 +728,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // justifyContent: 'center',
         // height: '73.17%',
+        // backgroundColor:'yellow',
     },
     titleBox:{
         width: '67.5%',
@@ -626,19 +736,22 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         alignItems:'center',
         justifyContent: 'center',
-        marginLeft:'25%',
+        // marginLeft:'25%',
         // height: '20%',
+        // backgroundColor: 'green'
     },
     profilePictureBox:{
-        width: 80,
+        // backgroundColor:'red',
+        width: '16.25%',
         // backgroundColor:'black',
-        height: 80,
+        // height: '100%',
         // borderRadius: 50,
         // overflow: 'hidden',
+        // backgroundColor: 'yellow',
         alignItems: 'center',
         justifyContent: 'center',
 
-        marginLeft:'-5%',
+        // marginLeft:'-5%',
     },
     title:{
         fontFamily: 'Poppins-Medium',
@@ -650,6 +763,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: 'white',
         // backgroundColor: 'red',
+        
     },
 
     buttonsBox:{
@@ -662,7 +776,7 @@ const styles = StyleSheet.create({
     },
 
     button:{
-        height: '37.72%',
+        height: 35,
         width: '41.35%',
         backgroundColor: '#1881B1',
         borderRadius: 8,
@@ -671,11 +785,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     newbutton:{
-        height: '25%',
+        height: 35,
         width: '30%',
         backgroundColor: '#1881B1',
         borderRadius: 8,
-        marginBottom: '-5%',
+        marginBottom: '5%',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -837,7 +951,7 @@ const styles = StyleSheet.create({
         lineHeight: 14,
         margin: '1%',
     },
-    text4:{
+    normalText:{
         color: 'white',
         fontWeight: '500',
         fontSize: 10,
@@ -845,19 +959,22 @@ const styles = StyleSheet.create({
         marginBottom: '5%',
     },
 
-    text5:{
+    editPackageTitle:{
         color: 'white',
         fontWeight: '500',
         fontSize: 10,
         lineHeight: 14,
     },
-    cont:{
+    editPackageTitleBox:{
         marginTop:'5%',
-        width:'100%',
+        width:'86.67%',
         height:'10%',
         alignItems:'center',
         justifyContent:'center',
-        backgroundColor:'#1DB5BE',
+        // backgroundColor:'#1DB5BE',
+        borderTopStartRadius: 20,
+        borderTopEndRadius: 20,
+        overflow: 'hidden',
     },
 
     profilePictureMiniBox:{
@@ -890,7 +1007,8 @@ const stylesIndividualCard = StyleSheet.create({
 
     card:{
         width: '85%',
-        height: '47.125%',
+        // height: '47.125%',
+        height: 445,
         backgroundColor: 'white',
         borderRadius: 20,
         borderColor: 'black',
@@ -919,6 +1037,16 @@ const stylesIndividualCard = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        // backgroundColor:'red',
+
+    },
+    firstRowLeftBoxUsingCheck:{
+        width: '70%',
+        height: '70%',
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 1)',
         // backgroundColor:'red',
 
     },
@@ -981,8 +1109,9 @@ const stylesIndividualCard = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         // backgroundColor: 'rgba(255,255,255,0.3)',
-        padding: '2%',
+        // padding: '2%',
         marginVertical: '1%',
+        // overflow: 'hidden',
     },
 
     text:{
@@ -992,6 +1121,33 @@ const stylesIndividualCard = StyleSheet.create({
         fontSize: 12,
         lineHeight: 18,
         display: 'flex',
+    },
+
+    inputText: {
+        // backgroundColor: 'red',
+        color: 'blue',
+        fontFamily: 'Poppins-Regular',
+        fontWeight: '500',
+        fontSize: 12,
+        lineHeight: 18,
+        // height: 'auto',
+        width: 'auto',
+        textAlign: 'right',
+        textAlignVertical: 'bottom',
+        borderBottomColor: 'rgba(0,0,0,0.5)',
+        borderBottomWidth: 1,
+    },
+    
+    pickerStyle:{
+        color: 'black',
+        width: '70%',
+        height: '100%',
+        fontFamily: 'Poppins-Regular',
+        fontWeight: '500',
+        fontSize: 12,
+        lineHeight: 18,
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        
     },
 
     textBlue:{
