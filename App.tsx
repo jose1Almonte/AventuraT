@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import HomeScreen from './Screens/HomeScreen/HomeScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -34,6 +34,7 @@ import Tutorial from './Screens/Tutorial/Tutorial';
 import EditProfileScreen from './Screens/EditProfileScreen/EditProfileScreen';
 import EditProfileEnterprise from './Screens/EditProfileScreen/EditProfileEnterprise';
 import { LogBox } from 'react-native';
+import { PerfilContext, PerfilProvider } from './Context/PerfilContext';
 const Stack = createNativeStackNavigator();
 
 LogBox.ignoreLogs([
@@ -41,8 +42,10 @@ LogBox.ignoreLogs([
 ]);
 
 export default function App() {
+  // const { actualizaPerfil, setActualizaPerfil } = useContext(PerfilContext);
   return (
     <UserProvider>
+      <PerfilProvider>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
@@ -77,6 +80,7 @@ export default function App() {
           <Stack.Screen name="EditProfileEnterprise" component={EditProfileEnterprise} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
+      </PerfilProvider>
     </UserProvider>
   );
 }

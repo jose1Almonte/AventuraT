@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   StyleSheet,
@@ -24,6 +24,7 @@ import {
   uploadImage,
 } from '../../firebase/Firestore';
 import {launchImageLibrary} from 'react-native-image-picker';
+import { PerfilContext } from '../../Context/PerfilContext';
 
 const validateNumber = (number: string): boolean => {
   const numberRegExp = /^[0-9]+$/;
@@ -36,11 +37,10 @@ const validateLetters = (letter: string): boolean => {
 };
 interface EditProfileScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
-  route: any;
 }
 
-const EditProfileScreen = ({navigation, route}: EditProfileScreenProps) => {
-  const {actualizaPerfil, setActualizaPerfil} = route.params;
+const EditProfileScreen = ({navigation}: EditProfileScreenProps) => {
+  const { actualizaPerfil, setActualizaPerfil } = useContext(PerfilContext);
   const [resourcePath, setResourcePath] = useState('');
   const [filename, setFileName] = useState('');
   const user = currentLog();

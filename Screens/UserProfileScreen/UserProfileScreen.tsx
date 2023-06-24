@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import profileVector from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -12,17 +12,18 @@ import currentLog from '../../firebase/UserData';
 import { deleteExpiredDocuments } from '../../firebase/DeletePackage';
 import { LoadingScreenTransparentBackground, checkResponsibleNameExists } from '../../firebase/Firestore'; // Update the path to the FirebaseFunctions file
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { PerfilContext } from '../../Context/PerfilContext';
 
 interface UserProfileScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>,
-  route: any,
+
 }
 
 export const UserProfileScreen = ({
-  navigation, route,
+  navigation,
 }: UserProfileScreenProps) => {
 
-  const {actualizaPerfil, setActualizaPerfil} = route.params;
+  const { actualizaPerfil, setActualizaPerfil } = useContext(PerfilContext);
   console.log(actualizaPerfil);
   const { setUser, setLogged } = useUser();
   const logout = async (): Promise<void> => {
@@ -85,7 +86,7 @@ export const UserProfileScreen = ({
                 <Text style={styles.txt}>{user?.email}</Text>
               </View>
 
-              <TouchableOpacity style={styles.editProfileButtonBox} onPress={() => { navigation.navigate('EditProfileScreen',{actualizaPerfil:actualizaPerfil,setActualizaPerfil: setActualizaPerfil});}}>
+              <TouchableOpacity style={styles.editProfileButtonBox} onPress={() => { navigation.navigate('EditProfileScreen');}}>
                 <EditProfileButton />
               </TouchableOpacity>
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import currentLog from './UserData';
 import auth from '@react-native-firebase/auth';
 import { Image, PixelRatio, TouchableOpacity, Dimensions } from 'react-native';
@@ -7,6 +7,7 @@ import { ContinueWithName } from '../Screens/LoginScreen/LoginScreen';
 import { addUser, checkIfUserExists } from '../firebase/Firestore';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../Context/UserContext';
+import { PerfilContext } from '../Context/PerfilContext';
 
 const pixelSize = PixelRatio.getPixelSizeForLayoutSize(30);
 
@@ -14,13 +15,12 @@ interface ProfilePictureProps {
     navigation: NavigationProp<Record<string, object | undefined>>,
     destinationNavigationComponentName: string,
     styles: any,
-    actualizaPerfil:boolean
-    setActualizaPerfil: any
 }
 
 export const ProfilePicture = ({
-    navigation, actualizaPerfil, setActualizaPerfil,
+    navigation,
 }: ProfilePictureProps) => {
+    const { actualizaPerfil, setActualizaPerfil } = useContext(PerfilContext);
     const { user, setUser, isLogged } = useUser();
     // const userOn = currentLog();
     const PhotoUser = ()=>{
