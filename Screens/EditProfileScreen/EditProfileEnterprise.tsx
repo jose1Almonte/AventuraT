@@ -48,9 +48,28 @@ const EditProfileEnterprise = ({
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [responsibleEmail, setResponsibleEmail] = useState('');
+  const [location, setLocation] = useState('');
+  const [description, setDescription] = useState('');
+  const [password, setPassword] = useState('');
+  const [image, setImage] = useState('');
   const [isFormEdited, setFormEdited] = useState(false);
 
   const handleNameChange = (text: string) => {
+    setName(text);
+    setFormEdited(true);
+  };
+
+  const handlePassword = (text: string) => {
+    setName(text);
+    setFormEdited(true);
+  };
+
+  const handleLocation = (text: string) => {
+    setName(text);
+    setFormEdited(true);
+  };
+
+  const handleDescription = (text: string) => {
     setName(text);
     setFormEdited(true);
   };
@@ -65,11 +84,16 @@ const EditProfileEnterprise = ({
       setLoadingSomething(true);
       setLoading(true);
       const email = await returnEnterpisePic(user?.email);
+      console.log(email);
       if (email != null) {
         setPhoneNumber(email.phoneNumber);
-        setName('aaaaaa');
-        setResponsibleEmail(user?.email);
-        setFileName(user?.photoURL);
+        setName(email.responsibleName);
+        setResponsibleEmail(email.responsibleName);
+        setFileName(email?.urlEmpresa);
+        setImage(email.urlEmpresa);
+        setLocation(email.location);
+        setDescription(email.description);
+        setPassword(email.password);
       }
       setLoading(false);
       setLoadingSomething(false);
@@ -206,7 +230,7 @@ const EditProfileEnterprise = ({
           <PhotoProfile
             size={100}
             imageSource={
-              user?.photoURL ||
+              image ||
               'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'
             }
           />
