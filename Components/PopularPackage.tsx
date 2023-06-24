@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
     container: {
         width: 115,
         height: 200,
-        backgroundColor: 'black',
         borderRadius: 15,
         margin:'1%',
 
@@ -93,11 +92,10 @@ const styles = StyleSheet.create({
     },
     textPack: {
         // padding: 6,
-        color: '#a80f35',
+        color: 'black',
         fontSize: 8,
         fontFamily: 'Poppins-Medium',
         justifyContent: "center",
-        backgroundColor:'black',
         marginRight:'6%',
     },
     ContainerText: {
@@ -118,7 +116,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         gap: 5,
-        backgroundColor:'black',
         marginRight:'6%',
     },
     ContainerLikes: {
@@ -132,17 +129,15 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     textLocation: {
-        color: 'white',
+        color: 'black',
         fontFamily: 'Poppins-Regular',
         fontSize: 8,
-        backgroundColor:'black',
         marginRight:'30%',
     },
     textLocation2: {
-        color: 'white',
+        color: 'black',
         fontFamily: 'Poppins-Regular',
         fontSize: 8,
-        backgroundColor:'black',
     },
 });
 
