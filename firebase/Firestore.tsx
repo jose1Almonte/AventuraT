@@ -18,23 +18,25 @@ const packagesCollection = firestore().collection('package');
 const paidPackages = firestore().collection('paidPackage');
 const starsdb = firestore().collection('stars');
 
-export const addUser = async (array: string[], displayName: string, email: string, emailVerified: boolean, photoURL: string) => {
+export const addUser = async (array: string[], displayName: string, email: string, emailVerified: boolean, photoURL: string, phoneNumber: string) => {
   await usersCollection.add({
     displayName: displayName,
     email: email,
     emailVerified: emailVerified,
     favorites: array,
-    photoURL: photoURL
+    photoURL: photoURL,
+    phoneNumber: phoneNumber
   });
 };
 
-export const updateUser = async (array: string[], userId: string, displayName: string, email: string, emailVerified: boolean, photoURL: string) => {
+export const updateUser = async (array: string[], userId: string, displayName: string, email: string, emailVerified: boolean, photoURL: string, phoneNumber: string) => {
   await usersCollection.doc(userId).set({
     displayName: displayName,
     email: email,
     emailVerified: emailVerified,
     favorites: array,
-    photoURL: photoURL
+    photoURL: photoURL,
+    phoneNumber: phoneNumber
   });
 };
 
@@ -288,6 +290,23 @@ export const checkResponsibleNameExists = async (responsibleName: any) => {
 
   // console.log('SNAPSHOT: ',snapshot);
   return !snapshot.empty;
+};
+
+export const checkUserExist= async (email: any) => {
+  try {
+    const usersRef = firebase.firestore().collection('users');
+    const snapshot = await usersRef.where('email', '==', email).get();
+
+    if (!snapshot.empty) {
+      const userData = snapshot.docs[0].data();
+      return userData;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.log('Error retrieving user data:', error);
+    return null;
+  }
 };
 
 export const createUserWithEmailAndPassword = async (email: any, password: any, phoneNumber: any, photoURL: any, disName: any) => {
@@ -591,7 +610,7 @@ export const updateProfile = async (displayName: string, photoURL: string) => {
   }
 };
 
-export const updateUserDataByEmail = async (email: string, displayName: string, photoURL: string) => {
+export const updateUserDataByEmail = async (email: string, displayName: string, photoURL: string, phoneNumber: string) => {
   try {
     const querySnapshot = await usersCollection.where('email', '==', email).get();
     if (querySnapshot.size > 0) {
@@ -599,6 +618,7 @@ export const updateUserDataByEmail = async (email: string, displayName: string, 
       await doc.ref.update({
         displayName,
         photoURL,
+        phoneNumber
       });
       console.log('Datos de usuario actualizados con éxito');
     } else {
