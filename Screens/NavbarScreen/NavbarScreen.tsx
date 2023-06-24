@@ -141,7 +141,14 @@ const NavbarScreen = ({ navigation,route}:navigationProps) => {
                   <SvgXml xml={profile} />
                   <Text style={styles.txtInfo}>Mi perfil</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.contenedorLinks} onPress={() => navigation.navigate('ReservedScreen')}>
+                <TouchableOpacity style={styles.contenedorLinks} onPress={() => {
+                  if (isLogged) {
+                    navigation.navigate('UserProfileScreen',{actualizaPerfil: actualizaPerfil, setActualizaPerfil: setActualizaPerfil});
+                  } else {
+                    navigation.navigate('LoginScreen');
+                  }
+
+                }}>
                   <SvgXml xml={business} />
                   <Text style={styles.txtInfo}>Mis Reservas</Text>
                 </TouchableOpacity>
