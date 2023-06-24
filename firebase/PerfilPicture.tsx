@@ -87,7 +87,7 @@ const YourSignInWithGoogleComponent = ({
                 if (user && user.displayName && user.email && user.emailVerified && user.photoURL) {
                     const userExist = await checkIfUserExists(user.email);
                     if (!userExist) {
-                        await addUser([], user.displayName, user.email, user.emailVerified, user.photoURL);
+                        await addUser([], user.displayName, user.email, user.emailVerified, user.photoURL,user.phoneNumber);
                     }
                 }
                 navigation.navigate(destinationNavigationComponentName);
