@@ -37,12 +37,14 @@ export const PopularPackages = ({ navigation }: popularProps) => {
   return (
     <View style={styles.pos}>
         {popularPackages.length > 0 ? (
+          <>
           <Text style={styles.title}>Paquetes Recomendados</Text>
+          </>
         ):(
           <View style={styles.center}>
-            <Text style={styles.title}> RECOMENDADOS PRONTO!!!</Text>
+            {/* <Text style={styles.title}></Text> */}
           <FastImage
-            source={require('../images/dance.gif')}
+            source={require('../images/coming-soon-unscreen.gif')}
             style={styles.loadingGif2}
             resizeMode="contain"
           />
@@ -98,17 +100,15 @@ pos:{
   marginLeft:'-4%',
 },
 center:{
-  alignContent:'center',
-  alignItems:'center',
-  justifyContent:'center',
+  alignSelf: 'center'
 },
 loadingGif:{
   width:60,
   height:60,
 },
 loadingGif2:{
-  width:150,
-  height:150,
+  width:180,
+  height:180,
 },
 
 

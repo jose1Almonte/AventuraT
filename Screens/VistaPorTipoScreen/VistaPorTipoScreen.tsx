@@ -47,7 +47,7 @@ const VistaPorTipoScreen = ({ navigation }: vistaTipoProps) => {
         {packages.length === 0 ? (
           <>
             <Text style={styles.noFavoritesText}>
-              AÚN NO SE HAN AGREGADO PAQUETES EN ESTA CATEGORÍA
+              No se han agregado paquetes en esta categoría aún
             </Text>
             <Image
               style={styles.imageUsed}
@@ -113,9 +113,10 @@ const styles = StyleSheet.create({
   },
 
   titleBox: {
+    marginTop: 50,
     alignItems: 'center',
-    justifyContent: 'center',
-    height: 100,
+    gap: 5,
+    marginBottom: 30
   },
 
   title: {
@@ -125,13 +126,14 @@ const styles = StyleSheet.create({
     color: '#FFF',
   },
   noFavoritesText: {
-    fontSize: 18,
     fontWeight: 'bold',
     color: '#FFF',
     textAlign: 'center',
     alignSelf: 'center',
     marginTop: 20,
     width: '80%',
+    fontSize: 16,
+    fontFamily: 'Poppins-Medium',
   },
   imageUsed: {
     marginTop: 40,

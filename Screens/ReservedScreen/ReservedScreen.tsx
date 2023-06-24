@@ -54,7 +54,7 @@ const ReservedScreen = ({ navigation }: ReservedScreenProps) => {
         <View style={styles.container}>
             <View style={styles.info}>
                 <View style={styles.topInfo}>
-                    <Text style={styles.txt}>Paquetes reservados</Text>
+                    <Text style={styles.txt}>Paquetes Reservados</Text>
                 </View>
                 <Text style={styles.txt2}>(Viajes pendientes)</Text>
                 { data && (
@@ -72,7 +72,7 @@ const ReservedScreen = ({ navigation }: ReservedScreenProps) => {
                 </View>
                 ) : (
                     <View>
-                    <Text style={styles.al}>No hay elementos disponibles</Text>
+                    <Text style={styles.al}>No tienes paquetes reservados aún</Text>
                     <Image
                         style={styles.imageUsed}
                         source={require('../../images/favorites.png')}
@@ -117,14 +117,14 @@ const styles = StyleSheet.create({
       },
     txt: {
         fontSize: 24,
-        fontWeight: 'bold',
+        fontFamily: 'Poppins-SemiBold',
         marginBottom: '1%',
         color: '#FFF',
     },
     txt2: {
         color: '#FFF',
         fontSize: 16,
-        fontFamily: 'Poppins-Light',
+        fontFamily: 'Poppins-Regular',
         textAlign: 'center',
         paddingHorizontal: 50,
         marginBottom:'10%',
@@ -136,8 +136,10 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
     },
     al:{
-        marginTop:'10%',
-        marginLeft:'18%',
-        color:'white',
+    marginTop:'10%',
+    color:'white',
+    fontSize: 16,
+    fontFamily: 'Poppins-Medium',
+    textAlign: 'center',
     },
 });

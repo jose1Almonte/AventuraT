@@ -154,7 +154,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
 
     if (!(isDateGreaterThanOneDay(startDate,currentDate) && isDateGreaterThanOneDay(endDate,startDate) && isDateGreaterThanOneDay(expireDate,endDate))){
 
-      Alert.alert('Fechas no ingresadas correctamente','la "fecha empieza" debe ser menor que "fecha termina" y la misma debe ser menor que "fecha expira". Todo esto por al menos un dia de diferencia');
+      Alert.alert('Fechas inválidas','"Fecha empieza" debe ser menor que "fecha termina", siendo ambas menor que "fecha expira". Las fechas deben tener al menos 1 día de diferencia');
       return;
     }
 
