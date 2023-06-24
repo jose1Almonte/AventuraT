@@ -516,6 +516,15 @@ export const getPopularPackages = async () => {
   return packages;
 }
 
+export const getAllPopularPackages = async (count:any) => {
+  const packages: any[] = [];
+  let query = await packagesCollection.where("vip", "==", true).where("isPublic", "==", true).limit(count).get();
+  query.docs.forEach((rawData, idx) => {
+    packages.push(rawData.data());
+  })
+  return packages;
+}
+
 export const changePremium = async (email: any) => {
   const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
   const id = getDoc.docs[0].id;

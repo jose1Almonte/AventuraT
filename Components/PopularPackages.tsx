@@ -62,7 +62,7 @@ export const PopularPackages = ({ navigation }: popularProps) => {
           <Text style={styles.text}>Cargando...</Text>
         }
          {popularPackages.length > 0 && (
-        <TouchableOpacity style={styles.showMore}>
+          <TouchableOpacity style={styles.showMore} onPress={() => {navigation.navigate("PopularPackageScreen")}}>
             <Text style={styles.moreText}>Ver más</Text>
           </TouchableOpacity>)}
       </View>

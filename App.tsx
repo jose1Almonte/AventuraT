@@ -34,6 +34,7 @@ import Tutorial from './Screens/Tutorial/Tutorial';
 import EditProfileScreen from './Screens/EditProfileScreen/EditProfileScreen';
 import EditProfileEnterprise from './Screens/EditProfileScreen/EditProfileEnterprise';
 import { LogBox } from 'react-native';
+import PopularPackageScreen from './Screens/PopularPackageScreen/PopularPackageScreen';
 const Stack = createNativeStackNavigator();
 
 LogBox.ignoreLogs([
@@ -75,6 +76,7 @@ export default function App() {
           <Stack.Screen name="DetailReservedScreen" component={DetailReservedScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EditProfileEnterprise" component={EditProfileEnterprise} options={{ headerShown: false }} />
+          <Stack.Screen name="PopularPackageScreen" component={PopularPackageScreen } options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>
