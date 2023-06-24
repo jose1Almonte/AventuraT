@@ -156,15 +156,19 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
 
     const handleMakeRegular = async () => {
         setLoadingSomething(true);
-        await makeRegular(data.id, user.email);
-        setVIP('Regular');
+        const isDone = await makeRegular(data.id, user.email);
+
+        if (isDone) {setVIP('Regular'); data.vip = false;} else {Alert.alert('Happened an issue', 'Wait and try it again');}
+
         setLoadingSomething(false);
     };
 
     const handleMakeVIP = async () => {
         setLoadingSomething(true);
-        await makeVIP(data.id, user.email);
-        setVIP('VIP');
+        const isDone = await makeVIP(data.id, user.email);
+
+        if ( isDone ) {setVIP('VIP'); data.vip = true;} else {Alert.alert('Happened an issue', 'Ensure you have permissions to change another package to VIP!');}
+
         setLoadingSomething(false);
     };
 
@@ -205,6 +209,13 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
     //     console.log('TipoEditting value: ', tipoEditting);
     // },[descriptionEditting, tipoEditting]);
 
+    // useEffect(() => {
+    //     if (VIP === 'VIP'){
+    //         data.vip = true;
+    //     } else {
+    //         data.vip = false;
+    //     }
+    // }, [VIP, data]);
 
 
     return (
