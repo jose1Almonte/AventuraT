@@ -81,6 +81,9 @@ const NavbarScreen = ({ navigation,route}:navigationProps) => {
               styles={styles}
               destinationNavigationComponentName="LoginScreen"
             />
+
+
+            
             <Text style={styles.txt}>{user?.displayName}</Text>
           </TouchableOpacity>
           <View style={styles.bottomInfo}>
