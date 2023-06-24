@@ -28,7 +28,7 @@ export const onGoogleButtonPress = async () => {
 
         if (userEmail && user.displayName && user.email && user.emailVerified && user.photoURL) {
           if (await checkIfUserExists(userEmail) === false) {
-            await addUser([''],user.displayName, user.email, user.emailVerified, user.photoURL);
+            await addUser([''],user.displayName, user.email, user.emailVerified, user.photoURL,'');
           }
         }
       }
