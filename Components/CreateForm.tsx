@@ -154,7 +154,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
 
     if (!(isDateGreaterThanOneDay(startDate,currentDate) && isDateGreaterThanOneDay(endDate,startDate) && isDateGreaterThanOneDay(expireDate,endDate))){
 
-      Alert.alert('Fechas no ingresadas correctamente','la "fecha empieza" debe ser menor que "fecha termina" y la misma debe ser menor que "fecha expira". Todo esto por al menos un dia de diferencia');
+      Alert.alert('Fechas inválidas','"Fecha empieza" debe ser menor que "fecha termina", siendo ambas menor que "fecha expira". Las fechas deben tener al menos 1 día de diferencia');
       return;
     }
 
@@ -267,11 +267,11 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Cantidad de cupos disponibles</Text>
-                <TextInput style={styles.input} onChangeText={text => setData(prevData => ({ ...prevData, availability: text })) }/>
+                <TextInput style={styles.input} keyboardType="numeric" onChangeText={text => setData(prevData => ({ ...prevData, availability: text })) }/>
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Precio por persona</Text>
-                <TextInput style={styles.input} onChangeText={text => setData(prevData => ({ ...prevData, price: text })) }/>
+                <TextInput style={styles.input} keyboardType="numeric" onChangeText={text => setData(prevData => ({ ...prevData, price: text })) }/>
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Ubicación</Text>

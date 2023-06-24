@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
   },
   top: {
-    marginTop: 110,
+    marginTop: 70,
     marginBottom: 10,
     display: 'flex',
     flexDirection: 'row',

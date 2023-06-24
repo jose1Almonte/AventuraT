@@ -70,11 +70,11 @@ const FavoriteScreen = () => {
 
       <ScrollView style={styles.container}>
         <View style={styles.titleBox}>
-          <Text style={styles.title}>Paquetes favoritos</Text>
+          <Text style={styles.title}>Paquetes Favoritos</Text>
         </View>
         {favorites.length === 1 ? (
           <>
-          <Text style={styles.noFavoritesText}>NO TIENES PAQUETES FAVORITOS</Text>
+          <Text style={styles.noFavoritesText}>No tienes paquetes en Favoritos aún</Text>
           <Image
             style={styles.imageUsed}
             source={require('../../images/favorites.png')}
@@ -140,23 +140,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1DB5BE',
-    padding: 16,
   },
   titleBox:{
+    marginTop: 80,
     alignItems: 'center',
-    justifyContent: 'center',
-    height: 100,
+    gap: 5,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-SemiBold',
     marginBottom: 16,
     color: '#FFF',
   },
   noFavoritesText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFF',
+    marginTop:'5%',
+    color:'white',
+    fontSize: 16,
+    fontFamily: 'Poppins-Medium',
     textAlign: 'center',
   },
   cardContainer: {
