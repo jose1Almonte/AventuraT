@@ -142,6 +142,7 @@ const LoginScreenEnterprise = ({navigation}: EnterpriseSessionScreenProps) => {
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Contraseña: </Text>
               <TextInput
+                secureTextEntry={true}
                 style={styles.input}
                 onChangeText={text =>
                   setData(prevData => ({...prevData, Password: text}))

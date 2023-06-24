@@ -16,6 +16,7 @@ import {
   LoadingScreenTransparentBackground,
   fetchUserId,
   returnEnterpisePic,
+  updateEnterpriseDataByEmail,
   updateProfile,
   updateResponsibleData,
   updateUserDataByEmail,
@@ -60,17 +61,17 @@ const EditProfileEnterprise = ({
   };
 
   const handlePassword = (text: string) => {
-    setName(text);
+    setPassword(text);
     setFormEdited(true);
   };
 
   const handleLocation = (text: string) => {
-    setName(text);
+    setLocation(text);
     setFormEdited(true);
   };
 
   const handleDescription = (text: string) => {
-    setName(text);
+    setDescription(text);
     setFormEdited(true);
   };
 
@@ -105,8 +106,10 @@ const EditProfileEnterprise = ({
   const submit = async () => {
     setLoading(true);
     if (
-      name.trim() === '' ||
       phoneNumber.trim() === '' ||
+      location.trim() === '' ||
+      description.trim() === '' ||
+      password.trim() === '' ||
       responsibleEmail.trim() === ''
     ) {
       Alert.alert('Campos Vacíos', 'Por favor, complete todos los campos');
@@ -132,14 +135,6 @@ const EditProfileEnterprise = ({
       return;
     }
 
-    if (!validateLetters(name.toString())) {
-      Alert.alert(
-        'Dato Inválido',
-        'Por favor, ingrese un nombre válido',
-      );
-      setLoading(false);
-      return;
-    }
 
     if (resourcePath === '') {
       Alert.alert(
@@ -167,12 +162,9 @@ const EditProfileEnterprise = ({
             const userId = await fetchUserId(responsibleEmail.toLowerCase());
             if (userId) {
               const dataToUpdate = {
-                disName: name,
                 phoneNumber: phoneNumber,
                 photoURL: url1,
               };
-
-              await updateResponsibleData(userId, dataToUpdate);
 
               Alert.alert(
                 'Actualización Exitosa',
@@ -191,8 +183,7 @@ const EditProfileEnterprise = ({
               );
               setLoading(false);
             }
-            await updateUserDataByEmail(user?.email, name, url1);
-            await updateProfile(name, url1);
+            await updateEnterpriseDataByEmail(user?.email, url1, location, password, description, phoneNumber);
             navigation.navigate('HomeScreen');
           },
         },
@@ -240,16 +231,7 @@ const EditProfileEnterprise = ({
         </TouchableOpacity>
         </View>
         <View style={styles.bottomInfo}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.textLabel}>Nombre completo</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={handleNameChange}
-              value={name}
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
+        <View style={styles.inputContainer}>
             <Text style={styles.textLabel}>Correo electrónico</Text>
             <TextInput
               style={styles.textEmail}
@@ -258,6 +240,17 @@ const EditProfileEnterprise = ({
               value={responsibleEmail}
             />
           </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.textLabel}>Contraseña</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={handlePassword}
+              value={password}
+              editable={true}
+              secureTextEntry={true}
+            />
+          </View>
+
 
           <View style={styles.inputContainer}>
             <Text style={styles.textLabel}>Número de teléfono</Text>
@@ -265,9 +258,31 @@ const EditProfileEnterprise = ({
               style={styles.input}
               onChangeText={handlePhoneNumberChange}
               value={phoneNumber}
+              editable={true}
+            />
+          </View>
+
+        <View style={styles.inputContainer}>
+            <Text style={styles.textLabel}>Localidad</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={handleLocation}
+              value={location}
+              editable={true}
+            />
+          </View>
+
+        <View style={styles.inputContainer}>
+            <Text style={styles.textLabel}>Descripción</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={handleDescription}
+              value={description}
+              editable={true}
             />
           </View>
         </View>
+
 
 
         <TouchableOpacity onPress={submit}>

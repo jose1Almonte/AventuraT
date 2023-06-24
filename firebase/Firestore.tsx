@@ -623,3 +623,23 @@ export const updateUserDataByEmail = async (email: string, displayName: string, 
   } catch {}
 };
 
+
+export const updateEnterpriseDataByEmail = async (responsibleName: string, photoURL: string, location:string,password:string,description:string,phoneNumber:string) => {
+  try {
+    const querySnapshot = await usersCollection2.where('responsibleName', '==', responsibleName).get();
+    if (querySnapshot.size > 0) {
+      const doc = querySnapshot.docs[0];
+      await doc.ref.update({
+        location: location,
+        urlEmpresa: photoURL,
+        password: password,
+        description: description,
+        phoneNumber: phoneNumber,
+      });
+      console.log('Datos de usuario actualizados con éxito');
+    } else {
+      console.log('No se encontró ningún usuario con el correo electrónico proporcionado');
+    }
+  } catch {}
+};
+
