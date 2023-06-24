@@ -74,7 +74,7 @@ export default function App() {
           <Stack.Screen name="BusinessReservedScreen" component={BusinessReservedScreen} options={{ headerShown: false }} />
           <Stack.Screen name="DetailReservedScreen" component={DetailReservedScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="EditProfileScreenUser" component={EditProfileEnterprise} options={{ headerShown: false }} />
+          <Stack.Screen name="EditProfileEnterprise" component={EditProfileEnterprise} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

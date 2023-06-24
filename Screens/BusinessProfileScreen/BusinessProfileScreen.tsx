@@ -115,7 +115,9 @@ const BusinessProfileScreen = ({ route,navigation }: businessProfileProps) => {
             </View>
 
             <View style={styles.buttons}>
-              <EditProfileButton />
+            <TouchableOpacity  onPress={() => { navigation.navigate('EditProfileEnterprise');}}>
+                <EditProfileButton />
+              </TouchableOpacity>
               <EditPackageButton navigation={navigation} />
 
               {userExists && (
