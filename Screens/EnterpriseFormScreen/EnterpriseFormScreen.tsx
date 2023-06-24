@@ -238,7 +238,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
               <View style={styles.flexEnRaw}>
               <Text style={styles.label2}>J-</Text>
                 <TextInput
-                  style={styles.input2}
+                  style={styles.input}
                   keyboardType="numeric"
                   onChangeText={(text) => setData((prevData) => ({ ...prevData, rif: text, password: text }))}
                 />
@@ -342,7 +342,6 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     alignItems:'center',
     gap:8,
-
   },
   title: {
     fontWeight: '600',
