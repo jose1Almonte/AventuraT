@@ -124,7 +124,7 @@ export const UserProfileScreen = ({
 
               {userExists && (
                 <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessReservedScreen'); }}>
-                  <Text style={styles.txtInfo1}>Gestión de Pagos de Paquetes</Text>
+                  <Text style={styles.txtInfo}>Gestión de Pagos de Paquetes</Text>
                   <SvgXml xml={profileArrowVector} />
                 </TouchableOpacity>
               )}
@@ -135,7 +135,7 @@ export const UserProfileScreen = ({
                   <SvgXml xml={profileArrowVector} />
                 </TouchableOpacity>
               )*/}
-              {userExists &&
+              {user &&
               <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
                 <Text style={styles.txtInfo1}>Cerrar sesión</Text>
                 <SvgXml xml={profileArrowVector} />
