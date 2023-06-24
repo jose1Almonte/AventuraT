@@ -140,7 +140,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
 
       const url1 = await uploadImage(resourcePath, filename);
       const url2 = await uploadImage(resourcePath2, filename2);
-
+        
         addEnterprise(
           data.nameEnterprise,
           data.rif,
@@ -158,7 +158,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
           // setLoading(true);
           await createUserWithEmailAndPassword(data.responsibleName.toLowerCase(), data.password,data.phoneNumber,url2, data.disName);
           if (await checkIfUserExists(data.responsibleName.toLowerCase()) === false && url2) {
-            await addUser([''],data.disName,data.responsibleName.toLowerCase(),false,url2);
+            await addUser([''],data.disName,data.responsibleName.toLowerCase(),false,url2,data.phoneNumber);
           }
           loadLastId();
           setUser(currentLog());
