@@ -7,17 +7,37 @@ import { useUser } from '../Context/UserContext';
 import FourOptionsSelector from './SelectorFour';
 // import firestore from '@react-native-firebase/firestore';
 
-const DatePickerBox = ({text, writingDate, setWritingDate, date, setEndDate }:{
+const isDateGreaterThanOneDay = (date1: Date, date2: Date) => {
+  const oneDayInMilliseconds = 24 * 60 * 60 * 1000; // Número de milisegundos en un día
+  // console.log('date1: ', date1);
+  // console.log('date2: ', date2);
+
+  // Comparamos los valores de tiempo de las fechas sumando un día a la fecha 2
+  return date1.getTime() >= (date2.getTime() + oneDayInMilliseconds);
+};
+
+const DatePickerBox = ({text, writingDate, setWritingDate, dateBefore, date, setDate }:{
   text: string;
   writingDate: boolean;
+  dateBefore: Date;
   date: Date;
   setWritingDate: (value: boolean) => void;
-  setEndDate: (value: Date) => void;
+  setDate: (value: Date) => void;
 }) => {
+
   const handleDateChange = async (event: any, selectedDate: any) => {
-    const currentDate = selectedDate || date;
-    setEndDate(currentDate);
-    setWritingDate(false);
+    if (isDateGreaterThanOneDay(selectedDate, dateBefore)) {
+      console.log('La fecha seleccionada es mayor por al menos un día a la fecha antes de la función.');
+      const currentDate = selectedDate || date;
+      setDate(currentDate);
+      setWritingDate(false);
+    } else {
+      Alert.alert('Fecha inválida','No tiene sentido si eliges ese valor para la fecha! Vuelve a intentarlo');
+      console.log('La fecha seleccionada NO es mayor por al menos un día a la fecha antes de la función.');
+      const currentDate = date;
+      setDate(currentDate);
+      setWritingDate(false);
+    }
   };
 
   if (writingDate) {
@@ -69,13 +89,24 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   const {user} = useUser();
   const userEmail = user ? user.email : null;
 
-  const [startDate, setStartDate] = useState(new Date());
+  const currentDate = new Date();
+
+  const nextDay = new Date();
+  nextDay.setDate(nextDay.getDate() + 1);
+
+  const next2Days = new Date();
+  next2Days.setDate(next2Days.getDate() + 2);
+
+  const next3Days = new Date();
+  next3Days.setDate(next3Days.getDate() + 3);
+
+  const [startDate, setStartDate] = useState(nextDay);
   const [writtingStartDate, setWritingStartDate] = useState(false);
 
-  const [endDate, setEndDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(next2Days);
   const [writtingEndDate, setWritingEndDate] = useState(false);
 
-  const [expireDate, setExpireDate] = useState(new Date());
+  const [expireDate, setExpireDate] = useState(next3Days);
   const [writtingExpireDate, setWritingExpireDate] = useState(false);
 
   const [selectedOption, setSelectedOption] = useState(null);
@@ -119,6 +150,14 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   };
 
   const submit = async () => {
+
+
+    if (!(isDateGreaterThanOneDay(startDate,currentDate) && isDateGreaterThanOneDay(endDate,startDate) && isDateGreaterThanOneDay(expireDate,endDate))){
+
+      Alert.alert('Fechas no ingresadas correctamente','la "fecha empieza" debe ser menor que "fecha termina" y la misma debe ser menor que "fecha expira". Todo esto por al menos un dia de diferencia');
+      return;
+    }
+
     console.log(selectedOption);
     if (
       data.name.trim() === '' ||
@@ -264,8 +303,9 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
                   text="El viaje empieza: "
                   writingDate={writtingStartDate}
                   setWritingDate={setWritingStartDate}
+                  dateBefore={currentDate}
                   date={startDate}
-                  setEndDate={setStartDate}
+                  setDate={setStartDate}
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {setWritingEndDate(true);}} style={styles.inputContainer}>
@@ -273,8 +313,9 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
                   text="El viaje Termina: "
                   writingDate={writtingEndDate}
                   setWritingDate={setWritingEndDate}
+                  dateBefore={startDate}
                   date={endDate}
-                  setEndDate={setEndDate}
+                  setDate={setEndDate}
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {setWritingExpireDate(true);}} style={styles.inputContainer}>
@@ -282,8 +323,9 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
                   text="El paquete expira: "
                   writingDate={writtingExpireDate}
                   setWritingDate={setWritingExpireDate}
+                  dateBefore={endDate}
                   date={expireDate}
-                  setEndDate={setExpireDate}
+                  setDate={setExpireDate}
                 />
               </TouchableOpacity>
 
