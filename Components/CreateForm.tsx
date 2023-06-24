@@ -267,11 +267,11 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Cantidad de cupos disponibles</Text>
-                <TextInput style={styles.input} onChangeText={text => setData(prevData => ({ ...prevData, availability: text })) }/>
+                <TextInput style={styles.input} keyboardType="numeric" onChangeText={text => setData(prevData => ({ ...prevData, availability: text })) }/>
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Precio por persona</Text>
-                <TextInput style={styles.input} onChangeText={text => setData(prevData => ({ ...prevData, price: text })) }/>
+                <TextInput style={styles.input} keyboardType="numeric" onChangeText={text => setData(prevData => ({ ...prevData, price: text })) }/>
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Ubicación</Text>

@@ -152,7 +152,7 @@ const NavbarScreen = ({ navigation,route}:navigationProps) => {
                   }
 
                 }}>
-                  <SvgXml xml={business} />
+                  <SvgXml xml={historial} />
                   <Text style={styles.txtInfo}>Mis Reservas</Text>
                 </TouchableOpacity>
               </View>
