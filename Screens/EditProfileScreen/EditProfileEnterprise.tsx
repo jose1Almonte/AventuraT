@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Button,
 } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
+import {NavigationProp} from '@react-navigation/native';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import currentLog from '../../firebase/UserData';
-import { useUser } from '../../Context/UserContext';
+import {useUser} from '../../Context/UserContext';
 import {
   LoadingScreenTransparentBackground,
   fetchUserId,
@@ -22,7 +23,10 @@ import {
   updateUserDataByEmail,
   uploadImage,
 } from '../../firebase/Firestore';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {SvgXml} from 'react-native-svg';
+import showPasswords from '../../vectores/showPasswords';
+import hidePassword from '../../vectores/hidePassword';
 
 const validateNumber = (number: string): boolean => {
   const numberRegExp = /^[0-9]+$/;
@@ -33,13 +37,14 @@ const validateLetters = (letter: string): boolean => {
   const ExpRegSoloLetras = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/;
   return ExpRegSoloLetras.test(letter);
 };
-interface EditProfileEnterpriseProps{
-  navigation: NavigationProp<Record<string, object | undefined>>
-  route:any
+interface EditProfileEnterpriseProps {
+  navigation: NavigationProp<Record<string, object | undefined>>;
+  route: any;
 }
 
 const EditProfileEnterprise = ({
-  navigation, route,
+  navigation,
+  route,
 }: EditProfileEnterpriseProps) => {
   const [resourcePath, setResourcePath] = useState('');
   const [filename, setFileName] = useState('');
@@ -54,6 +59,11 @@ const EditProfileEnterprise = ({
   const [password, setPassword] = useState('');
   const [image, setImage] = useState('');
   const [isFormEdited, setFormEdited] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleNameChange = (text: string) => {
     setName(text);
@@ -135,7 +145,6 @@ const EditProfileEnterprise = ({
       return;
     }
 
-
     if (resourcePath === '') {
       Alert.alert(
         'No se permite un campo vacío',
@@ -183,7 +192,14 @@ const EditProfileEnterprise = ({
               );
               setLoading(false);
             }
-            await updateEnterpriseDataByEmail(user?.email, url1, location, password, description, phoneNumber);
+            await updateEnterpriseDataByEmail(
+              user?.email,
+              url1,
+              location,
+              password,
+              description,
+              phoneNumber,
+            );
             navigation.navigate('HomeScreen');
           },
         },
@@ -192,7 +208,7 @@ const EditProfileEnterprise = ({
   };
 
   const selectImage = () => {
-    launchImageLibrary({ mediaType: 'photo' }, (response) => {
+    launchImageLibrary({mediaType: 'photo'}, response => {
       if (response.didCancel) {
         Alert.alert('Not Image', 'No se ha elegido una imagen');
       } else if (response.errorCode) {
@@ -201,7 +217,9 @@ const EditProfileEnterprise = ({
         const selectedAsset = response.assets && response.assets[0];
         if (selectedAsset && selectedAsset.uri) {
           setResourcePath(selectedAsset.uri);
-          setFileName(selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1));
+          setFileName(
+            selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1),
+          );
           Alert.alert('Done', 'Image uploaded');
         }
       }
@@ -210,94 +228,105 @@ const EditProfileEnterprise = ({
 
   return (
     <>
-    {loading && (
-      <LoadingScreenTransparentBackground/>
-      )}
-    <ScrollView style={styles.container}>
-      <View style={styles.info}>
-        <View style={styles.topInfo}>
-          <Text style={styles.text}>Editar información</Text>
-          <TouchableOpacity onPress={selectImage}>
-          <PhotoProfile
-            size={100}
-            imageSource={
-              image ||
-              'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'
-            }
-          />
+      {loading && <LoadingScreenTransparentBackground />}
+      <ScrollView style={styles.container}>
+        <View style={styles.info}>
+          <View style={styles.topInfo}>
+            <Text style={styles.text}>Editar información</Text>
+            <TouchableOpacity onPress={selectImage}>
+              <PhotoProfile
+                size={100}
+                imageSource={
+                  image ||
+                  'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'
+                }
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonContainer2}
+              onPress={selectImage}>
+              <Text style={styles.textButton2}>Cambiar imagen</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.bottomInfo}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.textLabel}>Correo electrónico</Text>
+              <TextInput
+                style={styles.textEmail}
+                //No es editable porque se está utilizando el correo electrónico como Id del usuario para acceder a sus datos en la base de datos
+                editable={false}
+                value={responsibleEmail}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.textLabel}>Contraseña</Text>
+
+              <View style={styles.containerPassword}>
+              <TextInput
+                style={styles.input}
+                onChangeText={handlePassword}
+                value={password}
+                editable={true}
+                secureTextEntry={!showPassword}
+              />
+
+              <TouchableOpacity onPress={togglePasswordVisibility}>
+                <>
+                  {showPassword ? (
+                    <SvgXml xml={hidePassword} />
+                  ) : (
+                    <SvgXml xml={showPasswords} />
+                  )}
+                </>
+              </TouchableOpacity>
+              </View>
+              
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.textLabel}>Número de teléfono</Text>
+              <TextInput
+                style={styles.input}
+                onChangeText={handlePhoneNumberChange}
+                value={phoneNumber}
+                editable={true}
+              />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.textLabel}>Localidad</Text>
+              <TextInput
+                style={styles.input}
+                onChangeText={handleLocation}
+                value={location}
+                editable={true}
+              />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.textLabel}>Descripción</Text>
+              <TextInput
+                style={styles.input}
+                onChangeText={handleDescription}
+                value={description}
+                editable={true}
+              />
+            </View>
+          </View>
+
+          <TouchableOpacity onPress={submit}>
+            <View
+              style={[
+                styles.buttonContainer,
+                isFormEdited ? styles.buttonContainerActive : null,
+              ]}>
+              <Text style={styles.textButton}>Guardar cambios</Text>
+            </View>
           </TouchableOpacity>
-          <TouchableOpacity style={ styles.buttonContainer2} onPress={selectImage}>
-          <Text style={styles.textButton2}>Cambiar imagen</Text>
-        </TouchableOpacity>
         </View>
-        <View style={styles.bottomInfo}>
-        <View style={styles.inputContainer}>
-            <Text style={styles.textLabel}>Correo electrónico</Text>
-            <TextInput
-              style={styles.textEmail}
-              //No es editable porque se está utilizando el correo electrónico como Id del usuario para acceder a sus datos en la base de datos
-              editable={false}
-              value={responsibleEmail}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.textLabel}>Contraseña</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={handlePassword}
-              value={password}
-              editable={true}
-              secureTextEntry={true}
-            />
-          </View>
-
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.textLabel}>Número de teléfono</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={handlePhoneNumberChange}
-              value={phoneNumber}
-              editable={true}
-            />
-          </View>
-
-        <View style={styles.inputContainer}>
-            <Text style={styles.textLabel}>Localidad</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={handleLocation}
-              value={location}
-              editable={true}
-            />
-          </View>
-
-        <View style={styles.inputContainer}>
-            <Text style={styles.textLabel}>Descripción</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={handleDescription}
-              value={description}
-              editable={true}
-            />
-          </View>
-        </View>
-
-
-
-        <TouchableOpacity onPress={submit}>
-          <View
-            style={[
-              styles.buttonContainer,
-              isFormEdited ? styles.buttonContainerActive : null,
-            ]}
-          >
-            <Text style={styles.textButton}>Guardar cambios</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
-    </> );
+      </ScrollView>
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -374,6 +403,11 @@ const styles = StyleSheet.create({
     marginTop: '3%',
     marginBottom: '3%',
     alignSelf: 'center',
+  },
+  containerPassword:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   buttonContainerActive: {
     backgroundColor: '#1881b1',
