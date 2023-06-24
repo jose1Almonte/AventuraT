@@ -62,27 +62,69 @@ const EditProfileScreen = ({navigation, route}: EditProfileScreenProps) => {
     setFormEdited(true);
   };
 
+  // useEffect(() => {
+  //   const fetchEnterprisePic = async () => {
+  //     setLoadingSomething(true);
+  //     setLoading(true);
+  //     const emailUser = await checkUserExist(user?.email);
+  //     const email = await returnEnterpisePic(user?.email);
+  //     if (emailUser != null) {
+  //       setPhoneNumber(emailUser.phoneNumber);
+  //       setName(emailUser.displayName);
+  //       setResponsibleEmail(user?.email);
+  //       setFileName(user?.photoURL);
+  //     } else if {
+
+  //     }
+      
+      
+      
+  //     {
+  //         setPhoneNumber(phoneNumber);
+  //         setName(user?.displayName);
+  //         setResponsibleEmail(user?.email);
+  //         setFileName(user?.photoURL);
+  //     }
+      
+  //     setLoading(false);
+  //     setLoadingSomething(false);
+  //   };
+
+  //   fetchEnterprisePic();
+  // }, []);
+
+
   useEffect(() => {
     const fetchEnterprisePic = async () => {
       setLoadingSomething(true);
       setLoading(true);
       const emailUser = await checkUserExist(user?.email);
+      const emailEnterprise = await returnEnterpisePic(user?.email);
+  
       if (emailUser != null) {
         setPhoneNumber(emailUser.phoneNumber);
         setName(emailUser.displayName);
         setResponsibleEmail(user?.email);
         setFileName(user?.photoURL);
+        setLoading(false);
+        setLoadingSomething(false);
+      } else if (emailEnterprise != null) {
+        setPhoneNumber(emailEnterprise.phoneNumber);
+        setName(emailEnterprise.disName);
+        setResponsibleEmail(user?.email);
+        setFileName(user?.photoURL);
+        setLoading(false);
+        setLoadingSomething(false);
       } else {
-          setPhoneNumber(user?.phoneNumber);
-          setName(user?.displayName);
-          setResponsibleEmail(user?.email);
-          setFileName(user?.photoURL);
+        setPhoneNumber(user?.phoneNumber);
+        setName(user?.displayName);
+        setResponsibleEmail(user?.email);
+        setFileName(user?.photoURL);
+        setLoading(false);
+        setLoadingSomething(false);
       }
-      
-      setLoading(false);
-      setLoadingSomething(false);
     };
-
+  
     fetchEnterprisePic();
   }, []);
 
