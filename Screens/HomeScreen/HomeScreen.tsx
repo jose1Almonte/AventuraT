@@ -57,7 +57,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       <ScrollView style={styles.background}>
         <View style={styles.navbar}>
           <View>
-            <TouchableOpacity style={styles.colorRed} onPress={() => { navigation.navigate('NavbarScreen', {actualizaPerfil: actualizaPerfil});}}>
+            <TouchableOpacity style={styles.colorRed} onPress={() => { navigation.navigate('NavbarScreen', {actualizaPerfil: actualizaPerfil, setActualizaPerfil: setActualizaPerfil});}}>
               <SvgXml xml={menuBar} />
             </TouchableOpacity>
           </View>

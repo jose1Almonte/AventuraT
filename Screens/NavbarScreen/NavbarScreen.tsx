@@ -20,12 +20,12 @@ import ScrollViewIndicator from 'react-native-scroll-indicator';
 
 interface navigationProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
-  actualizaPerfil: boolean;
+  route: any;
 }
 
 
-const NavbarScreen = ({ navigation}: any , {actualizaPerfil}:navigationProps) => {
-
+const NavbarScreen = ({ navigation,route}:navigationProps) => {
+  const {actualizaPerfil, setActualizaPerfil} = route.params;
   const { setUser, setLogged } = useUser();
   const [loadingSomeThing, setLoadingSomething] = useState(false);
   const logout = async (): Promise<void> => {
@@ -75,7 +75,7 @@ const NavbarScreen = ({ navigation}: any , {actualizaPerfil}:navigationProps) =>
       )}
       <View style={styles.fondo}>
         <View style={styles.info}>
-          <TouchableOpacity style={styles.topInfo} onPress={() => { navigation.navigate('UserProfileScreen') }}>
+          <TouchableOpacity style={styles.topInfo} onPress={() => { navigation.navigate('UserProfileScreen',{actualizaPerfil: actualizaPerfil, setActualizaPerfil: setActualizaPerfil});}}>
             <PerfilPictureNav
               navigation={navigation}
               styles={styles}
@@ -132,7 +132,7 @@ const NavbarScreen = ({ navigation}: any , {actualizaPerfil}:navigationProps) =>
               <View>
                 <TouchableOpacity style={styles.contenedorLinks} onPress={() => {
                   if (isLogged) {
-                    navigation.navigate('UserProfileScreen')
+                    navigation.navigate('UserProfileScreen',{actualizaPerfil: actualizaPerfil, setActualizaPerfil: setActualizaPerfil});
                   } else {
                     navigation.navigate('LoginScreen');
                   }
