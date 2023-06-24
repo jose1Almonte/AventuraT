@@ -62,45 +62,13 @@ const EditProfileScreen = ({navigation, route}: EditProfileScreenProps) => {
     setFormEdited(true);
   };
 
-  // useEffect(() => {
-  //   const fetchEnterprisePic = async () => {
-  //     setLoadingSomething(true);
-  //     setLoading(true);
-  //     const emailUser = await checkUserExist(user?.email);
-  //     const email = await returnEnterpisePic(user?.email);
-  //     if (emailUser != null) {
-  //       setPhoneNumber(emailUser.phoneNumber);
-  //       setName(emailUser.displayName);
-  //       setResponsibleEmail(user?.email);
-  //       setFileName(user?.photoURL);
-  //     } else if {
-
-  //     }
-      
-      
-      
-  //     {
-  //         setPhoneNumber(phoneNumber);
-  //         setName(user?.displayName);
-  //         setResponsibleEmail(user?.email);
-  //         setFileName(user?.photoURL);
-  //     }
-      
-  //     setLoading(false);
-  //     setLoadingSomething(false);
-  //   };
-
-  //   fetchEnterprisePic();
-  // }, []);
-
-
   useEffect(() => {
     const fetchEnterprisePic = async () => {
       setLoadingSomething(true);
       setLoading(true);
       const emailUser = await checkUserExist(user?.email);
       const emailEnterprise = await returnEnterpisePic(user?.email);
-  
+
       if (emailUser != null) {
         setPhoneNumber(emailUser.phoneNumber);
         setName(emailUser.displayName);
@@ -124,35 +92,9 @@ const EditProfileScreen = ({navigation, route}: EditProfileScreenProps) => {
         setLoadingSomething(false);
       }
     };
-  
+
     fetchEnterprisePic();
   }, []);
-
-  // useEffect(() => {
-  //   const fetchEnterprisePic = async () => {
-  //     setLoadingSomething(true);
-  // setLoading(true);
-
-  // const userData = await getUser(user?.email);
-
-  // if (userData) {
-  //   setPhoneNumber(userData.phoneNumber);
-  //   setName(userData.name);
-  //   setResponsibleEmail(user?.email);
-  //   setFileName(user?.photoURL);
-  // } else {
-  //   setPhoneNumber(phoneNumber);
-  //   setName(user?.displayName);
-  //   setResponsibleEmail(user?.email);
-  //   setFileName(user?.photoURL);
-  // }
-
-  // setLoading(false);
-  // setLoadingSomething(false);
-  //   };
-  
-  //   fetchEnterprisePic();
-  // }, []);
 
   const submit = async () => {
     setLoading(true);
@@ -234,11 +176,6 @@ const EditProfileScreen = ({navigation, route}: EditProfileScreenProps) => {
             } else {
               console.log(
                 'No se encontró ningún usuario con el correo electrónico especificado',
-                console.log(phoneNumber),
-                console.log(user?.phoneNumber),
-                console.log(user?.email),
-                console.log(user?.displayName),
-                // console.log(e)
               );
               setLoading(false);
             }

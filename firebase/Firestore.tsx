@@ -603,7 +603,7 @@ export const updateProfile = async (displayName: string, photoURL: string) => {
         displayName,
         photoURL,
       });
-      Alert.alert('GENIAL','Perfil actualizado con éxito');
+      Alert.alert('ACTUALIZADO','Perfil actualizado con éxito');
     } catch (error) {
       Alert.alert('ERROR','Error al actualizar el perfil:');
     }
