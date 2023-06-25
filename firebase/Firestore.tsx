@@ -598,7 +598,7 @@ export const purgarHistory = async (ids: string[]) => {
     const doc = await ref.get();
     const status = doc.data()?.status;
     console.log(status);
-    if (status === 'C') {
+    if (status === 'C' || status === 'R') {
       return ref.update({
         status: 'Q',
       });

@@ -28,7 +28,7 @@ const BusinessReservedScreen = ({ navigation }: BusinessReservedScreenProps) => 
           const querySnapshot = await firestore()
             .collection('paidPackage')
             .where('emailEnterprise', '==', email)
-            .where('status', '==', 'E')
+            .where('status', '==', 'E' )
             .onSnapshot((snapshot) => {
               let updatedDataPaids: DataPaid[] = [];
               let updatedAllIdPackagePaid: string[] = [];
