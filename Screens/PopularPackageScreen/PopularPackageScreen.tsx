@@ -39,7 +39,8 @@ export default function PopularPackageScreen({ navigation }: PopularPackageScree
     }
 
     useEffect(() => {
-        fetchData() ;
+        fetchData() 
+        console.log(packages.length, packageCount)
     }, [packageCount]);
 
     return (
@@ -107,16 +108,17 @@ export default function PopularPackageScreen({ navigation }: PopularPackageScree
                 })}
             </View>
                 )}
-                {packages.length <= packageCount ? 
+                {packages.length < packageCount ? 
                     <>
                         <Text style = {styles.moreText}> No hay más paquetes populares!</Text>
                     </>
                 
                     : 
-                    
-                    <TouchableOpacity style={styles.showMore} onPress={() => {showMore()}}>
-                        <Text style={styles.moreText}>Ver más</Text>
-                    </TouchableOpacity> 
+                    <>
+                        <TouchableOpacity style={styles.showMore} onPress={() => {showMore()}}>
+                            <Text style={styles.moreText}>Ver más</Text>
+                        </TouchableOpacity> 
+                    </>
             }
         </ScrollView>
         </>
