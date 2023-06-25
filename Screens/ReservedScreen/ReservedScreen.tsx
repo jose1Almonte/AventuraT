@@ -65,7 +65,7 @@ const ReservedScreen = ({ navigation }: ReservedScreenProps) => {
                 )
                 }
                 {data && data.length > 0 && !refreshing && !Q ? (
-                    <View>
+                    <View style={styles.limit}>
                 <FlatList
                     data={data}
                     renderItem={renderItem}
@@ -91,6 +91,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#1DB5BE',
+    },
+    limit:{flex:1,
     },
     info: {
         flex: 1,
