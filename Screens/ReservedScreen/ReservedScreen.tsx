@@ -26,25 +26,26 @@ const ReservedScreen = ({ navigation }: ReservedScreenProps) => {
               .get();
             //@ts-ignore
             setData(querySnapshot.docs);
-            setRefreshing(false);
             const allPackagesQ = querySnapshot.docs.every(item => item.data().status === 'Q');
             if (allPackagesQ){
                 setQ(true);
             } else {
                 setQ(false);
             }
+            setRefreshing(false);
         };
         fetchData();
     }, [refreshing]);
 
 
-    const handlePurgarHistory = () => {
+    const handlePurgarHistory = async () => {
         if (data){
-        setRefreshing(true);
         const ids = data.map(item => item.id);
-        purgarHistory(ids);
+        await purgarHistory(ids);
+        setRefreshing(true);
         }
     };
+
     const renderItem = ({item}: any) => {
         return (
                 <ReservedPackages item={item} navigation={navigation}/>);

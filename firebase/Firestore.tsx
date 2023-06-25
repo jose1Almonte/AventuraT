@@ -595,14 +595,10 @@ export const purgarHistory = async (ids: string[]) => {
   const packageRefs = ids.map(id => firestore().collection('paidPackage').doc(id));
 
   const updatePromises = packageRefs.map(async ref => {
-    // Obtener el estado actual del documento
     const doc = await ref.get();
-    if (!doc.exists) {
-      return Promise.resolve();
-    }
-    const status = doc.data().status;
-
-    if (status === 'R') {
+    const status = doc.data()?.status;
+    console.log(status);
+    if (status === 'C') {
       return ref.update({
         status: 'Q',
       });
@@ -611,13 +607,13 @@ export const purgarHistory = async (ids: string[]) => {
       return Promise.resolve();
     }
   });
-  
+
+
   try {
     await Promise.all(updatePromises);
     console.log('Paquetes actualizados exitosamente');
   } catch {
   }
-  
 };
 
 export const saveStarsToFirestore = async (counter, name, email) => {
