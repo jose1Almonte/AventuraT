@@ -165,13 +165,13 @@ export const changePackageIsPublicValue = async (packageId: { toString: () => st
 
 };
 
-export const changePackageValues = async (packageId: { toString: () => string | undefined; }, packageDescription: string, packageTipo) => {
+export const changePackageValues = async (packageId: { toString: () => string | undefined; }, packageDescription: string, packageTipo: any) => {
   try {
     await usersCollection3.doc(packageId?.toString()).update({
       description: packageDescription,
       tipo: packageTipo,
     });
-    console.log('DONE: ', `package Values were successfully changed to: description: ${packageDescription}  & tipo: ${packageTipo}` )
+    console.log('DONE: ', `package Values were successfully changed to: description: ${packageDescription}  & tipo: ${packageTipo}`)
     return true;
   } catch (error) {
     console.log(error);
@@ -308,7 +308,7 @@ export const checkResponsibleNameExists = async (responsibleName: any) => {
   return !snapshot.empty;
 };
 
-export const checkUserExist= async (email: any) => {
+export const checkUserExist = async (email: any) => {
   try {
     const usersRef = firebase.firestore().collection('users');
     const snapshot = await usersRef.where('email', '==', email).get();
@@ -427,7 +427,7 @@ export const updatePaidPackage = async (id: string, status: string, newRef?: any
       status: status
     });
   }
-  
+
 };
 
 
@@ -583,7 +583,7 @@ export const purgarHistory = async (ids: string[]) => {
   }
 };
 
-export const saveStarsToFirestore = async (counter, name, email) => {
+export const saveStarsToFirestore = async (counter: any, name: any, email: any) => {
   await starsdb.add({
     counter,
     name,
@@ -595,13 +595,14 @@ export const saveStarsToFirestore = async (counter, name, email) => {
     .catch();
 };
 
-export const checkStarsInFirestore = async (email, name) => {
+export const checkStarsInFirestore = async (email: any, name: any) => {
   try {
     const querySnapshot = await starsdb.where('email', '==', email)
       .where('name', '==', name)
       .get();
 
     if (!querySnapshot.empty) {
+      // @ts-ignore
       return querySnapshot[0];
     } else {
       return null;
@@ -619,9 +620,9 @@ export const updateProfile = async (displayName: string, photoURL: string) => {
         displayName,
         photoURL,
       });
-      Alert.alert('ACTUALIZADO','Perfil actualizado con éxito');
+      Alert.alert('ACTUALIZADO', 'Perfil actualizado con éxito');
     } catch (error) {
-      Alert.alert('ERROR','Error al actualizar el perfil:');
+      Alert.alert('ERROR', 'Error al actualizar el perfil:');
     }
   }
 };
@@ -640,11 +641,11 @@ export const updateUserDataByEmail = async (email: string, displayName: string, 
     } else {
       console.log('No se encontró ningún usuario con el correo electrónico proporcionado');
     }
-  } catch {}
+  } catch { }
 };
 
 
-export const updateEnterpriseDataByEmail = async (responsibleName: string, photoURL: string, location:string,password:string,description:string,phoneNumber:string) => {
+export const updateEnterpriseDataByEmail = async (responsibleName: string, photoURL: string, location: string, password: string, description: string, phoneNumber: string) => {
   try {
     const querySnapshot = await usersCollection2.where('responsibleName', '==', responsibleName).get();
     if (querySnapshot.size > 0) {
@@ -660,6 +661,22 @@ export const updateEnterpriseDataByEmail = async (responsibleName: string, photo
     } else {
       console.log('No se encontró ningún usuario con el correo electrónico proporcionado');
     }
-  } catch {}
+  } catch { }
+};
+
+export const updateRaitingEnterprise = async (email: string, feedback: any) => {
+  try {
+    const querySnapshot = await usersCollection2.where('responsibleName', '==', email).get();
+    let enterprise: any = querySnapshot.docs[0];
+    let feedbacks: any[] | undefined = enterprise.data().feedback;
+
+    if (feedbacks) {
+      feedbacks.push(feedback);
+      usersCollection2.doc(enterprise.id).update({ feedback: feedbacks });
+    } else {
+      let tempF: any[] = [feedback];
+      usersCollection2.doc(enterprise.id).update({ feedback: tempF });
+    }
+  } catch { }
 };
 

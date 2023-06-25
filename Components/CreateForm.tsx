@@ -7,7 +7,7 @@ import { useUser } from '../Context/UserContext';
 import FourOptionsSelector from './SelectorFour';
 // import firestore from '@react-native-firebase/firestore';
 
-const DatePickerBox = ({text, writingDate, setWritingDate, date, setEndDate }:{
+const DatePickerBox = ({ text, writingDate, setWritingDate, date, setEndDate }: {
   text: string;
   writingDate: boolean;
   date: Date;
@@ -66,7 +66,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   const [filename, setFileName] = useState('');
   // const [nameEnterprise, setNameEnterprise] = useState('');
   const [loading, setLoading] = useState(false);
-  const {user} = useUser();
+  const { user } = useUser();
   const userEmail = user ? user.email : null;
 
   const [startDate, setStartDate] = useState(new Date());
@@ -110,7 +110,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   // }, [nameEnterprise]);
 
   const handleIsPublic = () => {
-    setData(prevData => ({ ...prevData, isPublic: !data.isPublic}));
+    setData(prevData => ({ ...prevData, isPublic: !data.isPublic }));
   };
 
   const loadLastId = async () => {
@@ -119,7 +119,6 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   };
 
   const submit = async () => {
-    console.log(selectedOption);
     if (
       data.name.trim() === '' ||
       data.availability.trim() === '' ||
@@ -136,7 +135,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
 
     const availabilityInt = parseInt(data.availability);
 
-    if (Number.isInteger(priceInt) && Number.isInteger(availabilityInt) ){}
+    if (Number.isInteger(priceInt) && Number.isInteger(availabilityInt)) { }
     else {
       Alert.alert('Revise el precio o la disponibilidad, no son números');
       return;
@@ -148,14 +147,12 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
     // Alert.alert('Se está subiendo tus datos, presiona ok para que se continue');
 
     if (resourcePath === '') {
-        Alert.alert('Por favor coloque la imagen');
-        return;
-      } else {
-        setLoading(true);
-        setTimeout(async () => {
+      Alert.alert('Por favor coloque la imagen');
+      return;
+    } else {
+      setLoading(true);
+      setTimeout(async () => {
         const url = await uploadImage(resourcePath, filename);
-        console.log(url);
-        console.log(data);
         await addPackage(
           data.id,
           data.name,
@@ -172,13 +169,13 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
           data.expireDate,
           data.isPublic,
           selectedOption,
-          );
-          setLoading(false);
-          Alert.alert('Ya se subió el paquete a la base de datos');
-          await navigation.navigate('HomeScreen');
-          }, 3000);
-          await loadLastId();
-        }
+        );
+        setLoading(false);
+        Alert.alert('Ya se subió el paquete a la base de datos');
+        await navigation.navigate('HomeScreen');
+      }, 3000);
+      await loadLastId();
+    }
   };
 
 
@@ -206,37 +203,37 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   return (
 
     <>
-        {loading && (
-            <LoadingScreenTransparentBackground/>
-        )}
+      {loading && (
+        <LoadingScreenTransparentBackground />
+      )}
 
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>¡Agrega tu paquete con AventuraT!</Text>
-      </View>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>¡Agrega tu paquete con AventuraT!</Text>
+        </View>
         <View style={styles.formContainer}>
           <ScrollView style={styles.scrollFormContainer}>
             <View style={styles.formContainer}>
-            <View style={styles.container2}>
+              <View style={styles.container2}>
                 <FourOptionsSelector onSelect={handleOptionSelect} />
                 <Text style={styles.label}>Opción Seleccionada: </Text>
                 <Text style={styles.labelSelector}>{selectedOption}</Text>
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Nombre del paquete</Text>
-                <TextInput style={styles.input} onChangeText={text => setData(prevData => ({ ...prevData, name: text })) }/>
+                <TextInput style={styles.input} onChangeText={text => setData(prevData => ({ ...prevData, name: text }))} />
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Cantidad de cupos disponibles</Text>
-                <TextInput style={styles.input} onChangeText={text => setData(prevData => ({ ...prevData, availability: text })) }/>
+                <TextInput style={styles.input} onChangeText={text => setData(prevData => ({ ...prevData, availability: text }))} />
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Precio por persona</Text>
-                <TextInput style={styles.input} onChangeText={text => setData(prevData => ({ ...prevData, price: text })) }/>
+                <TextInput style={styles.input} onChangeText={text => setData(prevData => ({ ...prevData, price: text }))} />
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Ubicación</Text>
-                <TextInput style={styles.input} onChangeText={text => setData(prevData => ({ ...prevData, location: text })) } />
+                <TextInput style={styles.input} onChangeText={text => setData(prevData => ({ ...prevData, location: text }))} />
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Breve descripción del paquete</Text>
@@ -249,17 +246,17 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
               </View>
 
 
-              <TouchableOpacity style={styles.inputContainer} onPress={() => {handleIsPublic();}}>
+              <TouchableOpacity style={styles.inputContainer} onPress={() => { handleIsPublic(); }}>
                 <Text style={styles.label}>El Paquete es:</Text>
 
-                { data.isPublic ? (
-                    <Text style={styles.input}>Público</Text>
-                  ) : (
-                    <Text style={styles.input}>Privado </Text>
-                  )
+                {data.isPublic ? (
+                  <Text style={styles.input}>Público</Text>
+                ) : (
+                  <Text style={styles.input}>Privado </Text>
+                )
                 }
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {setWritingStartDate(true);}} style={styles.inputContainer}>
+              <TouchableOpacity onPress={() => { setWritingStartDate(true); }} style={styles.inputContainer}>
                 <DatePickerBox
                   text="El viaje empieza: "
                   writingDate={writtingStartDate}
@@ -268,7 +265,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
                   setEndDate={setStartDate}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {setWritingEndDate(true);}} style={styles.inputContainer}>
+              <TouchableOpacity onPress={() => { setWritingEndDate(true); }} style={styles.inputContainer}>
                 <DatePickerBox
                   text="El viaje Termina: "
                   writingDate={writtingEndDate}
@@ -277,7 +274,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
                   setEndDate={setEndDate}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {setWritingExpireDate(true);}} style={styles.inputContainer}>
+              <TouchableOpacity onPress={() => { setWritingExpireDate(true); }} style={styles.inputContainer}>
                 <DatePickerBox
                   text="El paquete expira: "
                   writingDate={writtingExpireDate}
@@ -292,7 +289,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
               </TouchableOpacity>
               {resourcePath === '' ? (
                 <></>
-                ) : (
+              ) : (
                 <View>
                   <Image source={{ uri: resourcePath }} />
                 </View>
@@ -300,14 +297,14 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
             </View>
           </ScrollView>
         </View>
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.submitButton} onPress={() => submit()}>
-        {/* <TouchableOpacity style={styles.submitButton} onPress={() => reallyUserFinded(userEmail)}> */}
-          <Text style={styles.buttonText}>Crear Paquete</Text>
-        </TouchableOpacity>
+        <View style={styles.footer}>
+          <TouchableOpacity style={styles.submitButton} onPress={() => submit()}>
+            {/* <TouchableOpacity style={styles.submitButton} onPress={() => reallyUserFinded(userEmail)}> */}
+            <Text style={styles.buttonText}>Crear Paquete</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  </>
+    </>
   );
 };
 
@@ -328,7 +325,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  scrollFormContainer:{
+  scrollFormContainer: {
     width: '100%',
   },
   formContainer: {

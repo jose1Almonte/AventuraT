@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Pressable, ScrollView, Alert, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import vectorPerfil from '../../vectores/vectorPerfil';
@@ -8,22 +8,17 @@ import vectorLocation from '../../vectores/vectorLocation';
 import EditPackageButton from '../../Components/Profiles/editPackagesButton';
 import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../vectores/separator';
-import star from '../../vectores/star';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
 import { LoadingScreenTransparentBackground, returnEnterpisePic } from '../../firebase/Firestore';
-import profileVector from '../../vectores/vectorPerfil';
 import profileArrowVector from '../../vectores/vectorPerfilFlecha';
-import { PackageI } from '../../models/package.interface';
 
 interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
-  route?: any;
-  data?: PackageI;
 }
 
-const BusinessProfileScreen = ({ route,navigation }: businessProfileProps) => {
-  
+const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
+
   const [empresa, setEmpresa] = useState(null);
   const [description, setDescription] = useState(null);
   const [location, setLocation] = useState(null);
@@ -31,18 +26,19 @@ const BusinessProfileScreen = ({ route,navigation }: businessProfileProps) => {
   const [nameResp, setNameResp] = useState(null);
   const [loadingSomeThing, setLoadingSomeThing] = useState(false);
   const [userExists, setUserExists] = useState(false);
+  const user = currentLog();
 
   useEffect(() => {
     const fetchEnterprisePic = async () => {
       setLoadingSomeThing(true);
-      const user = currentLog();
       const pic = await returnEnterpisePic(user?.email);
-      if (pic!=null){
+      if (pic != null) {
         setEmpresa(pic.urlEmpresa);
         setDescription(pic.description);
         setLocation(pic.location);
         setNameEnterprise(pic.nameEnterprise);
-        setNameResp(user?.displayName);
+        // @ts-expect-error
+        setNameResp(user.displayName);
       }
       setLoadingSomeThing(false);
     };
@@ -51,93 +47,92 @@ const BusinessProfileScreen = ({ route,navigation }: businessProfileProps) => {
   }, []);
   return (
     <>
-    {loadingSomeThing && (
-        <LoadingScreenTransparentBackground/>
-    )}
-    <ScrollView style={styles.scroll}>
-      <View style={styles.backGround}>
-        <SvgXml xml={vectorPerfil} />
-      </View>
+      {loadingSomeThing && (
+        <LoadingScreenTransparentBackground />
+      )}
+      <ScrollView style={styles.scroll}>
+        <View style={styles.backGround}>
+          <SvgXml xml={vectorPerfil} />
+        </View>
 
-      <View style={styles.container}>
-        <View style={styles.info}>
-          <View style={styles.topInfo}>
-          {nameEnterprise && (
+        <View style={styles.container}>
+          <View style={styles.info}>
+            <View style={styles.topInfo}>
+              {nameEnterprise && (
                 <Text style={styles.txt3}>{nameEnterprise}</Text>
               )}
-            <View style={styles.top}>
-              <View>
-                {empresa && <PhotoProfile size={100} imageSource={empresa} />}
-              </View>
-              <SvgXml xml={separator} />
-
-              <View style={stylesBtn.positionContainer}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('RatingsScreen', {
-                      route: route,
-                      packageI: packageIn,
-                    });
-                  }}
-                >
-                  <View style={stylesBtn.containerButton}>
-                    <View style={stylesBtn.container}>
-                      <Text style={stylesBtn.txt}>Calificaciones</Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-                  
-                <TouchableOpacity onPress={() => {
-                  navigation.navigate("PayPremiumScreen");
-              }}>
-                <View style={stylesBtn.containerButton}>
-                  <View style={stylesBtn.containerN}>
-                    <Text style={stylesBtn.txt}>AventuraT Nitro</Text>
-                  </View>
+              <View style={styles.top}>
+                <View>
+                  {empresa && <PhotoProfile size={100} imageSource={empresa} />}
                 </View>
+                <SvgXml xml={separator} />
+
+                <View style={stylesBtn.positionContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('RatingsScreen', {
+                        email: user?.email,
+                      });
+                    }}
+                  >
+                    <View style={stylesBtn.containerButton}>
+                      <View style={stylesBtn.container}>
+                        <Text style={stylesBtn.txt}>Calificaciones</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => {
+                    navigation.navigate("PayPremiumScreen");
+                  }}>
+                    <View style={stylesBtn.containerButton}>
+                      <View style={stylesBtn.containerN}>
+                        <Text style={stylesBtn.txt}>AventuraT Nitro</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+
+
+              </View>
+
+              <View style={styles.infoUser}>
+                <View style={styles.containerManager}>
+                  <Text style={styles.txt}>Encargado: </Text>
+                  <Text style={styles.txtManager}>{nameResp}</Text>
+                </View>
+
+                <Text style={styles.description}>{description}</Text>
+                <View style={styles.location}>
+                  <SvgXml xml={vectorLocation} />
+                  <Text style={styles.nameLocation}>{location}</Text>
+                </View>
+              </View>
+
+              <View style={styles.buttons}>
+                <TouchableOpacity onPress={() => { navigation.navigate('EditProfileEnterprise'); }}>
+                  <EditProfileButton />
                 </TouchableOpacity>
+                <EditPackageButton navigation={navigation} />
+
+                {userExists && (
+                  <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen'); }}>
+                    <Text style={styles.txtInfo1}>Crear paquete</Text>
+                    <SvgXml xml={profileArrowVector} />
+                  </TouchableOpacity>
+                )}
               </View>
-                
-
-            </View>
-
-            <View style={styles.infoUser}>
-            <View style={styles.containerManager}>
-                <Text style={styles.txt}>Encargado: </Text>
-                <Text style={styles.txtManager}>{nameResp}</Text>
+              <View style={styles.bottomInfo}>
+                <Text style={styles.titlePack}>Paquetes publicados</Text>
               </View>
-              
-              <Text style={styles.description}>{description}</Text>
-              <View style={styles.location}>
-                <SvgXml xml={vectorLocation} />
-                <Text style={styles.nameLocation}>{location}</Text>
-              </View>
-            </View>
-
-            <View style={styles.buttons}>
-            <TouchableOpacity  onPress={() => { navigation.navigate('EditProfileEnterprise');}}>
-                <EditProfileButton />
-              </TouchableOpacity>
-              <EditPackageButton navigation={navigation} />
-
-              {userExists && (
-            <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen');}}>
-              <Text style={styles.txtInfo1}>Crear paquete</Text>
-              <SvgXml xml={profileArrowVector} />
-            </TouchableOpacity>
-          )}
-            </View>
-            <View style={styles.bottomInfo}>
-              <Text style={styles.titlePack}>Paquetes publicados</Text>
             </View>
           </View>
-        </View>
 
-        <View style={styles.containerPack}>
-        <PublishedPackages navigation={navigation} setLoadingSomeThing={setLoadingSomeThing}/>
+          <View style={styles.containerPack}>
+            <PublishedPackages navigation={navigation} setLoadingSomeThing={setLoadingSomeThing} />
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
     </>
   );
 };
@@ -175,7 +170,7 @@ const stylesBtn = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Poppins-Medium',
   },
-  
+
 });
 
 const styles = StyleSheet.create({

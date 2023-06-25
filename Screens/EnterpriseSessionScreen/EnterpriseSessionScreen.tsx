@@ -7,20 +7,20 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {Background} from '../../Layouts/Background';
+import React, { useEffect, useState } from 'react';
+import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
 import YourSignInWithGoogleComponent, {
   ProfilePicture,
 } from '../../firebase/PerfilPicture';
-import {NavigationProp} from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import {
   checkPasswordCorrect,
   checkResponsibleNameExists,
 } from '../../firebase/Firestore';
 import auth from '@react-native-firebase/auth';
 import currentLog from '../../firebase/UserData';
-import {useUser} from '../../Context/UserContext';
+import { useUser } from '../../Context/UserContext';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 interface EnterpriseSessionScreenProps {
@@ -63,25 +63,24 @@ export const ContinueWithName = ({
 
 const signInWithEmailAndPassword = async (email, password) => {
   try {
-    const {user} = await auth().signInWithEmailAndPassword(email, password);
-    console.log('Usuario autenticado:', user);
+    const { user } = await auth().signInWithEmailAndPassword(email, password);
+
   } catch (error) {
     // Manejar el error de autenticación
   }
 };
 
 const makingThis = () => {
-  console.log('hello');
   Alert.alert('Hello');
 };
 
-const LoginScreenEnterprise = ({navigation}: EnterpriseSessionScreenProps) => {
+const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => {
   const [data, setData] = useState<Register>({
     Username: '',
     Password: '',
   });
 
-  const {user, setUser, setLogged} = useUser();
+  const { user, setUser, setLogged } = useUser();
 
   const submit = async () => {
     if (data.Password.trim() === '' || data.Username.trim() === '') {
@@ -116,54 +115,54 @@ const LoginScreenEnterprise = ({navigation}: EnterpriseSessionScreenProps) => {
   return (
     <TouchableWithoutFeedback style={styles.bigBox} onPress={handleScreenPress}>
       <View style={{ flex: 1 }}>
-      <Background
-        image={require('../../images/loginLayout.png')}
-        style={styles.backGround}>
-        <Gradient
-          colors={[
-            '#1DB5BE',
-            'rgba(24, 129, 177, 0.36);',
-            'rgba(24, 129, 177, 0.26);',
-            'rgba(24, 129, 177, 0.16);',
-            'rgba(24, 129, 177, 0);',
-          ]}
-          locations={[0, 0.25, 0.5, 0.9, 1]}
-          style={styles.linearGradient}>
-          <View style={styles.firstBox}>
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Correo electrónico: </Text>
-              <TextInput
-                style={styles.input}
-                onChangeText={text =>
-                  setData(prevData => ({...prevData, Username: text}))
-                }
+        <Background
+          image={require('../../images/loginLayout.png')}
+          style={styles.backGround}>
+          <Gradient
+            colors={[
+              '#1DB5BE',
+              'rgba(24, 129, 177, 0.36);',
+              'rgba(24, 129, 177, 0.26);',
+              'rgba(24, 129, 177, 0.16);',
+              'rgba(24, 129, 177, 0);',
+            ]}
+            locations={[0, 0.25, 0.5, 0.9, 1]}
+            style={styles.linearGradient}>
+            <View style={styles.firstBox}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Correo electrónico: </Text>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={text =>
+                    setData(prevData => ({ ...prevData, Username: text }))
+                  }
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Contraseña: </Text>
+                <TextInput
+                  secureTextEntry={true}
+                  style={styles.input}
+                  onChangeText={text =>
+                    setData(prevData => ({ ...prevData, Password: text }))
+                  }
+                />
+              </View>
+              <TouchableOpacity style={styles.submitButton} onPress={submit}>
+                <Text style={styles.buttonText}>Iniciar sesión</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.secondBox}>
+              <YourSignInWithGoogleComponent
+                styles={styles}
+                navigation={navigation}
+                destinationNavigationComponentName={'HomeScreen'}
+                goToLoginScreen={false}
               />
             </View>
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Contraseña: </Text>
-              <TextInput
-                secureTextEntry={true}
-                style={styles.input}
-                onChangeText={text =>
-                  setData(prevData => ({...prevData, Password: text}))
-                }
-              />
-            </View>
-            <TouchableOpacity style={styles.submitButton} onPress={submit}>
-              <Text style={styles.buttonText}>Iniciar sesión</Text>
-            </TouchableOpacity>
-          </View>
-        
-          <View style={styles.secondBox}>
-            <YourSignInWithGoogleComponent
-              styles={styles}
-              navigation={navigation}
-              destinationNavigationComponentName={'HomeScreen'}
-              goToLoginScreen={false}
-            />
-          </View>
-        </Gradient>
-      </Background>
+          </Gradient>
+        </Background>
       </View>
     </TouchableWithoutFeedback>
   );

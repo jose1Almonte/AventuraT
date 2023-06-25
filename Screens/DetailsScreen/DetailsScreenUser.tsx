@@ -54,7 +54,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
 
         let querySnapshot = await firestore().collection('users').where('email', '==', packageIn.emailEnterprise).get();
 
-        if (querySnapshot.empty){
+        if (querySnapshot.empty) {
           const emailEnterpriseUpperCase = packageIn.emailEnterprise.charAt(0).toUpperCase() + packageIn.emailEnterprise.slice(1);
           querySnapshot = await firestore().collection('users').where('email', '==', emailEnterpriseUpperCase).get();
         }
@@ -74,87 +74,87 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
 
     <>
 
-        {loadingSomeThing && (
-            <LoadingScreenTransparentBackground/>
-        )}
+      {loadingSomeThing && (
+        <LoadingScreenTransparentBackground />
+      )}
 
-    <ScrollView style={styles.background}>
-      <View style={styles.container}>
-        <View style={styles.containerPack}>
-          <View style={styles.containerText}>
-            <Text style={styles.textPack}>{packageIn.name}</Text>
-            <View style={styles.containerCalification}>
-              <Text style={styles.ratingText}>{packageIn.rating}</Text>
-              <SvgXml xml={star} width={22} height={22} />
+      <ScrollView style={styles.background}>
+        <View style={styles.container}>
+          <View style={styles.containerPack}>
+            <View style={styles.containerText}>
+              <Text style={styles.textPack}>{packageIn.name}</Text>
+              <View style={styles.containerCalification}>
+                <Text style={styles.ratingText}>{packageIn.rating}</Text>
+                <SvgXml xml={star} width={22} height={22} />
+              </View>
             </View>
+            <Image
+              style={styles.containerPhotoPack}
+              source={{
+                uri: packageIn.mainImageUrl, //'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
+              }}
+            />
           </View>
-          <Image
-            style={styles.containerPhotoPack}
-            source={{
-              uri: packageIn.mainImageUrl, //'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
-            }}
-          />
         </View>
-      </View>
 
-      <TouchableOpacity style={styles.tr} onPress={() => { navigation.navigate('BusinessProfileScreen2',{data:packageIn, userData:fullData});}}>
-      <View style={styles.containerInfoBusiness}>
-        <View style={styles.info}>
-          <PhotoProfile
-            size={40}
-            // imageSource={'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'}
-            imageSource={photoURL ? photoURL : 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9c64cfe3-bb3b-4ae8-b5a6-d2f39d21ff87/d3jme6i-8c702ad4-4b7a-4763-9901-99f8b4f038b0.png/v1/fill/w_600,h_400/fondo_transparente_png_by_imsnowbieber_d3jme6i-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDAwIiwicGF0aCI6IlwvZlwvOWM2NGNmZTMtYmIzYi00YWU4LWI1YTYtZDJmMzlkMjFmZjg3XC9kM2ptZTZpLThjNzAyYWQ0LTRiN2EtNDc2My05OTAxLTk5ZjhiNGYwMzhiMC5wbmciLCJ3aWR0aCI6Ijw9NjAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.Ymv-MHRcmXXpzmL3f0xZ0mCcyU85lCLnk0jbOnCO8Zg'}
-          />
-            {/* <Text style={styles.text}>{packageIn.nameEnterprise}</Text> */}
-            <Text style={styles.textooo}>{nameEnterprise}</Text>
-            <SvgXml xml={profileArrowVector2}  />
+        <TouchableOpacity style={styles.tr} onPress={() => { navigation.navigate('BusinessProfileScreen2', { data: packageIn, userData: fullData }); }}>
+          <View style={styles.containerInfoBusiness}>
+            <View style={styles.info}>
+              <PhotoProfile
+                size={40}
+                // imageSource={'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'}
+                imageSource={photoURL ? photoURL : 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9c64cfe3-bb3b-4ae8-b5a6-d2f39d21ff87/d3jme6i-8c702ad4-4b7a-4763-9901-99f8b4f038b0.png/v1/fill/w_600,h_400/fondo_transparente_png_by_imsnowbieber_d3jme6i-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDAwIiwicGF0aCI6IlwvZlwvOWM2NGNmZTMtYmIzYi00YWU4LWI1YTYtZDJmMzlkMjFmZjg3XC9kM2ptZTZpLThjNzAyYWQ0LTRiN2EtNDc2My05OTAxLTk5ZjhiNGYwMzhiMC5wbmciLCJ3aWR0aCI6Ijw9NjAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.Ymv-MHRcmXXpzmL3f0xZ0mCcyU85lCLnk0jbOnCO8Zg'}
+              />
+              {/* <Text style={styles.text}>{packageIn.nameEnterprise}</Text> */}
+              <Text style={styles.textooo}>{nameEnterprise}</Text>
+              <SvgXml xml={profileArrowVector2} />
             </View>
-            </View>
-          </TouchableOpacity>
-
-      <View style={styles.contenedorInfo}>
-        <View style={styles.contenedorInformacion}>
-          <Text style={styles.titulo}>Salida</Text>
-          <Text style={styles.subtitulo}>{startDay}/{startMonth}/{startYear}</Text>
-        </View>
-        <View style={styles.contenedorInformacion}>
-          <Text style={styles.titulo}>Retorno</Text>
-          <Text style={styles.subtitulo}>{endDay}/{endMonth}/{endYear}</Text>
-        </View>
-        <View style={styles.contenedorInformacion}>
-          <Text style={styles.titulo}>Precio</Text>
-          <Text style={styles.subtitulo}>$ {packageIn.price}</Text>
-        </View>
-      </View>
-
-      <View style={styles.infoServicios}>
-        <Text style={styles.titulo}>Incluye</Text>
-        <Text style={styles.subtitulo}>Transporte privado</Text>
-        <Text style={styles.subtitulo}>Guía Turístico</Text>
-        <Text style={styles.subtitulo}>Desayuno</Text>
-        <Text style={styles.subtitulo}>Atención personalizada</Text>
-      </View>
-
-      <View style={styles.reserva}>
-        <View style={styles.contenedorLikes}>
-          <ButtonLikes packageDetails={packageIn} />
-        </View>
-        <TouchableOpacity onPress={() => {
-          if (packageReserved) {
-            Alert.alert('Este paquete ya fue reservado');
-          } else if (isLogged) {
-            navigation.navigate('MobilePaymentScreen',{data:packageIn});
-          } else {
-            Alert.alert('Inicie sesión', 'Para reservar debe iniciar sesión');
-            navigation.navigate('LoginScreen');
-          }
-        }}>
-          <View style={styles.buttonReserva}>
-            <Text style={styles.titulo}>Pagar</Text>
           </View>
         </TouchableOpacity>
-      </View>
-    </ScrollView>
+
+        <View style={styles.contenedorInfo}>
+          <View style={styles.contenedorInformacion}>
+            <Text style={styles.titulo}>Salida</Text>
+            <Text style={styles.subtitulo}>{startDay}/{startMonth}/{startYear}</Text>
+          </View>
+          <View style={styles.contenedorInformacion}>
+            <Text style={styles.titulo}>Retorno</Text>
+            <Text style={styles.subtitulo}>{endDay}/{endMonth}/{endYear}</Text>
+          </View>
+          <View style={styles.contenedorInformacion}>
+            <Text style={styles.titulo}>Precio</Text>
+            <Text style={styles.subtitulo}>$ {packageIn.price}</Text>
+          </View>
+        </View>
+
+        <View style={styles.infoServicios}>
+          <Text style={styles.titulo}>Incluye</Text>
+          <Text style={styles.subtitulo}>Transporte privado</Text>
+          <Text style={styles.subtitulo}>Guía Turístico</Text>
+          <Text style={styles.subtitulo}>Desayuno</Text>
+          <Text style={styles.subtitulo}>Atención personalizada</Text>
+        </View>
+
+        <View style={styles.reserva}>
+          <View style={styles.contenedorLikes}>
+            <ButtonLikes packageDetails={packageIn} />
+          </View>
+          <TouchableOpacity onPress={() => {
+            if (packageReserved) {
+              Alert.alert('Este paquete ya fue reservado');
+            } else if (isLogged) {
+              navigation.navigate('MobilePaymentScreen', { data: packageIn });
+            } else {
+              Alert.alert('Inicie sesión', 'Para reservar debe iniciar sesión');
+              navigation.navigate('LoginScreen');
+            }
+          }}>
+            <View style={styles.buttonReserva}>
+              <Text style={styles.titulo}>Pagar</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </>
   );
 };
@@ -171,8 +171,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 360,
   },
-  tr:{marginTop:'3%',
-marginBottom:'3%'},
+  tr: {
+    marginTop: '3%',
+    marginBottom: '3%'
+  },
   containerPhotoPack: {
     width: '100%',
     height: 350,
@@ -228,7 +230,7 @@ marginBottom:'3%'},
   containerInfoBusiness: {
     height: 46,
     marginTop: '2%',
-    marginRight:'5%',
+    marginRight: '5%',
     marginLeft: '5%',
     backgroundColor: 'rgba(24, 129, 177, 0.2)',
     borderRadius: 8,
@@ -236,7 +238,7 @@ marginBottom:'3%'},
   info: {
     flexDirection: 'row',
     gap: 15,
-    marginTop:3,
+    marginTop: 3,
     marginLeft: 20,
     borderRadius: 8,
     alignItems: 'center',

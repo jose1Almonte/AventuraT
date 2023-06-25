@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   StyleSheet,
@@ -8,10 +8,10 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import {NavigationProp} from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import currentLog from '../../firebase/UserData';
-import {useUser} from '../../Context/UserContext';
+import { useUser } from '../../Context/UserContext';
 import {
   LoadingScreenTransparentBackground,
   checkUserExist,
@@ -23,7 +23,7 @@ import {
   updateUserDataByEmail,
   uploadImage,
 } from '../../firebase/Firestore';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const validateNumber = (number: string): boolean => {
   const numberRegExp = /^[0-9]+$/;
@@ -39,8 +39,8 @@ interface EditProfileScreenProps {
   route: any;
 }
 
-const EditProfileScreen = ({navigation, route}: EditProfileScreenProps) => {
-  const {actualizaPerfil, setActualizaPerfil} = route.params;
+const EditProfileScreen = ({ navigation, route }: EditProfileScreenProps) => {
+  const { actualizaPerfil, setActualizaPerfil } = route.params;
   const [resourcePath, setResourcePath] = useState('');
   const [filename, setFileName] = useState('');
   const user = currentLog();
@@ -169,7 +169,6 @@ const EditProfileScreen = ({navigation, route}: EditProfileScreenProps) => {
                 'Actualización Exitosa',
                 'Los cambios se han guardado correctamente',
               );
-              console.log(phoneNumber);
 
               setLoading(false);
               setFormEdited(false);
@@ -182,7 +181,7 @@ const EditProfileScreen = ({navigation, route}: EditProfileScreenProps) => {
 
             await updateUserDataByEmail(user?.email, name, url1, phoneNumber);
             await updateProfile(name, url1);
-            console.log(actualizaPerfil);
+
             await setActualizaPerfil(!actualizaPerfil);
             navigation.navigate('HomeScreen');
           },
@@ -192,7 +191,7 @@ const EditProfileScreen = ({navigation, route}: EditProfileScreenProps) => {
   };
 
   const selectImage = () => {
-    launchImageLibrary({mediaType: 'photo'}, response => {
+    launchImageLibrary({ mediaType: 'photo' }, response => {
       if (response.didCancel) {
         Alert.alert('Not Image', 'No se ha elegido una imagen');
       } else if (response.errorCode) {

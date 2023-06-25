@@ -1,18 +1,23 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Text, Image, TextInput, Pressable, Alert } from 'react-native';
+import React, { Component, useState } from 'react';
+import { View, StyleSheet, Text, Image, TextInput, Alert, TouchableOpacity } from 'react-native';
 import calendar from '../vectores/calendar';
 import { SvgXml } from 'react-native-svg';
 import InputFeedback from './InputFeedback';
 import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../firebase/UserData';
+import Stars from './Stars';
+import { updateRaitingEnterprise } from '../firebase/Firestore';
 
 interface FeedbackFormProps {
     navigation: NavigationProp<Record<string, object | undefined>>;
+    emailEnterprice: string;
 }
 
-const FeedbackForm = ({ navigation }: FeedbackFormProps) => {
+const FeedbackForm = ({ navigation, emailEnterprice }: FeedbackFormProps) => {
 
     const user = currentLog();
+    const [counter, setCounter] = useState(0);
+    const [comment, setComment] = useState('');
 
     return (
         <View style={styles.container}>
@@ -30,23 +35,24 @@ const FeedbackForm = ({ navigation }: FeedbackFormProps) => {
 
                     </View>
                     <Text style={styles.textPack3}>Añade una puntuación</Text>
-                    <TextInput style={styles.textPack2} keyboardType="numeric" />
+                    <Stars counter={counter} setCounter={setCounter} />
                     <TextInput
                         style={styles.textArea}
                         accessibilityHint='Añade una breve descripción'
                         multiline={true}
                         numberOfLines={15}
+                        onChangeText={(text) => { setComment(text) }}
                     />
                     <View style={styles.containerButton}>
-                        <Pressable onPress={() => {
-                            Alert.alert('Calificación exitosa', 'Su calificación fue enviada')
-                            navigation.navigate('RatingsScreen');
+                        <TouchableOpacity onPress={() => {
+                            updateRaitingEnterprise(emailEnterprice, { creator: user, stars: counter, comments: comment });
+                            Alert.alert('Calificación exitosa', 'Su calificación fue enviada');
+                            navigation.navigate('RatingsScreen', { email: emailEnterprice });
                         }}>
                             <View style={styles.containerBtn}>
                                 <Text style={styles.txtBtn}>Enviar</Text>
                             </View>
-                        </Pressable>
-
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

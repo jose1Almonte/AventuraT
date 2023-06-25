@@ -2,16 +2,27 @@ import { Text, View, StyleSheet, FlatList, } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import FeedbackCard from '../../Components/FeedbackCard';
 import firestore from '@react-native-firebase/firestore';
+import { NavigationProp } from '@react-navigation/native';
 
-const FeedbackScreen = () => {
+interface RaitingScreenProps {
+    navigation: NavigationProp<Record<string, object | undefined>>;
+    route?: any;
+}
 
-    const [data, setData] = useState();
+const FeedbackScreen = ({ navigation, route }: RaitingScreenProps) => {
+    const emailEnterprice = route.params.email;
+    const [data, setData] = useState([]);
 
     let loadData = async () => {
         try {
-            let snapshot = await firestore().collection('raiting').get();
+            let snapshot = await firestore().collection('enterprise')
+                .where('responsibleName', '==', emailEnterprice).get();
             // @ts-ignore
-            setData(snapshot.docs);
+            if (snapshot.docs[0].data().feedback) {
+                setData(snapshot.docs[0].data().feedback);
+            } else {
+                setData([]);
+            }
         } catch (error: any) {
             console.error(error);
         }
@@ -21,24 +32,20 @@ const FeedbackScreen = () => {
         loadData();
     }, []);
 
-    const renderItem = ({item}: any) => {
-        return (<FeedbackCard item={item.data()}/>);
+    const renderItem = ({ item }: any) => {
+        return (<FeedbackCard item={item} />);
     };
 
     return (
-            <View style={styles.container}>
-                {/* <View style={styles.info}> */}
-                    <View style={styles.topInfo}>
-                        <Text style={styles.txt}>Calificaciones</Text>
-                        <FlatList
-                        data = {data}
-                        renderItem={renderItem}
-                        />
-                        {/* <FeedbackCard item={raitingItems[0]}/> */}
-                        {/* {raitingItems.map( (data) => <FeedbackCard item={data}/>)} */}
-                    </View>
-                {/* </View> */}
+        <View style={styles.container}>
+            <View style={styles.topInfo}>
+                <Text style={styles.txt}>Calificaciones</Text>
+                <FlatList
+                    data={data}
+                    renderItem={renderItem}
+                />
             </View>
+        </View>
     );
 };
 
@@ -46,24 +53,12 @@ export default FeedbackScreen;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        // backgroundColor: 'white',
-        // backgroundColor: 'green',
+        flex: 1
     },
-    // info: {
-        //     flex: 1,
-        //     display: 'flex',
-        //     margin: 5,
-        //     backgroundColor: 'blue',
-        // },
-        topInfo: {
-            flex: 1,
-            marginTop: '20%',
-            // marginBottom: '15%',
-            alignItems: 'center',
-            // gap: 15,
-            // backgroundColor: 'blue',
-        // backgroundColor: 'red',
+    topInfo: {
+        flex: 1,
+        marginTop: '20%',
+        alignItems: 'center'
     },
     info2: {
         flex: 1,

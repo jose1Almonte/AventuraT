@@ -46,7 +46,6 @@ export const ContinueWithName = ({
 };
 
 const makingThis = () => {
-  console.log('hello');
   Alert.alert('Hello');
 };
 

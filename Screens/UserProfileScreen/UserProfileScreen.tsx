@@ -22,8 +22,7 @@ export const UserProfileScreen = ({
   navigation, route,
 }: UserProfileScreenProps) => {
 
-  const {actualizaPerfil, setActualizaPerfil} = route.params;
-  console.log(actualizaPerfil);
+  const { actualizaPerfil, setActualizaPerfil } = route.params;
   const { setUser, setLogged } = useUser();
   const logout = async (): Promise<void> => {
     try {
@@ -63,9 +62,9 @@ export const UserProfileScreen = ({
 
   return (
     <>
-    {loadingSomeThing && (
-      <LoadingScreenTransparentBackground />
-    )}
+      {loadingSomeThing && (
+        <LoadingScreenTransparentBackground />
+      )}
       <ScrollView style={styles.container}>
         <View style={styles.container}>
 
@@ -85,7 +84,7 @@ export const UserProfileScreen = ({
                 <Text style={styles.txt}>{user?.email}</Text>
               </View>
 
-              <TouchableOpacity style={styles.editProfileButtonBox} onPress={() => { navigation.navigate('EditProfileScreen',{actualizaPerfil:actualizaPerfil,setActualizaPerfil: setActualizaPerfil});}}>
+              <TouchableOpacity style={styles.editProfileButtonBox} onPress={() => { navigation.navigate('EditProfileScreen', { actualizaPerfil: actualizaPerfil, setActualizaPerfil: setActualizaPerfil }); }}>
                 <EditProfileButton />
               </TouchableOpacity>
 
@@ -96,11 +95,11 @@ export const UserProfileScreen = ({
               <Text style={styles.title}>Configuración</Text>
 
               {userExists && (
-            <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessProfileScreen');}}>
-              <Text style={styles.txtInfo}>Perfil empresarial</Text>
-              <SvgXml xml={profileArrowVector} />
-            </TouchableOpacity>
-          )}
+                <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessProfileScreen'); }}>
+                  <Text style={styles.txtInfo}>Perfil empresarial</Text>
+                  <SvgXml xml={profileArrowVector} />
+                </TouchableOpacity>
+              )}
               <TouchableOpacity style={styles.containerInfo} onPress={() => navigation.navigate('FavoriteScreen')}>
                 <Text style={styles.txtInfo}>Favoritos</Text>
                 <SvgXml xml={profileArrowVector} />
@@ -136,10 +135,10 @@ export const UserProfileScreen = ({
                 </TouchableOpacity>
               )*/}
               {user &&
-              <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
-                <Text style={styles.txtInfo1}>Cerrar sesión</Text>
-                <SvgXml xml={profileArrowVector} />
-              </TouchableOpacity>}
+                <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
+                  <Text style={styles.txtInfo1}>Cerrar sesión</Text>
+                  <SvgXml xml={profileArrowVector} />
+                </TouchableOpacity>}
             </View>
 
           </View>

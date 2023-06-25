@@ -6,8 +6,8 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {SvgXml} from 'react-native-svg';
+import React, { useEffect, useState } from 'react';
+import { SvgXml } from 'react-native-svg';
 // import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 // import EditProfileButton from '../../Components/Profiles/editProfileButton';
@@ -16,14 +16,14 @@ import vectorLocation from '../../vectores/vectorLocation';
 // import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../vectores/separator';
 import star from '../../vectores/star';
-import {NavigationProp} from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
 import {
   LoadingScreenTransparentBackground,
   returnEnterpisePic,
 } from '../../firebase/Firestore';
 import profileVector from '../../vectores/vectorPerfil';
-import {PackageI} from '../../models/package.interface';
+import { PackageI } from '../../models/package.interface';
 import firestore from '@react-native-firebase/firestore';
 import PublishedPackages2 from '../../Components/Profiles/publishedPackages2';
 import { useNavigation } from '@react-navigation/native';
@@ -35,9 +35,9 @@ interface businessProfileProps {
   // userData?: Partial<Record<string, any>>;
 }
 
-const BusinessProfileScreen = ({route,navigation}:businessProfileProps) => {
+const BusinessProfileScreen = ({ route, navigation }: businessProfileProps) => {
   let packageIn: PackageI = route.params.data;
-  const {userData: userData} = route.params;
+  const { userData: userData } = route.params;
   const [nameEnterprise, setNameEnterprise] = useState(null);
   const [emailEnterprise, setEmailEnterprise] = useState('');
   const [description, setDescription] = useState(null);
@@ -52,19 +52,14 @@ const BusinessProfileScreen = ({route,navigation}:businessProfileProps) => {
   const [loadingSomeThing, setLoadingSomething] = useState(false);
 
   useEffect(() => {
-    console.log('userData: ', userData);
     const fetchData = async () => {
       setLoadingSomething(true);
-      // console.log('packageIn?.emailEnterprise: ' ,packageIn.emailEnterprise);
       if (packageIn && packageIn.emailEnterprise) {
-        // console.log('meee: ',packageIn.emailEnterprise);
         const querySnapshot = await firestore()
           .collection('enterprise')
           .where('responsibleName', '==', packageIn.emailEnterprise)
           .get();
         querySnapshot.forEach(doc => {
-          // console.log(doc.data().displayName);
-          // console.log(userData.displayName);
           setNameEnterprise(doc.data().displayName);
           setEmailEnterprise(doc.data().responsibleName);
           setEmpresa(doc.data().urlEmpresa);
@@ -74,8 +69,6 @@ const BusinessProfileScreen = ({route,navigation}:businessProfileProps) => {
         const pic = await returnEnterpisePic(packageIn.emailEnterprise);
         if (pic != null) {
           setEmpresa2(pic.urlEmpresa);
-          console.log(empresa2);
-          console.log('urlEmpresa', pic.urlEmpresa);
           setDescription2(pic.description);
           setLocation2(pic.location);
           setNameEnterprise2(pic.nameEnterprise);
@@ -92,12 +85,12 @@ const BusinessProfileScreen = ({route,navigation}:businessProfileProps) => {
 
       <ScrollView style={styles.scroll}>
         <View style={styles.backGround}>
-          <SvgXml xml={profileVector}/>
+          <SvgXml xml={profileVector} />
         </View>
         <View>
           <View style={styles.info}>
             <View style={styles.topInfo}>
-            {packageIn.mainImageUrl && (
+              {packageIn.mainImageUrl && (
                 <Text style={styles.txt3}>{nameEnterprise2}</Text>
               )}
               <View style={styles.top}>
@@ -114,8 +107,7 @@ const BusinessProfileScreen = ({route,navigation}:businessProfileProps) => {
                   <Pressable
                     onPress={() => {
                       navigation.navigate('RatingsScreen', {
-                        route: route,
-                        packageI: packageIn,
+                        email: packageIn.emailEnterprise,
                       });
                     }}>
                     <View style={stylesBtn.containerButton}>
@@ -127,8 +119,7 @@ const BusinessProfileScreen = ({route,navigation}:businessProfileProps) => {
                   <Pressable
                     onPress={() => {
                       navigation.navigate('FeedbackScreen', {
-                        route: route,
-                        packageI: packageIn,
+                        email: packageIn.emailEnterprise,
                       });
                     }}>
                     <View style={stylesBtn.containerButton}>

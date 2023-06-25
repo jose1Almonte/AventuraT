@@ -4,7 +4,7 @@ import Califications from './Califications';
 import { RaitingI } from '../models/raiting.interface';
 
 interface feedbackProps {
-    item: RaitingI
+    item: any
 }
 
 const FeedbackCard = ({ item }: feedbackProps) => {
@@ -16,14 +16,14 @@ const FeedbackCard = ({ item }: feedbackProps) => {
                         <Image
                             style={styles.img}
                             source={{
-                                uri: 'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
+                                uri: item.creator.photoURL//'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
                             }}
                             alt="photo"
                         />
-                        <Text style={styles.textPack}>{item.idUser}</Text>
-                        <Califications calification={item.raiting} />
+                        <Text style={styles.textPack}>{item.creator.displayName}</Text>
+                        <Califications calification={item.stars} />
                     </View>
-                    <Text style={styles.textPack2}>{item.comment}</Text>
+                    <Text style={styles.textPack2}>{item.comments}</Text>
                 </View>
             </View>
         </View>
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
     },
     textPack: {
-        marginHorizontal: 30,
+        marginHorizontal: 10,
         color: 'white',
         fontSize: 18,
         fontFamily: 'Poppins-Medium',

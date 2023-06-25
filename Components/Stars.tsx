@@ -15,7 +15,6 @@ interface StarProps {
 const StarField = ({ index, counter, setCounter }: StarProps) => {
   const handlePress = () => {
     setCounter(index);
-    console.log(counter);
   };
 
   return (
