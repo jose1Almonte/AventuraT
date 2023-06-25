@@ -148,14 +148,25 @@ const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => 
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Contraseña: </Text>
+                <View style={styles.containerPassword}>
                 <TextInput
-                  secureTextEntry={true}
+                  secureTextEntry={!showPassword}
                   style={styles.input}
                   onChangeText={text =>
                     setData(prevData => ({ ...prevData, Password: text }))
                   }
                 />
-              </View>
+                 <TouchableOpacity onPress={togglePasswordVisibility}>
+                  <>
+                    {showPassword ? (
+                      <SvgXml xml={hidePassword} />
+                    ) : (
+                      <SvgXml xml={showPasswords} />
+                    )}
+                  </>
+                </TouchableOpacity>
+                </View>
+                </View>
               <TouchableOpacity style={styles.submitButton} onPress={submit}>
                 <Text style={styles.buttonText}>Iniciar sesión</Text>
               </TouchableOpacity>
@@ -169,39 +180,7 @@ const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => 
                 goToLoginScreen={false}
               />
             </View>
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Contraseña: </Text>
-              <View style={styles.containerPassword}>
-                <TextInput
-                  secureTextEntry={!showPassword}
-                  style={styles.input}
-                  onChangeText={text =>
-                    setData(prevData => ({ ...prevData, Password: text }))
-                  }
-                />
 
-                <TouchableOpacity onPress={togglePasswordVisibility}>
-                  <>
-                    {showPassword ? (
-                      <SvgXml xml={hidePassword} />
-                    ) : (
-                      <SvgXml xml={showPasswords} />
-                    )}
-                  </>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <TouchableOpacity style={styles.submitButton} onPress={submit}>
-              <Text style={styles.buttonText}>Iniciar sesión</Text>
-            </TouchableOpacity>
-            <View style={styles.secondBox}>
-              <YourSignInWithGoogleComponent
-                styles={styles}
-                navigation={navigation}
-                destinationNavigationComponentName={'HomeScreen'}
-                goToLoginScreen={false}
-              />
-            </View>
           </Gradient>
         </Background>
       </View>
@@ -309,6 +288,7 @@ export const styles = StyleSheet.create({
   },
   input: {
     marginTop: 8,
+    width:'90%',
     fontFamily: 'Poppins-Regular',
     fontSize: 14,
     lineHeight: 24,
