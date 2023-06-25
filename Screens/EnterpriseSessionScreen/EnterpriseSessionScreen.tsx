@@ -15,6 +15,8 @@ import YourSignInWithGoogleComponent, {
 } from '../../firebase/PerfilPicture';
 import { NavigationProp } from '@react-navigation/native';
 import {
+  addUser,
+  checkIfUserExists,
   checkPasswordCorrect,
   checkResponsibleNameExists,
 } from '../../firebase/Firestore';
@@ -25,6 +27,9 @@ import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import hidePassword from '../../vectores/hidePassword';
 import showPasswords from '../../vectores/showPasswords';
 import { SvgXml } from 'react-native-svg';
+import hidePassword2 from '../../vectores/hidePassword2';
+import showPasswords2 from '../../vectores/showPasswords2';
+import { onGoogleButtonPress } from '../../firebase/gmail';
 
 interface EnterpriseSessionScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -159,9 +164,9 @@ const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => 
                  <TouchableOpacity onPress={togglePasswordVisibility}>
                   <>
                     {showPassword ? (
-                      <SvgXml xml={hidePassword} />
+                      <SvgXml xml={hidePassword2} />
                     ) : (
-                      <SvgXml xml={showPasswords} />
+                      <SvgXml xml={showPasswords2} />
                     )}
                   </>
                 </TouchableOpacity>
@@ -173,6 +178,7 @@ const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => 
             </View>
 
             <View style={styles.secondBox}>
+            <Text style={styles.infojob}>Si su cuenta es de tipo gmail por favor ingrese por aquí:</Text>
               <YourSignInWithGoogleComponent
                 styles={styles}
                 navigation={navigation}
@@ -198,7 +204,13 @@ export const styles = StyleSheet.create({
   linearGradient: {
     flex: 1,
   },
-
+infojob:{
+    marginLeft:'10%',
+    marginRight:'10%',
+    marginBottom:'10%',
+    fontSize: 18,
+    color:'#ffff4a',
+},
   bigBox: {
     flex: 1,
   },
@@ -261,7 +273,7 @@ export const styles = StyleSheet.create({
   containerPassword: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
 
   subtitle: {
