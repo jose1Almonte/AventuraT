@@ -74,7 +74,7 @@ const BusinessReservedScreen = ({ navigation }: BusinessReservedScreenProps) => 
                     <Text style={styles.txt}>de Paquetes</Text>
                 </View>
                 {E ? (
-                <View>
+                <View style={styles.limit}>
                     <FlatList
                     data={data}
                     renderItem={renderItem}
@@ -109,6 +109,9 @@ const styles = StyleSheet.create({
     topInfo: {
         marginTop: 80,
         alignItems: 'center',
+    },
+    limit:{
+        flex:1,
     },
     txt: {
         color: 'white',
