@@ -74,9 +74,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
   },
   textPack: {
-    // backgroundColor: 'green',
     marginLeft: 8,
-    // padding: 3,
     color: 'black',
     fontSize: 12,
     fontFamily: 'Poppins-Bold',

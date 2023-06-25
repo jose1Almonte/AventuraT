@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   top: {
-    marginTop: 110,
+    marginTop: 70,
     marginBottom: 10,
     display: 'flex',
     flexDirection: 'row',
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   bottomInfo: {
-    marginTop: 15,
+    marginTop: '10%',
     display: 'flex',
     justifyContent: 'center',
     gap: 15,
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   txt: {
     color: 'black',
     fontSize: 16,
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'Poppins-Regular',
   },
   title: {
     color: 'black',
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
   description: {
     color: 'black',
     textAlign: 'justify',
-    fontSize: 12,
+    fontSize: 13,
     fontFamily: 'Poppins-Regular',
   },
   location: {
