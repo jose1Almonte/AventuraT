@@ -13,6 +13,7 @@ import { deleteExpiredDocuments } from '../../firebase/DeletePackage';
 import { LoadingScreenTransparentBackground, checkResponsibleNameExists } from '../../firebase/Firestore'; // Update the path to the FirebaseFunctions file
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { PerfilContext } from '../../Context/PerfilContext';
+import vectorPerfil from '../../vectores/vectorPerfil';
 
 interface UserProfileScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>,
@@ -23,7 +24,7 @@ export const UserProfileScreen = ({
   navigation,
 }: UserProfileScreenProps) => {
 
-  const { actualizaPerfil, setActualizaPerfil } = useContext(PerfilContext);
+  const { actualizaPerfil } = useContext(PerfilContext);
   console.log(actualizaPerfil);
   const {setUser, setLogged} = useUser();
   const logout = async (): Promise<void> => {

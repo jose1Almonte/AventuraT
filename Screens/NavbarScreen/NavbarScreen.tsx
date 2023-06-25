@@ -135,7 +135,7 @@ const NavbarScreen = ({ navigation }:navigationProps) => {
               <View>
                 <TouchableOpacity style={styles.contenedorLinks} onPress={() => {
                   if (isLogged) {
-                    navigation.navigate('UserProfileScreen',{actualizaPerfil: actualizaPerfil, setActualizaPerfil: setActualizaPerfil});
+                    navigation.navigate('UserProfileScreen');
                   } else {
                     navigation.navigate('LoginScreen');
                   }
@@ -146,7 +146,7 @@ const NavbarScreen = ({ navigation }:navigationProps) => {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.contenedorLinks} onPress={() => {
                   if (isLogged) {
-                    navigation.navigate('UserProfileScreen',{actualizaPerfil: actualizaPerfil, setActualizaPerfil: setActualizaPerfil});
+                    navigation.navigate('UserProfileScreen');
                   } else {
                     navigation.navigate('LoginScreen');
                   }
