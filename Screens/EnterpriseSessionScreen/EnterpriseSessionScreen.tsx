@@ -22,6 +22,9 @@ import auth from '@react-native-firebase/auth';
 import currentLog from '../../firebase/UserData';
 import { useUser } from '../../Context/UserContext';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
+import hidePassword from '../../vectores/hidePassword';
+import showPasswords from '../../vectores/showPasswords';
+import { SvgXml } from 'react-native-svg';
 
 interface EnterpriseSessionScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -81,6 +84,11 @@ const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => 
   });
 
   const { user, setUser, setLogged } = useUser();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const submit = async () => {
     if (data.Password.trim() === '' || data.Username.trim() === '') {
@@ -153,6 +161,39 @@ const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => 
               </TouchableOpacity>
             </View>
 
+            <View style={styles.secondBox}>
+              <YourSignInWithGoogleComponent
+                styles={styles}
+                navigation={navigation}
+                destinationNavigationComponentName={'HomeScreen'}
+                goToLoginScreen={false}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Contraseña: </Text>
+              <View style={styles.containerPassword}>
+                <TextInput
+                  secureTextEntry={!showPassword}
+                  style={styles.input}
+                  onChangeText={text =>
+                    setData(prevData => ({ ...prevData, Password: text }))
+                  }
+                />
+
+                <TouchableOpacity onPress={togglePasswordVisibility}>
+                  <>
+                    {showPassword ? (
+                      <SvgXml xml={hidePassword} />
+                    ) : (
+                      <SvgXml xml={showPasswords} />
+                    )}
+                  </>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <TouchableOpacity style={styles.submitButton} onPress={submit}>
+              <Text style={styles.buttonText}>Iniciar sesión</Text>
+            </TouchableOpacity>
             <View style={styles.secondBox}>
               <YourSignInWithGoogleComponent
                 styles={styles}
@@ -236,6 +277,12 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'white',
     marginTop: 30,
+  },
+
+  containerPassword: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
 
   subtitle: {

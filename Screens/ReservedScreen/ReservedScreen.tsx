@@ -26,25 +26,26 @@ const ReservedScreen = ({ navigation }: ReservedScreenProps) => {
               .get();
             //@ts-ignore
             setData(querySnapshot.docs);
-            setRefreshing(false);
             const allPackagesQ = querySnapshot.docs.every(item => item.data().status === 'Q');
             if (allPackagesQ){
                 setQ(true);
             } else {
                 setQ(false);
             }
+            setRefreshing(false);
         };
         fetchData();
     }, [refreshing]);
 
 
-    const handlePurgarHistory = () => {
+    const handlePurgarHistory = async () => {
         if (data){
-        setRefreshing(true);
         const ids = data.map(item => item.id);
-        purgarHistory(ids);
+        await purgarHistory(ids);
+        setRefreshing(true);
         }
     };
+
     const renderItem = ({item}: any) => {
         return (
                 <ReservedPackages item={item} navigation={navigation}/>);
@@ -54,17 +55,17 @@ const ReservedScreen = ({ navigation }: ReservedScreenProps) => {
         <View style={styles.container}>
             <View style={styles.info}>
                 <View style={styles.topInfo}>
-                    <Text style={styles.txt}>Paquetes reservados</Text>
+                    <Text style={styles.txt}>Paquetes Reservados</Text>
                 </View>
                 <Text style={styles.txt2}>(Viajes pendientes)</Text>
                 { data && (
                 <TouchableOpacity style={styles.buttonIPaid} onPress={handlePurgarHistory}>
-                    <Text style={styles.textIPaid}>Limpiar histórico</Text>
+                    <Text style={styles.textIPaid}>Limpiar historial</Text>
                 </TouchableOpacity>
                 )
                 }
                 {data && data.length > 0 && !refreshing && !Q ? (
-                    <View>
+                    <View style={styles.limit}>
                 <FlatList
                     data={data}
                     renderItem={renderItem}
@@ -72,7 +73,7 @@ const ReservedScreen = ({ navigation }: ReservedScreenProps) => {
                 </View>
                 ) : (
                     <View>
-                    <Text style={styles.al}>No hay elementos disponibles</Text>
+                    <Text style={styles.al}>No tienes paquetes reservados aún</Text>
                     <Image
                         style={styles.imageUsed}
                         source={require('../../images/favorites.png')}
@@ -90,6 +91,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#1DB5BE',
+    },
+    limit:{flex:1,
     },
     info: {
         flex: 1,
@@ -117,14 +120,14 @@ const styles = StyleSheet.create({
       },
     txt: {
         fontSize: 24,
-        fontWeight: 'bold',
+        fontFamily: 'Poppins-SemiBold',
         marginBottom: '1%',
         color: '#FFF',
     },
     txt2: {
         color: '#FFF',
         fontSize: 16,
-        fontFamily: 'Poppins-Light',
+        fontFamily: 'Poppins-Regular',
         textAlign: 'center',
         paddingHorizontal: 50,
         marginBottom:'10%',
@@ -136,8 +139,10 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
     },
     al:{
-        marginTop:'10%',
-        marginLeft:'18%',
-        color:'white',
+    marginTop:'10%',
+    color:'white',
+    fontSize: 16,
+    fontFamily: 'Poppins-Medium',
+    textAlign: 'center',
     },
 });

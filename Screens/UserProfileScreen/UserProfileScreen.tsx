@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import profileVector from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -12,26 +12,26 @@ import currentLog from '../../firebase/UserData';
 import { deleteExpiredDocuments } from '../../firebase/DeletePackage';
 import { LoadingScreenTransparentBackground, checkResponsibleNameExists } from '../../firebase/Firestore'; // Update the path to the FirebaseFunctions file
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { PerfilContext } from '../../Context/PerfilContext';
+import vectorPerfil from '../../vectores/vectorPerfil';
 
 interface UserProfileScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>,
-  route: any,
+
 }
 
 export const UserProfileScreen = ({
-  navigation, route,
+  navigation,
 }: UserProfileScreenProps) => {
 
-  const { actualizaPerfil, setActualizaPerfil } = route.params;
+  // const { actualizaPerfil } = useContext(PerfilContext);
+  // console.log(actualizaPerfil);
   const { setUser, setLogged } = useUser();
   const logout = async (): Promise<void> => {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-    }
-    catch {
-
-    }
+    } catch { }
     await auth().signOut();
     setUser(null);
     setLogged(false);
@@ -59,52 +59,60 @@ export const UserProfileScreen = ({
     checkUserExists();
   }, [user?.email]);
 
-
   return (
     <>
-      {loadingSomeThing && (
-        <LoadingScreenTransparentBackground />
-      )}
+      {loadingSomeThing && <LoadingScreenTransparentBackground />}
+
       <ScrollView style={styles.container}>
         <View style={styles.container}>
-
           <View style={styles.backGround}>
-            <SvgXml xml={profileVector} />
+            <SvgXml xml={vectorPerfil} />
           </View>
 
           <View style={styles.info}>
-
-
             <View style={styles.topInfo}>
               <View style={styles.photoBox}>
-                <PhotoProfile size={100} imageSource={user?.photoURL ? user.photoURL : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'} />
+                <PhotoProfile
+                  size={100}
+                  imageSource={
+                    user?.photoURL
+                      ? user.photoURL
+                      : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'
+                  }
+                />
               </View>
 
               <View style={styles.detailsUserBox}>
                 <Text style={styles.txt}>{user?.email}</Text>
               </View>
 
-              <TouchableOpacity style={styles.editProfileButtonBox} onPress={() => { navigation.navigate('EditProfileScreen', { actualizaPerfil: actualizaPerfil, setActualizaPerfil: setActualizaPerfil }); }}>
+              <TouchableOpacity style={styles.editProfileButtonBox} onPress={() => { navigation.navigate('EditProfileScreen'); }}>
                 <EditProfileButton />
               </TouchableOpacity>
-
             </View>
 
             <View style={styles.info2}>
-
               <Text style={styles.title}>Configuración</Text>
 
               {userExists && (
-                <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessProfileScreen'); }}>
+                <TouchableOpacity
+                  style={styles.containerInfo}
+                  onPress={() => {
+                    navigation.navigate('BusinessProfileScreen');
+                  }}>
                   <Text style={styles.txtInfo}>Perfil empresarial</Text>
                   <SvgXml xml={profileArrowVector} />
                 </TouchableOpacity>
               )}
-              <TouchableOpacity style={styles.containerInfo} onPress={() => navigation.navigate('FavoriteScreen')}>
+              <TouchableOpacity
+                style={styles.containerInfo}
+                onPress={() => navigation.navigate('FavoriteScreen')}>
                 <Text style={styles.txtInfo}>Favoritos</Text>
                 <SvgXml xml={profileArrowVector} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.containerInfo} onPress={() => navigation.navigate('ReservedScreen')}>
+              <TouchableOpacity
+                style={styles.containerInfo}
+                onPress={() => navigation.navigate('ReservedScreen')}>
                 <Text style={styles.txtInfo}>Mis Reservas</Text>
                 <SvgXml xml={profileArrowVector} />
               </TouchableOpacity>
@@ -122,8 +130,14 @@ export const UserProfileScreen = ({
               )} */}
 
               {userExists && (
-                <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessReservedScreen'); }}>
-                  <Text style={styles.txtInfo}>Gestión de Pagos de Paquetes</Text>
+                <TouchableOpacity
+                  style={styles.containerInfo}
+                  onPress={() => {
+                    navigation.navigate('BusinessReservedScreen');
+                  }}>
+                  <Text style={styles.txtInfo}>
+                    Gestión de Pagos de Paquetes
+                  </Text>
                   <SvgXml xml={profileArrowVector} />
                 </TouchableOpacity>
               )}
@@ -134,21 +148,25 @@ export const UserProfileScreen = ({
                   <SvgXml xml={profileArrowVector} />
                 </TouchableOpacity>
               )*/}
-              {user &&
-                <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
+              {user && (
+                <TouchableOpacity
+                  style={styles.containerInfo}
+                  onPress={() => {
+                    logout();
+                    navigation.navigate('HomeScreen');
+                  }}>
                   <Text style={styles.txtInfo1}>Cerrar sesión</Text>
                   <SvgXml xml={profileArrowVector} />
-                </TouchableOpacity>}
+                </TouchableOpacity>
+              )}
             </View>
-
           </View>
+
         </View>
       </ScrollView>
-
     </>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -158,6 +176,7 @@ const styles = StyleSheet.create({
   info: {
     flex: 1,
     display: 'flex',
+    position: 'absolute'
   },
   topInfo: {
     flex: 3.6,
@@ -180,7 +199,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20
+    marginBottom: 20,
   },
 
   detailsUserBox: {
@@ -221,13 +240,15 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   backGround: {
-    position: 'absolute',
+    // position: 'relative',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 0,
+    zIndex: -1,
     display: 'flex',
+    // height: '100%',
+    // width: '100%',
   },
   txt: {
     color: 'black',

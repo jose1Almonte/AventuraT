@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     textPack: {
         // padding: 6,
         color: 'black',
-        fontSize: 8,
+        fontSize: 10,
         fontFamily: 'Poppins-Medium',
         justifyContent: "center",
         marginRight:'6%',
@@ -131,13 +131,13 @@ const styles = StyleSheet.create({
     textLocation: {
         color: 'black',
         fontFamily: 'Poppins-Regular',
-        fontSize: 8,
+        fontSize: 9,
         marginRight:'30%',
     },
     textLocation2: {
         color: 'black',
         fontFamily: 'Poppins-Regular',
-        fontSize: 8,
+        fontSize: 9,
     },
 });
 

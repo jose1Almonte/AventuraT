@@ -74,7 +74,7 @@ const BusinessReservedScreen = ({ navigation }: BusinessReservedScreenProps) => 
                     <Text style={styles.txt}>de Paquetes</Text>
                 </View>
                 {E ? (
-                <View>
+                <View style={styles.limit}>
                     <FlatList
                     data={data}
                     renderItem={renderItem}
@@ -82,7 +82,7 @@ const BusinessReservedScreen = ({ navigation }: BusinessReservedScreenProps) => 
                 </View>
                 ) : (
                 <View>
-                    <Text style={styles.al}>No Hay Paquetes a confirmar</Text>
+                    <Text style={styles.al}>No hay paquetes a confirmar aún</Text>
                     <Image
                         style={styles.imageUsed}
                         source={require('../../images/favorites.png')}
@@ -110,15 +110,20 @@ const styles = StyleSheet.create({
         marginTop: 80,
         alignItems: 'center',
     },
+    limit:{
+        flex:1,
+    },
     txt: {
         color: 'white',
         fontSize: 20,
         fontFamily: 'Poppins-SemiBold',
     },
     al:{
-        marginTop:'10%',
-        marginLeft:'18%',
-        color:'white',
+    marginTop:'10%',
+    color:'white',
+    fontSize: 16,
+    fontFamily: 'Poppins-Medium',
+    textAlign: 'center',
     },
     imageUsed: {
         marginTop: 40,

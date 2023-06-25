@@ -516,6 +516,15 @@ export const getPopularPackages = async () => {
   return packages;
 }
 
+export const getAllPopularPackages = async (count:any) => {
+  const packages: any[] = [];
+  let query = await packagesCollection.where("vip", "==", true).where("isPublic", "==", true).limit(count).get();
+  query.docs.forEach((rawData, idx) => {
+    packages.push(rawData.data());
+  })
+  return packages;
+}
+
 export const changePremium = async (email: any) => {
   const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
   const id = getDoc.docs[0].id;
@@ -531,55 +540,79 @@ export const checkVIP = async (email: any) => {
 }
 
 export const makeRegular = async (packageId: any, email: any) => {
-  const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
-  const enterpriseId = getDoc.docs[0].id;
-  let count = getDoc.docs[0].data().vipCount + 1;
-  if (count > 0) {
+  try {
+    const getDoc = await usersCollection2.where('responsibleName', '==', email).get();
+    const enterpriseId = getDoc.docs[0].id;
+    let count = getDoc.docs[0].data().vipCount + 1;
+    if (count > 0) {
 
-    usersCollection2.doc(enterpriseId).update({
-      vipCount: count,
-    })
+      usersCollection2.doc(enterpriseId).update({
+        vipCount: count,
+      });
 
-    packagesCollection.doc(packageId.toString()).update({
-      vip: false,
-    })
-  } else {
-    // da error y no se procesa, hay que cambiar esto tambien en administratePackagesScreen para que no procesa si hubo error, linea 161
+      packagesCollection.doc(packageId.toString()).update({
+        vip: false,
+      });
+      return true;
+    } else {
+      return false;
+      // da error y no se procesa, hay que cambiar esto tambien en administratePackagesScreen para que no procesa si hubo error, linea 161
+    }
+
+  } catch (error){
+    return false;
   }
-}
+};
 
 export const makeVIP = async (packageId: any, email: any) => {
-  const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
-  const enterpriseId = getDoc.docs[0].id;
-  let count = getDoc.docs[0].data().vipCount - 1;
-  console.log(count)
-  if (count > 0) {
 
-    await usersCollection2.doc(enterpriseId).update({
-      vipCount: count,
-    });
+  try {
+    const getDoc = await usersCollection2.where('responsibleName', '==', email).get();
+    const enterpriseId = getDoc.docs[0].id;
+    let count = getDoc.docs[0].data().vipCount - 1;
+    console.log(count);
+    if (count > 0) {
 
-    await packagesCollection.doc(packageId.toString()).update({
-      vip: true,
-    });
-  } else {
-    // da error y...
+      await usersCollection2.doc(enterpriseId).update({
+        vipCount: count,
+      });
+      await packagesCollection.doc(packageId.toString()).update({
+        vip: true,
+      });
+      return true;
+    } else {
+      return false;
+      // da error y...
+    }
+
+  } catch (error){
+    console.log(error);
+    return false;
   }
 };
 
 export const purgarHistory = async (ids: string[]) => {
   const packageRefs = ids.map(id => firestore().collection('paidPackage').doc(id));
 
-  const updatePromises = packageRefs.map(ref =>
-    ref.update({
-      status: 'Q',
-    })
-  );
+  const updatePromises = packageRefs.map(async ref => {
+    const doc = await ref.get();
+    const status = doc.data()?.status;
+    console.log(status);
+    if (status === 'C') {
+      return ref.update({
+        status: 'Q',
+      });
+    } else {
+      // Si el estado no es 'R', no se actualiza el documento
+      return Promise.resolve();
+    }
+  });
+
 
   try {
     await Promise.all(updatePromises);
     console.log('Paquetes actualizados exitosamente');
-  } catch (error) {
+  } catch {
   }
 };
 

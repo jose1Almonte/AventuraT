@@ -238,7 +238,8 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
               <View style={styles.flexEnRaw}>
               <Text style={styles.label2}>J-</Text>
                 <TextInput
-                  style={styles.input2}
+                  style={styles.input}
+                  keyboardType="numeric"
                   onChangeText={(text) => setData((prevData) => ({ ...prevData, rif: text, password: text }))}
                 />
               </View>
@@ -276,6 +277,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
               <Text style={styles.label}>Numero de teléfono</Text>
               <TextInput
                 style={styles.input}
+                keyboardType="numeric"
                 onChangeText={(text) => setData((prevData) => ({ ...prevData, phoneNumber: text }))}
               />
             </View>
@@ -340,7 +342,6 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     alignItems:'center',
     gap:8,
-
   },
   title: {
     fontWeight: '600',
@@ -364,14 +365,14 @@ const styles = StyleSheet.create({
 
   },
   input: {
-    marginTop: 8,
+    marginTop: 10,
     fontFamily: 'Poppins-Regular',
-    fontSize: 10,
+    fontSize: 12,
     lineHeight: 24,
     color: 'black',
   },
   input2: {
-    marginTop: 8,
+    marginTop: 10,
     fontFamily: 'Poppins-Regular',
     fontSize: 10,
     lineHeight: 16,

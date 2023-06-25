@@ -66,7 +66,7 @@ const CardBox = ({data, handleWantPersonallyErase, changeIsPublic, index, setInd
                         </View>
                         <TouchableOpacity style ={styles.firstRowCenter} onPress={() => {changeIsPublic(data, setDataIsPublic);}}>
                             {dataIsPublic ? (
-                                    <Text style={styles.text}> Publico </Text>
+                                    <Text style={styles.text}> Público </Text>
 
                                 ) : (
 
@@ -156,15 +156,19 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
 
     const handleMakeRegular = async () => {
         setLoadingSomething(true);
-        await makeRegular(data.id, user.email);
-        setVIP('Regular');
+        const isDone = await makeRegular(data.id, user.email);
+
+        if (isDone) {setVIP('Regular'); data.vip = false;} else {Alert.alert('Happened an issue', 'Wait and try it again');}
+
         setLoadingSomething(false);
     };
 
     const handleMakeVIP = async () => {
         setLoadingSomething(true);
-        await makeVIP(data.id, user.email);
-        setVIP('VIP');
+        const isDone = await makeVIP(data.id, user.email);
+
+        if ( isDone ) {setVIP('VIP'); data.vip = true;} else {Alert.alert('Happened an issue', 'Ensure you have permissions to change another package to VIP!');}
+
         setLoadingSomething(false);
     };
 
@@ -205,6 +209,13 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
     //     console.log('TipoEditting value: ', tipoEditting);
     // },[descriptionEditting, tipoEditting]);
 
+    // useEffect(() => {
+    //     if (VIP === 'VIP'){
+    //         data.vip = true;
+    //     } else {
+    //         data.vip = false;
+    //     }
+    // }, [VIP, data]);
 
 
     return (
@@ -253,33 +264,33 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
                                 { isEditting ? (
                                     <>
                                         <View style={stylesIndividualCard.textBox}>
-                                            <Text style={stylesIndividualCard.text}>Nombre del paquete:</Text>
+                                            <Text style={stylesIndividualCard.text1}>Nombre del paquete:</Text>
                                             <Text style={stylesIndividualCard.text}>{data.name}</Text>
                                         </View>
 
                                         <View style={stylesIndividualCard.textBox}>
-                                            <Text style={stylesIndividualCard.text}>Descripción: </Text>
+                                            <Text style={stylesIndividualCard.text1}>Descripción: </Text>
                                             {/* <TextInput style={stylesIndividualCard.inputText} defaultValue={data.description} onChange={(event) => {data.description = event.nativeEvent.text;}}/> */}
                                             <TextInput style={stylesIndividualCard.inputText} defaultValue={data.description} onChange={(event) => {setDescriptionEditting(event.nativeEvent.text);}}/>
                                         </View>
                                         <View style={stylesIndividualCard.textBox}>
-                                            <Text style={stylesIndividualCard.text}>Fecha inicio: </Text>
+                                            <Text style={stylesIndividualCard.text1}>Fecha inicio: </Text>
                                             <Text style={stylesIndividualCard.text}>{startDay}/{startMonth}/{startYear}</Text>
                                         </View>
                                         <View style={stylesIndividualCard.textBox}>
-                                            <Text style={stylesIndividualCard.text}>Fecha fin: </Text>
+                                            <Text style={stylesIndividualCard.text1}>Fecha fin: </Text>
                                             <Text style={stylesIndividualCard.text}>{endDay}/{endMonth}/{endYear}</Text>
                                         </View>
                                         <View style={stylesIndividualCard.textBox}>
-                                            <Text style={stylesIndividualCard.text}>Fecha expira: </Text>
+                                            <Text style={stylesIndividualCard.text1}>Fecha expira: </Text>
                                             <Text style={stylesIndividualCard.text}>{expireDay}/{expireMonth}/{expireYear}</Text>
                                         </View>
                                         <View style={stylesIndividualCard.textBox}>
-                                            <Text style={stylesIndividualCard.text}>Precio: </Text>
-                                            <Text style={stylesIndividualCard.text}>$ {data.price}</Text>
+                                            <Text style={stylesIndividualCard.text1}>Precio: </Text>
+                                            <Text style={stylesIndividualCard.text}>${data.price}</Text>
                                         </View>
                                         <View style={stylesIndividualCard.textBox}>
-                                            <Text style={stylesIndividualCard.text}>Tipo: </Text>
+                                            <Text style={stylesIndividualCard.text1}>Tipo: </Text>
                                             {/* <TextInput style={stylesIndividualCard.inputText} defaultValue={data.tipo} onChange={(event) => {data.tipo = event.nativeEvent.text;}}/> */}
                                             <Picker
                                                 selectedValue={tipoEditting}
@@ -296,7 +307,7 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
                                             </Picker>
                                         </View>
                                         <View style={stylesIndividualCard.textBox}>
-                                        <Text style={stylesIndividualCard.text}>Estado: {VIP}</Text>
+                                        <Text style={stylesIndividualCard.text1}>Estado: {VIP}</Text>
                                         {/* <Text style={stylesIndividualCard.text}>{data.tipo}</Text> */}
                                         {userExists &&
                                             <>
@@ -319,39 +330,39 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
                                 ) : (
                                   <>
                                     <View style={stylesIndividualCard.textBox}>
-                                        <Text style={stylesIndividualCard.text}>Nombre del paquete:</Text>
+                                        <Text style={stylesIndividualCard.text1}>Nombre del paquete:</Text>
                                         <Text style={stylesIndividualCard.text}>{data.name}</Text>
                                     </View>
                                     <View style={stylesIndividualCard.textBox}>
-                                        <Text style={stylesIndividualCard.text}>Descripción: </Text>
+                                        <Text style={stylesIndividualCard.text1}>Descripción: </Text>
                                         <Text style={stylesIndividualCard.text}>{data.description}</Text>
                                     </View>
                                     <View style={stylesIndividualCard.textBox}>
-                                        <Text style={stylesIndividualCard.text}>Fecha inicio: </Text>
+                                        <Text style={stylesIndividualCard.text1}>Fecha inicio: </Text>
                                         <Text style={stylesIndividualCard.text}>{startDay}/{startMonth}/{startYear}</Text>
                                     </View>
                                     <View style={stylesIndividualCard.textBox}>
-                                        <Text style={stylesIndividualCard.text}>Fecha fin: </Text>
+                                        <Text style={stylesIndividualCard.text1}>Fecha fin: </Text>
                                         <Text style={stylesIndividualCard.text}>{endDay}/{endMonth}/{endYear}</Text>
                                     </View>
                                     <View style={stylesIndividualCard.textBox}>
-                                        <Text style={stylesIndividualCard.text}>Fecha expira: </Text>
+                                        <Text style={stylesIndividualCard.text1}>Fecha expira: </Text>
                                         <Text style={stylesIndividualCard.text}>{expireDay}/{expireMonth}/{expireYear}</Text>
                                     </View>
                                     <View style={stylesIndividualCard.textBox}>
-                                        <Text style={stylesIndividualCard.text}>Precio: </Text>
-                                        <Text style={stylesIndividualCard.text}>$ {data.price}</Text>
+                                        <Text style={stylesIndividualCard.text1}>Precio: </Text>
+                                        <Text style={stylesIndividualCard.text}>${data.price}</Text>
                                     </View>
                                     {/* <View style={stylesIndividualCard.textBox}>
                                         <Text style={stylesIndividualCard.text}>Rating: </Text>
                                         <Text style={stylesIndividualCard.text}>{data.rating} estrellas</Text>
                                     </View> */}
                                     <View style={stylesIndividualCard.textBox}>
-                                        <Text style={stylesIndividualCard.text}>Tipo: </Text>
+                                        <Text style={stylesIndividualCard.text1}>Tipo: </Text>
                                         <Text style={stylesIndividualCard.text}>{data.tipo}</Text>
                                     </View>
                                     <View style={stylesIndividualCard.textBox}>
-                                        <Text style={stylesIndividualCard.text}>Estado: {VIP}</Text>
+                                        <Text style={stylesIndividualCard.text1}>Estado: {VIP}</Text>
                                         {/* <Text style={stylesIndividualCard.text}>{data.tipo}</Text> */}
                                         {userExists &&
                                             <>
@@ -412,7 +423,7 @@ const WantEraseView = ({setWantErase, eraseExpired, setEraseExpired, eraseAll, s
         <View style={stylesWantErase.giantWantErase}>
             <View style={stylesWantErase.bigBox}>
                 {eraseExpired && (
-                    <WantEraseViewAuxiliar setWantErase={setWantErase} titleText={'¿Estás seguro de borrar expirados?'} text1="Sí, borrar todo" text2="Cancelar" eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} ifPressYes={handleEraseExpired}/>
+                    <WantEraseViewAuxiliar setWantErase={setWantErase} titleText={'¿Estás seguro de borrar caducados?'} text1="Sí, borrar caducados" text2="Cancelar" eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} ifPressYes={handleEraseExpired}/>
                     )
                 }
                 {eraseAll && (
@@ -590,11 +601,11 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             <View style={stylesWantErase.giantWantErase}>
                 <View style={stylesWantErase.bigBox}>
                     <View style={stylesWantErase.firstBox}>
-                        <Text style={stylesWantErase.title}>¿Quieres borrar el paquete "{dataToErasePersonally.name}" ?</Text>
+                        <Text style={stylesWantErase.title}>¿Quieres borrar el paquete "{dataToErasePersonally.name}"?</Text>
                     </View>
                     <View style={stylesWantErase.secondBox}>
-                        <Button buttonStyle={stylesWantErase.buttonTop} buttonTextStyle={stylesWantErase.text} text = "Si, borra ese paquete"   onPress={()=>{handleTrashCanPress(dataToErasePersonally);}}/>
-                        <Button buttonStyle={stylesWantErase.buttonBottom} buttonTextStyle={stylesWantErase.text} text="No, no borres ese paquete" onPress={()=>{setWantPersonallyErase(false);}}/>
+                        <Button buttonStyle={stylesWantErase.buttonTop} buttonTextStyle={stylesWantErase.text} text = "Sí, borrar paquete"   onPress={()=>{handleTrashCanPress(dataToErasePersonally);}}/>
+                        <Button buttonStyle={stylesWantErase.buttonBottom} buttonTextStyle={stylesWantErase.text} text="Cancelar" onPress={()=>{setWantPersonallyErase(false);}}/>
                     </View>
                 </View>
             </View>
@@ -862,11 +873,12 @@ const styles = StyleSheet.create({
     },
 
     buttonText:{
-        fontWeight: '700',
+        // fontWeight: '700',
         fontSize: 11,
         lineHeight: 16,
         textAlign: 'center',
         color: '#FFFFFF',
+        fontFamily: 'Poppins-Medium',
     },
 
     cardBox:{
@@ -876,8 +888,8 @@ const styles = StyleSheet.create({
         height: 128,
         // height: '23.79%',
         borderRadius: 20,
-        borderColor: 'black',
-        borderWidth: 2,
+        borderColor: 'rgba(21, 132, 146, 0.5)',
+        borderWidth: 1,
     },
 
     backgroundCard:{
@@ -994,6 +1006,7 @@ const styles = StyleSheet.create({
     },
 
     text:{
+        fontFamily: 'Poppins-Medium',
         color: 'black',
         fontWeight: '500',
         fontSize: 9,
@@ -1001,17 +1014,19 @@ const styles = StyleSheet.create({
         margin: '1%',
     },
     normalText:{
+        fontFamily: 'Poppins-SemiBold',
         color: 'white',
         fontWeight: '500',
-        fontSize: 10,
+        fontSize: 12,
         lineHeight: 14,
         marginBottom: '5%',
     },
 
     editPackageTitle:{
+        fontFamily: 'Poppins-Medium',
         color: 'white',
-        fontWeight: '500',
-        fontSize: 10,
+        // fontWeight: '500',
+        fontSize: 12,
         lineHeight: 14,
     },
     editPackageTitleBox:{
@@ -1060,8 +1075,8 @@ const stylesIndividualCard = StyleSheet.create({
         height: 445,
         backgroundColor: 'white',
         borderRadius: 20,
-        borderColor: 'black',
-        borderWidth: 2,
+        borderColor: 'rgba(21, 132, 146, 0.5)',
+        borderWidth: 1,
     },
 
     firstRow: {
@@ -1142,7 +1157,7 @@ const stylesIndividualCard = StyleSheet.create({
     },
 
     bigText:{
-        fontFamily: 'Poppins-Regular',
+        fontFamily: 'Poppins-SemiBold',
         color: 'black',
         fontWeight: '500',
         fontSize: 14,
@@ -1171,6 +1186,14 @@ const stylesIndividualCard = StyleSheet.create({
         lineHeight: 18,
         display: 'flex',
     },
+    text1:{
+        fontFamily: 'Poppins-SemiBold',
+        color: 'black',
+        fontWeight: '500',
+        fontSize: 12,
+        lineHeight: 18,
+        display: 'flex',
+    },
 
     inputText: {
         // backgroundColor: 'red',
@@ -1183,7 +1206,7 @@ const stylesIndividualCard = StyleSheet.create({
         width: 'auto',
         textAlign: 'right',
         textAlignVertical: 'bottom',
-        borderBottomColor: 'rgba(0,0,0,0.5)',
+        borderBottomColor: 'rgba(40, 92, 99, 0.3)',
         borderBottomWidth: 1,
     },
     

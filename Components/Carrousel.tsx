@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   },
   texto2: {
     fontFamily: 'Poppins-Medium',
-    fontSize: 8,
+    fontSize: 10,
     lineHeight: 14,
     textAlign: 'center',
     color: '#FFFFFF',
