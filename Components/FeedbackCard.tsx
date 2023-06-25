@@ -21,20 +21,26 @@ const FeedbackCard = ({ item }: feedbackProps) => {
                             alt="photo"
                         />
                         <Text style={styles.textPack}>{item.creator.displayName}</Text>
-                        <Califications calification={item.stars} />
+                        <View style={styles.stars}>
+                        <Califications  calification={item.stars} />
+                        </View>
                     </View>
+                    <View style={styles.jojo}>
                     <Text style={styles.textPack2}>{item.comments}</Text>
+                    </View>
                 </View>
             </View>
         </View>
+
     );
-}
+};
 
 const styles = StyleSheet.create({
     contain: {
         display: 'flex',
         flexDirection: 'row',
-        marginTop: 20,
+        marginTop: '3%',
+        alignItems:'center',
     },
     containerPack: {
         /* height: 130,*/
@@ -45,24 +51,34 @@ const styles = StyleSheet.create({
     containerPack2: {
         display: 'flex',
         justifyContent: 'space-around',
+        marginBottom:'5%',
+    },
+    jojo:{
+        marginLeft: '10%',
+        marginRight: '10%',
     },
     container: {
         flexDirection: 'row',
         gap: 20,
         marginTop: 15,
     },
+    stars: {
+        alignContent:'flex-end',
+        marginRight:'5%',
+    },
     textPack: {
         marginHorizontal: 10,
         color: 'white',
-        fontSize: 18,
+        fontSize:9,
         fontFamily: 'Poppins-Medium',
         marginBottom: 5,
+        flex:1,
     },
     textPack2: {
         marginHorizontal: 15,
         padding: 10,
         color: 'white',
-        fontSize: 15,
+        fontSize: 13,
         fontFamily: 'Poppins-Medium',
     },
     img: {
@@ -71,7 +87,10 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginLeft: 20,
         marginBottom: 5,
-    }
+    },
+    black:{
+        color:'black',
+    },
 });
 
 export default FeedbackCard;

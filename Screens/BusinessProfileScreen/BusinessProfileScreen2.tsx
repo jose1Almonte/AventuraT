@@ -112,7 +112,7 @@ const BusinessProfileScreen = ({ route, navigation }: businessProfileProps) => {
                     }}>
                     <View style={stylesBtn.containerButton}>
                       <View style={stylesBtn.container}>
-                        <Text style={stylesBtn.txt}>Ver calificaciones</Text>
+                        <Text style={stylesBtn.txt}>Calificaciones</Text>
                       </View>
                     </View>
                   </Pressable>

@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, FlatList, } from 'react-native';
+import { Text, View, StyleSheet, FlatList, Image, } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import FeedbackCard from '../../Components/FeedbackCard';
 import firestore from '@react-native-firebase/firestore';
@@ -12,7 +12,6 @@ interface RaitingScreenProps {
 const FeedbackScreen = ({ navigation, route }: RaitingScreenProps) => {
     const emailEnterprice = route.params.email;
     const [data, setData] = useState([]);
-
     let loadData = async () => {
         try {
             let snapshot = await firestore().collection('enterprise')
@@ -40,10 +39,19 @@ const FeedbackScreen = ({ navigation, route }: RaitingScreenProps) => {
         <View style={styles.container}>
             <View style={styles.topInfo}>
                 <Text style={styles.txt}>Calificaciones</Text>
+                {data.length !== 0 ? (
                 <FlatList
                     data={data}
                     renderItem={renderItem}
                 />
+                ) : (
+                    <View style={styles.topInfo}>
+                    <Text style={styles.txt2}> No hay calificaciones</Text>
+                    <Image
+                        style={styles.imageUsed}
+                        source={require('../../images/favorites.png')}/>
+                    </View>
+                )}
             </View>
         </View>
     );
@@ -53,13 +61,20 @@ export default FeedbackScreen;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor:'#1DB5BE',
     },
     topInfo: {
         flex: 1,
         marginTop: '20%',
-        alignItems: 'center'
+        alignItems: 'center',
     },
+    imageUsed: {
+        marginTop: 40,
+        width: 350,
+        height: 350,
+        alignSelf: 'center',
+      },
     info2: {
         flex: 1,
         display: 'flex',
@@ -131,8 +146,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#1881B1',
     },
     txt: {
-        color: 'black',
+        color: 'white',
         fontSize: 20,
+        fontFamily: 'Poppins-SemiBold',
+    },
+    txt2: {
+        color: 'white',
+        fontSize: 12,
         fontFamily: 'Poppins-SemiBold',
     },
     title: {
