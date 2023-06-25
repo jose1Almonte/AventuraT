@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, Pressable, TouchableOpacity, Alert, ScrollView } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import { Svg } from 'react-native-svg';
 import home from '../../vectores/home';
@@ -17,15 +17,15 @@ import currentLog from '../../firebase/UserData';
 import { LoadingScreenTransparentBackground, checkResponsibleNameExists } from '../../firebase/Firestore';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import ScrollViewIndicator from 'react-native-scroll-indicator';
+import { PerfilContext } from '../../Context/PerfilContext';
 
 interface navigationProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
-  route: any;
 }
 
 
-const NavbarScreen = ({ navigation,route}:navigationProps) => {
-  const {actualizaPerfil, setActualizaPerfil} = route.params;
+const NavbarScreen = ({ navigation }:navigationProps) => {
+  const { actualizaPerfil, setActualizaPerfil } = useContext(PerfilContext);
   const { setUser, setLogged } = useUser();
   const [loadingSomeThing, setLoadingSomething] = useState(false);
   const logout = async (): Promise<void> => {
@@ -75,7 +75,7 @@ const NavbarScreen = ({ navigation,route}:navigationProps) => {
       )}
       <View style={styles.fondo}>
         <View style={styles.info}>
-          <TouchableOpacity style={styles.topInfo} onPress={() => { navigation.navigate('UserProfileScreen',{actualizaPerfil: actualizaPerfil, setActualizaPerfil: setActualizaPerfil});}}>
+          <TouchableOpacity style={styles.topInfo} onPress={() => { navigation.navigate('UserProfileScreen');}}>
             <PerfilPictureNav
               navigation={navigation}
               styles={styles}

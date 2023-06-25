@@ -9,7 +9,7 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 //import RegisterEnterprise from '../../Components/registerEnterprise';
 import { ProfilePicture } from '../../firebase/PerfilPicture';
 // import RegisterEnterprise from '../../Components/registerEnterprise';
@@ -24,6 +24,7 @@ import InputSearch from '../../Components/InputSearch';
 import PopularPackages from '../../Components/PopularPackages';
 import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 import FastImage from 'react-native-fast-image';
+import { PerfilContext } from '../../Context/PerfilContext';
 
 interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -39,7 +40,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   // };
   const [searchKeyword, setSearchKeyword] = useState('');
   const [loadingSomeThing, setLoadingSomething] = useState(false);
-  const [actualizaPerfil, setActualizaPerfil] = useState(false);
+  // const [actualizaPerfil, setActualizaPerfil] = useState(false);
+  const { actualizaPerfil, setActualizaPerfil } = useContext(PerfilContext);
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -57,7 +59,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       <ScrollView style={styles.background}>
         <View style={styles.navbar}>
           <View>
-            <TouchableOpacity style={styles.colorRed} onPress={() => { navigation.navigate('NavbarScreen', {actualizaPerfil: actualizaPerfil, setActualizaPerfil: setActualizaPerfil});}}>
+            <TouchableOpacity style={styles.colorRed} onPress={() => { navigation.navigate('NavbarScreen');}}>
               <SvgXml xml={menuBar} />
             </TouchableOpacity>
           </View>
