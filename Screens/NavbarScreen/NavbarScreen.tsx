@@ -144,17 +144,12 @@ const NavbarScreen = ({ navigation }:navigationProps) => {
                   <SvgXml xml={profile} />
                   <Text style={styles.txtInfo}>Mi perfil</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.contenedorLinks} onPress={() => {
-                  if (isLogged) {
-                    navigation.navigate('UserProfileScreen');
-                  } else {
-                    navigation.navigate('LoginScreen');
-                  }
-
-                }}>
+                {user &&
+                <TouchableOpacity style={styles.contenedorLinks} onPress={() => {navigation.navigate('ReservedScreen');}}>
                   <SvgXml xml={historial} />
                   <Text style={styles.txtInfo}>Mis Reservas</Text>
                 </TouchableOpacity>
+                }
               </View>
               {/*<View style={styles.contenedorLinks}>
                 <SvgXml xml={historial} />

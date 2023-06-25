@@ -59,7 +59,7 @@ const ReservedScreen = ({ navigation }: ReservedScreenProps) => {
                 <Text style={styles.txt2}>(Viajes pendientes)</Text>
                 { data && (
                 <TouchableOpacity style={styles.buttonIPaid} onPress={handlePurgarHistory}>
-                    <Text style={styles.textIPaid}>Limpiar histórico</Text>
+                    <Text style={styles.textIPaid}>Limpiar historial</Text>
                 </TouchableOpacity>
                 )
                 }

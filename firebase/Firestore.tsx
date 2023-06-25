@@ -594,17 +594,30 @@ export const makeVIP = async (packageId: any, email: any) => {
 export const purgarHistory = async (ids: string[]) => {
   const packageRefs = ids.map(id => firestore().collection('paidPackage').doc(id));
 
-  const updatePromises = packageRefs.map(ref =>
-    ref.update({
-      status: 'Q',
-    })
-  );
+  const updatePromises = packageRefs.map(async ref => {
+    // Obtener el estado actual del documento
+    const doc = await ref.get();
+    if (!doc.exists) {
+      return Promise.resolve();
+    }
+    const status = doc.data().status;
 
+    if (status === 'R') {
+      return ref.update({
+        status: 'Q',
+      });
+    } else {
+      // Si el estado no es 'R', no se actualiza el documento
+      return Promise.resolve();
+    }
+  });
+  
   try {
     await Promise.all(updatePromises);
     console.log('Paquetes actualizados exitosamente');
-  } catch (error) {
+  } catch {
   }
+  
 };
 
 export const saveStarsToFirestore = async (counter, name, email) => {
