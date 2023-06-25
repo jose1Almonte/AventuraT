@@ -24,8 +24,8 @@ export const UserProfileScreen = ({
   navigation,
 }: UserProfileScreenProps) => {
 
-  const { actualizaPerfil } = useContext(PerfilContext);
-  console.log(actualizaPerfil);
+  // const { actualizaPerfil } = useContext(PerfilContext);
+  // console.log(actualizaPerfil);
   const {setUser, setLogged} = useUser();
   const logout = async (): Promise<void> => {
     try {
