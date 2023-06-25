@@ -13,6 +13,7 @@ import { useUser } from '../../Context/UserContext';
 import firestore from '@react-native-firebase/firestore';
 import { LoadingScreen, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 import profileArrowVector2 from '../../vectores/vectorPerfilFlecha2';
+import Stars2 from '../../Components/Stars2';
 
 interface detailProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -29,7 +30,8 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
   if (route.params.reserved) {
     packageReserved = route.params.reserved;
   }
-
+  const [counter, setCounter] = useState(0);
+  const [starP, setStarP] = useState(false);
   const startDate = packageIn.startDate.toDate();
   const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
   const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
@@ -78,15 +80,24 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         <LoadingScreenTransparentBackground />
       )}
 
+      { starP && (
+        <View style={styles.containerTransparent}>
+            <Stars2 counter={counter} setCounter={setCounter} />
+        </View>
+      )
+      }
+
       <ScrollView style={styles.background}>
         <View style={styles.container}>
           <View style={styles.containerPack}>
             <View style={styles.containerText}>
               <Text style={styles.textPack}>{packageIn.name}</Text>
+              <TouchableOpacity onPress={()=>{setStarP(true);}}>
               <View style={styles.containerCalification}>
                 <Text style={styles.ratingText}>{packageIn.rating}</Text>
                 <SvgXml xml={star} width={22} height={22} />
               </View>
+              </TouchableOpacity>
             </View>
             <Image
               style={styles.containerPhotoPack}
@@ -174,6 +185,17 @@ const styles = StyleSheet.create({
   tr: {
     marginTop: '3%',
     marginBottom: '3%'
+  },
+  containerTransparent: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: '100%',
+    // backgroundColor: 'blackrgba(0, 0, 0, 0.36)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999,
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   containerPhotoPack: {
     width: '100%',
