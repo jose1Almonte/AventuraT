@@ -37,8 +37,10 @@ const PublishedPackages = ({
           <View style={styles.containerText}>
             <Text style={styles.textPack}>{packageData.name}</Text>
             <View style={styles.contenedorCalendario}>
-              <SvgXml xml={calendar} />
-              <Text style={styles.date}>{packageData.en}</Text>
+              {/* <SvgXml xml={calendar} /> */}
+              <Text style={styles.date}>{packageData.location}</Text>
+              <Text style={styles.date}>${packageData.price}</Text>
+              
             </View>
           </View>
           <Image
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
     // padding: 3,
     color: 'black',
     fontSize: 12,
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'Poppins-Bold',
   },
   containerText: {
     display: 'flex',
@@ -90,17 +92,18 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   contenedorCalendario: {
-    marginRight: 10,
+    margin: 5,
+    width: '80%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    gap: 4,
+    justifyContent: 'space-between',
+    alignSelf: 'center'
+    // gap: 4,
   },
   date: {
     color: 'black',
     fontSize: 11,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-SemiBold',
   },
   img: {
     width: '100%',

@@ -107,7 +107,7 @@ export const UserProfileScreen = ({
               <TouchableOpacity
                 style={styles.containerInfo}
                 onPress={() => navigation.navigate('FavoriteScreen')}>
-                <Text style={styles.txtInfo}>Favoritos</Text>
+                <Text style={styles.txtInfo}>Mis Favoritos</Text>
                 <SvgXml xml={profileArrowVector} />
               </TouchableOpacity>
               <TouchableOpacity

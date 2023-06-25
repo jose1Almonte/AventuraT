@@ -44,7 +44,11 @@ const styles = StyleSheet.create({
     info: {
         flex: 1,
         display: 'flex',
-        margin: 5
+        alignContent: 'center',
+        alignItems: 'center',
+        width: '90%',
+        justifyContent: 'center',
+        alignSelf: 'center'
     },
     topInfo: {
         marginTop: 80,
