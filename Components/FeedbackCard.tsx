@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         padding: 10,
         color: 'white',
-        fontSize: 13,
+        fontSize: 8,
         fontFamily: 'Poppins-Medium',
     },
     img: {

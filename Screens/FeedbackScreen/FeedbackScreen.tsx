@@ -29,7 +29,7 @@ export default FeedbackScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#1DB5BE',
     },
     info: {
         flex: 1,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         gap: 15,
     },
     txt: {
-        color: 'black',
+        color: 'white',
         fontSize: 20,
         fontFamily: 'Poppins-SemiBold',
     },
