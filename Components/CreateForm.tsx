@@ -79,6 +79,7 @@ interface CreateFormData {
   rating: [number];
   expireDate: Date;
   isPublic: boolean,
+  userList: [String],
 }
 
 const CreateForm = ({ navigation }: CreateFormProps) => {
@@ -129,6 +130,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
     rating: [0],
     expireDate: expireDate,
     isPublic: true,
+    userList: 'carlos',
   });
 
   useEffect(() => {
@@ -209,7 +211,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
           data.expireDate,
           data.isPublic,
           selectedOption,
-          true,
+          data.userList,
         );
         setLoading(false);
         Alert.alert('Ya se subió el paquete a la base de datos');

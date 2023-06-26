@@ -120,7 +120,7 @@ export const checkIfUserExists = async (email: string) => {
   return !querySnapshot.empty;
 };
 
-export const addPackage = async (id: any, name: any, availability: any, price: any, description: any, mainImageUrl: any, location: any, endDate: any, startDate: any, emailEnterprise: any, rating: any, expireDate: any, isPublic: any, tipo: any,canCommit:boolean) => {
+export const addPackage = async (id: any, name: any, availability: any, price: any, description: any, mainImageUrl: any, location: any, endDate: any, startDate: any, emailEnterprise: any, rating: any, expireDate: any, isPublic: any, tipo: any,userList:[String]) => {
   try {
     const packageData = {
       id,
@@ -139,7 +139,7 @@ export const addPackage = async (id: any, name: any, availability: any, price: a
       isPublic,
       tipo,
       vip: false,
-      canCommit,
+      userList,
     };
 
     await packagesCollection.doc(id.toString()).set(packageData);

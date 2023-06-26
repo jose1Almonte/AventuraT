@@ -59,8 +59,13 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         if (packageIn.rating){
           const sum = packageIn.rating.reduce((acc, num) => acc + num, 0);
           const count = packageIn.rating.length;
-          const result = ((sum / (count - 1)));
-          setResultDef(result);
+          const result = ((sum / (count - 1))).toFixed(1);
+          if (isNaN(result)){
+            setResultDef(0);
+          }
+          else {
+            setResultDef(result);
+          }
 
         }
 
@@ -84,7 +89,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
 
 
     setAct(false);
-  }, [packageIn, packageIn.emailEnterprise, act]);
+  }, [packageIn, packageIn.emailEnterprise, act,packageIn.rating]);
 
   const confirm = async (id: any) => {
     const packId = id.toString();
@@ -110,7 +115,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         <LoadingScreenTransparentBackground />
       )}
 
-      { starP && (
+      { starP && user && (
         <>
         <View style={styles.containerTransparent}>
             <Stars2 counter={counter} setCounter={setCounter} />
