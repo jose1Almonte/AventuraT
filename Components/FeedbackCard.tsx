@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import Califications from './Califications';
 import { RaitingI } from '../models/raiting.interface';
+import Califications2 from './Califications2';
 
 interface feedbackProps {
     item: any
@@ -22,7 +23,7 @@ const FeedbackCard = ({ item }: feedbackProps) => {
                         />
                         <Text style={styles.textPack}>{item.creator.displayName}</Text>
                         <View style={styles.stars}>
-                        <Califications  calification={item.stars} />
+                        <Califications2  calification={item.stars} />
                         </View>
                     </View>
                     <View style={styles.jojo}>

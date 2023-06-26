@@ -1,32 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import star from '../vectores/star';
 
-interface calificationsProps {
-  calification: string[] | undefined;
+interface califications2Props {
+  calification: string | undefined;
 }
 
-const Califications = ({ calification }: calificationsProps) => {
-  const [resultDef, setResultDef] = useState(0);
-
-  useEffect(() => {
-    if (calification) {
-      const sum = calification.reduce((acc, num) => acc + parseFloat(num), 0);
-      const count = calification.length;
-      const result = ((sum / (count - 1))).toFixed(1);
-      if (isNaN(parseFloat(result))) {
-        setResultDef(0);
-      } else {
-        setResultDef(parseFloat(result));
-      }
-    }
-  }, [calification]);
-
+const Califications2 = ({ calification }: califications2Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.ratingText}>{resultDef}</Text>
+        <Text style={styles.ratingText}>{calification}</Text>
         <SvgXml xml={star} width={14} height={14} />
       </View>
     </View>
@@ -59,4 +44,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Califications;
+export default Califications2;
