@@ -11,7 +11,6 @@ import FastImage from 'react-native-fast-image';
 import { Text } from 'react-native-svg';
 
 
-
 const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
 const packagesCollection = firestore().collection('package');
@@ -121,7 +120,7 @@ export const checkIfUserExists = async (email: string) => {
   return !querySnapshot.empty;
 };
 
-export const addPackage = async (id: any, name: any, availability: any, price: any, description: any, mainImageUrl: any, location: any, endDate: any, startDate: any, emailEnterprise: any, rating: any, expireDate: any, isPublic: any, tipo: any) => {
+export const addPackage = async (id: any, name: any, availability: any, price: any, description: any, mainImageUrl: any, location: any, endDate: any, startDate: any, emailEnterprise: any, rating: any, expireDate: any, isPublic: any, tipo: any,canCommit:boolean) => {
   try {
     const packageData = {
       id,
@@ -140,6 +139,7 @@ export const addPackage = async (id: any, name: any, availability: any, price: a
       isPublic,
       tipo,
       vip: false,
+      canCommit,
     };
 
     await packagesCollection.doc(id.toString()).set(packageData);
@@ -713,3 +713,71 @@ export const updateRaitingEnterprise = async (email: string, feedback: any) => {
   } catch { }
 };
 
+export const updateRaitingPackage = async (packageId: string, nuevoRating: number, user: any) => {
+  try {
+    const packageRef = firebase.firestore().collection('package').doc(packageId);
+
+    const packageDoc = await packageRef.get();
+    const ratingsArray = packageDoc.data()?.rating ?? [];
+    const userArray = packageDoc.data()?.userList ?? [];
+
+    const updatedRatings = [...ratingsArray, nuevoRating];
+    const updatedUsers = [...userArray, user];
+
+    await packageRef.update({
+      rating: updatedRatings,
+      userList: updatedUsers,
+    });
+
+    console.log('El nuevo rating se agregó correctamente');
+  } catch {
+  }
+};
+
+
+export const checkUserInPackage = async (packageId: string, userEmail: string) => {
+  const packageRef = firebase.firestore().collection('package').doc(packageId);
+
+  return packageRef.get().then((doc) => {
+    if (doc.exists) {
+      const userList = doc.data().userList || [];
+
+      if (userList.includes(userEmail)) {
+        return { exists: true, message: `El usuario ${userEmail} está en la lista de usuarios del paquete con ID ${packageId}` };
+      } else {
+        return { exists: false, message: `El usuario ${userEmail} NO está en la lista de usuarios del paquete con ID ${packageId}` };
+      }
+    } else {
+      return { exists: false, message: `El paquete con ID ${packageId} no existe en Firestore` };
+    }
+  }).catch((error) => {
+    console.error(`Error al obtener el paquete con ID ${packageId}:`, error);
+    throw error;
+  });
+};
+
+
+export const verificarUsuario = async (packId: string, userId: string) =>{
+  try {
+    const packageRef = firestore().collection('package').doc(packId);
+    const packageDoc = await packageRef.get();
+
+    if (packageDoc.exists) {
+      const usuarios = packageDoc.data()?.userList || [];
+
+      if (usuarios.includes(userId)) {
+        console.log('El usuario existe en el array.');
+        return false;
+      } else {
+        console.log('El usuario no existe en el array.');
+        return true;
+      }
+    } else {
+      console.log('El documento no existe.');
+      return false;
+    }
+  } catch (error) {
+    console.log('Error al verificar el usuario:', error);
+    return false;
+  }
+};

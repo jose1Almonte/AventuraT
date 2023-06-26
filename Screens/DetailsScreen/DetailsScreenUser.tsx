@@ -11,9 +11,10 @@ import { PackageI } from '../../models/package.interface';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import firestore from '@react-native-firebase/firestore';
-import { LoadingScreen, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
+import { LoadingScreen, LoadingScreenTransparentBackground, checkUserInArray, getUserWithEmail, updateRaitingPackage, verificarUsuario } from '../../firebase/Firestore';
 import profileArrowVector2 from '../../vectores/vectorPerfilFlecha2';
 import Stars2 from '../../Components/Stars2';
+import currentLog from '../../firebase/UserData';
 
 interface detailProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -30,8 +31,11 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
   if (route.params.reserved) {
     packageReserved = route.params.reserved;
   }
+  const user = currentLog();
+  const [act, setAct] = useState(false);
   const [counter, setCounter] = useState(0);
   const [starP, setStarP] = useState(false);
+  const [resultDef, setResultDef] = useState(0);
   const startDate = packageIn.startDate.toDate();
   const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
   const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
@@ -44,7 +48,6 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
 
   const [nameEnterprise, setNameEnterprise] = useState('');
   const [photoURL, setPhotoUrl] = useState('');
-
   const [loadingSomeThing, setLoadingSomething] = useState(false);
 
   const [fullData, setFullData] = useState<Partial<Record<string, any>>>({});
@@ -53,6 +56,13 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
     const fetchData = async () => {
       setLoadingSomething(true);
       if (packageIn && packageIn.emailEnterprise) {
+        if (packageIn.rating){
+          const sum = packageIn.rating.reduce((acc, num) => acc + num, 0);
+          const count = packageIn.rating.length;
+          const result = ((sum / (count - 1)));
+          setResultDef(result);
+
+        }
 
         let querySnapshot = await firestore().collection('users').where('email', '==', packageIn.emailEnterprise).get();
 
@@ -65,12 +75,32 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
           setFullData(doc.data());
           setNameEnterprise(doc.data().displayName);
           setPhotoUrl(doc.data().photoURL);
+
         });
       }
       setLoadingSomething(false);
     };
     fetchData();
-  }, [packageIn, packageIn.emailEnterprise]);
+
+
+    setAct(false);
+  }, [packageIn, packageIn.emailEnterprise, act]);
+
+  const confirm = async (id: any) => {
+    const packId = id.toString();
+
+    if (user?.email) {
+      const userId = user?.email;
+
+      const existeUsuario = await verificarUsuario(packId, userId);
+      if (existeUsuario) {
+        // El usuario no existe en el array, realiza las acciones necesarias
+        updateRaitingPackage(packId, counter, userId);
+        setAct(true);
+      }
+    }
+  };
+
 
   return (
 
@@ -81,9 +111,21 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
       )}
 
       { starP && (
+        <>
         <View style={styles.containerTransparent}>
             <Stars2 counter={counter} setCounter={setCounter} />
+            <TouchableOpacity onPress={() => confirm(packageIn.id)}>
+              <View style={styles.buttonReserva2}>
+              <Text style={styles.titulo}>Confirmar</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>{setStarP(false);}}>
+              <View style={styles.buttonReserva2}>
+              <Text style={styles.titulo}>Volver</Text>
+              </View>
+            </TouchableOpacity>
         </View>
+        </>
       )
       }
 
@@ -94,7 +136,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
               <Text style={styles.textPack}>{packageIn.name}</Text>
               <TouchableOpacity onPress={()=>{setStarP(true);}}>
               <View style={styles.containerCalification}>
-                <Text style={styles.ratingText}>{packageIn.rating}</Text>
+                <Text style={styles.ratingText}>{resultDef}</Text>
                 <SvgXml xml={star} width={22} height={22} />
               </View>
               </TouchableOpacity>
@@ -325,6 +367,15 @@ const styles = StyleSheet.create({
   },
   buttonReserva: {
     width: 250,
+    height: 42,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1881B1',
+  },
+  buttonReserva2: {
+    marginTop:'10%',
+    width: 160,
     height: 42,
     borderRadius: 8,
     justifyContent: 'center',

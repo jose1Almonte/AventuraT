@@ -14,7 +14,7 @@ interface StarProps {
   setCounter: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const StarField = ({ index, counter, setCounter }: StarProps) => {
+const StarField = ({ index, counter, setCounter, starAdd }: StarProps) => {
   const handlePress = () => {
     setCounter(index);
   };
@@ -29,6 +29,7 @@ const StarField = ({ index, counter, setCounter }: StarProps) => {
 interface StarsProps {
   counter: number;
   setCounter: React.Dispatch<React.SetStateAction<number>>;
+
 }
 
 const Stars = ({ counter, setCounter }: StarsProps) => {
