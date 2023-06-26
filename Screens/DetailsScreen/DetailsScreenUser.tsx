@@ -100,8 +100,12 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
       const existeUsuario = await verificarUsuario(packId, userId);
       if (existeUsuario) {
         // El usuario no existe en el array, realiza las acciones necesarias
-        updateRaitingPackage(packId, counter, userId);
+        await updateRaitingPackage(packId, counter, userId);
         setAct(true);
+        navigation.navigate('HomeScreen');
+      }
+      else{
+        Alert.alert('Ya usted voto', 'No se puede volver a votar');
       }
     }
   };
