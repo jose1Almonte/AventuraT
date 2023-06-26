@@ -20,11 +20,11 @@ import { Carrousel } from '../../Components/Carrousel';
 import { NavigationProp } from '@react-navigation/native';
 import menuBar from '../../vectores/menuBar';
 import { SvgXml } from 'react-native-svg';
-import InputSearch from '../../Components/InputSearch';
+import InputSearch, { FilterOptions } from '../../Components/InputSearch';
 import PopularPackages from '../../Components/PopularPackages';
 import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 import FastImage from 'react-native-fast-image';
-import { PerfilContext } from '../../Context/PerfilContext';
+import { ValuesContext } from '../../Context/ValuesContext';
 
 interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -33,12 +33,14 @@ interface HomeScreenProps {
 const { height } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
+  const { isOpen, toggleMenu } = useContext(ValuesContext);
   // const [showForm, setShowForm] = useState(false);
 
   // const handleOpenForm = () => {
   //   setShowForm(true);
   // };
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [type, setType] = useState('name');
   const [loadingSomeThing, setLoadingSomething] = useState(false);
   // const [actualizaPerfil, setActualizaPerfil] = useState(false);
   // const { actualizaPerfil, setActualizaPerfil } = useContext(PerfilContext);
@@ -54,6 +56,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
       {loadingSomeThing && (
         <LoadingScreenTransparentBackground />
+      )}
+      {isOpen && (
+        <FilterOptions setType={setType} toggleMenu={toggleMenu} />
       )}
 
       <ScrollView style={styles.background}>
@@ -74,7 +79,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             destinationNavigationComponentName="UserProfileScreen"
           />
         </View>
-        <InputSearch navigation={navigation} areYouInSearchResult={false} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} defaultValue={undefined} />
+        <InputSearch navigation={navigation} type={type} setType={setType} areYouInSearchResult={false} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} defaultValue={undefined} />
         <View style={styles.Container2}>
           <View style={styles.Caracteristicas}>
             <TouchableOpacity

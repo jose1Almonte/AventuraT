@@ -24,7 +24,7 @@ import {
   uploadImage,
 } from '../../firebase/Firestore';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { PerfilContext } from '../../Context/PerfilContext';
+import { ValuesContext } from '../../Context/ValuesContext';
 
 const validateNumber = (number: string): boolean => {
   const numberRegExp = /^[0-9]+$/;
@@ -40,7 +40,7 @@ interface EditProfileScreenProps {
 }
 
 const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
-  const { actualizaPerfil, setActualizaPerfil } = useContext(PerfilContext);
+  const { actualizaPerfil, setActualizaPerfil } = useContext(ValuesContext);
   const [resourcePath, setResourcePath] = useState('');
   const [filename, setFileName] = useState('');
   const user = currentLog();

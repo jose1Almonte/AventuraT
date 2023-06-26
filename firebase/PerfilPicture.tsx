@@ -7,7 +7,7 @@ import { ContinueWithName } from '../Screens/LoginScreen/LoginScreen';
 import { addUser, checkIfUserExists } from '../firebase/Firestore';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../Context/UserContext';
-import { PerfilContext } from '../Context/PerfilContext';
+import { ValuesContext } from '../Context/ValuesContext';
 
 const pixelSize = PixelRatio.getPixelSizeForLayoutSize(30);
 
@@ -20,7 +20,7 @@ interface ProfilePictureProps {
 export const ProfilePicture = ({
     navigation,
 }: ProfilePictureProps) => {
-    const { actualizaPerfil, setActualizaPerfil } = useContext(PerfilContext);
+    const { actualizaPerfil, setActualizaPerfil } = useContext(ValuesContext);
     const { user, setUser, isLogged } = useUser();
     // const userOn = currentLog();
     const PhotoUser = () => {

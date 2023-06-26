@@ -35,7 +35,7 @@ import EditProfileScreen from './Screens/EditProfileScreen/EditProfileScreen';
 import EditProfileEnterprise from './Screens/EditProfileScreen/EditProfileEnterprise';
 import { LogBox } from 'react-native';
 import PopularPackageScreen from './Screens/PopularPackageScreen/PopularPackageScreen';
-import { PerfilContext, PerfilProvider } from './Context/PerfilContext';
+import { ValuesContext, ValuesContextProvider } from './Context/ValuesContext';
 const Stack = createNativeStackNavigator();
 
 LogBox.ignoreLogs([
@@ -46,7 +46,7 @@ export default function App() {
   // const { actualizaPerfil, setActualizaPerfil } = useContext(PerfilContext);
   return (
     <UserProvider>
-      <PerfilProvider>
+      <ValuesContextProvider>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
@@ -82,7 +82,7 @@ export default function App() {
           <Stack.Screen name="PopularPackageScreen" component={PopularPackageScreen } options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
-      </PerfilProvider>
+      </ValuesContextProvider>
     </UserProvider>
   );
 }

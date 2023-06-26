@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component, useContext, useEffect, useState} from 'react';
 import {View, StyleSheet, Touchable, TouchableOpacity, TextInput, Text, Alert} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import search from '../vectores/search';
@@ -11,6 +11,8 @@ import { NavigationProp } from '@react-navigation/native';
 // import settings from '../../vectores/settings';
 // import { SvgXml } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
+import { ValuesContext } from '../Context/ValuesContext';
+import { hexToRGBA } from '../Layouts/Gradient';
 
 interface Item {
   id: string;
@@ -26,7 +28,7 @@ interface FilterOptionsProps {
   toggleMenu: any;
 }
 
-const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
+export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
   return (
     <View style={styles.filterOptionsBox}>
       <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); toggleMenu(); }}>
@@ -54,11 +56,12 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
   // const [searchKeyword, setSearchKeyword] = useState('');
   const [resultOffset, setResultOffset] = useState(0);
   // const [type, setType] = useState('name');
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, setIsOpen, toggleMenu } = useContext(ValuesContext);
   const [doNotShow, setDoNotShow] = useState(false);
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  
+  // const toggleMenu = () => {
+  //   setIsOpen(!isOpen);
+  // };
   // const [textInput, setTextInput] = useState('');
   // const defaultReallyValue = defaultValue;
 
@@ -132,9 +135,7 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
 
   return (
     <>
-      {isOpen ? (
-        <FilterOptions setType={setType} toggleMenu={toggleMenu} />
-      ) : (
+      
         <>
           <View style={styles.container}>
             {areYouInSearchResult ? (
@@ -172,17 +173,16 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
             <SvgXml xml={settings} />
           </TouchableOpacity>
         </>
-      )}
     </>
   );
 };
 
 
 
-export const InputSearch = ({navigation, areYouInSearchResult, defaultValue, searchKeyword, setSearchKeyword}:{navigation: any, areYouInSearchResult: boolean, defaultValue: any, searchKeyword: string, setSearchKeyword: any}) => {
+export const InputSearch = ({navigation, type, setType, areYouInSearchResult, defaultValue, searchKeyword, setSearchKeyword}:{navigation: any, type: string, setType: any, areYouInSearchResult: boolean, defaultValue: any, searchKeyword: string, setSearchKeyword: any}) => {
   // const [searchKeyword, setSearchKeyword] = useState('');
   const inSearch = areYouInSearchResult;
-  const [type, setType] = useState('name');
+  // const [type, setType] = useState('name');
 
   const handleOnPressButtonSearch = async (inSearch) => {
 
@@ -311,23 +311,27 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     borderRadius: 5,
     // marginBottom: '7%',
-    height: '60%',
+    height: '6%',
     justifyContent: 'center',
     alignItems: 'flex-start',
     width: '70%',
   },
   filterOptionsBox: {
-    position: 'relative',
-    gap: 9,
+    position: 'absolute',
+    // gap: 9,
+    top: 0,
+    bottom: 0,
     // height: 90,
     // backgroundColor: 'red',
     // marginLeft: '80%',
     // paddingTop: 160,
-    width: '75%',
-    marginTop: '8%',
+    width: '100%',
+    // marginTop: '8%',
     // zIndex: 999,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: hexToRGBA('000000', 0.5),
+    zIndex: 1,
     // backgroundColor: 'red',
   },
 });

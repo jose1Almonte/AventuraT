@@ -17,7 +17,7 @@ import currentLog from '../../firebase/UserData';
 import { LoadingScreenTransparentBackground, checkResponsibleNameExists } from '../../firebase/Firestore';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import ScrollViewIndicator from 'react-native-scroll-indicator';
-import { PerfilContext } from '../../Context/PerfilContext';
+import { ValuesContext } from '../../Context/ValuesContext';
 
 interface navigationProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -25,7 +25,7 @@ interface navigationProps {
 
 
 const NavbarScreen = ({ navigation }: navigationProps) => {
-  const { actualizaPerfil, setActualizaPerfil } = useContext(PerfilContext);
+  const { actualizaPerfil, setActualizaPerfil } = useContext(ValuesContext);
   const { setUser, setLogged } = useUser();
   const [loadingSomeThing, setLoadingSomething] = useState(false);
   const logout = async (): Promise<void> => {

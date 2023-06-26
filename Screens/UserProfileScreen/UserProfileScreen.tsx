@@ -12,7 +12,7 @@ import currentLog from '../../firebase/UserData';
 import { deleteExpiredDocuments } from '../../firebase/DeletePackage';
 import { LoadingScreenTransparentBackground, checkResponsibleNameExists } from '../../firebase/Firestore'; // Update the path to the FirebaseFunctions file
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { PerfilContext } from '../../Context/PerfilContext';
+import { ValuesContext } from '../../Context/ValuesContext';
 import vectorPerfil from '../../vectores/vectorPerfil';
 
 interface UserProfileScreenProps {
