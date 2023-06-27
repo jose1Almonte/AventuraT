@@ -5,8 +5,9 @@ export const ValuesContext = createContext();
 export const ValuesContextProvider = ({ children }) => {
   const [actualizaPerfil, setActualizaPerfil] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const toggleMenu = () => {
+    // closeFilterOptionsView();
     setIsOpen(!isOpen);
   };
 

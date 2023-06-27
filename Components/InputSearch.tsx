@@ -34,6 +34,17 @@ export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
   const {isOpen, setIsOpen} = useContext(ValuesContext);
   const [animation] = useState(new Animated.Value(1000));
 
+  const closeFilterOptionsView = async () => {
+    const toValue = 1000;
+    Animated.spring(animation, {
+      toValue,
+      useNativeDriver: true, // Mejora el rendimiento de la animación
+    }).start(() => {
+      setIsOpen(false);
+    });
+
+  }
+
   useEffect(() => {
     const toValue = isOpen ? 60 : 1000;
 
@@ -63,26 +74,26 @@ export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
         <View style = {styles.miniFilterOptionsBox}>
 
           <View style = {styles.firstRowFilterOptionsBox}>
-            <TouchableOpacity style={styles.backFromFilterBox} onPress={() => {setIsOpen(false);}}>
+            <TouchableOpacity style={styles.backFromFilterBox} onPress={() => {closeFilterOptionsView();}}>
             <SvgXml xml={backFromFilter}/>
             {/* <Text>Back</Text> */}
 
             </TouchableOpacity>
           </View>
           <View style = {styles.secondRowFilterOptionsBox}>
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); toggleMenu(); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); closeFilterOptionsView(); }}>
               <Text style={styles.txtOptions}>Nombre</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); toggleMenu(); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); closeFilterOptionsView(); }}>
               <Text style={styles.txtOptions}>Descripción</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); toggleMenu(); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); closeFilterOptionsView(); }}>
               <Text style={styles.txtOptions}>Ubicación</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); toggleMenu(); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); closeFilterOptionsView(); }}>
               <Text style={styles.txtOptions}>Precio</Text>
             </TouchableOpacity>
 
