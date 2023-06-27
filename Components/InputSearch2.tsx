@@ -1,5 +1,5 @@
-import React, {Component, useEffect, useState} from 'react';
-import {View, StyleSheet, Touchable, TouchableOpacity, TextInput, Text, Alert} from 'react-native';
+import React, {Component, useContext, useEffect, useState} from 'react';
+import {View, StyleSheet, Touchable, TouchableOpacity, TextInput, Text, Alert, Animated} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import search from '../vectores/search';
 import settings from '../vectores/settings';
@@ -8,6 +8,9 @@ import settings from '../vectores/settings';
 // import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { NavigationProp } from '@react-navigation/native';
+import { GradientDownToUp, hexToRGBA } from '../Layouts/Gradient';
+import backFromFilter from '../vectores/backFromFilter';
+import { ValuesContext } from '../Context/ValuesContext';
 // import settings from '../../vectores/settings';
 // import { SvgXml } from 'react-native-svg';
 
@@ -21,29 +24,83 @@ interface Item {
 }
 
 interface FilterOptionsProps {
-  navigation: NavigationProp<Record<string, object | undefined>>;
+  // navigation: NavigationProp<Record<string, object | undefined>>;
   setType: any;
   toggleMenu: any;
 }
 
-const FilterOptions = ({ setType, toggleMenu,navigation }: FilterOptionsProps) => {
+export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
+
+  const {isInputSearch2Open, setIsInputSearch2Open} = useContext(ValuesContext);
+  const [animation] = useState(new Animated.Value(1000));
+
+  const closeFilterOptionsView = async () => {
+    const toValue = 1000;
+    Animated.spring(animation, {
+      toValue,
+      useNativeDriver: true, // Mejora el rendimiento de la animación
+    }).start(() => {
+      setIsInputSearch2Open(false);
+    });
+
+  };
+
+  useEffect(() => {
+    const toValue = isInputSearch2Open ? 60 : 1000;
+
+    Animated.spring(animation, {
+      toValue,
+      useNativeDriver: true, // Mejora el rendimiento de la animación
+    }).start();
+
+  }, [isInputSearch2Open, animation]);
+
   return (
-    <View style={styles.filterOptionsBox}>
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'name'});}}>
-        <Text>Nombre</Text>
-      </TouchableOpacity>
+    <View style={styles.backgroundFilterOptionsBox}>
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'description'}); }}>
-        <Text>Descripcion</Text>
-      </TouchableOpacity>
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'location'}); }}>
-        <Text>Location</Text>
-      </TouchableOpacity>
+      <Animated.View style = {[styles.filterOptionsBox, { transform: [{ translateY: animation }] }]}>
+      <GradientDownToUp
+          colors={[
+            '#1DB5BE',
+            hexToRGBA('#1DB5BE', 0.7),
+            hexToRGBA('#1DB5BE', 0.6),
+            hexToRGBA('#1DB5BE', 0.4),
+            hexToRGBA('#1DB5BE', 0),
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); toggleMenu(); navigation.navigate('SearchResultScreen',{name: '', type: 'price'}); }}>
-        <Text>price</Text>
-      </TouchableOpacity>
+          ]}
+          locations={[0, 0.3, 0.4, 0.8, 1]}
+          style={styles.linearGradient}>
+        <View style = {styles.miniFilterOptionsBox}>
+
+          <View style = {styles.firstRowFilterOptionsBox}>
+            <TouchableOpacity style={styles.backFromFilterBox} onPress={() => {closeFilterOptionsView();}}>
+            <SvgXml xml={backFromFilter}/>
+            {/* <Text>Back</Text> */}
+
+            </TouchableOpacity>
+          </View>
+          <View style = {styles.secondRowFilterOptionsBox}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); Alert.alert('Busqueda: name', 'Estas a punto de buscar por: name'); closeFilterOptionsView(); }}>
+              <Text style={styles.txtOptions}>Nombre</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); Alert.alert('Busqueda: description', 'Estas a punto de buscar por: description'); closeFilterOptionsView(); }}>
+              <Text style={styles.txtOptions}>Descripción</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); Alert.alert('Busqueda: location', 'Estas a punto de buscar por: location'); closeFilterOptionsView(); }}>
+              <Text style={styles.txtOptions}>Ubicación</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); Alert.alert('Busqueda: price', 'Estas a punto de buscar por: price'); closeFilterOptionsView(); }}>
+              <Text style={styles.txtOptions}>Precio</Text>
+            </TouchableOpacity>
+
+          </View>
+        </View>
+    </GradientDownToUp>
+      </Animated.View>
     </View>
   );
 };
@@ -53,10 +110,10 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
   // const [searchKeyword, setSearchKeyword] = useState('');
   const [resultOffset, setResultOffset] = useState(0);
   // const [type, setType] = useState('name');
-  const [isOpen, setIsOpen] = useState(false);
+  const {isInputSearch2Open, setIsInputSearch2Open} = useContext(ValuesContext);
   const [doNotShow, setDoNotShow] = useState(true);
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsInputSearch2Open(!isInputSearch2Open);
   };
   // const [textInput, setTextInput] = useState('');
   // const defaultReallyValue = defaultValue;
@@ -124,9 +181,6 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
 
   return (
     <>
-      {isOpen ? (
-        <FilterOptions setType={setType} toggleMenu={toggleMenu} navigation={navigation}/>
-      ) : (
         <>
           <View style={styles.container}>
             {areYouInSearchResult ? (
@@ -164,31 +218,30 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
             <SvgXml xml={settings} />
           </TouchableOpacity>
         </>
-      )}
     </>
   );
 };
 
 
 
-export const InputSearch = ({navigation, areYouInSearchResult, defaultValue, searchKeyword, setSearchKeyword}:{navigation: any, areYouInSearchResult: boolean, defaultValue: any, searchKeyword: string, setSearchKeyword: any}) => {
+export const InputSearch = ({navigation, typeInputSearch2, setTypeInputSearch2,  areYouInSearchResult, defaultValue, searchKeyword, setSearchKeyword}:{navigation: any, typeInputSearch2: string, setTypeInputSearch2: any, areYouInSearchResult: boolean, defaultValue: any, searchKeyword: string, setSearchKeyword: any}) => {
   // const [searchKeyword, setSearchKeyword] = useState('');
 
   const inSearch = areYouInSearchResult;
-  const [type, setType] = useState('name');
+  // const [typeInputSearch2, setTypeInputSearch2] = useState('name');
 
   const handleOnPressButtonSearch = async (inSearch) => {
 
     if (!inSearch){
       if (searchKeyword !== ''){
-        navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
+        navigation.navigate('SearchResultScreen',{name: searchKeyword, type: typeInputSearch2});
       } else {
         // navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
         Alert.alert('Campo vacío', 'Por favor escriba algo');
       }
     } else {
       // Alert.alert('Hola, ya estoy')
-      navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
+      navigation.navigate('SearchResultScreen',{name: searchKeyword, type: typeInputSearch2});
     } // AQUI VA UN ELSE INDICANDO LO QUE HARA SI SE ENCUENTRA EN SearchResultScreen
   };
 
@@ -201,7 +254,7 @@ export const InputSearch = ({navigation, areYouInSearchResult, defaultValue, sea
           </TouchableOpacity>
 
           <View style={styles.settings}>
-            <SearchBar searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} areYouInSearchResult={areYouInSearchResult} defaultValue={defaultValue} type={type} setType={setType} navigation={navigation}/>
+            <SearchBar searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} areYouInSearchResult={areYouInSearchResult} defaultValue={defaultValue} type={typeInputSearch2} setType={setTypeInputSearch2} navigation={navigation}/>
             {/* <SvgXml xml={settings} /> */}
           </View>
         </View>
@@ -255,6 +308,15 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-medium',
     fontSize: 15,
   },
+  txtOptions: {
+    // color: 'white',
+    // fontFamily: 'Poppins-medium',
+    // fontSize: 15,
+    color: '#FFF',
+    fontFamily: 'Poppins-medium',
+    fontSize: 16,
+    // marginLeft: 6,
+  },
   settings:{
     height: '100%',
     alignItems: 'center',
@@ -295,25 +357,93 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   optionsPills: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    // backgroundColor: 'rgba(0,0,0,0.5)',
+    // borderRadius: 5,
+    // backgroundColor: hexToRGBA('#1DB5BE', 0.6),
+    backgroundColor: hexToRGBA('#1881B1', 1),
+    borderColor: hexToRGBA('#000000',0.5),
+    borderWidth: 1,
     borderRadius: 5,
-    marginBottom: '7%',
-    height: '40%',
+    // marginBottom: '7%',
+    height: 35,
     justifyContent: 'center',
-    alignItems: 'flex-start',
-    width: '70%',
+    alignItems: 'center',
+    width: '50%',
+    marginVertical: '3%',
   },
-  filterOptionsBox: {
-    position: 'relative',
+  backgroundFilterOptionsBox: {
+    position: 'absolute',
+    // gap: 9,
+    top: 0,
+    bottom: 0,
     // height: 90,
     // backgroundColor: 'red',
     // marginLeft: '80%',
     // paddingTop: 160,
-    width: '75%',
+    width: '100%',
+    // marginTop: '8%',
     // zIndex: 999,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
+    backgroundColor: hexToRGBA('000000', 0.5),
+    zIndex: 1,
     // backgroundColor: 'red',
+  },
+
+  
+  filterOptionsBox:{
+    width: '100%',
+    height: 466,
+    backgroundColor: hexToRGBA('#FFFFFF', 0.85),
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    
+  },
+  
+  linearGradient: {
+    height: 466,
+    width: '100%',
+    // backgroundColor: hexToRGBA('#FFFFFF', 0.7),
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  miniFilterOptionsBox: {
+    width: '90%',
+    height: '95%',
+    // backgroundColor: 'red',
+    borderColor: hexToRGBA('#000000', 0.21),
+    borderWidth: 1,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+
+  },
+
+  firstRowFilterOptionsBox: {
+    flex: 1,
+    width:'100%',
+    // backgroundColor: 'red',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+
+  secondRowFilterOptionsBox: {
+    flex: 10,
+    width:'100%',
+    // backgroundColor: 'green',
+    // justifyContent: 'center',
+    paddingTop: '6%',
+    alignItems: 'center',
+  },
+  backFromFilterBox:{
+    // width: 5,
+    // backgroundColor: 'yellow',
+    height: '100%',
+    aspectRatio: 1,
+    marginRight: '2%',
   },
 });
 

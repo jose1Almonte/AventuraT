@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {SvgXml} from 'react-native-svg';
 import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -17,8 +17,9 @@ import PackagesSearch from '../../Components/packagesSearch';
 //import options from '../../vectores/options';
 // import { NavigationProp } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
-import InputSearch2 from '../../Components/InputSearch2';
+import InputSearch2, { FilterOptions } from '../../Components/InputSearch2';
 import star from '../../vectores/star';
+import { ValuesContext } from '../../Context/ValuesContext';
 
 // interface Item {
 //     id: string;
@@ -71,6 +72,8 @@ const SearchResultScreen = ({navigation, route}: any) => {
   const {name: initialSearchValue, type: type} = route.params;
   const [searchKeyword, setSearchKeyword] = useState(initialSearchValue);
   const [items, setItems] = useState([]);
+  const {isInputSearch2Open, toggleMenu} = useContext(ValuesContext);
+  const [typeInputSearch2, setTypeInputSearch2] = useState(type);
   // const [resultOffset, setResultOffset] = useState(0);
 
   useEffect(() => {
@@ -122,43 +125,52 @@ const SearchResultScreen = ({navigation, route}: any) => {
   }, [searchKeyword]);
 
   return (
-    <View style={styles.container}>
-      <ScrollView>
-        <View style={styles.info}>
-          <View style={styles.topInfo}>
-            <Text style={styles.txt}> Resultados de Búsqueda </Text>
-            <Text style={styles.txt1}> Estás buscando por: {type} </Text>
-            <InputSearch2
-              navigation={navigation}
-              areYouInSearchResult={true}
-              defaultValue={initialSearchValue}
-              searchKeyword={searchKeyword}
-              setSearchKeyword={setSearchKeyword}
-            />
+    <>
+      {isInputSearch2Open && (
+        <FilterOptions setType={setTypeInputSearch2} toggleMenu={toggleMenu} />
+      )}
 
-            {items.length === 0 ? (
-              <View style={styles.als}>
-                <Text style={styles.txt1}>NO HAY RESULTADOS</Text>
-                <Image
-                  style={styles.imageUsed}
-                  source={require('../../images/favorites.png')}
-                />
-              </View>
-            ) : (
-              <View style={styles.containerCard}>
-                {items.map((document, index) => (
-                  <CardBoxView
-                    key={index}
-                    data={document}
-                    navigation={navigation}
+      <View style={styles.container}>
+        <ScrollView>
+          <View style={styles.info}>
+            <View style={styles.topInfo}>
+              <Text style={styles.txt}> Resultados de Búsqueda </Text>
+              <Text style={styles.txt1}> Estás buscando por: {typeInputSearch2} </Text>
+              <InputSearch2
+                navigation={navigation}
+                areYouInSearchResult={true}
+                defaultValue={initialSearchValue}
+                searchKeyword={searchKeyword}
+                setSearchKeyword={setSearchKeyword}
+                typeInputSearch2={typeInputSearch2}
+                setTypeInputSearch2={setTypeInputSearch2}
+
+              />
+  
+              {items.length === 0 ? (
+                <View style={styles.als}>
+                  <Text style={styles.txt1}>NO HAY RESULTADOS</Text>
+                  <Image
+                    style={styles.imageUsed}
+                    source={require('../../images/favorites.png')}
                   />
-                ))}
-              </View>
-            )}
+                </View>
+              ) : (
+                <View style={styles.containerCard}>
+                  {items.map((document, index) => (
+                    <CardBoxView
+                      key={index}
+                      data={document}
+                      navigation={navigation}
+                    />
+                    ))}
+                </View>
+              )}
+            </View>
           </View>
-        </View>
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
+    </>
   );
 };
 
