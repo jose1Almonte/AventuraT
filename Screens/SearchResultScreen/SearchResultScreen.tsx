@@ -127,7 +127,7 @@ const SearchResultScreen = ({navigation, route}: any) => {
   return (
     <>
       {isInputSearch2Open && (
-        <FilterOptions setType={setTypeInputSearch2} toggleMenu={toggleMenu} />
+        <FilterOptions setType={setTypeInputSearch2} toggleMenu={toggleMenu} navigation={navigation} />
       )}
 
       <View style={styles.container}>

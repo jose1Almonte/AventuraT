@@ -45,7 +45,7 @@ export const FilterOptions = ({ setType, toggleMenu, navigation }: FilterOptions
     
   };
 
-  const closeFilterOptionsViewWithNavigation = async (stringType) => {
+  const closeFilterOptionsViewWithNavigation = async (stringType: string) => {
     const toValue = 1000;
     Animated.spring(animation, {
       toValue,
