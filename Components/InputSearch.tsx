@@ -1,5 +1,5 @@
 import React, {Component, useContext, useEffect, useState} from 'react';
-import {View, StyleSheet, Touchable, TouchableOpacity, TextInput, Text, Alert} from 'react-native';
+import {View, StyleSheet, Touchable, TouchableOpacity, TextInput, Text, Alert, Animated} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import search from '../vectores/search';
 import settings from '../vectores/settings';
@@ -31,13 +31,24 @@ interface FilterOptionsProps {
 
 export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
   
-  const {setIsOpen} = useContext(ValuesContext);
+  const {isOpen, setIsOpen} = useContext(ValuesContext);
+  const [animation] = useState(new Animated.Value(1000));
+
+  useEffect(() => {
+    const toValue = isOpen ? 60 : 1000;
+
+    Animated.spring(animation, {
+      toValue,
+      useNativeDriver: true, // Mejora el rendimiento de la animación
+    }).start();
+
+  }, [isOpen, animation]);
 
   return (
     <View style={styles.backgroundFilterOptionsBox}>
 
 
-      <View style = {styles.filterOptionsBox}>
+      <Animated.View style = {[styles.filterOptionsBox, { transform: [{ translateY: animation }] }]}>
       <GradientDownToUp
           colors={[
             '#1DB5BE',
@@ -78,7 +89,7 @@ export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
           </View>
         </View>
     </GradientDownToUp>
-      </View>
+      </Animated.View>
     </View>
   );
 };
