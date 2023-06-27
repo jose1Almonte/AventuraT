@@ -149,6 +149,8 @@ const DetailsScreenUser2 = ({ navigation, route }: detailProps) => {
       {packages.map((esteitem, index) => (
         <View  key={`${esteitem.id}-${index}`}>
           {esteitem && (
+            <>
+            { esteitem?.status === 'C' && (
             <View style={styles.card}>
               <View style={styles.cardPos}>
               {esteitem?.photoCompradorURL &&
@@ -160,6 +162,21 @@ const DetailsScreenUser2 = ({ navigation, route }: detailProps) => {
               <Text style={styles.name}>Numero de reserva:</Text>
               <Text style={styles.name2}>{esteitem?.mobilePayment.mobilePaymentRef}</Text>
             </View>
+            )}
+            { esteitem?.status === 'QC' && (
+            <View style={styles.card}>
+              <View style={styles.cardPos}>
+              {esteitem?.photoCompradorURL &&
+                <PhotoProfile size={40} imageSource={esteitem?.photoCompradorURL}/>
+              }
+              </View>
+              <Text style={styles.name}>Comprador: </Text>
+              <Text style={styles.name2}>{esteitem?.compradorMail}</Text>
+              <Text style={styles.name}>Numero de reserva:</Text>
+              <Text style={styles.name2}>{esteitem?.mobilePayment.mobilePaymentRef}</Text>
+            </View>
+            )}
+            </>
           )}
         </View>
       ))}

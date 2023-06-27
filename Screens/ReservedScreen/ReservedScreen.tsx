@@ -26,7 +26,7 @@ const ReservedScreen = ({ navigation }: ReservedScreenProps) => {
               .get();
             //@ts-ignore
             setData(querySnapshot.docs);
-            const allPackagesQ = querySnapshot.docs.every(item => item.data().status === 'Q');
+            const allPackagesQ = querySnapshot.docs.every(item => item.data().status === 'Q' || item.data().status === 'QC');
             if (allPackagesQ){
                 setQ(true);
             } else {

@@ -602,7 +602,11 @@ export const purgarHistory = async (ids: string[]) => {
     const doc = await ref.get();
     const status = doc.data()?.status;
     console.log(status);
-    if (status === 'C' || status === 'R') {
+    if (status === 'C') {
+      return ref.update({
+        status: 'QC',
+      });}
+    if (status === 'R'){
       return ref.update({
         status: 'Q',
       });

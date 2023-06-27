@@ -12,7 +12,7 @@ export const ReservedPackages = ({ item, navigation }: reservedProps) => {
 
   const [statusMsg, setStatusMsg] = useState(item.data().status);
 
-  if (statusMsg === 'Q') {
+  if (statusMsg === 'Q' || statusMsg === 'QC') {
     return null; // No mostrar el componente si el estado es 'Q'
   }
 
