@@ -30,6 +30,9 @@ interface FilterOptionsProps {
 }
 
 export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
+  
+  const {setIsOpen} = useContext(ValuesContext);
+
   return (
     <View style={styles.backgroundFilterOptionsBox}>
 
@@ -39,20 +42,21 @@ export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
           colors={[
             '#000000',
             hexToRGBA('#000000', 0.7),
+            hexToRGBA('#000000', 0.6),
             hexToRGBA('#000000', 0.4),
             hexToRGBA('#000000', 0),
 
           ]}
-          locations={[0, 0.5, 0.8, 1]}
+          locations={[0, 0.3, 0.4, 0.8, 1]}
           style={styles.linearGradient}>
         <View style = {styles.miniFilterOptionsBox}>
 
           <View style = {styles.firstRowFilterOptionsBox}>
-            <View style={styles.backFromFilterBox}>
+            <TouchableOpacity style={styles.backFromFilterBox} onPress={() => {setIsOpen(false);}}>
             <SvgXml xml={backFromFilter}/>
             {/* <Text>Back</Text> */}
 
-            </View>
+            </TouchableOpacity>
           </View>
           <View style = {styles.secondRowFilterOptionsBox}>
             <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); toggleMenu(); }}>
@@ -337,13 +341,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   optionsPills: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    // backgroundColor: 'rgba(0,0,0,0.5)',
+    // borderRadius: 5,
+    borderColor: '#000000',
+    borderWidth: 1,
     borderRadius: 5,
     // marginBottom: '7%',
-    height: '6%',
+    height: 35,
     justifyContent: 'center',
-    alignItems: 'flex-start',
-    width: '70%',
+    alignItems: 'center',
+    width: '65%',
+    marginVertical: '3%',
   },
   backgroundFilterOptionsBox: {
     position: 'absolute',
@@ -368,7 +376,7 @@ const styles = StyleSheet.create({
   filterOptionsBox:{
     width: '100%',
     height: 466,
-    backgroundColor: hexToRGBA('#FFFFFF', 0.7),
+    backgroundColor: hexToRGBA('#FFFFFF', 0.85),
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     justifyContent: 'flex-end',
@@ -408,9 +416,9 @@ const styles = StyleSheet.create({
     flex: 10,
     width:'100%',
     // backgroundColor: 'green',
-    justifyContent: 'center',
+    // justifyContent: 'center',
+    paddingTop: '6%',
     alignItems: 'center',
-    gap: 10,
   },
   backFromFilterBox:{
     // width: 5,
