@@ -296,10 +296,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   txtOptions: {
-    color: '#d6d6e6',
-    fontFamily: 'Poppins-Regular',
-    fontSize: 12,
-    marginLeft: 6,
+    // color: 'white',
+    // fontFamily: 'Poppins-medium',
+    // fontSize: 15,
+    color: '#FFF',
+    fontFamily: 'Poppins-medium',
+    fontSize: 16,
+    // marginLeft: 6,
   },
   settings:{
     height: '100%',
@@ -350,7 +353,7 @@ const styles = StyleSheet.create({
     height: 35,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '65%',
+    width: '50%',
     marginVertical: '3%',
   },
   backgroundFilterOptionsBox: {
