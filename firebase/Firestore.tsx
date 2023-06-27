@@ -790,21 +790,27 @@ export const verificarUsuario = async (packId: string, userId: string) =>{
   }
 };
 
-export const actualizarAvailabilityMinus = async (idPack) => {
+
+async function getPackageRef(idPack) {
+  const packageRef = firebase.firestore().collection('package').doc(idPack);
+  return packageRef;
+}
+
+export const actualizarAvailabilityPlus = async (idPack) => {
   try {
-    const packageRef = firebase.firestore().collection('package').doc(idPack);
+    const packageRef = await getPackageRef(idPack);
     await packageRef.update({
-      availability:  firebase.firestore.FieldValue.increment(-1),
+      availability:  firebase.firestore.FieldValue.increment(1),
     });
   } catch {
   }
 };
 
-export const actualizarAvailabilityPlus = async (idPack) => {
+export const actualizarAvailabilityMinus = async (idPack) => {
   try {
-    const packageRef = firebase.firestore().collection('package').doc(idPack);
+    const packageRef = await getPackageRef(idPack);
     await packageRef.update({
-      availability:  firebase.firestore.FieldValue.increment(1),
+      availability:  firebase.firestore.FieldValue.increment(-1),
     });
   } catch {
   }
