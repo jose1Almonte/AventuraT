@@ -5,7 +5,7 @@ import { useUser } from '../../Context/UserContext';
 import { NavigationProp } from '@react-navigation/native';
 import { searchPackagesByEmail, searchPackagesExpiredByEmail } from '../../firebase/SearchPackagesByEmail';
 import { deleteAllByEmail, deleteExpiredDocumentsByEmail, deleteSelectedPackage } from '../../firebase/DeletePackage';
-import { changePackageIsPublicValue, changePackageValues, checkVIP, makeRegular, makeVIP} from '../../firebase/Firestore';
+import { changePackageIsPublicValue, changePackageValues, checkVIP, getCount, makeRegular, makeVIP} from '../../firebase/Firestore';
 import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 import { SvgXml } from 'react-native-svg';
 import vectorHelpdeskScreen from '../../vectores/vectorHelpdeskScreen';
@@ -116,6 +116,7 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
     const [descriptionEditting, setDescriptionEditting] = useState(data.description);
     // const [priceEditting, setPriceEditting] = useState(0);
     const [tipoEditting, setTipoEditting] = useState(data.tipo);
+    const [count, setCount] = useState(0);
 
     const startDate = data.startDate.toDate();
     const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
@@ -155,21 +156,27 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
     };
 
     const handleMakeRegular = async () => {
+
         setLoadingSomething(true);
         const isDone = await makeRegular(data.id, user.email);
 
         if (isDone) {setVIP('Regular'); data.vip = false;} else {Alert.alert('Happened an issue', 'Wait and try it again');}
 
         setLoadingSomething(false);
+
     };
 
     const handleMakeVIP = async () => {
-        setLoadingSomething(true);
-        const isDone = await makeVIP(data.id, user.email);
+        if (count === 0) {
+            Alert.alert("Ya ha alcanzado su número máximo de paquetes en VIP!")
+        } else {
+            setLoadingSomething(true);
+            const isDone = await makeVIP(data.id, user.email);
 
-        if ( isDone ) {setVIP('VIP'); data.vip = true;} else {Alert.alert('Happened an issue', 'Ensure you have permissions to change another package to VIP!');}
-
-        setLoadingSomething(false);
+            if (isDone) { setVIP('VIP'); data.vip = true; } else { Alert.alert('Happened an issue', 'Ensure you have permissions to change another package to VIP!'); }
+            console.log("yo soy", isDone);
+            setLoadingSomething(false);
+        }
     };
 
     useEffect(() => {
@@ -196,12 +203,21 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
             const exists = await checkVIP(user?.email);
             setUserExists(exists);
         };
-        checkUserExists;
+        checkUserExists();
+
+        const checkCount = async () => {
+            const count = await getCount(user?.email);
+            setCount(count)
+        };
+        checkCount();
+
         if (data.vip) {
             setVIP('VIP');
         } else {
             setVIP('Regular');
         }
+
+
     }, [user?.name, user?.email, data.vip]);
 
     // useEffect(()=>{
