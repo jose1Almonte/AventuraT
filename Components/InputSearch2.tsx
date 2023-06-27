@@ -24,12 +24,12 @@ interface Item {
 }
 
 interface FilterOptionsProps {
-  // navigation: NavigationProp<Record<string, object | undefined>>;
+  navigation: NavigationProp<Record<string, object | undefined>>;
   setType: any;
   toggleMenu: any;
 }
 
-export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
+export const FilterOptions = ({ setType, toggleMenu, navigation }: FilterOptionsProps) => {
 
   const {isInputSearch2Open, setIsInputSearch2Open} = useContext(ValuesContext);
   const [animation] = useState(new Animated.Value(1000));
