@@ -799,19 +799,28 @@ async function getPackageRef(idPack) {
 export const actualizarAvailabilityPlus = async (idPack) => {
   try {
     const packageRef = await getPackageRef(idPack);
+    const packageSnapshot = await packageRef.get();
+    const availability = packageSnapshot.data().availability;
+
     await packageRef.update({
-      availability:  firebase.firestore.FieldValue.increment(1),
+      availability: availability + 1,
     });
-  } catch {
+  } catch (error) {
+    // Manejar el error aquí
   }
 };
+
 
 export const actualizarAvailabilityMinus = async (idPack) => {
   try {
     const packageRef = await getPackageRef(idPack);
+    const packageSnapshot = await packageRef.get();
+    const availability = packageSnapshot.data().availability;
+
     await packageRef.update({
-      availability:  firebase.firestore.FieldValue.increment(-1),
+      availability: availability - 1,
     });
-  } catch {
+  } catch (error) {
+    // Manejar el error aquí
   }
 };
