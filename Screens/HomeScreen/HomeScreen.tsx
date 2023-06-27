@@ -33,7 +33,7 @@ interface HomeScreenProps {
 const { height } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
-  const { isOpen, toggleMenu } = useContext(ValuesContext);
+  const { isOpen, setIsOpen, toggleMenu } = useContext(ValuesContext);
   // const [showForm, setShowForm] = useState(false);
 
   // const handleOpenForm = () => {
@@ -42,15 +42,28 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [type, setType] = useState('name');
   const [loadingSomeThing, setLoadingSomething] = useState(false);
-  // const [actualizaPerfil, setActualizaPerfil] = useState(false);
-  // const { actualizaPerfil, setActualizaPerfil } = useContext(PerfilContext);
+
+  // useEffect(() => {
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     () => true,
+  //   );
+  //   return () => backHandler.remove();
+  // }, []);
+
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
-      () => true,
+      () => {
+        if (isOpen) {
+          setIsOpen(false);
+        }
+        return true; // El evento de retroceso ha sido manejado
+      }
     );
     return () => backHandler.remove();
-  }, []);
+  }, [isOpen, setIsOpen]);
+
   return (
     <>
 

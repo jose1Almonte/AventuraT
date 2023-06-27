@@ -30,7 +30,7 @@ interface FilterOptionsProps {
 }
 
 export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
-  
+
   const {isOpen, setIsOpen} = useContext(ValuesContext);
   const [animation] = useState(new Animated.Value(1000));
 
@@ -43,7 +43,7 @@ export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
       setIsOpen(false);
     });
 
-  }
+  };
 
   useEffect(() => {
     const toValue = isOpen ? 60 : 1000;
