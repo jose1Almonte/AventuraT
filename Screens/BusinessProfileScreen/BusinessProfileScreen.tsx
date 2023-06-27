@@ -10,7 +10,7 @@ import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../vectores/separator';
 import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
-import { LoadingScreenTransparentBackground, returnEnterpisePic } from '../../firebase/Firestore';
+import { LoadingScreenTransparentBackground, checkVIP, getCount, returnEnterpisePic } from '../../firebase/Firestore';
 import profileArrowVector from '../../vectores/vectorPerfilFlecha';
 
 interface businessProfileProps {
@@ -26,6 +26,8 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
   const [nameResp, setNameResp] = useState(null);
   const [loadingSomeThing, setLoadingSomeThing] = useState(false);
   const [userExists, setUserExists] = useState(false);
+  const [isVIP, setIsVIP] = useState(false);
+  const [count, setCount] = useState(0)
   const user = currentLog();
 
   useEffect(() => {
@@ -43,6 +45,15 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
       setLoadingSomeThing(false);
     };
 
+    const checkVip = async () => {
+      setLoadingSomeThing(true);
+      const vip = await checkVIP(user?.email);
+      setIsVIP(vip);
+      setLoadingSomeThing(false);
+
+    };
+    
+    checkVip();
     fetchEnterprisePic();
   }, []);
   return (
@@ -58,9 +69,16 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
         <View style={styles.container}>
           <View style={styles.info}>
             <View style={styles.topInfo}>
-              {nameEnterprise && (
-                <Text style={styles.txt3}>{nameEnterprise}</Text>
-              )}
+              <View style={styles.companyName}>
+                {nameEnterprise && (
+                  <Text style={styles.txt3}>{nameEnterprise}</Text>
+                )}
+                {isVIP && (
+                  <View style= {styles.vipBox}>
+                    <Text style= {styles.vipText}>VIP</Text>
+                  </View>
+                )}
+              </View>
               <View style={styles.top}>
                 <View>
                   {empresa && <PhotoProfile size={100} imageSource={empresa} />}
@@ -295,4 +313,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Poppins-Regular',
   },
+  vipBox: {
+    display:"flex",
+    alignContent: "center",
+    justifyContent: "center",
+    marginLeft: 20,
+    backgroundColor: "#128C55",
+    height: 25,
+    width: 50,
+    borderRadius: 5,
+  },
+  vipText: {
+    fontFamily: 'Poppins-Regular',
+    textAlign: "center",
+    color: "#145236",
+  },
+  companyName: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems:"center",
+  }
 });

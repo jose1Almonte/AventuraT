@@ -528,15 +528,24 @@ export const getAllPopularPackages = async (count:any) => {
 export const changePremium = async (email: any) => {
   const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
   const id = getDoc.docs[0].id;
+  const count = getDoc.docs[0].data().vipCount;
   usersCollection2.doc(id).update({
     isVIP: true,
-    vipCount: 5,
+    vipCount: count + 5,
   })
 
 }
 
 export const checkVIP = async (email: any) => {
-  return true
+  const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
+  const isVIP = getDoc.docs[0].data().isVIP;
+  return isVIP;
+}
+
+export const getCount = async (email: any) => {
+  const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
+  const count = getDoc.docs[0].data().vipCount;
+  return count;
 }
 
 export const makeRegular = async (packageId: any, email: any) => {
@@ -544,20 +553,16 @@ export const makeRegular = async (packageId: any, email: any) => {
     const getDoc = await usersCollection2.where('responsibleName', '==', email).get();
     const enterpriseId = getDoc.docs[0].id;
     let count = getDoc.docs[0].data().vipCount + 1;
-    if (count > 0) {
 
-      usersCollection2.doc(enterpriseId).update({
-        vipCount: count,
-      });
+    usersCollection2.doc(enterpriseId).update({
+      vipCount: count,
+    });
 
-      packagesCollection.doc(packageId.toString()).update({
-        vip: false,
-      });
-      return true;
-    } else {
-      return false;
-      // da error y no se procesa, hay que cambiar esto tambien en administratePackagesScreen para que no procesa si hubo error, linea 161
-    }
+    packagesCollection.doc(packageId.toString()).update({
+      vip: false,
+    });
+    return true;
+
 
   } catch (error){
     return false;
@@ -570,23 +575,22 @@ export const makeVIP = async (packageId: any, email: any) => {
     const getDoc = await usersCollection2.where('responsibleName', '==', email).get();
     const enterpriseId = getDoc.docs[0].id;
     let count = getDoc.docs[0].data().vipCount - 1;
-    console.log(count);
-    if (count > 0) {
+    console.log("COUNT ES:",count);
 
-      await usersCollection2.doc(enterpriseId).update({
-        vipCount: count,
-      });
-      await packagesCollection.doc(packageId.toString()).update({
-        vip: true,
-      });
-      return true;
-    } else {
-      return false;
-      // da error y...
-    }
+    await usersCollection2.doc(enterpriseId).update({
+      vipCount: count,
+    });
 
-  } catch (error){
-    console.log(error);
+    await packagesCollection.doc(packageId.toString()).update({
+      vip: true,
+    });
+
+    return true;
+
+
+  } catch (error) {
+    
+    console.log("a", error);
     return false;
   }
 };
