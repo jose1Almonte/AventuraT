@@ -40,11 +40,11 @@ export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
       <View style = {styles.filterOptionsBox}>
       <GradientDownToUp
           colors={[
-            '#000000',
-            hexToRGBA('#000000', 0.7),
-            hexToRGBA('#000000', 0.6),
-            hexToRGBA('#000000', 0.4),
-            hexToRGBA('#000000', 0),
+            '#1DB5BE',
+            hexToRGBA('#1DB5BE', 0.7),
+            hexToRGBA('#1DB5BE', 0.6),
+            hexToRGBA('#1DB5BE', 0.4),
+            hexToRGBA('#1DB5BE', 0),
 
           ]}
           locations={[0, 0.3, 0.4, 0.8, 1]}
@@ -346,7 +346,9 @@ const styles = StyleSheet.create({
   optionsPills: {
     // backgroundColor: 'rgba(0,0,0,0.5)',
     // borderRadius: 5,
-    borderColor: '#000000',
+    // backgroundColor: hexToRGBA('#1DB5BE', 0.6),
+    backgroundColor: hexToRGBA('#1881B1', 1),
+    borderColor: hexToRGBA('#000000',0.5),
     borderWidth: 1,
     borderRadius: 5,
     // marginBottom: '7%',
