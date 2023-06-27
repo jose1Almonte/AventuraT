@@ -81,19 +81,19 @@ export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
             </TouchableOpacity>
           </View>
           <View style = {styles.secondRowFilterOptionsBox}>
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); closeFilterOptionsView(); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); Alert.alert('Busqueda: name', 'Estas a punto de buscar por: name'); closeFilterOptionsView(); }}>
               <Text style={styles.txtOptions}>Nombre</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); closeFilterOptionsView(); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); Alert.alert('Busqueda: description', 'Estas a punto de buscar por: description'); closeFilterOptionsView(); }}>
               <Text style={styles.txtOptions}>Descripción</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); closeFilterOptionsView(); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); Alert.alert('Busqueda: location', 'Estas a punto de buscar por: location'); closeFilterOptionsView(); }}>
               <Text style={styles.txtOptions}>Ubicación</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); closeFilterOptionsView(); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); Alert.alert('Busqueda: price', 'Estas a punto de buscar por: price'); closeFilterOptionsView(); }}>
               <Text style={styles.txtOptions}>Precio</Text>
             </TouchableOpacity>
 
