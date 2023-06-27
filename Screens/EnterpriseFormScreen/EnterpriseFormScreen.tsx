@@ -238,7 +238,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
               <View style={styles.flexEnRaw}>
               <Text style={styles.label2}>J-</Text>
                 <TextInput
-                  style={styles.input}
+                  style={styles.input2}
                   keyboardType="numeric"
                   onChangeText={(text) => setData((prevData) => ({ ...prevData, rif: text, password: text }))}
                 />
