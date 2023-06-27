@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import { PackageI } from '../../models/package.interface';
-import { addPaidPackage } from '../../firebase/Firestore';
+import { actualizarAvailabilityMinus, addPaidPackage } from '../../firebase/Firestore';
 import firestore from '@react-native-firebase/firestore';
 import { SvgXml } from 'react-native-svg';
 import vectorHelpdeskScreen from '../../vectores/vectorHelpdeskScreen';
@@ -88,6 +88,7 @@ const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
             photoURL,
             'E'
           );
+          actualizarAvailabilityMinus(packageIn.id?.toString());
           Alert.alert('¡Pago enviado! Puede ver su status en Mis Reservas');
           navigation.navigate('HomeScreen');
         } else {

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
-import { updatePaidPackage } from '../firebase/Firestore';
+import { actualizarAvailabilityPlus, updatePaidPackage } from '../firebase/Firestore';
 import { useNavigation } from '@react-navigation/native';
 
 interface ReservedCardProps {
-   
+
     paid: any;
 }
 
@@ -42,6 +42,7 @@ const ReservedCard = ({ paid }: ReservedCardProps) => {
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => {
                                     updatePaidPackage(paid.id, 'R');
+                                    actualizarAvailabilityPlus(tempPaid.id.toString());
                                     setConfirm(true);
                                     navigation.navigate('BusinessReservedScreen');
                                 }}>

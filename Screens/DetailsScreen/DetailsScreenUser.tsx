@@ -202,6 +202,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
             <ButtonLikes packageDetails={packageIn} />
           </View>
           <TouchableOpacity onPress={() => {
+            if (Number(packageIn.availability) > 0){
             if (packageReserved) {
               Alert.alert('Este paquete ya fue reservado');
             } else if (isLogged) {
@@ -210,9 +211,9 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
               Alert.alert('Inicie sesión', 'Para reservar debe iniciar sesión');
               navigation.navigate('LoginScreen');
             }
-          }}>
+          } else {Alert.alert('Reservas Agotadas','Se acabaron los cupos');}}}>
             <View style={styles.buttonReserva}>
-              <Text style={styles.titulo}>Pagar</Text>
+              <Text style={styles.titulo}>Reservar</Text>
             </View>
           </TouchableOpacity>
         </View>

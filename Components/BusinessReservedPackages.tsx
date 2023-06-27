@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Text, Image, FlatList, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import vectorLocation from '../vectores/vectorLocation';
 import { NavigationProp } from '@react-navigation/native';
@@ -12,7 +12,7 @@ interface ReservedProps {
 export const BusinessReservedPackages = ({ paids, navigation }: ReservedProps) => {
   const packageTemp: any = paids.paids[0].data;
   return (
-    <TouchableOpacity onPress={() => { navigation.navigate('DetailReservedScreen', { info: paids.paids }) }}>
+    <TouchableOpacity onPress={() => { navigation.navigate('DetailReservedScreen', { info: paids.paids }); }}>
       <View style={styles.containerPrim}>
         <View style={styles.container}>
           <View style={styles.container1}>
@@ -36,7 +36,7 @@ export const BusinessReservedPackages = ({ paids, navigation }: ReservedProps) =
       </View>
     </TouchableOpacity>
   );
-}
+};
 
 const styles = StyleSheet.create({
   containerPrim: {
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 5
+    marginBottom: 5,
   },
   container: {
     width: 350,
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     width: '95%',
     height: 120,
     borderRadius: 15,
-    position: "absolute"
+    position: 'absolute',
   },
   ContainerLocation: {
     flexDirection: 'row',

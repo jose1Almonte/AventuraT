@@ -1,5 +1,5 @@
-import { Text, View, StyleSheet,Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
+import { Text, View, StyleSheet,Image, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { NavigationProp } from '@react-navigation/native';
 import BusinessReservedPackages from '../../Components/BusinessReservedPackages';
 import firestore from '@react-native-firebase/firestore';
@@ -24,42 +24,42 @@ const BusinessReservedScreen = ({ navigation }: BusinessReservedScreenProps) => 
     let tempDataPaid: DataPaid;
     useEffect(() => {
         const fetchData = async () => {
-          const email = user.email;
-          const querySnapshot = await firestore()
+        const email = user.email;
+        const querySnapshot = await firestore()
             .collection('paidPackage')
             .where('emailEnterprise', '==', email)
             .where('status', '==', 'E' )
             .onSnapshot((snapshot) => {
-              let updatedDataPaids: DataPaid[] = [];
-              let updatedAllIdPackagePaid: string[] = [];
-              let allPackagesE = false;
+            let updatedDataPaids: DataPaid[] = [];
+            let updatedAllIdPackagePaid: string[] = [];
+            let allPackagesE = false;
 
-              snapshot.forEach((doc) => {
+            snapshot.forEach((doc) => {
                 if (!updatedAllIdPackagePaid.includes(doc.data().id)) {
-                  const idTemp = doc.data().id;
-                  let paidsTemp: any = [];
+                const idTemp = doc.data().id;
+                let paidsTemp: any = [];
 
-                  snapshot.forEach((docPaid) => {
+                snapshot.forEach((docPaid) => {
                     if (docPaid.data().id === idTemp) {
-                      paidsTemp.push({ data: docPaid.data(), id: docPaid.id });
+                    paidsTemp.push({ data: docPaid.data(), id: docPaid.id });
                     }
-                  });
+                });
 
-                  const tempDataPaid: DataPaid = { idPackage: idTemp, paids: paidsTemp };
-                  updatedDataPaids.push(tempDataPaid);
-                  updatedAllIdPackagePaid.push(idTemp);
+                const tempDataPaid: DataPaid = { idPackage: idTemp, paids: paidsTemp };
+                updatedDataPaids.push(tempDataPaid);
+                updatedAllIdPackagePaid.push(idTemp);
                 }
-              });
+            });
 
-              allPackagesE = snapshot.docs.some((item) => item.data().status === 'E');
+            allPackagesE = snapshot.docs.some((item) => item.data().status === 'E');
 
-              setE(allPackagesE);
-              setData(updatedDataPaids);
+            setE(allPackagesE);
+            setData(updatedDataPaids);
             });
         };
 
         fetchData();
-      }, []);
+    }, []);
 
 
     const renderItem = ({ item }: any) => {
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     info: {
         flex: 1,
         display: 'flex',
-        margin: 5
+        margin: 5,
     },
     topInfo: {
         marginTop: 80,
@@ -130,5 +130,5 @@ const styles = StyleSheet.create({
         width: 350,
         height: 350,
         alignSelf: 'center',
-      },
+    },
 });
