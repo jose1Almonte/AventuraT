@@ -8,6 +8,27 @@ export function hexToRGBA(hex: string, alpha: number) {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
 
+interface GradientDownToUpProps {
+    children: ReactNode;
+    colors: string[];
+    locations: number[];
+    style: any,
+}
+
+export const GradientDownToUp = ({
+    children,
+    colors,
+    locations,
+    style,
+}: GradientDownToUpProps) => {
+    return (
+        <LinearGradient colors = {colors} locations={locations} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} style={style}>
+            {children}
+        </LinearGradient>
+    );
+};
+
+
 interface GradientProps {
     children: ReactNode;
     colors: string[];

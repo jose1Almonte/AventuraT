@@ -12,7 +12,8 @@ import { NavigationProp } from '@react-navigation/native';
 // import { SvgXml } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { ValuesContext } from '../Context/ValuesContext';
-import { hexToRGBA } from '../Layouts/Gradient';
+import Gradient, { GradientDownToUp, hexToRGBA } from '../Layouts/Gradient';
+import backFromFilter from '../vectores/backFromFilter';
 
 interface Item {
   id: string;
@@ -30,22 +31,50 @@ interface FilterOptionsProps {
 
 export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
   return (
-    <View style={styles.filterOptionsBox}>
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); toggleMenu(); }}>
-        <Text style={styles.txtOptions}>Nombre</Text>
-      </TouchableOpacity>
+    <View style={styles.backgroundFilterOptionsBox}>
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); toggleMenu(); }}>
-        <Text style={styles.txtOptions}>Descripción</Text>
-      </TouchableOpacity>
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); toggleMenu(); }}>
-        <Text style={styles.txtOptions}>Ubicación</Text>
-      </TouchableOpacity>
+      <View style = {styles.filterOptionsBox}>
+      <GradientDownToUp
+          colors={[
+            '#000000',
+            hexToRGBA('#000000', 0.7),
+            hexToRGBA('#000000', 0.4),
+            hexToRGBA('#000000', 0),
 
-      <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); toggleMenu(); }}>
-        <Text style={styles.txtOptions}>Precio</Text>
-      </TouchableOpacity>
+          ]}
+          locations={[0, 0.5, 0.8, 1]}
+          style={styles.linearGradient}>
+        <View style = {styles.miniFilterOptionsBox}>
+
+          <View style = {styles.firstRowFilterOptionsBox}>
+            <View style={styles.backFromFilterBox}>
+            <SvgXml xml={backFromFilter}/>
+            {/* <Text>Back</Text> */}
+
+            </View>
+          </View>
+          <View style = {styles.secondRowFilterOptionsBox}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); toggleMenu(); }}>
+              <Text style={styles.txtOptions}>Nombre</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); toggleMenu(); }}>
+              <Text style={styles.txtOptions}>Descripción</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); toggleMenu(); }}>
+              <Text style={styles.txtOptions}>Ubicación</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); toggleMenu(); }}>
+              <Text style={styles.txtOptions}>Precio</Text>
+            </TouchableOpacity>
+
+          </View>
+        </View>
+    </GradientDownToUp>
+      </View>
     </View>
   );
 };
@@ -316,7 +345,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     width: '70%',
   },
-  filterOptionsBox: {
+  backgroundFilterOptionsBox: {
     position: 'absolute',
     // gap: 9,
     top: 0,
@@ -328,12 +357,69 @@ const styles = StyleSheet.create({
     width: '100%',
     // marginTop: '8%',
     // zIndex: 999,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: hexToRGBA('000000', 0.5),
     zIndex: 1,
     // backgroundColor: 'red',
   },
+
+  
+  filterOptionsBox:{
+    width: '100%',
+    height: 466,
+    backgroundColor: hexToRGBA('#FFFFFF', 0.7),
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    
+  },
+  
+  linearGradient: {
+    height: 466,
+    width: '100%',
+    // backgroundColor: hexToRGBA('#FFFFFF', 0.7),
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  miniFilterOptionsBox: {
+    width: '90%',
+    height: '95%',
+    // backgroundColor: 'red',
+    borderColor: hexToRGBA('#000000', 0.21),
+    borderWidth: 1,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+
+  },
+
+  firstRowFilterOptionsBox: {
+    flex: 1,
+    width:'100%',
+    // backgroundColor: 'red',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+
+  secondRowFilterOptionsBox: {
+    flex: 10,
+    width:'100%',
+    // backgroundColor: 'green',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+  },
+  backFromFilterBox:{
+    // width: 5,
+    // backgroundColor: 'yellow',
+    height: '100%',
+    aspectRatio: 1,
+    marginRight: '2%',
+  },
+
 });
 
 export default InputSearch;
