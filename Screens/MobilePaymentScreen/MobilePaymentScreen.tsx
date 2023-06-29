@@ -7,7 +7,7 @@ import {
   TextInput,
   Alert,
   Dimensions,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { NavigationProp } from '@react-navigation/native';
@@ -149,6 +149,7 @@ const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
           style={styles.inputReferenceNumber}
           placeholder="Ingrese nro. de referencia"
           placeholderTextColor="grey"
+          keyboardType="numeric"
           onChangeText={(text) =>
             setMobilePayment({ ...mobilePayment, mobilePaymentRef: text })
           }
