@@ -129,35 +129,43 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
       }
       const lowercaseKeyword = searchKeyword;
       const uppercaseKeyword = searchKeyword.charAt(0).toUpperCase() + searchKeyword.slice(1);
-
+    
       const snapshot = await firestore()
         .collection('package')
         .where(type, '>=', uppercaseKeyword)
         .where(type, '<=', uppercaseKeyword + '\uf8ff')
         .orderBy(type)
         .get();
-
-        const snapshot2 = await firestore()
+    
+      const snapshot2 = await firestore()
         .collection('package')
         .where(type, '>=', lowercaseKeyword)
         .where(type, '<=', lowercaseKeyword + '\uf8ff')
         .orderBy(type)
         .get();
-
+    
       const data2: Item[] = snapshot2.docs.map((doc) => ({
-          id: doc.data().id,
-          name: doc.data().name,
-          description: doc.data().description,
+        id: doc.data().id,
+        name: doc.data().name,
+        description: doc.data().description,
       }));
-
+    
       const data: Item[] = snapshot.docs.map((doc) => ({
         id: doc.data().id,
         name: doc.data().name,
         description: doc.data().description,
       }));
-      setItems(data.concat(data2));
+    
+      // Eliminar duplicados
+      const mergedData = [...data, ...data2];
+      const uniqueData = mergedData.filter(
+        (item, index, self) => index === self.findIndex((i) => i.id === item.id)
+      );
+    
+      setItems(uniqueData);
       setResultOffset(0);
     };
+    
 
     fetchData();
   }, [searchKeyword, type]);
@@ -372,7 +380,7 @@ const styles = StyleSheet.create({
     backgroundColor: hexToRGBA('#1881B1', 1),
     borderColor: hexToRGBA('#000000',0.5),
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 15,
     // marginBottom: '7%',
     height: 35,
     justifyContent: 'center',

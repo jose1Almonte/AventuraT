@@ -166,12 +166,18 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
         description: doc.data().description,
       }));
   
-      setItems(data.concat(data2));
+      // Eliminar duplicados antes de concatenar los arrays
+      const uniqueItems = [...data, ...data2].filter((item, index, self) =>
+        index === self.findIndex((t) => t.id === item.id)
+      );
+  
+      setItems(uniqueItems);
       setResultOffset(0);
     };
   
     fetchData();
   }, [searchKeyword, type]);
+  
   
 
   const handleSearchKeywordChange = (text: string) => {

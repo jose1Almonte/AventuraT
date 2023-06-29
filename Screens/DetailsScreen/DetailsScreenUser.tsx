@@ -123,7 +123,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         navigation.navigate('HomeScreen');
       }
       else {
-        Alert.alert('Ya usted voto', 'No se puede volver a votar');
+        Alert.alert('Lo sentimos', 'No cumple con los requisitos para votar');
       }
     }
   };
