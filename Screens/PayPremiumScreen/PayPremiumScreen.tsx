@@ -116,6 +116,7 @@ export default function PayPremiumScreen() {
           <TextInput
             style={styles.inputReferenceNumber}
             placeholder="Ingrese nro. de referencia"
+            keyboardType="numeric"
             placeholderTextColor="grey"
             onChangeText={text => {
               setPaymentRef(text);

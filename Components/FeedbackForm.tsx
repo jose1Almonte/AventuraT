@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useContext, useState } from 'react';
 import { View, StyleSheet, Text, Image, TextInput, Alert, TouchableOpacity } from 'react-native';
 import calendar from '../vectores/calendar';
 import { SvgXml } from 'react-native-svg';
@@ -7,6 +7,7 @@ import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../firebase/UserData';
 import Stars from './Stars';
 import { updateRaitingEnterprise } from '../firebase/Firestore';
+import { ValuesContext } from '../Context/ValuesContext';
 
 interface FeedbackFormProps {
     navigation: NavigationProp<Record<string, object | undefined>>;
@@ -18,6 +19,17 @@ const FeedbackForm = ({ navigation, emailEnterprice }: FeedbackFormProps) => {
     const user = currentLog();
     const [counter, setCounter] = useState(0);
     const [comment, setComment] = useState('');
+
+    // const {whenUserAddNewComment, setWhenUserAddNewComment} = useContext(ValuesContext);
+
+    const handleOnSend = async () => {
+        if (comment !== ''){
+            await updateRaitingEnterprise(emailEnterprice, { creator: user, stars: counter, comments: comment });
+            Alert.alert('Calificación exitosa', 'Su calificación fue enviada');
+
+            navigation.navigate('RatingsScreen', { email: emailEnterprice });
+            } else {Alert.alert('Calificación fallida', 'No deje vacio el comentario');}
+    };
 
     return (
         <View style={styles.container}>
@@ -49,13 +61,7 @@ const FeedbackForm = ({ navigation, emailEnterprice }: FeedbackFormProps) => {
                         onChangeText={(text) => { setComment(text) }}
                     />
                     <View style={styles.containerButton}>
-                        <TouchableOpacity onPress={() => {
-                            if (comment !== ''){
-                            updateRaitingEnterprise(emailEnterprice, { creator: user, stars: counter, comments: comment });
-                            Alert.alert('Calificación exitosa', 'Su calificación fue enviada');
-                            navigation.navigate('RatingsScreen', { email: emailEnterprice });
-                            } else {Alert.alert('Calificación fallida', 'No deje vacio el comentario');}
-                        }}>
+                        <TouchableOpacity onPress={() => {handleOnSend();}}>
                             <View style={styles.containerBtn}>
                                 <Text style={styles.txtBtn}>Enviar</Text>
                             </View>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, Text, StyleSheet, View, Image, Pressable, Alert, TouchableOpacity } from 'react-native';
+import { ScrollView, Text, StyleSheet, View, Image, Pressable, Alert, TouchableOpacity, BackHandler } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import star from '../../vectores/star';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
@@ -51,6 +51,26 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
   const [loadingSomeThing, setLoadingSomething] = useState(false);
 
   const [fullData, setFullData] = useState<Partial<Record<string, any>>>({});
+
+  useEffect(() => {
+    const handleBackButton = () => {
+      switch (true) {
+        case starP:
+            setStarP(false);
+          return true;
+
+        default:
+            // Alert.alert('No case on switch', 'line 422 AdministratePackagesScreen');
+          return false; // Permitir el comportamiento predeterminado de retroceso
+      }
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+    };
+  }, [starP]);
 
   useEffect(() => {
     const fetchData = async () => {
