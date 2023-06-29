@@ -11,9 +11,15 @@ const isDateGreaterThanOneDay = (date1: Date, date2: Date) => {
   const oneDayInMilliseconds = 24 * 60 * 60 * 1000; // Número de milisegundos en un día
   // console.log('date1: ', date1);
   // console.log('date2: ', date2);
+  date1.setHours(0, 0, 0, 0);
+  date2.setHours(0, 0, 0, 0);
+
+  const date1WithoutTime = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate()); // crea una nueva fecha con la misma fecha pero sin hora, minutos, segundos o milisegundos
+
+  const date2WithoutTime = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate()); // crea una nueva fecha con la misma fecha pero sin hora, minutos, segundos o milisegundos
 
   // Comparamos los valores de tiempo de las fechas sumando un día a la fecha 2
-  return date1.getTime() >= (date2.getTime() + oneDayInMilliseconds);
+  return date1WithoutTime.getTime() >= (date2WithoutTime.getTime() + oneDayInMilliseconds);
 };
 
 const DatePickerBox = ({ text, writingDate, setWritingDate, dateBefore, date, setDate }: {
@@ -27,13 +33,16 @@ const DatePickerBox = ({ text, writingDate, setWritingDate, dateBefore, date, se
 
   const handleDateChange = async (event: any, selectedDate: any) => {
     if (isDateGreaterThanOneDay(selectedDate, dateBefore)) {
-      console.log('La fecha seleccionada es mayor por al menos un día a la fecha antes de la función.');
+      console.log(`La fecha seleccionada es mayor por al menos un día a la fecha antes de la función. ${dateBefore.getDay().toString().padStart(2, '0')} <`);
       const currentDate = selectedDate || date;
       setDate(currentDate);
       setWritingDate(false);
     } else {
-      Alert.alert('Fecha inválida', 'No tiene sentido si eliges ese valor para la fecha! Vuelve a intentarlo');
-      console.log('La fecha seleccionada NO es mayor por al menos un día a la fecha antes de la función.');
+      const printDateBefore = (dateBefore.getTime() + 1000).toString();
+      const printSelectedDate = selectedDate.getTime().toString();
+
+      Alert.alert('Fecha inválida', `No tiene sentido si eliges ese valor para la fecha! Vuelve a intentarlo ${printDateBefore} ${printSelectedDate}`);
+      console.log(`La fecha seleccionada NO es mayor por al menos un día a la fecha antes de la función. ${printDateBefore} ${printSelectedDate}`);
       const currentDate = date;
       setDate(currentDate);
       setWritingDate(false);
@@ -93,13 +102,13 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   const currentDate = new Date();
 
   const nextDay = new Date();
-  nextDay.setDate(nextDay.getDate() + 1);
+  nextDay.setDate(currentDate.getDate() + 1);
 
   const next2Days = new Date();
-  next2Days.setDate(next2Days.getDate() + 2);
+  next2Days.setDate(currentDate.getDate() + 2);
 
   const next3Days = new Date();
-  next3Days.setDate(next3Days.getDate() + 3);
+  next3Days.setDate(currentDate.getDate() + 3);
 
   const [startDate, setStartDate] = useState(nextDay);
   const [writtingStartDate, setWritingStartDate] = useState(false);
