@@ -100,13 +100,14 @@ pos:{
   marginLeft:'-4%',
 },
 center:{
-  alignSelf: 'center'
+  alignItems: 'center',
 },
 loadingGif:{
   width:60,
   height:60,
 },
 loadingGif2:{
+  marginLeft:'30%',
   width:180,
   height:180,
 },
