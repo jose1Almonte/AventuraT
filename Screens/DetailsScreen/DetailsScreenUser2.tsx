@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     marginTop: '2%',
     marginRight: '5%',
     marginLeft: '5%',
-    backgroundColor: 'rgba(1, 143, 112, 0.3)',
+    backgroundColor: 'rgba(1, 143, 112, 0.5)',
     borderRadius: 8,
   },
   info: {
@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   card: {
-    backgroundColor: 'rgba(1, 143, 112, 0.3)',
+    backgroundColor: 'rgba(1, 143, 112, 0.5)',
     borderRadius: 10,
     marginHorizontal: 10,
     marginTop:'2%',
@@ -393,14 +393,16 @@ const styles = StyleSheet.create({
     alignItems:'center',
   },
   name: {
-    fontSize: 10,
+    fontSize: 12,
     marginBottom: 5,
     color: 'white',
+    fontFamily: 'Poppins-SemiBold'
   },
   name2: {
     fontSize: 11,
     marginBottom: '5%',
     marginLeft:'10%',
     color: 'white',
+    fontFamily: 'Poppins-Medium'
   },
 });

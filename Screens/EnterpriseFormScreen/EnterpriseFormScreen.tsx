@@ -365,11 +365,12 @@ const styles = StyleSheet.create({
 
   },
   input: {
-    marginTop: 10,
+    marginTop: 8,
     fontFamily: 'Poppins-Regular',
-    fontSize: 12,
+    fontSize: 14,
     lineHeight: 24,
     color: 'black',
+    height: '100%'
   },
   input2: {
     marginTop: 10,

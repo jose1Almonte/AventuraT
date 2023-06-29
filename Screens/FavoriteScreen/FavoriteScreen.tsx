@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     width: '90%',
     overflow: 'hidden',
+    alignSelf: 'center'
   },
   imageUsed: {
     marginTop: 40,
@@ -182,22 +183,23 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   name: {
-    fontSize: 15,
+    fontSize: 14,
     width: '100%',
     marginTop: 4,
     color: 'black',
     fontFamily: 'Poppins-SemiBold',
   },
   description: {
-    fontSize: 8,
+    fontSize: 9,
     width: '100%',
     height: '115%',
     color: 'black',
     fontFamily: 'Poppins-Regular',
+    // backgroundColor: 'red'
   },
   price: {
     marginTop: 6,
-    fontSize: 15,
+    fontSize: 14,
     alignSelf: 'center',
     width: '100%',
     color: 'black',

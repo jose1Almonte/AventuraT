@@ -430,6 +430,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 24,
     color: 'black',
+    height: '100%'
   },
   button: {
     display: 'flex',
