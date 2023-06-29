@@ -51,17 +51,40 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   //   return () => backHandler.remove();
   // }, []);
 
+  // useEffect(() => {
+  //   const handleBackButton = () => {
+  //     switch (true) {
+  //       case selectedPackage:
+  //           setSelectedPackage(false);
+  //         return true;
+
+  //       default:
+  //           // Alert.alert('No case on switch', 'line 422 AdministratePackagesScreen');
+  //         return false; // Permitir el comportamiento predeterminado de retroceso
+  //     }
+  //   };
+
+  //   BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+
+  //   return () => {
+  //     BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+  //   };
+  // }, [selectedPackage]);
+
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => {
-        if (isOpen) {
-          setIsOpen(false);
-        }
+
+    const handleBackButton = () => {
+      if (isOpen) {
+        setIsOpen(false);
         return true; // El evento de retroceso ha sido manejado
       }
-    );
-    return () => backHandler.remove();
+      return false;
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+
+    return () => BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+
   }, [isOpen, setIsOpen]);
 
   return (
