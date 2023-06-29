@@ -676,7 +676,7 @@ export const updateUserDataByEmail = async (email: string, displayName: string, 
       await doc.ref.update({
         displayName,
         photoURL,
-        phoneNumber
+        phoneNumber,
       });
       console.log('Datos de usuario actualizados con éxito');
     } else {
