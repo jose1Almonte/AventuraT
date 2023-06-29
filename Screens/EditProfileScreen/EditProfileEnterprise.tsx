@@ -350,10 +350,10 @@ const styles = StyleSheet.create({
   input: {
     marginTop: 8,
     fontFamily: 'Poppins-Regular',
-    fontSize: 13,
+    fontSize: 14,
     lineHeight: 24,
     color: 'black',
-    marginBottom: 3,
+    height: '100%'
   },
   inputContainer: {
     height: 56,
@@ -387,7 +387,7 @@ const styles = StyleSheet.create({
     width: 200,
     borderRadius: 50,
     justifyContent: 'center',
-    backgroundColor: '#1881B1',
+    backgroundColor: '#1881b1a6',
     marginTop: '3%',
     marginBottom: '3%',
     alignSelf: 'center',

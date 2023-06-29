@@ -297,10 +297,10 @@ const styles = StyleSheet.create({
   input: {
     marginTop: 8,
     fontFamily: 'Poppins-Regular',
-    fontSize: 13,
+    fontSize: 14,
     lineHeight: 24,
     color: 'black',
-    marginBottom: 3,
+    height: '100%'
   },
   inputContainer: {
     height: 56,
