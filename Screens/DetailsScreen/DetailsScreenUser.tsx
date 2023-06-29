@@ -3,15 +3,12 @@ import { ScrollView, Text, StyleSheet, View, Image, Pressable, Alert, TouchableO
 import { SvgXml } from 'react-native-svg';
 import star from '../../vectores/star';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
-import vectorSalida from '../../vectores/vectorSalida';
-import vectorRetorno from '../../vectores/vectorRetorno';
-import vectorPrecio from '../../vectores/vectorPrecio';
 import { ButtonLikes } from '../../Components/ButtonLikes';
 import { PackageI } from '../../models/package.interface';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import firestore from '@react-native-firebase/firestore';
-import { LoadingScreen, LoadingScreenTransparentBackground, checkUserInArray, getUserWithEmail, updateRaitingPackage, verificarUsuario } from '../../firebase/Firestore';
+import { LoadingScreenTransparentBackground,  updateRaitingPackage, verificarUsuario } from '../../firebase/Firestore';
 import profileArrowVector2 from '../../vectores/vectorPerfilFlecha2';
 import Stars2 from '../../Components/Stars2';
 import currentLog from '../../firebase/UserData';
@@ -124,7 +121,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         setAct(true);
         navigation.navigate('HomeScreen');
       }
-      else{
+      else {
         Alert.alert('Ya usted voto', 'No se puede volver a votar');
       }
     }
