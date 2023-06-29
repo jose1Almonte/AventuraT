@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
   },
   description: {
-    fontSize: 9,
+    fontSize: 7,
     width: '100%',
     height: '115%',
     color: 'black',
