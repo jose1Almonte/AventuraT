@@ -7,7 +7,7 @@ import {
   TextInput,
   Alert,
   Dimensions,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { NavigationProp } from '@react-navigation/native';
