@@ -36,13 +36,17 @@ export const FilterOptions = ({ setType, toggleMenu, navigation }: FilterOptions
 
   const closeFilterOptionsView = async () => {
     const toValue = 1000;
+    const duration = 100;
     Animated.spring(animation, {
       toValue,
+      duration,
       useNativeDriver: true, // Mejora el rendimiento de la animación
     }).start(() => {
-      setIsInputSearch2Open(false);
+      
     });
-    
+    setTimeout(() => {
+      setIsInputSearch2Open(false);
+    }, 100);
   };
 
   const closeFilterOptionsViewWithNavigation = async (stringType: string) => {
@@ -93,19 +97,19 @@ export const FilterOptions = ({ setType, toggleMenu, navigation }: FilterOptions
             </TouchableOpacity>
           </View>
           <View style = {styles.secondRowFilterOptionsBox}>
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); Alert.alert('Busqueda: name', 'Estas a punto de buscar por: name'); closeFilterOptionsViewWithNavigation('name'); navigation.navigate('SearchResultScreen',{name: '', type: 'name'}); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name');  closeFilterOptionsViewWithNavigation('name'); navigation.navigate('SearchResultScreen',{name: '', type: 'name'}); }}>
               <Text style={styles.txtOptions}>Nombre</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); Alert.alert('Busqueda: description', 'Estas a punto de buscar por: description'); closeFilterOptionsViewWithNavigation('description'); navigation.navigate('SearchResultScreen',{name: '', type: 'description'}); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description');  closeFilterOptionsViewWithNavigation('description'); navigation.navigate('SearchResultScreen',{name: '', type: 'description'}); }}>
               <Text style={styles.txtOptions}>Descripción</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); Alert.alert('Busqueda: location', 'Estas a punto de buscar por: location'); closeFilterOptionsViewWithNavigation('location'); navigation.navigate('SearchResultScreen',{name: '', type: 'location'}); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location');  closeFilterOptionsViewWithNavigation('location'); navigation.navigate('SearchResultScreen',{name: '', type: 'location'}); }}>
               <Text style={styles.txtOptions}>Ubicación</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); Alert.alert('Busqueda: price', 'Estas a punto de buscar por: price'); closeFilterOptionsViewWithNavigation('price'); navigation.navigate('SearchResultScreen',{name: '', type: 'price'}); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price');  closeFilterOptionsViewWithNavigation('price'); navigation.navigate('SearchResultScreen',{name: '', type: 'price'}); }}>
               <Text style={styles.txtOptions}>Precio</Text>
             </TouchableOpacity>
 

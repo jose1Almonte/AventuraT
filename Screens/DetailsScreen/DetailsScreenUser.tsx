@@ -109,6 +109,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
   }, [packageIn, packageIn.emailEnterprise, act,packageIn.rating]);
 
   const confirm = async (id: any) => {
+    setLoadingSomething(true);
     const packId = id.toString();
 
     if (user?.email) {
@@ -121,11 +122,14 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         await updateRaitingPackage(packId, counter, userId);
         setAct(true);
         navigation.navigate('HomeScreen');
+        setLoadingSomething(false);
       }
       else {
         Alert.alert('Lo sentimos', 'No cumple con los requisitos para votar');
+        setLoadingSomething(false);
       }
     }
+    setLoadingSomething(false);
   };
 
 
@@ -137,7 +141,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         <LoadingScreenTransparentBackground />
       )}
 
-      { starP && user && (
+      { starP && user && !loadingSomeThing && (
         <>
         <View style={styles.containerTransparent}>
           <View style={styles.alinear}>
