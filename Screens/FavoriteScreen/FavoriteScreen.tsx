@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1DB5BE',
+    alignContent: 'center',
   },
   titleBox:{
     marginTop: 80,
@@ -160,7 +161,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   cardContainer: {
-    marginBottom: 16,
+    // marginBottom: 16,
+    // backgroundColor: 'red',
+    marginVertical: '5%',
+    alignItems: 'center',
+
   },
   card: {
     backgroundColor: '#FFF',
