@@ -32,6 +32,22 @@ import { ValuesContext } from '../../Context/ValuesContext';
 //   }
 
 const CardBoxView = ({data, navigation}: any) => {
+  const [resultDef,setResultDef]= useState();
+  
+  useEffect(() => {
+    if (data.rating) {
+      const sum = data.rating.reduce((acc, num) => acc + num, 0);
+      const count = data.rating.length;
+      const result = ((sum / (count - 1))).toFixed(1);
+      if (isNaN(result)) {
+        setResultDef(0);
+      } else {
+        setResultDef(result);
+      }
+    }
+  }, [data.rating]);
+  
+
   return (
     <TouchableOpacity
       onPress={() => {
@@ -58,7 +74,7 @@ const CardBoxView = ({data, navigation}: any) => {
               <SvgXml xml={star} width={18} height={18} />
               <Text style={styles.miniText}>
                 {' '}
-                {data.rating} | {data.location}{' '}
+                {resultDef} | {data.location}{' '}
               </Text>
             </View>
           </View>
@@ -119,6 +135,8 @@ const SearchResultScreen = ({navigation, route}: any) => {
       const combinedDocs = Object.values(uniqueItems);
 
       setItems(combinedDocs);
+
+
     };
 
     fetchData();

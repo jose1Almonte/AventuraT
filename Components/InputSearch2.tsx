@@ -197,6 +197,21 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
     navigation.navigate('SearchResultScreen',{name: text, type: 'name'});
   };
 
+  const estrellaNinja = async (rating)=>{
+    if (rating){
+      const sum = rating.reduce((acc, num) => acc + num, 0);
+      const count = rating.length;
+      const result = ((sum / (count - 1))).toFixed(1);
+      if (isNaN(result)){
+        setResultDef(0);
+      }
+      else {
+        setResultDef(result);
+      }
+
+    }
+  };
+
   return (
     <>
         <>
@@ -466,3 +481,7 @@ const styles = StyleSheet.create({
 });
 
 export default InputSearch;
+function setResultDef(arg0: number) {
+  throw new Error('Function not implemented.');
+}
+
