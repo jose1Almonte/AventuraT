@@ -12,7 +12,6 @@ export const ValuesContextProvider = ({ children }) => {
   };
 
 
-
   return (
     <ValuesContext.Provider value={{ actualizaPerfil, setActualizaPerfil, isOpen, setIsOpen, toggleMenu, isInputSearch2Open, setIsInputSearch2Open }}>
       {children}
