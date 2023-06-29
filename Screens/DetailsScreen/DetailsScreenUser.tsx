@@ -8,7 +8,7 @@ import { PackageI } from '../../models/package.interface';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import firestore from '@react-native-firebase/firestore';
-import { LoadingScreenTransparentBackground,  updateRaitingPackage, verificarUsuario } from '../../firebase/Firestore';
+import { LoadingScreenTransparentBackground,  updateRaitingPackage, verificarUsuario, verificarUsuario2 } from '../../firebase/Firestore';
 import profileArrowVector2 from '../../vectores/vectorPerfilFlecha2';
 import Stars2 from '../../Components/Stars2';
 import currentLog from '../../firebase/UserData';
@@ -115,7 +115,8 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
       const userId = user?.email;
 
       const existeUsuario = await verificarUsuario(packId, userId);
-      if (existeUsuario) {
+      const siExiste = await verificarUsuario2(userId);
+      if (existeUsuario && siExiste) {
         // El usuario no existe en el array, realiza las acciones necesarias
         await updateRaitingPackage(packId, counter, userId);
         setAct(true);
@@ -139,6 +140,9 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
       { starP && user && (
         <>
         <View style={styles.containerTransparent}>
+          <View style={styles.alinear}>
+          <Text style={styles.titulo}> Sólo se permite votar a las personas que registraron su paquete una vez</Text>
+          </View>
             <Stars2 counter={counter} setCounter={setCounter} />
             <TouchableOpacity onPress={() => confirm(packageIn.id)}>
               <View style={styles.buttonReserva2}>
@@ -266,6 +270,9 @@ const styles = StyleSheet.create({
     zIndex: 999,
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
+  alinear:{
+    marginBottom:'3%',
+  },
   containerPhotoPack: {
     width: '100%',
     height: 350,
@@ -359,6 +366,12 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   titulo: {
+    marginTop: 4,
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Poppins-SemiBold',
+  },
+  titulo2: {
     marginTop: 4,
     color: 'white',
     fontSize: 16,

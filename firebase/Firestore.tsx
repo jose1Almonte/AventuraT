@@ -824,3 +824,22 @@ export const actualizarAvailabilityMinus = async (idPack) => {
     // Manejar el error aquí
   }
 };
+
+export const verificarUsuario2 = async (userId) => {
+  try {
+    const currentTimestamp = firebase.firestore.Timestamp.now();
+    const packageRef = firestore().collection('paidPackage');
+    const querySnapshot = await packageRef.where('compradorMail', '==', userId).where('endDate', '<', currentTimestamp).get();
+
+    if (querySnapshot.empty) {
+      console.log('No se encontraron documentos con el usuario en el campo "compradorMail" y un "endDate" menor a la fecha y hora actual.');
+      return false;
+    } else {
+      console.log('Se encontraron documentos con el usuario en el campo "compradorMail" y un "endDate" menor a la fecha y hora actual.');
+      return true;
+    }
+  } catch (error) {
+    console.log('Error al verificar el usuario:', error);
+    return false;
+  }
+};

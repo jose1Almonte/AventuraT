@@ -1,9 +1,5 @@
-import React, {Component, useEffect, useState} from 'react';
-import {View, StyleSheet, Text, Image, Dimensions, TouchableOpacity} from 'react-native';
-import {SvgXml} from 'react-native-svg';
-import vectorLocation from '../vectores/vectorLocation';
-import {ButtonLikes} from './ButtonLikes';
-import { PackageI } from '../models/package.interface';
+import React, { useEffect, useState} from 'react';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import { getPopularPackages } from '../firebase/Firestore';
 import PopularPackage from './PopularPackage';
 import { NavigationProp } from '@react-navigation/native';
@@ -16,7 +12,7 @@ interface popularProps {
 
 
 export const PopularPackages = ({ navigation }: popularProps) => {
-  
+
 
   const [popularPackages, setPopularPackages]: any[] = useState([]);
   const [loading, setLoading] = useState(true)
@@ -24,7 +20,7 @@ export const PopularPackages = ({ navigation }: popularProps) => {
   useEffect(() => {
 
     const fetchPackages = async () => {
-    
+
       const packages = await getPopularPackages();
       setPopularPackages(packages);
       setLoading(false);
@@ -40,7 +36,7 @@ export const PopularPackages = ({ navigation }: popularProps) => {
           <>
           <Text style={styles.title}>Paquetes Recomendados</Text>
           </>
-        ):(
+        ) : (
           <View style={styles.center}>
             {/* <Text style={styles.title}></Text> */}
           <FastImage
@@ -63,14 +59,14 @@ export const PopularPackages = ({ navigation }: popularProps) => {
           loading &&
           <Text style={styles.text}>Cargando...</Text>
         }
-         {popularPackages.length > 0 && (
+        {popularPackages.length > 0 && (
           <TouchableOpacity style={styles.showMore} onPress={() => {navigation.navigate("PopularPackageScreen")}}>
             <Text style={styles.moreText}>Ver más</Text>
           </TouchableOpacity>)}
       </View>
       );
-    
-  }
+
+  };
 
 
 const styles = StyleSheet.create({
@@ -82,7 +78,6 @@ text:{
 flexrow:{
   flex:1,
   flexDirection:'row',
-  
 },
 margin:{
   alignContent:'center',
