@@ -90,6 +90,7 @@ title: {
   fontFamily: 'Poppins-Bold',
   fontSize: 18,
   color: 'white',
+  marginLeft: 15,
 },
 pos:{
   marginLeft:'-4%',

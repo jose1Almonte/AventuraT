@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, Alert, TouchableOpacity, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import vectorPerfil from '../../vectores/vectorPerfil';
@@ -12,6 +12,7 @@ import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
 import { LoadingScreenTransparentBackground, checkVIP, getCount, returnEnterpisePic } from '../../firebase/Firestore';
 import profileArrowVector from '../../vectores/vectorPerfilFlecha';
+import check from '../../vectores/check';
 
 interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -75,7 +76,11 @@ const BusinessProfileScreen = ({ navigation }: businessProfileProps) => {
                 )}
                 {isVIP && (
                   <View style= {styles.vipBox}>
-                    <Text style= {styles.vipText}>VIP</Text>
+                    {/* <Text style= {styles.vipText}>VIP</Text> */}
+                    <Image
+                  style={styles.check}
+                  source={require('../../images/check.png')}
+                />
                   </View>
                 )}
               </View>
@@ -201,6 +206,10 @@ const styles = StyleSheet.create({
     zIndex: 0,
     backgroundColor: '#1DB5BE',
   },
+  check: {
+    width: 25,
+    height: 25,
+  },
   container: {
     flex: 1,
   },
@@ -317,16 +326,17 @@ const styles = StyleSheet.create({
     display:"flex",
     alignContent: "center",
     justifyContent: "center",
+    alignItems: "center",
     marginLeft: 20,
-    backgroundColor: "#128C55",
-    height: 25,
-    width: 50,
-    borderRadius: 5,
+    backgroundColor: "#ffffff",
+    height: 30,
+    width: 30,
+    borderRadius: 100,
   },
   vipText: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-Bold',
     textAlign: "center",
-    color: "#145236",
+    color: "black",
   },
   companyName: {
     display: "flex",

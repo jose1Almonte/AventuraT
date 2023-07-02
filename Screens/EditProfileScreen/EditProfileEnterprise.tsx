@@ -95,7 +95,7 @@ const EditProfileEnterprise = ({
       setLoadingSomething(true);
       setLoading(true);
       const email = await returnEnterpisePic(user?.email);
-      console.log(email);
+      // console.log(email);
       if (email != null) {
         setPhoneNumber(email.phoneNumber);
         setName(email.responsibleName);

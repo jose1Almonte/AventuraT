@@ -89,13 +89,13 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
       }
 
     if (data.rif.trim().length < 6){
-      Alert.alert('Error','El Rif es demasiado corto');
+      Alert.alert('RIF Inválido','El RIF es demasiado corto');
       setLoading(false);
       return;
     }
 
     if (!validateNumber(data.rif.toString())) {
-      Alert.alert('Rif Inválido', 'Por favor, ingrese un rif válido (Sólo caracteres numéricos)');
+      Alert.alert('RIF Inválido', 'Por favor, ingrese un RIF válido (Sólo caracteres numéricos)');
       setLoading(false);
       return;
     }
@@ -120,14 +120,14 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
 
     const enterpriseExists = await checkEnterpriseExists(data.nameEnterprise);
     if (enterpriseExists) {
-      Alert.alert('Empresa Existente', 'La empresa ya existe en la base de datos');
+      Alert.alert('Empresa Existente', 'La empresa ya está registrada');
       setLoading(false);
       return;
     }
 
     const responsibleNameExists = await checkResponsibleNameExists(data.responsibleName.toLowerCase());
     if (responsibleNameExists) {
-      Alert.alert('Nombre de Responsable Existente', 'El nombre de responsable ya existe en la base de datos');
+      Alert.alert('Correo Existente', 'El correo ya está registrado');
       setLoading(false);
       return;
     }
@@ -179,7 +179,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
     const selectImage = () => {
       launchImageLibrary({ mediaType: 'photo' }, (response) => {
         if (response.didCancel) {
-          Alert.alert('Not Image', 'No se ha elegido una imagen');
+          Alert.alert('No se ha elegido una imagen');
         } else if (response.errorCode) {
           Alert.alert('ImagePicker Error', response.errorMessage || 'Error');
         } else {
@@ -187,7 +187,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
           if (selectedAsset && selectedAsset.uri) {
             setResourcePath(selectedAsset.uri);
             setFileName(selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1));
-            Alert.alert('Imagen subida');
+            // Alert.alert('Imagen subida');
           }
         }
       });
@@ -205,7 +205,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
           if (selectedAsset2 && selectedAsset2.uri) {
             setResourcePath2(selectedAsset2.uri);
             setFileName2(selectedAsset2.uri.substring(selectedAsset2.uri.lastIndexOf('/') + 1));
-            Alert.alert('Imagen subida');
+            // Alert.alert('Imagen subida');
           }
         }
       });

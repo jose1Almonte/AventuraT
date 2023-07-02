@@ -9,11 +9,11 @@ const SignUp = () => {
     const handleSignUp = async () => {
         try {
             const userData = await auth().createUserWithEmailAndPassword(email, password);
-            Alert.alert('Yea', 'Usuario registrado exitosamente');
-            console.log('Usuario registrado exitosamente: ', userData.user?.email);
+            Alert.alert('Usuario registrado exitosamente');
+            // console.log('Usuario registrado exitosamente: ', userData.user?.email);
         } catch (error) {
-            Alert.alert('Nope', 'Error al registrar usuario');
-            console.log('Error al registrar usuario: ', error);
+            Alert.alert('Error al registrar usuario');
+            // console.log('Error al registrar usuario: ', error);
         }
     };
 

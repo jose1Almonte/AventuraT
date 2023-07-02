@@ -37,7 +37,7 @@ interface EnterpriseSessionScreenProps {
 
 interface Register {
   Username: string;
-  Password: String;
+  Password: string;
 }
 
 interface ContinueWithNameProps {
