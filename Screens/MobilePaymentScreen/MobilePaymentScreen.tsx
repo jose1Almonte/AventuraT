@@ -7,7 +7,7 @@ import {
   TextInput,
   Alert,
   Dimensions,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { NavigationProp } from '@react-navigation/native';
@@ -58,12 +58,12 @@ const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
     if (isLogged) {
       if (mobilePayment.mobilePaymentRef === '') {
         Alert.alert(
-          'Blank Space Not Allowed',
-          'You have to write your reference code',
+          'Campo Vacío',
+          'Ingresa el código de referencia',
         );
       } else {
         Alert.alert(
-          'Your Reference Code Was Sent',
+          'Tu código de referencia ha sido enviado',
           mobilePayment.mobilePaymentRef,
         );
 
@@ -93,11 +93,11 @@ const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
           navigation.navigate('HomeScreen');
         } else {
           console.log(packageIn);
-          Alert.alert('Package data not available');
+          Alert.alert('Información no disponible');
         }
       }
     } else {
-      Alert.alert('You have to Sign in to continue', 'Please, Login');
+      Alert.alert('Inicie sesión', 'Debe iniciar sesión para continuar');
       navigation.navigate('LoginScreen');
     }
   }
@@ -149,6 +149,7 @@ const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
           style={styles.inputReferenceNumber}
           placeholder="Ingrese nro. de referencia"
           placeholderTextColor="grey"
+          keyboardType="numeric"
           onChangeText={(text) =>
             setMobilePayment({ ...mobilePayment, mobilePaymentRef: text })
           }

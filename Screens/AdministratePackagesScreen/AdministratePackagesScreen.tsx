@@ -144,13 +144,13 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
         const isDone = await changePackageValues(data.id,descriptionEditting, tipoEditting);
 
         if (isDone) {
-            Alert.alert('DONE');
+            Alert.alert('Cambios Guardados');
             data.description = descriptionEditting;
             data.tipo = tipoEditting;
             setIsEditting(false);
 
         } else {
-            Alert.alert('NOT DONE');
+            // Alert.alert('Cambios guardados');
         }
         setLoadingSomething(false);
     };
@@ -168,7 +168,7 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
 
     const handleMakeVIP = async () => {
         if (count === 0) {
-            Alert.alert("Ya ha alcanzado su número máximo de paquetes en VIP!")
+            Alert.alert("¡Ya ha alcanzado su número máximo de paquetes en VIP!")
         } else {
             setLoadingSomething(true);
             const isDone = await makeVIP(data.id, user.email);
@@ -513,7 +513,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             if (eraseExpired) {setEraseExpired(false);}
             if (eraseAll) {setEraseAll(false);}
             setWantErase(false);
-            if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes expirados de forma exitosa');} else {Alert.alert('Nada', 'Nada que borrar');}
+            if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes expirados de forma exitosa');} else {Alert.alert('No hay paquetes para borrar');}
             setLoadingSomething(false);
 
         };
@@ -531,7 +531,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             if (eraseAll) {setEraseAll(false);}
             setWantErase(false);
 
-            if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes de forma exitosa');} else {Alert.alert('Nada', 'Nada que borrar');}
+            if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes de forma exitosa');} else {Alert.alert('No hay paquetes para borrar');}
             setLoadingSomething(false);
         };
 

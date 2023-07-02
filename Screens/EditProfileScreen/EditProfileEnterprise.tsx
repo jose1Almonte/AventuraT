@@ -95,7 +95,7 @@ const EditProfileEnterprise = ({
       setLoadingSomething(true);
       setLoading(true);
       const email = await returnEnterpisePic(user?.email);
-      console.log(email);
+      // console.log(email);
       if (email != null) {
         setPhoneNumber(email.phoneNumber);
         setName(email.responsibleName);
@@ -147,8 +147,7 @@ const EditProfileEnterprise = ({
 
     if (resourcePath === '') {
       Alert.alert(
-        'No se permite un campo vacío',
-        'Por favor seleccione la foto',
+        'Por favor seleccione una foto',
       );
       setLoading(false);
       return;
@@ -210,7 +209,7 @@ const EditProfileEnterprise = ({
   const selectImage = () => {
     launchImageLibrary({mediaType: 'photo'}, response => {
       if (response.didCancel) {
-        Alert.alert('Not Image', 'No se ha elegido una imagen');
+        Alert.alert('No se ha elegido una imagen');
       } else if (response.errorCode) {
         Alert.alert('ImagePicker Error', response.errorMessage || 'Error');
       } else {
@@ -220,7 +219,7 @@ const EditProfileEnterprise = ({
           setFileName(
             selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1),
           );
-          Alert.alert('Done', 'Image uploaded');
+          // Alert.alert('Imagen subida');
         }
       }
     });
@@ -350,10 +349,10 @@ const styles = StyleSheet.create({
   input: {
     marginTop: 8,
     fontFamily: 'Poppins-Regular',
-    fontSize: 13,
+    fontSize: 14,
     lineHeight: 24,
     color: 'black',
-    marginBottom: 3,
+    height: '100%'
   },
   inputContainer: {
     height: 56,
@@ -387,7 +386,7 @@ const styles = StyleSheet.create({
     width: 200,
     borderRadius: 50,
     justifyContent: 'center',
-    backgroundColor: '#1881B1',
+    backgroundColor: '#1881b1a6',
     marginTop: '3%',
     marginBottom: '3%',
     alignSelf: 'center',

@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1DB5BE',
+    alignContent: 'center',
   },
   titleBox:{
     marginTop: 80,
@@ -160,14 +161,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   cardContainer: {
-    marginBottom: 16,
+    // marginBottom: 16,
+    // backgroundColor: 'red',
+    marginVertical: '5%',
+    alignItems: 'center',
+
   },
   card: {
     backgroundColor: '#FFF',
     borderRadius: 20,
     height: 130,
     marginBottom: 16,
+    width: '90%',
     overflow: 'hidden',
+    alignSelf: 'center'
   },
   imageUsed: {
     marginTop: 40,
@@ -176,22 +183,23 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   name: {
-    fontSize: 15,
+    fontSize: 14,
     width: '100%',
     marginTop: 4,
     color: 'black',
     fontFamily: 'Poppins-SemiBold',
   },
   description: {
-    fontSize: 8,
+    fontSize: 7,
     width: '100%',
     height: '115%',
     color: 'black',
     fontFamily: 'Poppins-Regular',
+    // backgroundColor: 'red'
   },
   price: {
     marginTop: 6,
-    fontSize: 15,
+    fontSize: 14,
     alignSelf: 'center',
     width: '100%',
     color: 'black',

@@ -661,9 +661,9 @@ export const updateProfile = async (displayName: string, photoURL: string) => {
         displayName,
         photoURL,
       });
-      Alert.alert('ACTUALIZADO', 'Perfil actualizado con éxito');
+      // Alert.alert('ACTUALIZADOOOOO', 'Perfil actualizado con éxito');
     } catch (error) {
-      Alert.alert('ERROR', 'Error al actualizar el perfil:');
+      // Alert.alert('ERROR', 'Error al actualizar el perfil:');
     }
   }
 };
@@ -676,11 +676,11 @@ export const updateUserDataByEmail = async (email: string, displayName: string, 
       await doc.ref.update({
         displayName,
         photoURL,
-        phoneNumber
+        phoneNumber,
       });
-      console.log('Datos de usuario actualizados con éxito');
+      // console.log('Datos de usuario actualizados con éxito');
     } else {
-      console.log('No se encontró ningún usuario con el correo electrónico proporcionado');
+      // console.log('No se encontró ningún usuario con el correo electrónico proporcionado');
     }
   } catch { }
 };
@@ -822,5 +822,24 @@ export const actualizarAvailabilityMinus = async (idPack) => {
     });
   } catch (error) {
     // Manejar el error aquí
+  }
+};
+
+export const verificarUsuario2 = async (userId) => {
+  try {
+    const currentTimestamp = firebase.firestore.Timestamp.now();
+    const packageRef = firestore().collection('paidPackage');
+    const querySnapshot = await packageRef.where('compradorMail', '==', userId).where('endDate', '<', currentTimestamp).get();
+
+    if (querySnapshot.empty) {
+      console.log('No se encontraron documentos con el usuario en el campo "compradorMail" y un "endDate" menor a la fecha y hora actual.');
+      return false;
+    } else {
+      console.log('Se encontraron documentos con el usuario en el campo "compradorMail" y un "endDate" menor a la fecha y hora actual.');
+      return true;
+    }
+  } catch (error) {
+    console.log('Error al verificar el usuario:', error);
+    return false;
   }
 };

@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, Text, StyleSheet, View, Image, Pressable, Alert, TouchableOpacity } from 'react-native';
+import { ScrollView, Text, StyleSheet, View, Image, Pressable, Alert, TouchableOpacity, BackHandler } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import star from '../../vectores/star';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
-import vectorSalida from '../../vectores/vectorSalida';
-import vectorRetorno from '../../vectores/vectorRetorno';
-import vectorPrecio from '../../vectores/vectorPrecio';
 import { ButtonLikes } from '../../Components/ButtonLikes';
 import { PackageI } from '../../models/package.interface';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import firestore from '@react-native-firebase/firestore';
-import { LoadingScreen, LoadingScreenTransparentBackground, checkUserInArray, getUserWithEmail, updateRaitingPackage, verificarUsuario } from '../../firebase/Firestore';
+import { LoadingScreenTransparentBackground,  updateRaitingPackage, verificarUsuario, verificarUsuario2 } from '../../firebase/Firestore';
 import profileArrowVector2 from '../../vectores/vectorPerfilFlecha2';
 import Stars2 from '../../Components/Stars2';
 import currentLog from '../../firebase/UserData';
@@ -53,6 +50,26 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
   const [fullData, setFullData] = useState<Partial<Record<string, any>>>({});
 
   useEffect(() => {
+    const handleBackButton = () => {
+      switch (true) {
+        case starP:
+            setStarP(false);
+          return true;
+
+        default:
+            // Alert.alert('No case on switch', 'line 422 AdministratePackagesScreen');
+          return false; // Permitir el comportamiento predeterminado de retroceso
+      }
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+    };
+  }, [starP]);
+
+  useEffect(() => {
     const fetchData = async () => {
       setLoadingSomething(true);
       if (packageIn && packageIn.emailEnterprise) {
@@ -92,22 +109,27 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
   }, [packageIn, packageIn.emailEnterprise, act,packageIn.rating]);
 
   const confirm = async (id: any) => {
+    setLoadingSomething(true);
     const packId = id.toString();
 
     if (user?.email) {
       const userId = user?.email;
 
       const existeUsuario = await verificarUsuario(packId, userId);
-      if (existeUsuario) {
+      const siExiste = await verificarUsuario2(userId);
+      if (existeUsuario && siExiste) {
         // El usuario no existe en el array, realiza las acciones necesarias
         await updateRaitingPackage(packId, counter, userId);
         setAct(true);
         navigation.navigate('HomeScreen');
+        setLoadingSomething(false);
       }
-      else{
-        Alert.alert('Ya usted voto', 'No se puede volver a votar');
+      else {
+        Alert.alert('Lo sentimos', 'No cumple con los requisitos para votar');
+        setLoadingSomething(false);
       }
     }
+    setLoadingSomething(false);
   };
 
 
@@ -119,9 +141,12 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
         <LoadingScreenTransparentBackground />
       )}
 
-      { starP && user && (
+      { starP && user && !loadingSomeThing && (
         <>
         <View style={styles.containerTransparent}>
+          <View style={styles.alinear}>
+          <Text style={styles.titulo}> Sólo se permite votar a las personas que registraron su paquete una vez</Text>
+          </View>
             <Stars2 counter={counter} setCounter={setCounter} />
             <TouchableOpacity onPress={() => confirm(packageIn.id)}>
               <View style={styles.buttonReserva2}>
@@ -249,6 +274,9 @@ const styles = StyleSheet.create({
     zIndex: 999,
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
+  alinear:{
+    marginBottom:'3%',
+  },
   containerPhotoPack: {
     width: '100%',
     height: 350,
@@ -342,6 +370,12 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   titulo: {
+    marginTop: 4,
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Poppins-SemiBold',
+  },
+  titulo2: {
     marginTop: 4,
     color: 'white',
     fontSize: 16,

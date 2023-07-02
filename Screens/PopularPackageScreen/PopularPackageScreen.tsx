@@ -40,7 +40,7 @@ export default function PopularPackageScreen({ navigation }: PopularPackageScree
 
     useEffect(() => {
         fetchData() 
-        console.log(packages.length, packageCount)
+        // console.log(packages.length, packageCount)
     }, [packageCount]);
 
     return (
@@ -51,12 +51,12 @@ export default function PopularPackageScreen({ navigation }: PopularPackageScree
 
         <ScrollView style={styles.container}>
             <View style={styles.titleBox}>
-            <Text style={styles.title}>Paquetes Populares</Text>
+            <Text style={styles.title}>Paquetes Recomendados</Text>
             </View>
             {packages.length === 0 ? (
             <>
                 <Text style={styles.noFavoritesText}>
-                AÚN NO SE HAN AGREGADO PAQUETES EN ESTA CATEGORÍA
+                No se han agregado paquetes en esta categoría aún
                 </Text>
                 <Image
                 style={styles.imageUsed}
@@ -110,7 +110,7 @@ export default function PopularPackageScreen({ navigation }: PopularPackageScree
                 )}
                 {packages.length < packageCount ? 
                     <>
-                        <Text style = {styles.moreText}> No hay más paquetes populares!</Text>
+                        <Text style = {styles.moreText}>No hay más paquetes recomendados</Text>
                     </>
                 
                     : 
@@ -252,10 +252,10 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     moreText: {
-        color: '#FFFFFF',
-        fontSize: 12,
-        lineHeight: 19,
-        fontFamily: 'Poppins-Bold',
-        textAlign:"center",
+        marginTop:'5%',
+        color:'white',
+        fontSize: 16,
+        fontFamily: 'Poppins-Medium',
+        textAlign: 'center',
     },
 });

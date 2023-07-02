@@ -36,13 +36,17 @@ export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
 
   const closeFilterOptionsView = async () => {
     const toValue = 1000;
+    const duration = 100;
     Animated.spring(animation, {
       toValue,
+      duration,
       useNativeDriver: true, // Mejora el rendimiento de la animación
     }).start(() => {
-      setIsOpen(false);
     });
-
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 100);
+    
   };
 
   useEffect(() => {
@@ -81,19 +85,19 @@ export const FilterOptions = ({ setType, toggleMenu }: FilterOptionsProps) => {
             </TouchableOpacity>
           </View>
           <View style = {styles.secondRowFilterOptionsBox}>
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); Alert.alert('Busqueda: name', 'Estas a punto de buscar por: name'); closeFilterOptionsView(); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name');  closeFilterOptionsView(); }}>
               <Text style={styles.txtOptions}>Nombre</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); Alert.alert('Busqueda: description', 'Estas a punto de buscar por: description'); closeFilterOptionsView(); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description');  closeFilterOptionsView(); }}>
               <Text style={styles.txtOptions}>Descripción</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); Alert.alert('Busqueda: location', 'Estas a punto de buscar por: location'); closeFilterOptionsView(); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location');  closeFilterOptionsView(); }}>
               <Text style={styles.txtOptions}>Ubicación</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); Alert.alert('Busqueda: price', 'Estas a punto de buscar por: price'); closeFilterOptionsView(); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price');  closeFilterOptionsView(); }}>
               <Text style={styles.txtOptions}>Precio</Text>
             </TouchableOpacity>
 
@@ -129,35 +133,43 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
       }
       const lowercaseKeyword = searchKeyword;
       const uppercaseKeyword = searchKeyword.charAt(0).toUpperCase() + searchKeyword.slice(1);
-
+    
       const snapshot = await firestore()
         .collection('package')
         .where(type, '>=', uppercaseKeyword)
         .where(type, '<=', uppercaseKeyword + '\uf8ff')
         .orderBy(type)
         .get();
-
-        const snapshot2 = await firestore()
+    
+      const snapshot2 = await firestore()
         .collection('package')
         .where(type, '>=', lowercaseKeyword)
         .where(type, '<=', lowercaseKeyword + '\uf8ff')
         .orderBy(type)
         .get();
-
+    
       const data2: Item[] = snapshot2.docs.map((doc) => ({
-          id: doc.data().id,
-          name: doc.data().name,
-          description: doc.data().description,
+        id: doc.data().id,
+        name: doc.data().name,
+        description: doc.data().description,
       }));
-
+    
       const data: Item[] = snapshot.docs.map((doc) => ({
         id: doc.data().id,
         name: doc.data().name,
         description: doc.data().description,
       }));
-      setItems(data.concat(data2));
+    
+      // Eliminar duplicados
+      const mergedData = [...data, ...data2];
+      const uniqueData = mergedData.filter(
+        (item, index, self) => index === self.findIndex((i) => i.id === item.id)
+      );
+    
+      setItems(uniqueData);
       setResultOffset(0);
     };
+    
 
     fetchData();
   }, [searchKeyword, type]);
@@ -184,7 +196,7 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
     if (searchKeyword.trim() !== '') {
       navigation.navigate('SearchResultScreen', { name: searchKeyword, type: type });
     } else {
-      Alert.alert('El campo está vacío', 'Por favor escriba algo');
+      // Alert.alert('Campo Vacío', 'Escriba su búsqueda');
     }
   };
 
@@ -246,7 +258,7 @@ export const InputSearch = ({navigation, type, setType, areYouInSearchResult, de
         navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
       } else {
         // navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
-        Alert.alert('El campo está vacío', 'Por favor escriba algo');
+        // Alert.alert('El campo está vacío', 'Por favor escriba algo');
       }
     } else {
       // Alert.alert('Hola, ya estoy')
@@ -372,7 +384,7 @@ const styles = StyleSheet.create({
     backgroundColor: hexToRGBA('#1881B1', 1),
     borderColor: hexToRGBA('#000000',0.5),
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 15,
     // marginBottom: '7%',
     height: 35,
     justifyContent: 'center',

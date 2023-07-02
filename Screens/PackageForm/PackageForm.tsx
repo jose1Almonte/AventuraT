@@ -96,7 +96,7 @@ const CreateForm = () => {
   const selectImage = (nombre: string, descripcion: string, disponibilidad: string, precio: string, ubicacion: string) => {
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
       if (response.didCancel) {
-        Alert.alert('Not Image', 'No se ha elegido una imagen');
+        Alert.alert('No se ha elegido una imagen');;
         // console.warn('No se ha elegido una imagen');
       } else if (response.errorCode) {
         Alert.alert('ImagePicker Error: ', 'error');

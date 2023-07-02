@@ -27,12 +27,12 @@ export default function PayPremiumScreen() {
   const checkPay = async () => {
     if (paymentRef === '') {
       Alert.alert(
-        'Error',
-        'Por favor ingrese un código de referencia válido, para más información solicite soporte técnico',
+        'Campo Vacío',
+        'Ingresa el código de referencia',
       );
     } else {
       changePremium(user?.email);
-      Alert.alert('NITROOOOO!!!', 'Usted tiene cinco paquetes disponibles para VIP NITRO');
+      Alert.alert('¡Cuenta Actualizada!', 'Ahora puede mostrar hasta 5 Paquetes en Recomendados de la App');
       navigation.navigate('Tutorial');
     }
   };
@@ -116,6 +116,7 @@ export default function PayPremiumScreen() {
           <TextInput
             style={styles.inputReferenceNumber}
             placeholder="Ingrese nro. de referencia"
+            keyboardType="numeric"
             placeholderTextColor="grey"
             onChangeText={text => {
               setPaymentRef(text);

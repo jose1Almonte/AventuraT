@@ -36,13 +36,17 @@ export const FilterOptions = ({ setType, toggleMenu, navigation }: FilterOptions
 
   const closeFilterOptionsView = async () => {
     const toValue = 1000;
+    const duration = 100;
     Animated.spring(animation, {
       toValue,
+      duration,
       useNativeDriver: true, // Mejora el rendimiento de la animación
     }).start(() => {
-      setIsInputSearch2Open(false);
+      
     });
-    
+    setTimeout(() => {
+      setIsInputSearch2Open(false);
+    }, 100);
   };
 
   const closeFilterOptionsViewWithNavigation = async (stringType: string) => {
@@ -93,19 +97,19 @@ export const FilterOptions = ({ setType, toggleMenu, navigation }: FilterOptions
             </TouchableOpacity>
           </View>
           <View style = {styles.secondRowFilterOptionsBox}>
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name'); Alert.alert('Busqueda: name', 'Estas a punto de buscar por: name'); closeFilterOptionsViewWithNavigation('name'); navigation.navigate('SearchResultScreen',{name: '', type: 'name'}); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('name');  closeFilterOptionsViewWithNavigation('name'); navigation.navigate('SearchResultScreen',{name: '', type: 'name'}); }}>
               <Text style={styles.txtOptions}>Nombre</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description'); Alert.alert('Busqueda: description', 'Estas a punto de buscar por: description'); closeFilterOptionsViewWithNavigation('description'); navigation.navigate('SearchResultScreen',{name: '', type: 'description'}); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('description');  closeFilterOptionsViewWithNavigation('description'); navigation.navigate('SearchResultScreen',{name: '', type: 'description'}); }}>
               <Text style={styles.txtOptions}>Descripción</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location'); Alert.alert('Busqueda: location', 'Estas a punto de buscar por: location'); closeFilterOptionsViewWithNavigation('location'); navigation.navigate('SearchResultScreen',{name: '', type: 'location'}); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('location');  closeFilterOptionsViewWithNavigation('location'); navigation.navigate('SearchResultScreen',{name: '', type: 'location'}); }}>
               <Text style={styles.txtOptions}>Ubicación</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price'); Alert.alert('Busqueda: price', 'Estas a punto de buscar por: price'); closeFilterOptionsViewWithNavigation('price'); navigation.navigate('SearchResultScreen',{name: '', type: 'price'}); }}>
+            <TouchableOpacity style={styles.optionsPills} onPress={() => { setType('price');  closeFilterOptionsViewWithNavigation('price'); navigation.navigate('SearchResultScreen',{name: '', type: 'price'}); }}>
               <Text style={styles.txtOptions}>Precio</Text>
             </TouchableOpacity>
 
@@ -166,12 +170,18 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
         description: doc.data().description,
       }));
   
-      setItems(data.concat(data2));
+      // Eliminar duplicados antes de concatenar los arrays
+      const uniqueItems = [...data, ...data2].filter((item, index, self) =>
+        index === self.findIndex((t) => t.id === item.id)
+      );
+  
+      setItems(uniqueItems);
       setResultOffset(0);
     };
   
     fetchData();
   }, [searchKeyword, type]);
+  
   
 
   const handleSearchKeywordChange = (text: string) => {
@@ -189,6 +199,21 @@ const SearchBar: React.FC<{  searchKeyword: string; setSearchKeyword: (text: str
     setDoNotShow(true);
     // Alert.alert(text);
     navigation.navigate('SearchResultScreen',{name: text, type: 'name'});
+  };
+
+  const estrellaNinja = async (rating)=>{
+    if (rating){
+      const sum = rating.reduce((acc, num) => acc + num, 0);
+      const count = rating.length;
+      const result = ((sum / (count - 1))).toFixed(1);
+      if (isNaN(result)){
+        setResultDef(0);
+      }
+      else {
+        setResultDef(result);
+      }
+
+    }
   };
 
   return (
@@ -249,7 +274,7 @@ export const InputSearch = ({navigation, typeInputSearch2, setTypeInputSearch2, 
         navigation.navigate('SearchResultScreen',{name: searchKeyword, type: typeInputSearch2});
       } else {
         // navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
-        Alert.alert('Campo vacío', 'Por favor escriba algo');
+        // Alert.alert('Campo vacío', 'Por favor escriba algo');
       }
     } else {
       // Alert.alert('Hola, ya estoy')
@@ -460,3 +485,7 @@ const styles = StyleSheet.create({
 });
 
 export default InputSearch;
+function setResultDef(arg0: number) {
+  throw new Error('Function not implemented.');
+}
+

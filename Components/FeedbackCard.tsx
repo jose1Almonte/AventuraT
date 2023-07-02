@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
         marginBottom:'5%',
     },
     jojo:{
-        marginLeft: '10%',
-        marginRight: '10%',
+        marginLeft: '8%',
+        marginRight: '8%',
     },
     container: {
         flexDirection: 'row',
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     textPack: {
         marginHorizontal: 10,
         color: 'white',
-        fontSize:9,
+        fontSize:12,
         fontFamily: 'Poppins-Medium',
         marginBottom: 5,
         flex:1,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         padding: 10,
         color: 'white',
-        fontSize: 8,
+        fontSize: 9,
         fontFamily: 'Poppins-Medium',
     },
     img: {
