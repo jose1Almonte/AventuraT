@@ -196,7 +196,7 @@ const SearchBar: React.FC<{ searchKeyword: string; setSearchKeyword: (text: stri
     if (searchKeyword.trim() !== '') {
       navigation.navigate('SearchResultScreen', { name: searchKeyword, type: type });
     } else {
-      Alert.alert('El campo está vacío', 'Por favor escriba algo');
+      // Alert.alert('Campo Vacío', 'Escriba su búsqueda');
     }
   };
 
@@ -258,7 +258,7 @@ export const InputSearch = ({navigation, type, setType, areYouInSearchResult, de
         navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
       } else {
         // navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
-        Alert.alert('El campo está vacío', 'Por favor escriba algo');
+        // Alert.alert('El campo está vacío', 'Por favor escriba algo');
       }
     } else {
       // Alert.alert('Hola, ya estoy')

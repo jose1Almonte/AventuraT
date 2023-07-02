@@ -25,10 +25,12 @@ const FeedbackForm = ({ navigation, emailEnterprice }: FeedbackFormProps) => {
     const handleOnSend = async () => {
         if (comment !== ''){
             await updateRaitingEnterprise(emailEnterprice, { creator: user, stars: counter, comments: comment });
-            Alert.alert('Calificación exitosa', 'Su calificación fue enviada');
+            // Alert.alert('Calificación exitosa', 'Su calificación fue enviada');
 
             navigation.navigate('RatingsScreen', { email: emailEnterprice });
-            } else {Alert.alert('Calificación fallida', 'No deje vacio el comentario');}
+            } else {
+                Alert.alert('Escribir reseña')
+            }
     };
 
     return (

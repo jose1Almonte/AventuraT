@@ -33,7 +33,7 @@ const DatePickerBox = ({ text, writingDate, setWritingDate, dateBefore, date, se
 
   const handleDateChange = async (event: any, selectedDate: any) => {
     if (isDateGreaterThanOneDay(selectedDate, dateBefore)) {
-      console.log(`La fecha seleccionada es mayor por al menos un día a la fecha antes de la función. ${dateBefore.getDay().toString().padStart(2, '0')} <`);
+      // console.log(`La fecha seleccionada es mayor por al menos un día a la fecha antes de la función. ${dateBefore.getDay().toString().padStart(2, '0')} <`);
       const currentDate = selectedDate || date;
       setDate(currentDate);
       setWritingDate(false);
@@ -41,8 +41,8 @@ const DatePickerBox = ({ text, writingDate, setWritingDate, dateBefore, date, se
       const printDateBefore = (dateBefore.getTime() + 1000).toString();
       const printSelectedDate = selectedDate.getTime().toString();
 
-      Alert.alert('Fecha inválida', `No tiene sentido si eliges ese valor para la fecha! Vuelve a intentarlo ${printDateBefore} ${printSelectedDate}`);
-      console.log(`La fecha seleccionada NO es mayor por al menos un día a la fecha antes de la función. ${printDateBefore} ${printSelectedDate}`);
+      Alert.alert('Fecha inválida', 'La fecha del viaje debe comenzar y terminar con al menos 1 día de antelación');
+      // console.log(`La fecha seleccionada NO es mayor por al menos un día a la fecha antes de la función. ${printDateBefore} ${printSelectedDate}`);
       const currentDate = date;
       setDate(currentDate);
       setWritingDate(false);
@@ -169,7 +169,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
       return;
     }
 
-    console.log(selectedOption);
+    // console.log(selectedOption);
     if (
       data.name.trim() === '' ||
       data.availability.trim() === '' ||
@@ -198,7 +198,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
     // Alert.alert('Se está subiendo tus datos, presiona ok para que se continue');
 
     if (resourcePath === '') {
-      Alert.alert('Por favor coloque la imagen');
+      Alert.alert('Suba una imagen de presentación');
       return;
     } else {
       setLoading(true);
@@ -223,7 +223,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
           data.userList,
         );
         setLoading(false);
-        Alert.alert('Ya se subió el paquete a la base de datos');
+        // Alert.alert('Ya se subió el paquete a la base de datos');
         await navigation.navigate('HomeScreen');
       }, 3000);
       await loadLastId();
@@ -234,9 +234,9 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
   const selectImage = () => {
     launchImageLibrary({ mediaType: 'photo' }, response => {
       if (response.didCancel) {
-        console.log('No se ha elegido una imagen');
+        // console.log('No se ha elegido una imagen');
       } else if (response.errorCode) {
-        console.log('ImagePicker Error: ', response.errorCode);
+        // console.log('ImagePicker Error: ', response.errorCode);
       } else {
         const selectedAsset = response.assets && response.assets[0];
         if (selectedAsset && selectedAsset.uri) {
@@ -244,7 +244,7 @@ const CreateForm = ({ navigation }: CreateFormProps) => {
           setFileName(
             selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1),
           );
-          Alert.alert('Ya se subió la foto');
+          // Alert.alert('Imagen subida');
         }
       }
     });

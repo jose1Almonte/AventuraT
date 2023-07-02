@@ -661,9 +661,9 @@ export const updateProfile = async (displayName: string, photoURL: string) => {
         displayName,
         photoURL,
       });
-      Alert.alert('ACTUALIZADO', 'Perfil actualizado con éxito');
+      // Alert.alert('ACTUALIZADOOOOO', 'Perfil actualizado con éxito');
     } catch (error) {
-      Alert.alert('ERROR', 'Error al actualizar el perfil:');
+      // Alert.alert('ERROR', 'Error al actualizar el perfil:');
     }
   }
 };
@@ -678,9 +678,9 @@ export const updateUserDataByEmail = async (email: string, displayName: string, 
         photoURL,
         phoneNumber,
       });
-      console.log('Datos de usuario actualizados con éxito');
+      // console.log('Datos de usuario actualizados con éxito');
     } else {
-      console.log('No se encontró ningún usuario con el correo electrónico proporcionado');
+      // console.log('No se encontró ningún usuario con el correo electrónico proporcionado');
     }
   } catch { }
 };

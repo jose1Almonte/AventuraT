@@ -178,13 +178,14 @@ const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => 
             </View>
 
             <View style={styles.secondBox}>
-            <Text style={styles.infojob}>Si su cuenta es de tipo gmail por favor ingrese por aquí:</Text>
-              <YourSignInWithGoogleComponent
+            <YourSignInWithGoogleComponent
                 styles={styles}
                 navigation={navigation}
                 destinationNavigationComponentName={'HomeScreen'}
                 goToLoginScreen={false}
               />
+            {/* <Text style={styles.infojob}>Si su cuenta es de tipo gmail por favor ingrese por aquí:</Text> */}
+              
             </View>
 
           </Gradient>

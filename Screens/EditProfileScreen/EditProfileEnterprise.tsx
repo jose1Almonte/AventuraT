@@ -147,8 +147,7 @@ const EditProfileEnterprise = ({
 
     if (resourcePath === '') {
       Alert.alert(
-        'No se permite un campo vacío',
-        'Por favor seleccione la foto',
+        'Por favor seleccione una foto',
       );
       setLoading(false);
       return;
@@ -210,7 +209,7 @@ const EditProfileEnterprise = ({
   const selectImage = () => {
     launchImageLibrary({mediaType: 'photo'}, response => {
       if (response.didCancel) {
-        Alert.alert('Not Image', 'No se ha elegido una imagen');
+        Alert.alert('No se ha elegido una imagen');
       } else if (response.errorCode) {
         Alert.alert('ImagePicker Error', response.errorMessage || 'Error');
       } else {
@@ -220,7 +219,7 @@ const EditProfileEnterprise = ({
           setFileName(
             selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1),
           );
-          Alert.alert('Done', 'Image uploaded');
+          // Alert.alert('Imagen subida');
         }
       }
     });
