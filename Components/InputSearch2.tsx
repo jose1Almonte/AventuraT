@@ -274,7 +274,7 @@ export const InputSearch = ({navigation, typeInputSearch2, setTypeInputSearch2, 
         navigation.navigate('SearchResultScreen',{name: searchKeyword, type: typeInputSearch2});
       } else {
         // navigation.navigate('SearchResultScreen',{name: searchKeyword, type: type});
-        // Alert.alert('Campo vacío', 'Por favor escriba algo');
+        Alert.alert('Campo vacío', 'Por favor escriba algo');
       }
     } else {
       // Alert.alert('Hola, ya estoy')

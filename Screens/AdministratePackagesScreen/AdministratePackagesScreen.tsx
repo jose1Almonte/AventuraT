@@ -144,7 +144,7 @@ const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSele
         const isDone = await changePackageValues(data.id,descriptionEditting, tipoEditting);
 
         if (isDone) {
-            Alert.alert('Cambios Guardados');
+            // Alert.alert('Cambios Guardados');
             data.description = descriptionEditting;
             data.tipo = tipoEditting;
             setIsEditting(false);
@@ -513,7 +513,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             if (eraseExpired) {setEraseExpired(false);}
             if (eraseAll) {setEraseAll(false);}
             setWantErase(false);
-            if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes expirados de forma exitosa');} else {Alert.alert('No hay paquetes para borrar');}
+            // if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes expirados de forma exitosa');} else {Alert.alert('No hay paquetes para borrar');}
             setLoadingSomething(false);
 
         };
@@ -531,7 +531,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             if (eraseAll) {setEraseAll(false);}
             setWantErase(false);
 
-            if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes de forma exitosa');} else {Alert.alert('No hay paquetes para borrar');}
+            // if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes de forma exitosa');} else {Alert.alert('No hay paquetes para borrar');}
             setLoadingSomething(false);
         };
 

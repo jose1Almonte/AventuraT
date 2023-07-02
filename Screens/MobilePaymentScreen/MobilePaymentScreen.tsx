@@ -62,10 +62,10 @@ const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
           'Ingresa el código de referencia',
         );
       } else {
-        Alert.alert(
-          'Tu código de referencia ha sido enviado',
-          mobilePayment.mobilePaymentRef,
-        );
+        // Alert.alert(
+        //   'Tu código de referencia ha sido enviado',
+        //   mobilePayment.mobilePaymentRef,
+        // );
 
         if (packageIn) {
           await addPaidPackage(
