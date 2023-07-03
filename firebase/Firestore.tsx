@@ -825,11 +825,11 @@ export const actualizarAvailabilityMinus = async (idPack) => {
   }
 };
 
-export const verificarUsuario2 = async (userId) => {
+export const verificarUsuario2 = async (userId, packageName) => {
   try {
     const currentTimestamp = firebase.firestore.Timestamp.now();
     const packageRef = firestore().collection('paidPackage');
-    const querySnapshot = await packageRef.where('compradorMail', '==', userId).where('endDate', '<', currentTimestamp).get();
+    const querySnapshot = await packageRef.where('compradorMail', '==', userId).where('endDate', '<', currentTimestamp).where('name', '==' , packageName).get();
 
     if (querySnapshot.empty) {
       console.log('No se encontraron documentos con el usuario en el campo "compradorMail" y un "endDate" menor a la fecha y hora actual.');

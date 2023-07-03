@@ -116,7 +116,7 @@ const DetailsScreenUser = ({ navigation, route }: detailProps) => {
       const userId = user?.email;
 
       const existeUsuario = await verificarUsuario(packId, userId);
-      const siExiste = await verificarUsuario2(userId);
+      const siExiste = await verificarUsuario2(userId, packageIn?.name);
       if (existeUsuario && siExiste) {
         // El usuario no existe en el array, realiza las acciones necesarias
         await updateRaitingPackage(packId, counter, userId);
