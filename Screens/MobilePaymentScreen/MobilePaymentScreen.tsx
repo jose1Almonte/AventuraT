@@ -7,13 +7,13 @@ import {
   TextInput,
   Alert,
   Dimensions,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import { PackageI } from '../../models/package.interface';
-import { addPaidPackage } from '../../firebase/Firestore';
+import { actualizarAvailabilityMinus, addPaidPackage } from '../../firebase/Firestore';
 import firestore from '@react-native-firebase/firestore';
 import { SvgXml } from 'react-native-svg';
 import vectorHelpdeskScreen from '../../vectores/vectorHelpdeskScreen';
@@ -58,14 +58,14 @@ const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
     if (isLogged) {
       if (mobilePayment.mobilePaymentRef === '') {
         Alert.alert(
-          'Blank Space Not Allowed',
-          'You have to write your reference code',
+          'Campo Vacío',
+          'Ingresa el código de referencia',
         );
       } else {
-        Alert.alert(
-          'Your Reference Code Was Sent',
-          mobilePayment.mobilePaymentRef,
-        );
+        // Alert.alert(
+        //   'Tu código de referencia ha sido enviado',
+        //   mobilePayment.mobilePaymentRef,
+        // );
 
         if (packageIn) {
           await addPaidPackage(
@@ -88,15 +88,16 @@ const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
             photoURL,
             'E'
           );
+          actualizarAvailabilityMinus(packageIn.id?.toString());
           Alert.alert('¡Pago enviado! Puede ver su status en Mis Reservas');
           navigation.navigate('HomeScreen');
         } else {
           console.log(packageIn);
-          Alert.alert('Package data not available');
+          Alert.alert('Información no disponible');
         }
       }
     } else {
-      Alert.alert('You have to Sign in to continue', 'Please, Login');
+      Alert.alert('Inicie sesión', 'Debe iniciar sesión para continuar');
       navigation.navigate('LoginScreen');
     }
   }
@@ -147,6 +148,8 @@ const MobilePaymentScreen = ({ navigation, route, data }: PackaI) => {
         <TextInput
           style={styles.inputReferenceNumber}
           placeholder="Ingrese nro. de referencia"
+          placeholderTextColor="grey"
+          keyboardType="numeric"
           onChangeText={(text) =>
             setMobilePayment({ ...mobilePayment, mobilePaymentRef: text })
           }
@@ -168,6 +171,7 @@ const styles = StyleSheet.create({
   giantBox: {
     flex: 1,
     backgroundColor: '#ffffff',
+    marginTop:'-10%',
   },
   firstBigBox: {
     marginTop: 10,
@@ -253,12 +257,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   inputReferenceNumber: {
+    color:'black',
     borderBottomColor: '#1881B1',
     borderBottomWidth: 1,
     width: 260,
-    fontSize: 18,
+    fontSize: 12,
     textAlign: 'center',
-    color: '#000'
   },
   buttonIPaid: {
     backgroundColor: '#1881B1',

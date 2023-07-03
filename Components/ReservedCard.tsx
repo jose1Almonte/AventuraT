@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
-import { updatePaidPackage } from '../firebase/Firestore';
+import { actualizarAvailabilityPlus, updatePaidPackage } from '../firebase/Firestore';
+import { useNavigation } from '@react-navigation/native';
 
 interface ReservedCardProps {
+
     paid: any;
 }
 
 const ReservedCard = ({ paid }: ReservedCardProps) => {
+    const navigation = useNavigation();
     const [confirm, setConfirm] = useState(false);
     let tempPaid: any = paid.data;
 
@@ -27,18 +30,21 @@ const ReservedCard = ({ paid }: ReservedCardProps) => {
                                 <Text style={styles.textPack}>{tempPaid.compradorMail}</Text>
                             </View>
                             {/* <Text style={styles.textPack2}>Fecha de Pago:  20/06/2023</Text> */}
-                            <Text style={styles.textPack2}>Monto: {tempPaid.price} $</Text>
+                            <Text style={styles.textPack2}>Monto: ${tempPaid.price}</Text>
                             <Text style={styles.textPack2}>Referencia: {tempPaid.mobilePayment.mobilePaymentRef}</Text>
                             <View style={styles.containButtons}>
                                 <TouchableOpacity onPress={() => {
                                     updatePaidPackage(paid.id, 'C');
                                     setConfirm(true);
+                                    navigation.navigate('BusinessReservedScreen');
                                 }}>
                                     <Text style={styles.button1}>Confirmar</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => {
                                     updatePaidPackage(paid.id, 'R');
+                                    actualizarAvailabilityPlus(tempPaid.id.toString());
                                     setConfirm(true);
+                                    navigation.navigate('BusinessReservedScreen');
                                 }}>
                                     <Text style={styles.button2}>Rechazar</Text>
                                 </TouchableOpacity>
@@ -57,11 +63,21 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         marginTop: 20,
+        justifyContent: 'center'
     },
     containerPack: {
-        width: '98%',
+        width: '100%',
         borderRadius: 20,
-        backgroundColor: '#1881B1',
+        backgroundColor: '#fffffff0',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        alignContent: 'center',
+        borderColor: '#1881b18d',
+    borderBottomWidth: 4,
+    borderRightWidth: 4,
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    // borderRadius: 15,
     },
     containerPack2: {
         display: 'flex',
@@ -74,16 +90,17 @@ const styles = StyleSheet.create({
     },
     textPack: {
         marginHorizontal: 14,
-        color: 'white',
-        fontSize: 18,
+        color: 'black',
+        fontSize: 16,
         fontFamily: 'Poppins-Medium',
         marginBottom: 5,
+        width: '75%'
     },
     textPack2: {
         marginHorizontal: 70,
-        color: 'white',
-        fontSize: 12,
-        fontFamily: 'Poppins-Medium',
+        color: 'black',
+        fontSize: 13,
+        fontFamily: 'Poppins-Regular',
     },
     img: {
         width: 35,
@@ -94,7 +111,7 @@ const styles = StyleSheet.create({
     },
     containButtons: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         paddingHorizontal: 30,
         paddingVertical: 10,
     },
@@ -104,6 +121,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#1DB5BE',
         color: '#fff',
         borderRadius: 30,
+        fontFamily: 'Poppins-Medium',
     },
     buttonConfirm: {
         paddingHorizontal: 30,
@@ -117,7 +135,8 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         backgroundColor: '#730F0F',
         color: '#fff',
-        borderRadius: 30,
+        borderRadius: 320,
+        fontFamily: 'Poppins-Medium',
     },
 });
 

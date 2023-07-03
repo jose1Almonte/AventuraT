@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import currentLog from '../firebase/UserData';
+import auth, { firebase } from '@react-native-firebase/auth';
 
 const UserContext = createContext();
 

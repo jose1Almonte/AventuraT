@@ -1,30 +1,41 @@
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import profileVector from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 import EditProfileButton from '../../Components/Profiles/editProfileButton';
 import profileArrowVector from '../../vectores/vectorPerfilFlecha';
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
 import { useUser } from '../../Context/UserContext';
 import currentLog from '../../firebase/UserData';
 import { deleteExpiredDocuments } from '../../firebase/DeletePackage';
 import { LoadingScreenTransparentBackground, checkResponsibleNameExists } from '../../firebase/Firestore'; // Update the path to the FirebaseFunctions file
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { ValuesContext } from '../../Context/ValuesContext';
+import vectorPerfil from '../../vectores/vectorPerfil';
 
 interface UserProfileScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>,
+
 }
 
 export const UserProfileScreen = ({
   navigation,
 }: UserProfileScreenProps) => {
 
+  // const { actualizaPerfil } = useContext(PerfilContext);
+  // console.log(actualizaPerfil);
   const { setUser, setLogged } = useUser();
   const logout = async (): Promise<void> => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+    } catch { }
     await auth().signOut();
     setUser(null);
     setLogged(false);
+    setLoadingSomething(false);
   };
 
   const user = currentLog();
@@ -50,57 +61,58 @@ export const UserProfileScreen = ({
 
   return (
     <>
+      {loadingSomeThing && <LoadingScreenTransparentBackground />}
 
-      <ScrollView style = {styles.scrollBox}>
-        {loadingSomeThing && (
-          <LoadingScreenTransparentBackground />
-        )}
+      <ScrollView style={styles.container}>
         <View style={styles.container}>
-
           <View style={styles.backGround}>
-            <SvgXml xml={profileVector} />
+            <SvgXml xml={vectorPerfil} />
           </View>
 
           <View style={styles.info}>
-
-
             <View style={styles.topInfo}>
               <View style={styles.photoBox}>
-                <PhotoProfile size={100} imageSource={user?.photoURL ? user.photoURL : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'} />
+                <PhotoProfile
+                  size={100}
+                  imageSource={
+                    user?.photoURL
+                      ? user.photoURL
+                      : 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg'
+                  }
+                />
               </View>
 
               <View style={styles.detailsUserBox}>
                 <Text style={styles.txt}>{user?.email}</Text>
               </View>
 
-              <View style={styles.editProfileButtonBox}>
-                {/* <EditProfileButton /> */}
-                {userExists && (
-            <TouchableOpacity style={styles.containerButton} onPress={() => { navigation.navigate('BusinessProfileScreen');}}>
-              <Text style={styles.txtButton}>Perfil empresarial</Text>
-            </TouchableOpacity>
-          )}
-              </View>
-
+              <TouchableOpacity style={styles.editProfileButtonBox} onPress={() => { navigation.navigate('EditProfileScreen'); }}>
+                <EditProfileButton />
+              </TouchableOpacity>
             </View>
 
             <View style={styles.info2}>
-
               <Text style={styles.title}>Configuración</Text>
 
-              {/* <View style={styles.containerInfo}>
-                <Text style={styles.txtInfo}>Información personal</Text>
-                <SvgXml xml={profileArrowVector} />
-              </View> */}
-              <TouchableOpacity style={styles.containerInfo} onPress={() => navigation.navigate('FavoriteScreen')}>
-                <Text style={styles.txtInfo}>Favoritos</Text>
+              {userExists && (
+                <TouchableOpacity
+                  style={styles.containerInfo}
+                  onPress={() => {
+                    navigation.navigate('BusinessProfileScreen');
+                  }}>
+                  <Text style={styles.txtInfo}>Perfil empresarial</Text>
+                  <SvgXml xml={profileArrowVector} />
+                </TouchableOpacity>
+              )}
+              <TouchableOpacity
+                style={styles.containerInfo}
+                onPress={() => navigation.navigate('FavoriteScreen')}>
+                <Text style={styles.txtInfo}>Mis Favoritos</Text>
                 <SvgXml xml={profileArrowVector} />
               </TouchableOpacity>
-              {/* <View style={styles.containerInfo}>
-                <Text style={styles.txtInfo}>Opciones de pago</Text>
-                <SvgXml xml={profileArrowVector} />
-              </View> */}
-              <TouchableOpacity style={styles.containerInfo} onPress={() => navigation.navigate('ReservedScreen')}>
+              <TouchableOpacity
+                style={styles.containerInfo}
+                onPress={() => navigation.navigate('ReservedScreen')}>
                 <Text style={styles.txtInfo}>Mis Reservas</Text>
                 <SvgXml xml={profileArrowVector} />
               </TouchableOpacity>
@@ -118,45 +130,45 @@ export const UserProfileScreen = ({
               )} */}
 
               {userExists && (
-                <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('CreatePackageFormScreen'); }}>
-                  <Text style={styles.txtInfo1}>Crear paquete</Text>
+                <TouchableOpacity
+                  style={styles.containerInfo}
+                  onPress={() => {
+                    navigation.navigate('BusinessReservedScreen');
+                  }}>
+                  <Text style={styles.txtInfo}>
+                    Gestión de Pagos de Paquetes
+                  </Text>
                   <SvgXml xml={profileArrowVector} />
                 </TouchableOpacity>
               )}
 
-              {userExists && (
-                <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('BusinessReservedScreen'); }}>
-                  <Text style={styles.txtInfo1}>Gestión de Pagos de Paquetes</Text>
-                  <SvgXml xml={profileArrowVector} />
-                </TouchableOpacity>
-              )}
-
-              {userExists && (
+              {/*userExists && (
                 <TouchableOpacity style={styles.containerInfo} onPress={() => { navigation.navigate('PayPremiumScreen'); }}>
                   <Text style={styles.txtInfo1}>Pasar a AventuraT Nitro</Text>
                   <SvgXml xml={profileArrowVector} />
                 </TouchableOpacity>
+              )*/}
+              {user && (
+                <TouchableOpacity
+                  style={styles.containerInfo}
+                  onPress={() => {
+                    logout();
+                    navigation.navigate('HomeScreen');
+                  }}>
+                  <Text style={styles.txtInfo1}>Cerrar sesión</Text>
+                  <SvgXml xml={profileArrowVector} />
+                </TouchableOpacity>
               )}
-
-              <TouchableOpacity style={styles.containerInfo} onPress={() => { logout(); navigation.navigate('HomeScreen'); }}>
-                <Text style={styles.txtInfo1}>Cerrar sesión</Text>
-                <SvgXml xml={profileArrowVector} />
-              </TouchableOpacity>
             </View>
-
           </View>
+
         </View>
       </ScrollView>
-
     </>
   );
 };
 
-
 const styles = StyleSheet.create({
-  scrollBox:{
-    backgroundColor: 'white',
-  },
   container: {
     flex: 1,
     backgroundColor: '#1DB5BE',
@@ -164,6 +176,7 @@ const styles = StyleSheet.create({
   info: {
     flex: 1,
     display: 'flex',
+    position: 'absolute'
   },
   topInfo: {
     flex: 3.6,
@@ -172,7 +185,7 @@ const styles = StyleSheet.create({
   },
   info2: {
     flex: 5,
-    marginTop: 30,
+    marginTop: 10,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -186,7 +199,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20
+    marginBottom: 20,
   },
 
   detailsUserBox: {
@@ -203,8 +216,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    gap: 30,
-    marginTop: 20
+    gap: 20,
+    marginTop: 10,
   },
   containerButton: {
     display: 'flex',
@@ -227,13 +240,15 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   backGround: {
-    position: 'absolute',
+    // position: 'relative',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 0,
+    zIndex: -1,
     display: 'flex',
+    // height: '100%',
+    // width: '100%',
   },
   txt: {
     color: 'black',

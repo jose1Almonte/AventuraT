@@ -25,6 +25,11 @@ const validateEmail = (email: string): boolean => {
   return emailRegex.test(email);
 };
 
+const validateNumber= (rif: string): boolean => {
+  const numberRegExp = /^[0-9]+$/;
+  return numberRegExp.test(rif);
+}
+
 const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<string, object | undefined>>}) => {
   const [resourcePath, setResourcePath] = useState('');
   const [resourcePath2, setResourcePath2] = useState('');
@@ -72,8 +77,37 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
       return;
     }
 
+      const passwordInt = parseInt(data.password);
+
+      const phoneNumberInt = parseInt(data.phoneNumber);
+
+      if (Number.isInteger(passwordInt) && Number.isInteger(phoneNumberInt) ){}
+      else {
+        Alert.alert('Revise el rif o el numero de teléfono no son números');
+        setLoading(false);
+        return;
+      }
+
     if (data.rif.trim().length < 6){
-      Alert.alert('Error','El Rif es demasiado corto');
+      Alert.alert('RIF Inválido','El RIF es demasiado corto');
+      setLoading(false);
+      return;
+    }
+
+    if (!validateNumber(data.rif.toString())) {
+      Alert.alert('RIF Inválido', 'Por favor, ingrese un RIF válido (Sólo caracteres numéricos)');
+      setLoading(false);
+      return;
+    }
+
+    if (data.phoneNumber.trim().length < 11 || data.phoneNumber.trim().length > 11){
+      Alert.alert('Error','Por favor, ingrese un número de teléfono válido (11 dígitos)');
+      setLoading(false);
+      return;
+    }
+
+    if (!validateNumber(data.phoneNumber.toString())) {
+      Alert.alert('Número Teléfono Inválido', 'Por favor, ingrese un número de teléfono válido (11 dígitos)');
       setLoading(false);
       return;
     }
@@ -86,14 +120,14 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
 
     const enterpriseExists = await checkEnterpriseExists(data.nameEnterprise);
     if (enterpriseExists) {
-      Alert.alert('Empresa Existente', 'La empresa ya existe en la base de datos');
+      Alert.alert('Empresa Existente', 'La empresa ya está registrada');
       setLoading(false);
       return;
     }
 
     const responsibleNameExists = await checkResponsibleNameExists(data.responsibleName.toLowerCase());
     if (responsibleNameExists) {
-      Alert.alert('Nombre de Responsable Existente', 'El nombre de responsable ya existe en la base de datos');
+      Alert.alert('Correo Existente', 'El correo ya está registrado');
       setLoading(false);
       return;
     }
@@ -101,15 +135,17 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
     if (resourcePath === '' || resourcePath2 === '') {
       Alert.alert('Error', 'Agrega una imagen');
       setLoading(false);
+      return;
     } else {
 
       const url1 = await uploadImage(resourcePath, filename);
       const url2 = await uploadImage(resourcePath2, filename2);
-
+        
         addEnterprise(
           data.nameEnterprise,
           data.rif,
           data.responsibleName.toLowerCase(),
+          data.disName,
           data.location,
           data.description,
           data.vip,
@@ -117,12 +153,12 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
           data.phoneNumber,
           url1,
           url2
-          )
+          );
         if (resourcePath2 !== ''){
           // setLoading(true);
           await createUserWithEmailAndPassword(data.responsibleName.toLowerCase(), data.password,data.phoneNumber,url2, data.disName);
           if (await checkIfUserExists(data.responsibleName.toLowerCase()) === false && url2) {
-            await addUser([''],data.disName,data.responsibleName.toLowerCase(),false,url2);
+            await addUser([''],data.disName,data.responsibleName.toLowerCase(),false,url2,data.phoneNumber);
           }
           loadLastId();
           setUser(currentLog());
@@ -143,7 +179,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
     const selectImage = () => {
       launchImageLibrary({ mediaType: 'photo' }, (response) => {
         if (response.didCancel) {
-          Alert.alert('Not Image', 'No se ha elegido una imagen');
+          Alert.alert('No se ha elegido una imagen');
         } else if (response.errorCode) {
           Alert.alert('ImagePicker Error', response.errorMessage || 'Error');
         } else {
@@ -151,7 +187,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
           if (selectedAsset && selectedAsset.uri) {
             setResourcePath(selectedAsset.uri);
             setFileName(selectedAsset.uri.substring(selectedAsset.uri.lastIndexOf('/') + 1));
-            Alert.alert('Done', 'Image uploaded');
+            // Alert.alert('Imagen subida');
           }
         }
       });
@@ -161,7 +197,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
 
       launchImageLibrary({ mediaType: 'photo' }, (response) => {
         if (response.didCancel) {
-          Alert.alert('Not Image', 'No se ha elegido una imagen');
+          Alert.alert('No se ha elegido una imagen');
         } else if (response.errorCode) {
           Alert.alert('ImagePicker Error', response.errorMessage || 'Error');
         } else {
@@ -169,7 +205,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
           if (selectedAsset2 && selectedAsset2.uri) {
             setResourcePath2(selectedAsset2.uri);
             setFileName2(selectedAsset2.uri.substring(selectedAsset2.uri.lastIndexOf('/') + 1));
-            Alert.alert('Done', 'picture uploaded');
+            // Alert.alert('Imagen subida');
           }
         }
       });
@@ -199,10 +235,14 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>RIF</Text>
-              <TextInput
-                style={styles.input}
-                onChangeText={(text) => setData((prevData) => ({ ...prevData, rif: text, password: text }))}
-              />
+              <View style={styles.flexEnRaw}>
+              <Text style={styles.label2}>J-</Text>
+                <TextInput
+                  style={styles.input2}
+                  keyboardType="numeric"
+                  onChangeText={(text) => setData((prevData) => ({ ...prevData, rif: text, password: text }))}
+                />
+              </View>
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Nombre de la persona responsable</Text>
@@ -237,6 +277,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
               <Text style={styles.label}>Numero de teléfono</Text>
               <TextInput
                 style={styles.input}
+                keyboardType="numeric"
                 onChangeText={(text) => setData((prevData) => ({ ...prevData, phoneNumber: text }))}
               />
             </View>
@@ -246,7 +287,7 @@ const EnterpriseFormScreen = ({navigation}: {navigation: NavigationProp<Record<s
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button} onPress={selectImage2}>
-              <Text style={styles.buttonText}>Subir imagen/propia</Text>
+              <Text style={styles.buttonText}>Subir imagen/Responsable</Text>
             </TouchableOpacity>
             {resourcePath === '' ? (
               <></>
@@ -297,6 +338,11 @@ const styles = StyleSheet.create({
     borderBottomColor: 'black',
     marginTop: 22,
   },
+  flexEnRaw:{
+    flexDirection:'row',
+    alignItems:'center',
+    gap:8,
+  },
   title: {
     fontWeight: '600',
     fontSize: 24,
@@ -311,12 +357,28 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: 'black',
   },
+  label2: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 12,
+    lineHeight: 18,
+    color: 'black',
+
+  },
   input: {
     marginTop: 8,
     fontFamily: 'Poppins-Regular',
     fontSize: 14,
     lineHeight: 24,
     color: 'black',
+    height: '100%'
+  },
+  input2: {
+    marginTop: 10,
+    fontFamily: 'Poppins-Regular',
+    fontSize: 10,
+    lineHeight: 16,
+    color: 'black',
+    width:'100%',
   },
   button: {
     display: 'flex',
@@ -326,7 +388,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     backgroundColor: '#1881B1',
-    marginTop: 40,
+    marginTop: '3%',
+    marginBottom:'3%',
   },
   buttonText: {
     color: 'white',

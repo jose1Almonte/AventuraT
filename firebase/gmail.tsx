@@ -16,7 +16,7 @@ export const onGoogleButtonPress = async () => {
     const { idToken } = await GoogleSignin.signIn();
     const googleCredential = firebase.auth.GoogleAuthProvider.credential(idToken);
     await firebase.auth().signInWithCredential(googleCredential);
-    Alert.alert('¡Ingreso exitoso!', 'Haz logrado iniciar sesión con Google');
+    // Alert.alert('¡Ingreso exitoso!', 'Haz logrado iniciar sesión con Google');
 
     // Escuchar cambios en la autenticación para obtener el usuario actualizado
     const unsubscribe = firebase.auth().onAuthStateChanged(async (user: FirebaseAuthTypes.User | null) => {
@@ -24,11 +24,10 @@ export const onGoogleButtonPress = async () => {
 
       if (user) {
         const userEmail = user.email;
-        console.log(user.displayName);
 
         if (userEmail && user.displayName && user.email && user.emailVerified && user.photoURL) {
           if (await checkIfUserExists(userEmail) === false) {
-            await addUser([''],user.displayName, user.email, user.emailVerified, user.photoURL);
+            await addUser([''], user.displayName, user.email, user.emailVerified, user.photoURL, '');
           }
         }
       }
@@ -37,7 +36,7 @@ export const onGoogleButtonPress = async () => {
     return true;
   } catch (error) {
     Alert.alert('Ingreso fallido', `${error}`);
-    console.log(error);
+    // console.log(error);
     return false;
   }
 };

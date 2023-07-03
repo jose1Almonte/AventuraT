@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Alert} from 'react-native';
+import {View, StyleSheet, Text } from 'react-native';
 
 class EditProfileButton extends Component {
   render() {
     return (
-      <TouchableOpacity style={styles.containerButton} onPress={()=>(Alert.alert('Nada','Todavía no hago nada xd'))}>
+      <View style={styles.containerButton}>
         <View style={styles.container}>
           <Text style={styles.txt}>Editar perfil</Text>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   }
 }

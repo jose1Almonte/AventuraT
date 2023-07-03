@@ -6,8 +6,8 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {SvgXml} from 'react-native-svg';
+import React, { useEffect, useState } from 'react';
+import { SvgXml } from 'react-native-svg';
 // import vectorPerfil from '../../vectores/vectorPerfil';
 import PhotoProfile from '../../Components/Profiles/photoProfile';
 // import EditProfileButton from '../../Components/Profiles/editProfileButton';
@@ -16,16 +16,17 @@ import vectorLocation from '../../vectores/vectorLocation';
 // import PublishedPackages from '../../Components/Profiles/publishedPackages';
 import separator from '../../vectores/separator';
 import star from '../../vectores/star';
-import {NavigationProp} from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../../firebase/UserData';
 import {
   LoadingScreenTransparentBackground,
   returnEnterpisePic,
 } from '../../firebase/Firestore';
 import profileVector from '../../vectores/vectorPerfil';
-import {PackageI} from '../../models/package.interface';
+import { PackageI } from '../../models/package.interface';
 import firestore from '@react-native-firebase/firestore';
 import PublishedPackages2 from '../../Components/Profiles/publishedPackages2';
+import { useNavigation } from '@react-navigation/native';
 
 interface businessProfileProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -34,9 +35,9 @@ interface businessProfileProps {
   // userData?: Partial<Record<string, any>>;
 }
 
-const BusinessProfileScreen = ({navigation, route}) => {
+const BusinessProfileScreen = ({ route, navigation }: businessProfileProps) => {
   let packageIn: PackageI = route.params.data;
-  const {userData: userData} = route.params;
+  const { userData: userData } = route.params;
   const [nameEnterprise, setNameEnterprise] = useState(null);
   const [emailEnterprise, setEmailEnterprise] = useState('');
   const [description, setDescription] = useState(null);
@@ -47,22 +48,18 @@ const BusinessProfileScreen = ({navigation, route}) => {
   const [location2, setLocation2] = useState(null);
   const [empresa2, setEmpresa2] = useState(null);
 
+
   const [loadingSomeThing, setLoadingSomething] = useState(false);
 
   useEffect(() => {
-    console.log('userData: ', userData);
     const fetchData = async () => {
       setLoadingSomething(true);
-      // console.log('packageIn?.emailEnterprise: ' ,packageIn.emailEnterprise);
       if (packageIn && packageIn.emailEnterprise) {
-        // console.log('meee: ',packageIn.emailEnterprise);
         const querySnapshot = await firestore()
-          .collection('users')
-          .where('email', '==', packageIn.emailEnterprise)
+          .collection('enterprise')
+          .where('responsibleName', '==', packageIn.emailEnterprise)
           .get();
         querySnapshot.forEach(doc => {
-          // console.log(doc.data().displayName);
-          // console.log(userData.displayName);
           setNameEnterprise(doc.data().displayName);
           setEmailEnterprise(doc.data().responsibleName);
           setEmpresa(doc.data().urlEmpresa);
@@ -72,8 +69,6 @@ const BusinessProfileScreen = ({navigation, route}) => {
         const pic = await returnEnterpisePic(packageIn.emailEnterprise);
         if (pic != null) {
           setEmpresa2(pic.urlEmpresa);
-          console.log(empresa2);
-          console.log('urlEmpresa', pic.urlEmpresa);
           setDescription2(pic.description);
           setLocation2(pic.location);
           setNameEnterprise2(pic.nameEnterprise);
@@ -92,10 +87,12 @@ const BusinessProfileScreen = ({navigation, route}) => {
         <View style={styles.backGround}>
           <SvgXml xml={profileVector} />
         </View>
-
         <View>
           <View style={styles.info}>
             <View style={styles.topInfo}>
+              {packageIn.mainImageUrl && (
+                <Text style={styles.txt3}>{nameEnterprise2}</Text>
+              )}
               <View style={styles.top}>
                 <View>
                   {empresa2 && (
@@ -109,17 +106,21 @@ const BusinessProfileScreen = ({navigation, route}) => {
                 <View style={stylesBtn.positionContainer}>
                   {/* <Pressable
                     onPress={() => {
-                      navigation.navigate('RatingsScreen');
+                      navigation.navigate('RatingsScreen', {
+                        email: packageIn.emailEnterprise,
+                      });
                     }}>
                     <View style={stylesBtn.containerButton}>
                       <View style={stylesBtn.container}>
-                        <Text style={stylesBtn.txt}>Ver calificaciones</Text>
+                        <Text style={stylesBtn.txt}>Calificaciones</Text>
                       </View>
                     </View>
                   </Pressable> */}
                   {/* <Pressable
                     onPress={() => {
-                      navigation.navigate('FeedbackScreen');
+                      navigation.navigate('FeedbackScreen', {
+                        email: packageIn.emailEnterprise,
+                      });
                     }}>
                     <View style={stylesBtn.containerButton}>
                       <View style={stylesBtn.container2}>
@@ -130,10 +131,6 @@ const BusinessProfileScreen = ({navigation, route}) => {
                   </Pressable> */}
                 </View>
               </View>
-
-              {packageIn.mainImageUrl && (
-                <Text style={styles.txt}>Empresa: {nameEnterprise2}</Text>
-              )}
               <View style={styles.containerManager}>
                 <Text style={styles.txt}>Encargado: </Text>
                 <Text style={styles.txtManager}>{userData.displayName}</Text>
@@ -150,7 +147,7 @@ const BusinessProfileScreen = ({navigation, route}) => {
           </View>
           <View style={styles.containerPack}>
             {packageIn.emailEnterprise !== undefined && (
-              <PublishedPackages2 email={packageIn.emailEnterprise} />
+              <PublishedPackages2 email={packageIn.emailEnterprise} navigation={navigation} />
             )}
           </View>
         </View>
@@ -211,7 +208,11 @@ const styles = StyleSheet.create({
     width: 100,
     overflow: 'hidden',
   },
-
+  txt3: {
+    color: 'white',
+    fontSize: 25,
+    fontFamily: 'Poppins-Medium',
+  },
   imagesStyles: {
     width: '100%',
     height: '100%',
@@ -237,7 +238,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   top: {
-    marginTop: 110,
+    marginTop: 70,
     marginBottom: 10,
     display: 'flex',
     flexDirection: 'row',
@@ -260,7 +261,7 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   bottomInfo: {
-    marginTop: 15,
+    marginTop: '10%',
     display: 'flex',
     justifyContent: 'center',
     gap: 15,
@@ -274,7 +275,7 @@ const styles = StyleSheet.create({
   txt: {
     color: 'black',
     fontSize: 16,
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'Poppins-Regular',
   },
   title: {
     color: 'black',
@@ -294,7 +295,7 @@ const styles = StyleSheet.create({
   description: {
     color: 'black',
     textAlign: 'justify',
-    fontSize: 12,
+    fontSize: 13,
     fontFamily: 'Poppins-Regular',
   },
   location: {

@@ -1,18 +1,37 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Text, Image, TextInput, Pressable, Alert } from 'react-native';
+import React, { Component, useContext, useState } from 'react';
+import { View, StyleSheet, Text, Image, TextInput, Alert, TouchableOpacity } from 'react-native';
 import calendar from '../vectores/calendar';
 import { SvgXml } from 'react-native-svg';
 import InputFeedback from './InputFeedback';
 import { NavigationProp } from '@react-navigation/native';
 import currentLog from '../firebase/UserData';
+import Stars from './Stars';
+import { updateRaitingEnterprise } from '../firebase/Firestore';
+import { ValuesContext } from '../Context/ValuesContext';
 
 interface FeedbackFormProps {
     navigation: NavigationProp<Record<string, object | undefined>>;
+    emailEnterprice: string;
 }
 
-const FeedbackForm = ({ navigation }: FeedbackFormProps) => {
+const FeedbackForm = ({ navigation, emailEnterprice }: FeedbackFormProps) => {
 
     const user = currentLog();
+    const [counter, setCounter] = useState(0);
+    const [comment, setComment] = useState('');
+
+    // const {whenUserAddNewComment, setWhenUserAddNewComment} = useContext(ValuesContext);
+
+    const handleOnSend = async () => {
+        if (comment !== ''){
+            await updateRaitingEnterprise(emailEnterprice, { creator: user, stars: counter, comments: comment });
+            // Alert.alert('Calificación exitosa', 'Su calificación fue enviada');
+
+            navigation.navigate('RatingsScreen', { email: emailEnterprice });
+            } else {
+                Alert.alert('Escribir reseña')
+            }
+    };
 
     return (
         <View style={styles.container}>
@@ -30,35 +49,38 @@ const FeedbackForm = ({ navigation }: FeedbackFormProps) => {
 
                     </View>
                     <Text style={styles.textPack3}>Añade una puntuación</Text>
-                    <TextInput style={styles.textPack2} keyboardType="numeric" />
+                    <View style={styles.container2}>
+                        <View style={styles.content2} />
+                        <Stars counter={counter} setCounter={setCounter} />
+                        <View style={styles.content3} />
+                        </View>
                     <TextInput
                         style={styles.textArea}
                         accessibilityHint='Añade una breve descripción'
                         multiline={true}
-                        numberOfLines={15}
+                        numberOfLines={10}
+                        maxLength={290}
+                        onChangeText={(text) => { setComment(text) }}
                     />
                     <View style={styles.containerButton}>
-                        <Pressable onPress={() => {
-                            Alert.alert('Calificación exitosa', 'Su calificación fue enviada')
-                            navigation.navigate('RatingsScreen');
-                        }}>
+                        <TouchableOpacity onPress={() => {handleOnSend();}}>
                             <View style={styles.containerBtn}>
                                 <Text style={styles.txtBtn}>Enviar</Text>
                             </View>
-                        </Pressable>
-
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     containerButton: {
         display: 'flex',
         alignItems: "center"
     },
+    
     containerBtn: {
         height: 40,
         width: 140,
@@ -75,11 +97,11 @@ const styles = StyleSheet.create({
     contain: {
         display: 'flex',
         flexDirection: 'row',
-        marginTop: 25,
+        marginTop: '10%',
     },
     containerPack: {
-        height: 500,
-        width: 330,
+        height: '105%',
+        width: '80%',
         borderRadius: 20,
         backgroundColor: '#1881B1',
     },
@@ -95,19 +117,34 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         marginTop: 5,
         color: 'white',
-        fontSize: 18,
+        fontSize: 9,
         fontFamily: 'Poppins-Medium',
         marginBottom: 5,
     },
+    container2: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        marginBottom:'3%',
+      },
+      content2: {
+        width: 1,
+        height: 1,
+      },
+      content3: {
+        width: 1,
+        height: 3,
+        marginRight:'10%',
+      },
     textArea: {
         textAlignVertical: 'top',
         marginVertical: 10,
         marginHorizontal: 15,
         padding: 10,
         color: 'black',
-        fontSize: 15,
+        fontSize: 8,
         fontFamily: 'Poppins-Medium',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
     textPack2: {
         marginVertical: 10,
@@ -116,15 +153,16 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 15,
         fontFamily: 'Poppins-Medium',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
     textPack3: {
         marginHorizontal: 15,
         padding: 10,
         color: 'white',
-        fontSize: 15,
+        fontSize: 10,
         fontFamily: 'Poppins-Medium',
         textAlign: 'right',
+
     },
     img: {
         width: 35,

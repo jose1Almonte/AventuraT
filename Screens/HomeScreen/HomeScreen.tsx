@@ -9,7 +9,7 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 //import RegisterEnterprise from '../../Components/registerEnterprise';
 import { ProfilePicture } from '../../firebase/PerfilPicture';
 // import RegisterEnterprise from '../../Components/registerEnterprise';
@@ -20,9 +20,11 @@ import { Carrousel } from '../../Components/Carrousel';
 import { NavigationProp } from '@react-navigation/native';
 import menuBar from '../../vectores/menuBar';
 import { SvgXml } from 'react-native-svg';
-import InputSearch from '../../Components/InputSearch';
+import InputSearch, { FilterOptions } from '../../Components/InputSearch';
 import PopularPackages from '../../Components/PopularPackages';
 import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
+import FastImage from 'react-native-fast-image';
+import { ValuesContext } from '../../Context/ValuesContext';
 
 interface HomeScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -31,52 +33,89 @@ interface HomeScreenProps {
 const { height } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
+  const { isOpen, setIsOpen, toggleMenu } = useContext(ValuesContext);
   // const [showForm, setShowForm] = useState(false);
 
   // const handleOpenForm = () => {
   //   setShowForm(true);
   // };
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [type, setType] = useState('name');
   const [loadingSomeThing, setLoadingSomething] = useState(false);
 
+  // useEffect(() => {
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     () => true,
+  //   );
+  //   return () => backHandler.remove();
+  // }, []);
+
+  // useEffect(() => {
+  //   const handleBackButton = () => {
+  //     switch (true) {
+  //       case selectedPackage:
+  //           setSelectedPackage(false);
+  //         return true;
+
+  //       default:
+  //           // Alert.alert('No case on switch', 'line 422 AdministratePackagesScreen');
+  //         return false; // Permitir el comportamiento predeterminado de retroceso
+  //     }
+  //   };
+
+  //   BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+
+  //   return () => {
+  //     BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+  //   };
+  // }, [selectedPackage]);
+
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => true,
-    );
-    return () => backHandler.remove();
-  }, []);
+
+    const handleBackButton = () => {
+      if (isOpen) {
+        setIsOpen(false);
+        return true; // El evento de retroceso ha sido manejado
+      }
+      return false;
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+
+    return () => BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+
+  }, [isOpen, setIsOpen]);
+
   return (
     <>
 
       {loadingSomeThing && (
         <LoadingScreenTransparentBackground />
       )}
+      {isOpen && (
+        <FilterOptions setType={setType} toggleMenu={toggleMenu} />
+      )}
 
       <ScrollView style={styles.background}>
         <View style={styles.navbar}>
-          <Pressable
-            onPress={() => {
-
-
-              navigation.navigate('NavbarScreen');
-            }}>
-
-
-
-            <View style={styles.colorRed}>
+          <View>
+            <TouchableOpacity style={styles.colorRed} onPress={() => { navigation.navigate('NavbarScreen');}}>
               <SvgXml xml={menuBar} />
-            </View>
-          </Pressable>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity onPress={() => {
+                navigation.navigate('HomeScreen');
+              }}>
           <Text style={styles.Central}>AventuraT</Text>
-
+          </TouchableOpacity>
           <ProfilePicture
             navigation={navigation}
             styles={styles}
             destinationNavigationComponentName="UserProfileScreen"
           />
         </View>
-        <InputSearch navigation={navigation} areYouInSearchResult={false} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} defaultValue={undefined} />
+        <InputSearch navigation={navigation} type={type} setType={setType} areYouInSearchResult={false} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} defaultValue={undefined} />
         <View style={styles.Container2}>
           <View style={styles.Caracteristicas}>
             <TouchableOpacity
@@ -144,13 +183,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           <Carrousel navigation={navigation} setLoadingSomething={setLoadingSomething} />
         </View>
         <View style={styles.Container3}>
-          <Text style={styles.title}>Paquetes Recomendados</Text>
           <View style={styles.ContainerPackages}>
             <PopularPackages navigation={navigation} />
           </View>
-          {/* <TouchableOpacity style={styles.showMore}>
-            <Text style={styles.moreText}>Ver más</Text>
-          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </>
@@ -170,6 +205,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     height: '12%',
+    // backgroundColor: 'blue'
   },
   Central: {
     fontFamily: 'Sansation',
@@ -181,29 +217,35 @@ export const styles = StyleSheet.create({
     color: '#FFFFFF',
     opacity: 0.8,
     height: height * 0.13,
+    marginLeft:'20%',
   },
   Container2: {
     marginTop: height * 0.03,
     marginBottom: height * 0.01,
     justifyContent: 'center',
     alignItems: 'center',
+    alignContent: 'center',
+    // backgroundColor: 'red',
+    // alignSelf: 'center'
   },
   Caracteristicas: {
     height: height * 0.07,
-    marginTop: 60,
+    marginTop: 40,
     marginBottom: 20,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    // backgroundColor: 'blue'
   },
   Sepa: {
     padding: 5,
     alignItems: 'center',
   },
   colorRed: {
-    height: '20%',
+    height: '30%',
     width: '200%',
     marginLeft: '5%',
+    marginTop:'30%',
     justifyContent: 'center',
     alignItems: 'center',
   },

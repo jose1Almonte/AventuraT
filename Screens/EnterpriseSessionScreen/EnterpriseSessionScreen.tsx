@@ -7,20 +7,29 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {Background} from '../../Layouts/Background';
+import React, { useEffect, useState } from 'react';
+import { Background } from '../../Layouts/Background';
 import Gradient from '../../Layouts/Gradient';
 import YourSignInWithGoogleComponent, {
   ProfilePicture,
 } from '../../firebase/PerfilPicture';
-import {NavigationProp} from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import {
+  addUser,
+  checkIfUserExists,
   checkPasswordCorrect,
   checkResponsibleNameExists,
 } from '../../firebase/Firestore';
 import auth from '@react-native-firebase/auth';
 import currentLog from '../../firebase/UserData';
-import {useUser} from '../../Context/UserContext';
+import { useUser } from '../../Context/UserContext';
+import { TouchableWithoutFeedback, Keyboard } from 'react-native';
+import hidePassword from '../../vectores/hidePassword';
+import showPasswords from '../../vectores/showPasswords';
+import { SvgXml } from 'react-native-svg';
+import hidePassword2 from '../../vectores/hidePassword2';
+import showPasswords2 from '../../vectores/showPasswords2';
+import { onGoogleButtonPress } from '../../firebase/gmail';
 
 interface EnterpriseSessionScreenProps {
   navigation: NavigationProp<Record<string, object | undefined>>;
@@ -28,7 +37,7 @@ interface EnterpriseSessionScreenProps {
 
 interface Register {
   Username: string;
-  Password: String;
+  Password: string;
 }
 
 interface ContinueWithNameProps {
@@ -62,25 +71,29 @@ export const ContinueWithName = ({
 
 const signInWithEmailAndPassword = async (email, password) => {
   try {
-    const {user} = await auth().signInWithEmailAndPassword(email, password);
-    console.log('Usuario autenticado:', user);
+    const { user } = await auth().signInWithEmailAndPassword(email, password);
+
   } catch (error) {
     // Manejar el error de autenticación
   }
 };
 
 const makingThis = () => {
-  console.log('hello');
   Alert.alert('Hello');
 };
 
-const LoginScreenEnterprise = ({navigation}: EnterpriseSessionScreenProps) => {
+const LoginScreenEnterprise = ({ navigation }: EnterpriseSessionScreenProps) => {
   const [data, setData] = useState<Register>({
     Username: '',
     Password: '',
   });
 
-  const {user, setUser, setLogged} = useUser();
+  const { user, setUser, setLogged } = useUser();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const submit = async () => {
     if (data.Password.trim() === '' || data.Username.trim() === '') {
@@ -108,56 +121,77 @@ const LoginScreenEnterprise = ({navigation}: EnterpriseSessionScreenProps) => {
     }
   };
 
+  const handleScreenPress = () => {
+    Keyboard.dismiss(); // Ocultar el teclado al pulsar en la pantalla
+  };
+
   return (
-    <View style={styles.bigBox}>
-      <Background
-        image={require('../../images/loginLayout.png')}
-        style={styles.backGround}>
-        <Gradient
-          colors={[
-            '#1DB5BE',
-            'rgba(24, 129, 177, 0.36);',
-            'rgba(24, 129, 177, 0.26);',
-            'rgba(24, 129, 177, 0.16);',
-            'rgba(24, 129, 177, 0);',
-          ]}
-          locations={[0, 0.25, 0.5, 0.9, 1]}
-          style={styles.linearGradient}>
-          <View style={styles.firstBox}>
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Correo electrónico: </Text>
-              <TextInput
-                style={styles.input}
-                onChangeText={text =>
-                  setData(prevData => ({...prevData, Username: text}))
-                }
-              />
+    <TouchableWithoutFeedback style={styles.bigBox} onPress={handleScreenPress}>
+      <View style={{ flex: 1 }}>
+        <Background
+          image={require('../../images/loginLayout.png')}
+          style={styles.backGround}>
+          <Gradient
+            colors={[
+              '#1DB5BE',
+              'rgba(24, 129, 177, 0.36);',
+              'rgba(24, 129, 177, 0.26);',
+              'rgba(24, 129, 177, 0.16);',
+              'rgba(24, 129, 177, 0);',
+            ]}
+            locations={[0, 0.25, 0.5, 0.9, 1]}
+            style={styles.linearGradient}>
+            <View style={styles.firstBox}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Correo electrónico: </Text>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={text =>
+                    setData(prevData => ({ ...prevData, Username: text }))
+                  }
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Contraseña: </Text>
+                <View style={styles.containerPassword}>
+                <TextInput
+                  secureTextEntry={!showPassword}
+                  style={styles.input}
+                  onChangeText={text =>
+                    setData(prevData => ({ ...prevData, Password: text }))
+                  }
+                />
+                 <TouchableOpacity onPress={togglePasswordVisibility}>
+                  <>
+                    {showPassword ? (
+                      <SvgXml xml={hidePassword2} />
+                    ) : (
+                      <SvgXml xml={showPasswords2} />
+                    )}
+                  </>
+                </TouchableOpacity>
+                </View>
+                </View>
+              <TouchableOpacity style={styles.submitButton} onPress={submit}>
+                <Text style={styles.buttonText}>Iniciar sesión</Text>
+              </TouchableOpacity>
             </View>
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Contraseña: </Text>
-              <TextInput
-                style={styles.input}
-                onChangeText={text =>
-                  setData(prevData => ({...prevData, Password: text}))
-                }
-              />
-            </View>
-            <TouchableOpacity style={styles.submitButton} onPress={submit}>
-              <Text style={styles.buttonText}>Iniciar sesión</Text>
-            </TouchableOpacity>
-          </View>
-        
-          <View style={styles.secondBox}>
+
+            <View style={styles.secondBox}>
             <YourSignInWithGoogleComponent
-              styles={styles}
-              navigation={navigation}
-              destinationNavigationComponentName={'HomeScreen'}
-              goToLoginScreen={false}
-            />
-          </View>
-        </Gradient>
-      </Background>
-    </View>
+                styles={styles}
+                navigation={navigation}
+                destinationNavigationComponentName={'HomeScreen'}
+                goToLoginScreen={false}
+              />
+            {/* <Text style={styles.infojob}>Si su cuenta es de tipo gmail por favor ingrese por aquí:</Text> */}
+              
+            </View>
+
+          </Gradient>
+        </Background>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -171,7 +205,13 @@ export const styles = StyleSheet.create({
   linearGradient: {
     flex: 1,
   },
-
+infojob:{
+    marginLeft:'10%',
+    marginRight:'10%',
+    marginBottom:'10%',
+    fontSize: 18,
+    color:'#ffff4a',
+},
   bigBox: {
     flex: 1,
   },
@@ -231,6 +271,12 @@ export const styles = StyleSheet.create({
     marginTop: 30,
   },
 
+  containerPassword: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+
   subtitle: {
     fontFamily: 'Poppins',
     fontStyle: 'normal',
@@ -255,6 +301,7 @@ export const styles = StyleSheet.create({
   },
   input: {
     marginTop: 8,
+    width:'90%',
     fontFamily: 'Poppins-Regular',
     fontSize: 14,
     lineHeight: 24,

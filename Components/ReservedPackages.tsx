@@ -12,7 +12,12 @@ export const ReservedPackages = ({ item, navigation }: reservedProps) => {
 
   const [statusMsg, setStatusMsg] = useState(item.data().status);
 
+  if (statusMsg === 'Q' || statusMsg === 'QC') {
+    return null; // No mostrar el componente si el estado es 'Q'
+  }
+
   return (
+
     <TouchableOpacity onPress={() => {
       switch (statusMsg) {
         case 'E':
@@ -26,6 +31,7 @@ export const ReservedPackages = ({ item, navigation }: reservedProps) => {
           break;
       }
     }}>
+      
       <View style={styles.containerPrim}>
         <View style={styles.container}>
           <View style={styles.container1}>
@@ -51,7 +57,7 @@ export const ReservedPackages = ({ item, navigation }: reservedProps) => {
       </View>
     </TouchableOpacity>
   );
-}
+};
 
 const styles = StyleSheet.create({
   containerPrim: {

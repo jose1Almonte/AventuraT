@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import HomeScreen from './Screens/HomeScreen/HomeScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -30,11 +30,23 @@ import MobilePaymentConfirmScreen from './Screens/MobilePaymentConfirmScreen/Mob
 import ReservedScreen from './Screens/ReservedScreen/ReservedScreen';
 import BusinessReservedScreen from './Screens/BusinessReservedScreen/BusinessReservedScreen';
 import DetailReservedScreen from './Screens/DetailReservedScreen/DetailReservedScreen';
+import Tutorial from './Screens/Tutorial/Tutorial';
+import EditProfileScreen from './Screens/EditProfileScreen/EditProfileScreen';
+import EditProfileEnterprise from './Screens/EditProfileScreen/EditProfileEnterprise';
+import { LogBox } from 'react-native';
+import PopularPackageScreen from './Screens/PopularPackageScreen/PopularPackageScreen';
+import { ValuesContext, ValuesContextProvider } from './Context/ValuesContext';
 const Stack = createNativeStackNavigator();
 
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
+
 export default function App() {
+  // const { actualizaPerfil, setActualizaPerfil } = useContext(PerfilContext);
   return (
     <UserProvider>
+      <ValuesContextProvider>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
@@ -60,13 +72,17 @@ export default function App() {
           <Stack.Screen name="EnterpriseSessionScreen" component={EnterpriseSessionScreen} options={{ headerShown: false }} />
           <Stack.Screen name="PayPremiumScreen" component={PayPremiumScreen} options={{ headerShown: false }} />
           <Stack.Screen name="VistaPorTipoScreen" component={VistaPorTipoScreen} options={{ headerShown: false }} />
-
+          <Stack.Screen name="Tutorial" component={Tutorial} options={{ headerShown: false }} />
           <Stack.Screen name="MobilePaymentConfirmScreen" component={MobilePaymentConfirmScreen} options={{ headerShown: false }} />
           <Stack.Screen name="ReservedScreen" component={ReservedScreen} options={{ headerShown: false }} />
           <Stack.Screen name="BusinessReservedScreen" component={BusinessReservedScreen} options={{ headerShown: false }} />
           <Stack.Screen name="DetailReservedScreen" component={DetailReservedScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="EditProfileEnterprise" component={EditProfileEnterprise} options={{ headerShown: false }} />
+          <Stack.Screen name="PopularPackageScreen" component={PopularPackageScreen } options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
+      </ValuesContextProvider>
     </UserProvider>
   );
 }

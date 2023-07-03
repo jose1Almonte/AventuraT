@@ -10,6 +10,7 @@ const currentLog = () => {
             emailVerified: user.emailVerified,
             uid: user.uid,
             metadata: user.metadata,
+            phoneNumber: user.phoneNumber,
         };
     } else {
         return null;

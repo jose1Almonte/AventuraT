@@ -6,44 +6,47 @@ import { useUser } from '../Context/UserContext';
 import { useEffect } from 'react';
 import { usersCollection3 } from './DeletePackage';
 import React, { useState } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Alert } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Text } from 'react-native-svg';
-
 
 
 const usersCollection = firestore().collection('users');
 const usersCollection2 = firestore().collection('enterprise');
 const packagesCollection = firestore().collection('package');
 const paidPackages = firestore().collection('paidPackage');
+const starsdb = firestore().collection('stars');
 
-export const addUser = async (array: string[], displayName: string, email: string, emailVerified: boolean, photoURL: string) => {
+export const addUser = async (array: string[], displayName: string, email: string, emailVerified: boolean, photoURL: string, phoneNumber: string) => {
   await usersCollection.add({
     displayName: displayName,
     email: email,
     emailVerified: emailVerified,
     favorites: array,
-    photoURL: photoURL
+    photoURL: photoURL,
+    phoneNumber: phoneNumber
   });
 };
 
-export const updateUser = async (array: string[], userId: string, displayName: string, email: string, emailVerified: boolean, photoURL: string) => {
+export const updateUser = async (array: string[], userId: string, displayName: string, email: string, emailVerified: boolean, photoURL: string, phoneNumber: string) => {
   await usersCollection.doc(userId).set({
     displayName: displayName,
     email: email,
     emailVerified: emailVerified,
     favorites: array,
-    photoURL: photoURL
+    photoURL: photoURL,
+    phoneNumber: phoneNumber
   });
 };
 
 
 export const addEnterprise = async (nameEnterprise: string, rif: string,
-  responsibleName: string, location: string, description: string, vip: boolean, password: string, phoneNumber: string, urlPersonal: any, urlEmpresa: any) => {
+  responsibleName: string, disName: string, location: string, description: string, vip: boolean, password: string, phoneNumber: string, urlPersonal: any, urlEmpresa: any) => {
   await usersCollection2.add({
     id: 0, // Inicializa el ID en 0
     nameEnterprise: nameEnterprise,
     responsibleName: responsibleName,
+    disName: disName,
     location: location,
     description: description,
     rif: rif,
@@ -59,12 +62,52 @@ export const addEnterprise = async (nameEnterprise: string, rif: string,
   });
 };
 
-export const updateEnterprise = async (enterpriseId: string, enterpriseName: string, rif: string, personResponsible: string) => {
-  await usersCollection2.doc(enterpriseId).set({
+export const updateEnterprise = async (userId: string, enterpriseName: string, rif: string, personResponsible: string) => {
+  await usersCollection2.doc(userId).set({
     enterpriseName: enterpriseName,
     rif: rif,
     personResponsible: personResponsible
   });
+};
+
+//para actualizar los datos del responsable de la empresa en la colección enterprise
+export const fetchUserId = async (responsibleName: string) => {
+  const querySnapshot = await usersCollection2.where('responsibleName', '==', responsibleName).get();
+  if (querySnapshot.empty) {
+    // No se encontró ningún documento con el correo electrónico especificado
+    return null;
+  }
+
+  // Solo debería haber un documento con el correo electrónico especificado
+  const doc = querySnapshot.docs[0];
+  return doc.id;
+};
+
+//para actualizar los datos en la colección users
+export const fetchUserId2 = async (email: string) => {
+  const querySnapshot = await usersCollection.where('email', '==', email).get();
+  if (querySnapshot.empty) {
+    // No se encontró ningún documento con el correo electrónico especificado
+    return null;
+  }
+
+  // Solo debería haber un documento con el correo electrónico especificado
+  const doc = querySnapshot.docs[0];
+  return doc.id;
+};
+
+export const updateResponsibleData = async (
+  userId: string,
+  data: { responsibleEmail?: string; phoneNumber?: string; name?: string }
+) => {
+  await usersCollection2.doc(userId).update(data);
+};
+
+export const updateDataUser = async (
+  userId: string,
+  data: { email?: string; phoneNumber?: string; name?: string }
+) => {
+  await usersCollection.doc(userId).update(data);
 };
 
 export const getUser = async (userId: string) => {
@@ -77,7 +120,7 @@ export const checkIfUserExists = async (email: string) => {
   return !querySnapshot.empty;
 };
 
-export const addPackage = async (id: any, name: any, availability: any, price: any, description: any, mainImageUrl: any, location: any, endDate: any, startDate: any, emailEnterprise: any, rating: any, expireDate: any, isPublic: any, tipo: any) => {
+export const addPackage = async (id: any, name: any, availability: any, price: any, description: any, mainImageUrl: any, location: any, endDate: any, startDate: any, emailEnterprise: any, rating: any, expireDate: any, isPublic: any, tipo: any,userList:[String]) => {
   try {
     const packageData = {
       id,
@@ -96,6 +139,7 @@ export const addPackage = async (id: any, name: any, availability: any, price: a
       isPublic,
       tipo,
       vip: false,
+      userList,
     };
 
     await packagesCollection.doc(id.toString()).set(packageData);
@@ -113,11 +157,27 @@ export const changePackageIsPublicValue = async (packageId: { toString: () => st
     });
 
     console.log('DONE: ', `isPublic was successfully changed to ${newIsPublic}`);
+    return true;
   } catch (error) {
     console.log(error);
+    return false;
   }
 
 };
+
+export const changePackageValues = async (packageId: { toString: () => string | undefined; }, packageDescription: string, packageTipo: any) => {
+  try {
+    await usersCollection3.doc(packageId?.toString()).update({
+      description: packageDescription,
+      tipo: packageTipo,
+    });
+    console.log('DONE: ', `package Values were successfully changed to: description: ${packageDescription}  & tipo: ${packageTipo}`)
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
 
 export const checkPackage = async (id: any) => {
   try {
@@ -248,6 +308,23 @@ export const checkResponsibleNameExists = async (responsibleName: any) => {
   return !snapshot.empty;
 };
 
+export const checkUserExist = async (email: any) => {
+  try {
+    const usersRef = firebase.firestore().collection('users');
+    const snapshot = await usersRef.where('email', '==', email).get();
+
+    if (!snapshot.empty) {
+      const userData = snapshot.docs[0].data();
+      return userData;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.log('Error retrieving user data:', error);
+    return null;
+  }
+};
+
 export const createUserWithEmailAndPassword = async (email: any, password: any, phoneNumber: any, photoURL: any, disName: any) => {
   try {
     const { user } = await auth().createUserWithEmailAndPassword(email, password);
@@ -280,7 +357,7 @@ export const returnEnterpisePic = async (responsibleName: any) => {
   if (snapshot.empty) {
     responsibleName = responsibleName.charAt(0).toUpperCase() + responsibleName.slice(1);
     snapshot = await enterprisesRef.where('responsibleName', '==', responsibleName).get();
-    console.log('WTF CONTIGO', responsibleName)
+    console.log('Correo', responsibleName)
   }
   if (!snapshot.empty) {
     const enterpriseData = snapshot.docs[0].data();
@@ -350,7 +427,7 @@ export const updatePaidPackage = async (id: string, status: string, newRef?: any
       status: status
     });
   }
-  
+
 };
 
 
@@ -439,44 +516,66 @@ export const getPopularPackages = async () => {
   return packages;
 }
 
+export const getAllPopularPackages = async (count:any) => {
+  const packages: any[] = [];
+  let query = await packagesCollection.where("vip", "==", true).where("isPublic", "==", true).limit(count).get();
+  query.docs.forEach((rawData, idx) => {
+    packages.push(rawData.data());
+  })
+  return packages;
+}
+
 export const changePremium = async (email: any) => {
   const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
   const id = getDoc.docs[0].id;
+  const count = getDoc.docs[0].data().vipCount;
   usersCollection2.doc(id).update({
     isVIP: true,
-    vipCount: 5,
+    vipCount: count + 5,
   })
 
 }
 
 export const checkVIP = async (email: any) => {
-  return true
+  const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
+  const isVIP = getDoc.docs[0].data().isVIP;
+  return isVIP;
+}
+
+export const getCount = async (email: any) => {
+  const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
+  const count = getDoc.docs[0].data().vipCount;
+  return count;
 }
 
 export const makeRegular = async (packageId: any, email: any) => {
-  const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
-  const enterpriseId = getDoc.docs[0].id;
-  let count = getDoc.docs[0].data().vipCount + 1;
-  if (count > 0) {
+  try {
+    const getDoc = await usersCollection2.where('responsibleName', '==', email).get();
+    const enterpriseId = getDoc.docs[0].id;
+    let count = getDoc.docs[0].data().vipCount + 1;
 
     usersCollection2.doc(enterpriseId).update({
       vipCount: count,
-    })
+    });
 
     packagesCollection.doc(packageId.toString()).update({
       vip: false,
-    })
-  } else {
-    // da error y no se procesa, hay que cambiar esto tambien en administratePackagesScreen para que no procesa si hubo error, linea 161
+    });
+    return true;
+
+
+  } catch (error){
+    return false;
   }
-}
+};
 
 export const makeVIP = async (packageId: any, email: any) => {
-  const getDoc = await usersCollection2.where("responsibleName", "==", email).get();
-  const enterpriseId = getDoc.docs[0].id;
-  let count = getDoc.docs[0].data().vipCount - 1;
-  console.log(count)
-  if (count > 0) {
+
+  try {
+    const getDoc = await usersCollection2.where('responsibleName', '==', email).get();
+    const enterpriseId = getDoc.docs[0].id;
+    let count = getDoc.docs[0].data().vipCount - 1;
+    console.log("COUNT ES:",count);
 
     await usersCollection2.doc(enterpriseId).update({
       vipCount: count,
@@ -485,7 +584,262 @@ export const makeVIP = async (packageId: any, email: any) => {
     await packagesCollection.doc(packageId.toString()).update({
       vip: true,
     });
-  } else {
-    // da error y...
+
+    return true;
+
+
+  } catch (error) {
+    
+    console.log("a", error);
+    return false;
   }
+};
+
+export const purgarHistory = async (ids: string[]) => {
+  const packageRefs = ids.map(id => firestore().collection('paidPackage').doc(id));
+
+  const updatePromises = packageRefs.map(async ref => {
+    const doc = await ref.get();
+    const status = doc.data()?.status;
+    console.log(status);
+    if (status === 'C') {
+      return ref.update({
+        status: 'QC',
+      });}
+    if (status === 'R'){
+      return ref.update({
+        status: 'Q',
+      });
+    } else {
+      // Si el estado no es 'R', no se actualiza el documento
+      return Promise.resolve();
+    }
+  });
+
+
+  try {
+    await Promise.all(updatePromises);
+    console.log('Paquetes actualizados exitosamente');
+  } catch {
+  }
+};
+
+export const saveStarsToFirestore = async (counter: any, name: any, email: any) => {
+  await starsdb.add({
+    counter,
+    name,
+    email,
+  })
+    .then(() => {
+      console.log('Datos guardados en Cloud Firestore');
+    })
+    .catch();
+};
+
+export const checkStarsInFirestore = async (email: any, name: any) => {
+  try {
+    const querySnapshot = await starsdb.where('email', '==', email)
+      .where('name', '==', name)
+      .get();
+
+    if (!querySnapshot.empty) {
+      // @ts-ignore
+      return querySnapshot[0];
+    } else {
+      return null;
+    }
+  } catch (error) {
+  }
+};
+
+export const updateProfile = async (displayName: string, photoURL: string) => {
+  const user = firebase.auth().currentUser;
+
+  if (user) {
+    try {
+      await user.updateProfile({
+        displayName,
+        photoURL,
+      });
+      // Alert.alert('ACTUALIZADOOOOO', 'Perfil actualizado con éxito');
+    } catch (error) {
+      // Alert.alert('ERROR', 'Error al actualizar el perfil:');
+    }
+  }
+};
+
+export const updateUserDataByEmail = async (email: string, displayName: string, photoURL: string, phoneNumber: string) => {
+  try {
+    const querySnapshot = await usersCollection.where('email', '==', email).get();
+    if (querySnapshot.size > 0) {
+      const doc = querySnapshot.docs[0];
+      await doc.ref.update({
+        displayName,
+        photoURL,
+        phoneNumber,
+      });
+      // console.log('Datos de usuario actualizados con éxito');
+    } else {
+      // console.log('No se encontró ningún usuario con el correo electrónico proporcionado');
+    }
+  } catch { }
+};
+
+
+export const updateEnterpriseDataByEmail = async (responsibleName: string, photoURL: string, location: string, password: string, description: string, phoneNumber: string) => {
+  try {
+    const querySnapshot = await usersCollection2.where('responsibleName', '==', responsibleName).get();
+    if (querySnapshot.size > 0) {
+      const doc = querySnapshot.docs[0];
+      await doc.ref.update({
+        location: location,
+        urlEmpresa: photoURL,
+        password: password,
+        description: description,
+        phoneNumber: phoneNumber,
+      });
+      console.log('Datos de usuario actualizados con éxito');
+    } else {
+      console.log('No se encontró ningún usuario con el correo electrónico proporcionado');
+    }
+  } catch { }
+};
+
+export const updateRaitingEnterprise = async (email: string, feedback: any) => {
+  try {
+    const querySnapshot = await usersCollection2.where('responsibleName', '==', email).get();
+    let enterprise: any = querySnapshot.docs[0];
+    let feedbacks: any[] | undefined = enterprise.data().feedback;
+
+    if (feedbacks) {
+      feedbacks.push(feedback);
+      usersCollection2.doc(enterprise.id).update({ feedback: feedbacks });
+    } else {
+      let tempF: any[] = [feedback];
+      usersCollection2.doc(enterprise.id).update({ feedback: tempF });
+    }
+  } catch { }
+};
+
+export const updateRaitingPackage = async (packageId: string, nuevoRating: number, user: any) => {
+  try {
+    const packageRef = firebase.firestore().collection('package').doc(packageId);
+
+    const packageDoc = await packageRef.get();
+    const ratingsArray = packageDoc.data()?.rating ?? [];
+    const userArray = packageDoc.data()?.userList ?? [];
+
+    const updatedRatings = [...ratingsArray, nuevoRating];
+    const updatedUsers = [...userArray, user];
+
+    await packageRef.update({
+      rating: updatedRatings,
+      userList: updatedUsers,
+    });
+
+    console.log('El nuevo rating se agregó correctamente');
+  } catch {
+  }
+};
+
+
+export const checkUserInPackage = async (packageId: string, userEmail: string) => {
+  const packageRef = firebase.firestore().collection('package').doc(packageId);
+
+  return packageRef.get().then((doc) => {
+    if (doc.exists) {
+      const userList = doc.data().userList || [];
+
+      if (userList.includes(userEmail)) {
+        return { exists: true, message: `El usuario ${userEmail} está en la lista de usuarios del paquete con ID ${packageId}` };
+      } else {
+        return { exists: false, message: `El usuario ${userEmail} NO está en la lista de usuarios del paquete con ID ${packageId}` };
+      }
+    } else {
+      return { exists: false, message: `El paquete con ID ${packageId} no existe en Firestore` };
+    }
+  }).catch((error) => {
+    console.error(`Error al obtener el paquete con ID ${packageId}:`, error);
+    throw error;
+  });
+};
+
+
+export const verificarUsuario = async (packId: string, userId: string) =>{
+  try {
+    const packageRef = firestore().collection('package').doc(packId);
+    const packageDoc = await packageRef.get();
+
+    if (packageDoc.exists) {
+      const usuarios = packageDoc.data()?.userList || [];
+
+      if (usuarios.includes(userId)) {
+        console.log('El usuario existe en el array.');
+        return false;
+      } else {
+        console.log('El usuario no existe en el array.');
+        return true;
+      }
+    } else {
+      console.log('El documento no existe.');
+      return false;
+    }
+  } catch (error) {
+    console.log('Error al verificar el usuario:', error);
+    return false;
+  }
+};
+
+
+async function getPackageRef(idPack) {
+  const packageRef = firebase.firestore().collection('package').doc(idPack);
+  return packageRef;
 }
+
+export const actualizarAvailabilityPlus = async (idPack) => {
+  try {
+    const packageRef = await getPackageRef(idPack);
+    const packageSnapshot = await packageRef.get();
+    const availability = packageSnapshot.data().availability;
+
+    await packageRef.update({
+      availability: availability + 1,
+    });
+  } catch (error) {
+    // Manejar el error aquí
+  }
+};
+
+
+export const actualizarAvailabilityMinus = async (idPack) => {
+  try {
+    const packageRef = await getPackageRef(idPack);
+    const packageSnapshot = await packageRef.get();
+    const availability = packageSnapshot.data().availability;
+
+    await packageRef.update({
+      availability: availability - 1,
+    });
+  } catch (error) {
+    // Manejar el error aquí
+  }
+};
+
+export const verificarUsuario2 = async (userId, packageName) => {
+  try {
+    const currentTimestamp = firebase.firestore.Timestamp.now();
+    const packageRef = firestore().collection('paidPackage');
+    const querySnapshot = await packageRef.where('compradorMail', '==', userId).where('endDate', '<', currentTimestamp).where('name', '==' , packageName).get();
+
+    if (querySnapshot.empty) {
+      console.log('No se encontraron documentos con el usuario en el campo "compradorMail" y un "endDate" menor a la fecha y hora actual.');
+      return false;
+    } else {
+      console.log('Se encontraron documentos con el usuario en el campo "compradorMail" y un "endDate" menor a la fecha y hora actual.');
+      return true;
+    }
+  } catch (error) {
+    console.log('Error al verificar el usuario:', error);
+    return false;
+  }
+};

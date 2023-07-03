@@ -1,10 +1,13 @@
 import React, {Component, useEffect, useState} from 'react';
-import {View, StyleSheet, Text, Image} from 'react-native';
+import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import calendar from '../../vectores/calendar';
 import {SvgXml} from 'react-native-svg';
 import { listPackage } from '../../firebase/Firestore';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
-function PublishedPackages(email) {
+
+const PublishedPackages2 = (email) => {
+  const navigation = useNavigation();
     const [packages, setPackages] = useState<any[]>([]);
 
   useEffect(() => {
@@ -19,13 +22,19 @@ function PublishedPackages(email) {
     return (
       <>
       {packages != null && packages.map((packageData, index) => (
-      <View style={styles.container} key={index} >
+      <TouchableOpacity
+      style={styles.container}
+      key={index}
+      onPress={() => {
+        navigation.navigate('DetailsScreenUser', { data: packageData });
+      }}
+    >
         <View style={styles.containerPack}>
           <View style={styles.containerText}>
             <Text style={styles.textPack}>{packageData.name}</Text>
             <View style={styles.contenedorCalendario}>
-              <SvgXml xml={calendar} />
-              <Text style={styles.date}>'s'</Text>
+              <Text style={styles.date}>{packageData.location}</Text>
+              <Text style={styles.date}>${packageData.price}</Text>
             </View>
           </View>
           <Image
@@ -34,10 +43,10 @@ function PublishedPackages(email) {
             alt="photo"
           />
         </View>
-      </View>))}
+      </TouchableOpacity>))}
       </>
     );
-}
+};
 
 const styles = StyleSheet.create({
   containerPack: {
@@ -58,10 +67,10 @@ const styles = StyleSheet.create({
     marginVertical: '1.5%',
   },
   textPack: {
-    marginLeft: 10,
+    marginLeft: 8,
     color: 'black',
     fontSize: 12,
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'Poppins-Bold',
   },
   containerText: {
     display: 'flex',
@@ -74,17 +83,17 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   contenedorCalendario: {
-    marginRight: 10,
+    margin: 5,
+    width: '80%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    gap: 4,
+    justifyContent: 'space-between',
+    alignSelf: 'center'
   },
   date: {
     color: 'black',
     fontSize: 11,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-SemiBold',
   },
   img: {
     width: '100%',
@@ -94,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PublishedPackages;
+export default PublishedPackages2;

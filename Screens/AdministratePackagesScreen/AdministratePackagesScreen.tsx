@@ -1,14 +1,22 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, ScrollView, Dimensions, BackHandler, TextInput } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Background } from '../../Layouts/Background';
 import { useUser } from '../../Context/UserContext';
 import { NavigationProp } from '@react-navigation/native';
 import { searchPackagesByEmail, searchPackagesExpiredByEmail } from '../../firebase/SearchPackagesByEmail';
 import { deleteAllByEmail, deleteExpiredDocumentsByEmail, deleteSelectedPackage } from '../../firebase/DeletePackage';
-import { changePackageIsPublicValue, checkVIP, makeRegular, makeVIP} from '../../firebase/Firestore';
+import { changePackageIsPublicValue, changePackageValues, checkVIP, getCount, makeRegular, makeVIP} from '../../firebase/Firestore';
 import { LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 import { SvgXml } from 'react-native-svg';
 import vectorHelpdeskScreen from '../../vectores/vectorHelpdeskScreen';
+import cancel from '../../vectores/cancel';
+import edit from '../../vectores/edit';
+import Gradient, { hexToRGBA } from '../../Layouts/Gradient';
+import comeBackScreenButton from '../../vectores/comeBackScreenButton';
+import check from '../../vectores/check';
+import {Picker} from '@react-native-picker/picker';
+// import { WebView } from 'react-native-webview';
+
 // import { SafeAreaView } from 'react-native-safe-area-context';
 // import { NavigationProp } from '@react-navigation/native';
 
@@ -58,7 +66,7 @@ const CardBox = ({data, handleWantPersonallyErase, changeIsPublic, index, setInd
                         </View>
                         <TouchableOpacity style ={styles.firstRowCenter} onPress={() => {changeIsPublic(data, setDataIsPublic);}}>
                             {dataIsPublic ? (
-                                    <Text style={styles.text}> Publico </Text>
+                                    <Text style={styles.text}> Público </Text>
 
                                 ) : (
 
@@ -95,12 +103,20 @@ const CardBox = ({data, handleWantPersonallyErase, changeIsPublic, index, setInd
     );
 };
 
-const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: any, changeIsPublic: any, setSelectedPackage: any}) => {
+const SelectedPackageView = ({data, setLoadingSomething, changeIsPublic, setSelectedPackage}:{data: any, setLoadingSomething: any, changeIsPublic: any, setSelectedPackage: any}) => {
 
     const [dataIsPublic, setDataIsPublic] = useState(data.isPublic);
+    const [dataTipo, setDataTipo] = useState(data.tipo);
+    const [dataDescription, setDataDescription] = useState(data.description);
+
     const {user} = useUser();
     const [userExists, setUserExists] = useState(true);
     const [VIP, setVIP] = useState('');
+    const [isEditting, setIsEditting] = useState(false);
+    const [descriptionEditting, setDescriptionEditting] = useState(data.description);
+    // const [priceEditting, setPriceEditting] = useState(0);
+    const [tipoEditting, setTipoEditting] = useState(data.tipo);
+    const [count, setCount] = useState(0);
 
     const startDate = data.startDate.toDate();
     const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
@@ -117,10 +133,61 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
     const expireMonth = (expireDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
     const expireYear = expireDate.getFullYear();
 
+
     const handleSetSelectedPackage = async () => {
         await setSelectedPackage(false);
         // setReady(ready);
     };
+
+    const handleChangePackageInfo = async () => {
+        setLoadingSomething(true);
+        const isDone = await changePackageValues(data.id,descriptionEditting, tipoEditting);
+
+        if (isDone) {
+            // Alert.alert('Cambios Guardados');
+            data.description = descriptionEditting;
+            data.tipo = tipoEditting;
+            setIsEditting(false);
+
+        } else {
+            // Alert.alert('Cambios guardados');
+        }
+        setLoadingSomething(false);
+    };
+
+    const handleMakeRegular = async () => {
+
+        setLoadingSomething(true);
+        const isDone = await makeRegular(data.id, user.email);
+
+        if (isDone) {setVIP('Regular'); data.vip = false;} else {Alert.alert('Happened an issue', 'Wait and try it again');}
+
+        setLoadingSomething(false);
+
+    };
+
+    const handleMakeVIP = async () => {
+        if (count === 0) {
+            Alert.alert("¡Ya ha alcanzado su número máximo de paquetes en VIP!")
+        } else {
+            setLoadingSomething(true);
+            const isDone = await makeVIP(data.id, user.email);
+
+            if (isDone) { setVIP('VIP'); data.vip = true; } else { Alert.alert('Happened an issue', 'Ensure you have permissions to change another package to VIP!'); }
+            console.log("yo soy", isDone);
+            setLoadingSomething(false);
+        }
+    };
+
+    useEffect(() => {
+        const handleChangeValuesOfData = () => {
+
+            setDataDescription(data.description);
+            setDataTipo(data.tipo);
+            // console.log('TAMO ON FIRE');
+        };
+        handleChangeValuesOfData();
+    }, [data]);
 
     // const changeIsPublic = async () => {
     //     await changePackageIsPublicValue(data.id, !data.isPublic);
@@ -136,14 +203,35 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
             const exists = await checkVIP(user?.email);
             setUserExists(exists);
         };
-        checkUserExists;
+        checkUserExists();
+
+        const checkCount = async () => {
+            const count = await getCount(user?.email);
+            setCount(count)
+        };
+        checkCount();
+
         if (data.vip) {
             setVIP('VIP');
         } else {
             setVIP('Regular');
         }
+
+
     }, [user?.name, user?.email, data.vip]);
 
+    // useEffect(()=>{
+    //     console.log('descriptionEditting value: ', descriptionEditting);
+    //     console.log('TipoEditting value: ', tipoEditting);
+    // },[descriptionEditting, tipoEditting]);
+
+    // useEffect(() => {
+    //     if (VIP === 'VIP'){
+    //         data.vip = true;
+    //     } else {
+    //         data.vip = false;
+    //     }
+    // }, [VIP, data]);
 
 
     return (
@@ -155,9 +243,18 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
 
                             <View style={stylesIndividualCard.firstRow}>
                                 <View style={stylesIndividualCard.firstRowLeft}>
-                                    <View style={stylesIndividualCard.firstRowLeftBox}>
-                                        <Text>Editar</Text>
-                                    </View>
+                                        {!isEditting ? (
+                                            <TouchableOpacity style={stylesIndividualCard.firstRowLeftBox} onPress={() => {setIsEditting(true);}}>
+                                                <SvgXml xml={edit} />
+                                            </TouchableOpacity>
+
+                                            ) : (
+                                            <TouchableOpacity style={stylesIndividualCard.firstRowLeftBoxUsingCheck} onPress={() => {handleChangePackageInfo();}}>
+                                                <SvgXml xml={check} />
+                                            </TouchableOpacity>
+
+                                        )}
+                                        {/* <Text>Editar</Text> */}
                                 </View>
                                 <TouchableOpacity style={stylesIndividualCard.firstRowCenter} onPress={() => {changeIsPublic(data, setDataIsPublic);}}>
                                     {dataIsPublic ? (
@@ -172,65 +269,136 @@ const SelectedPackageView = ({data, changeIsPublic, setSelectedPackage}:{data: a
                                 </TouchableOpacity>
                                 <View style={stylesIndividualCard.firstRowRight}>
                                     <TouchableOpacity style={stylesIndividualCard.firstRowRightBox} onPress={() => {handleSetSelectedPackage();}}>
-                                        <Text>Out</Text>
+                                        <SvgXml xml={cancel} />
                                     </TouchableOpacity>
                                 </View>
                             </View>
 
                             <View style ={stylesIndividualCard.secondRow}>
                                 <View style ={stylesIndividualCard.secondRowDescriptionBox}>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Nombre de empresa:</Text>
-                                    <Text style={stylesIndividualCard.text}>{data.name}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Descripción: </Text>
-                                    <Text style={stylesIndividualCard.text}>{data.description}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Fecha inicio: </Text>
-                                    <Text style={stylesIndividualCard.text}>{startDay}/{startMonth}/{startYear}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Fecha fin: </Text>
-                                    <Text style={stylesIndividualCard.text}>{endDay}/{endMonth}/{endYear}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Fecha expira: </Text>
-                                    <Text style={stylesIndividualCard.text}>{expireDay}/{expireMonth}/{expireYear}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Precio: </Text>
-                                    <Text style={stylesIndividualCard.text}>$ {data.price}</Text>
-                                </View>
-                                {/* <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Rating: </Text>
-                                    <Text style={stylesIndividualCard.text}>{data.rating} estrellas</Text>
-                                </View> */}
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Tipo: </Text>
-                                    <Text style={stylesIndividualCard.text}>{data.tipo}</Text>
-                                </View>
-                                <View style={stylesIndividualCard.textBox}>
-                                    <Text style={stylesIndividualCard.text}>Estado: {VIP}</Text>
-                                    {/* <Text style={stylesIndividualCard.text}>{data.tipo}</Text> */}
-                                    {userExists &&
-                                        <>
-                                            {VIP === 'VIP' ?
-                                                <TouchableOpacity onPress={() => { makeRegular(data.id, user.email); setVIP('Regular');}}>
-                                                    <Text style={stylesIndividualCard.textBlue}>Pasar a Regular</Text>
-                                                    {/* <Text>Pasar a Regular</Text> */}
-                                                </TouchableOpacity> :
-                                                <TouchableOpacity onPress={() => { makeVIP(data.id, user.email); setVIP('VIP');}}>
-                                                    <Text style={stylesIndividualCard.textBlue}>Pasar a VIP</Text>
-                                                    {/* <Text>Pasar a VIP</Text> */}
-                                                </TouchableOpacity>
+
+                                { isEditting ? (
+                                    <>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text1}>Nombre del paquete:</Text>
+                                            <Text style={stylesIndividualCard.text}>{data.name}</Text>
+                                        </View>
+
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text1}>Descripción: </Text>
+                                            {/* <TextInput style={stylesIndividualCard.inputText} defaultValue={data.description} onChange={(event) => {data.description = event.nativeEvent.text;}}/> */}
+                                            <TextInput style={stylesIndividualCard.inputText} defaultValue={data.description} onChange={(event) => {setDescriptionEditting(event.nativeEvent.text);}}/>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text1}>Fecha inicio: </Text>
+                                            <Text style={stylesIndividualCard.text}>{startDay}/{startMonth}/{startYear}</Text>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text1}>Fecha fin: </Text>
+                                            <Text style={stylesIndividualCard.text}>{endDay}/{endMonth}/{endYear}</Text>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text1}>Fecha expira: </Text>
+                                            <Text style={stylesIndividualCard.text}>{expireDay}/{expireMonth}/{expireYear}</Text>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text1}>Precio: </Text>
+                                            <Text style={stylesIndividualCard.text}>${data.price}</Text>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                            <Text style={stylesIndividualCard.text1}>Tipo: </Text>
+                                            {/* <TextInput style={stylesIndividualCard.inputText} defaultValue={data.tipo} onChange={(event) => {data.tipo = event.nativeEvent.text;}}/> */}
+                                            <Picker
+                                                selectedValue={tipoEditting}
+                                                onValueChange={(itemValue: string) =>
+                                                {
+                                                    setTipoEditting(itemValue);
                                             }
+                                                } style={stylesIndividualCard.pickerStyle}>
+                                                <Picker.Item label="Montaña" value="Montaña" />
+                                                <Picker.Item label="Playa" value="Playa" />
+                                                <Picker.Item label="Full-Day" value="Full-Day" />
+                                                <Picker.Item label="Camping" value="Camping" />
+                                                {/* <Picker.Item label="G" value="gobernante" /> */}
+                                            </Picker>
+                                        </View>
+                                        <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text1}>Estado: {VIP}</Text>
+                                        {/* <Text style={stylesIndividualCard.text}>{data.tipo}</Text> */}
+                                        {userExists &&
+                                            <>
+                                                {VIP === 'VIP' ?
+                                                    <TouchableOpacity onPress={() => {handleMakeRegular();}}>
+                                                        <Text style={stylesIndividualCard.textBlue}>Pasar a Regular</Text>
+                                                        {/* <Text>Pasar a Regular</Text> */}
+                                                    </TouchableOpacity> :
+                                                    <TouchableOpacity onPress={() => {handleMakeVIP();}}>
+                                                        <Text style={stylesIndividualCard.textBlue}>Pasar a VIP</Text>
+                                                        {/* <Text>Pasar a VIP</Text> */}
+                                                    </TouchableOpacity>
+                                                }
 
-                                        </>
+                                            </>
 
-                                    }
-                                </View>
+                                        }
+                                    </View>
+                                    </>
+                                ) : (
+                                  <>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text1}>Nombre del paquete:</Text>
+                                        <Text style={stylesIndividualCard.text}>{data.name}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text1}>Descripción: </Text>
+                                        <Text style={stylesIndividualCard.text}>{data.description}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text1}>Fecha inicio: </Text>
+                                        <Text style={stylesIndividualCard.text}>{startDay}/{startMonth}/{startYear}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text1}>Fecha fin: </Text>
+                                        <Text style={stylesIndividualCard.text}>{endDay}/{endMonth}/{endYear}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text1}>Fecha expira: </Text>
+                                        <Text style={stylesIndividualCard.text}>{expireDay}/{expireMonth}/{expireYear}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text1}>Precio: </Text>
+                                        <Text style={stylesIndividualCard.text}>${data.price}</Text>
+                                    </View>
+                                    {/* <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text}>Rating: </Text>
+                                        <Text style={stylesIndividualCard.text}>{data.rating} estrellas</Text>
+                                    </View> */}
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text1}>Tipo: </Text>
+                                        <Text style={stylesIndividualCard.text}>{data.tipo}</Text>
+                                    </View>
+                                    <View style={stylesIndividualCard.textBox}>
+                                        <Text style={stylesIndividualCard.text1}>Estado: {VIP}</Text>
+                                        {/* <Text style={stylesIndividualCard.text}>{data.tipo}</Text> */}
+                                        {userExists &&
+                                            <>
+                                                {VIP === 'VIP' ?
+                                                    <View>
+                                                        <Text style={stylesIndividualCard.text}>¡Eres VIP!</Text>
+                                                        {/* <Text>Pasar a Regular</Text> */}
+                                                    </View> :
+                                                    <View>
+                                                        <Text style={stylesIndividualCard.text}>Eres regular</Text>
+                                                        {/* <Text>Pasar a VIP</Text> */}
+                                                    </View>
+                                                }
+
+                                            </>
+
+                                        }
+                                    </View>
+                                  </>
+                                )}
                                 </View>
                             </View>
 
@@ -271,7 +439,7 @@ const WantEraseView = ({setWantErase, eraseExpired, setEraseExpired, eraseAll, s
         <View style={stylesWantErase.giantWantErase}>
             <View style={stylesWantErase.bigBox}>
                 {eraseExpired && (
-                    <WantEraseViewAuxiliar setWantErase={setWantErase} titleText={'¿Estás seguro de borrar expirados?'} text1="Sí, borrar todo" text2="Cancelar" eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} ifPressYes={handleEraseExpired}/>
+                    <WantEraseViewAuxiliar setWantErase={setWantErase} titleText={'¿Estás seguro de borrar caducados?'} text1="Sí, borrar caducados" text2="Cancelar" eraseExpired={eraseExpired} setEraseExpired={setEraseExpired} eraseAll={eraseAll} setEraseAll={setEraseAll} ifPressYes={handleEraseExpired}/>
                     )
                 }
                 {eraseAll && (
@@ -298,6 +466,9 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
     const [dataToErasePersonally, setDataToErasePersonally] = useState<Partial<Record<string, any>>>({});
     const [loadingSomeThing, setLoadingSomething] = useState(false);
 
+    const screenWidth = Dimensions.get('window').width;
+    const screenHeight = Dimensions.get('window').height;
+
     const handleWantPersonallyErase = (data: Partial<Record<string, any>>) => {
         setDataToErasePersonally(data);
         setWantPersonallyErase(true);
@@ -323,7 +494,7 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
         setEraseAll(true);
         setWantErase(true);
     };
-
+    
     const handleSetConfirmationToEraseExpired = async () => {
         setEraseExpired(true);
         setWantErase(true);
@@ -331,18 +502,18 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
     const handleEraseExpired = async () => {
         setLoadingSomething(true);
-            const emailEnterprise = user?.email;
-            const packagesExist = await deleteExpiredDocumentsByEmail(emailEnterprise);
-
-            if (!ready){
-                setReady(true);
+        const emailEnterprise = user?.email;
+        const packagesExist = await deleteExpiredDocumentsByEmail(emailEnterprise);
+        
+        if (!ready){
+            setReady(true);
             } else {
                 setReady(false);
             }
             if (eraseExpired) {setEraseExpired(false);}
             if (eraseAll) {setEraseAll(false);}
             setWantErase(false);
-            if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes expirados de forma exitosa');} else {Alert.alert('Nada', 'Nada que borrar');}
+            // if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes expirados de forma exitosa');} else {Alert.alert('No hay paquetes para borrar');}
             setLoadingSomething(false);
 
         };
@@ -360,15 +531,16 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
             if (eraseAll) {setEraseAll(false);}
             setWantErase(false);
 
-            if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes de forma exitosa');} else {Alert.alert('Nada', 'Nada que borrar');}
+            // if (packagesExist){Alert.alert('Listo', 'Se han borrado todos los paquetes de forma exitosa');} else {Alert.alert('No hay paquetes para borrar');}
             setLoadingSomething(false);
         };
 
         const changeIsPublic = async (data: { id: { toString: () => string | undefined; }; isPublic: boolean; }, setDataIsPublic: (arg0: boolean) => void) => {
             setLoadingSomething(true);
-            await changePackageIsPublicValue(data.id, !data.isPublic);
+            const isDone = await changePackageIsPublicValue(data.id, !data.isPublic);
             data.isPublic = !data.isPublic;
-            setDataIsPublic(data.isPublic);
+            if (isDone) {setDataIsPublic(data.isPublic);}
+
             setLoadingSomething(false);
             // Alert.alert(dataIsPublic.toString());
         };
@@ -406,8 +578,26 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
             handleQuerySnapshot();
     }, [user?.email, ready, searchingExpiredPackages]);
-    const screenWidth = Dimensions.get('window').width;
-    const screenHeight = Dimensions.get('window').height;
+
+    useEffect(() => {
+        const handleBackButton = () => {
+          switch (true) {
+            case selectedPackage:
+                setSelectedPackage(false);
+              return true;
+
+            default:
+                // Alert.alert('No case on switch', 'line 422 AdministratePackagesScreen');
+              return false; // Permitir el comportamiento predeterminado de retroceso
+          }
+        };
+
+        BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+
+        return () => {
+          BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+        };
+      }, [selectedPackage]);
 
 
     return (
@@ -420,18 +610,18 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
         )}
 
         {selectedPackage && (
-            <SelectedPackageView data={documents[indexSelectedPackage]} changeIsPublic={changeIsPublic} setSelectedPackage={setSelectedPackage}/>
+            <SelectedPackageView data={documents[indexSelectedPackage]} setLoadingSomething={setLoadingSomething} changeIsPublic={changeIsPublic} setSelectedPackage={setSelectedPackage}/>
         )}
 
         {wantPersonallyErase && (
             <View style={stylesWantErase.giantWantErase}>
                 <View style={stylesWantErase.bigBox}>
                     <View style={stylesWantErase.firstBox}>
-                        <Text style={stylesWantErase.title}>¿Quieres borrar el paquete "{dataToErasePersonally.name}" ?</Text>
+                        <Text style={stylesWantErase.title}>¿Quieres borrar el paquete "{dataToErasePersonally.name}"?</Text>
                     </View>
                     <View style={stylesWantErase.secondBox}>
-                        <Button buttonStyle={stylesWantErase.buttonTop} buttonTextStyle={stylesWantErase.text} text = "Si, borra ese paquete"   onPress={()=>{handleTrashCanPress(dataToErasePersonally);}}/>
-                        <Button buttonStyle={stylesWantErase.buttonBottom} buttonTextStyle={stylesWantErase.text} text="No, no borres ese paquete" onPress={()=>{setWantPersonallyErase(false);}}/>
+                        <Button buttonStyle={stylesWantErase.buttonTop} buttonTextStyle={stylesWantErase.text} text = "Sí, borrar paquete"   onPress={()=>{handleTrashCanPress(dataToErasePersonally);}}/>
+                        <Button buttonStyle={stylesWantErase.buttonBottom} buttonTextStyle={stylesWantErase.text} text="Cancelar" onPress={()=>{setWantPersonallyErase(false);}}/>
                     </View>
                 </View>
             </View>
@@ -450,21 +640,28 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
         <View style={styles.giantBox}>
 
         <View style={styles.firstBox}>
-            <TouchableOpacity style={styles.comebackButtonBox} onPress={()=>{navigation.goBack();}}>
-                <Image source={require('../../images/comeBackLogo.png')}/>
-            </TouchableOpacity>
+            <View style={styles.comebackButtonBox}>
+                <TouchableOpacity style={styles.profilePictureMiniBox} onPress={() => {navigation.goBack();}}>
+                    {/* <Image source={require('../../images/comeBackLogo.png')} style={styles.image}/> */}
+                    <SvgXml xml={comeBackScreenButton} />
+                </TouchableOpacity>
+            </View>
             <View style={styles.titleBox}>
                 <Text style={styles.title}>AventuraT con tus Paquetes</Text>
             </View>
             <View style={styles.profilePictureBox}>
-                <TouchableOpacity style={styles.profilePictureMiniBox} onPress={() => {navigation.navigate('UserProfileScreen');}}>
-                <Image source={{uri: user?.photoURL || 'data:image/png;base64,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'}} style={styles.image}/>
-                </TouchableOpacity>
+                <View style={styles.profilePictureMiniBox}>
+                    <Image source={{uri: user?.photoURL || 'data:image/png;base64,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'}} style={styles.image}/>
+                </View>
             </View>
+        </View>
+        <View style={styles.secondBox2}>
+            {/* <Text style={styles.normalText}>Crear Paquetes:</Text> */}
+            <Button buttonStyle={styles.newbutton} buttonTextStyle={styles.buttonText} text="Crear Paquete" onPress={()=>{navigation.navigate('CreatePackageFormScreen')}}/>
         </View>
 
         <View style={styles.secondBox}>
-
+            <Text style={styles.normalText}>Filtrado y eliminación de Paquetes:</Text>
             <View style={styles.buttonsBox}>
 
                 <Button buttonStyle={styles.button} buttonTextStyle={styles.buttonText} text="Todos los paquetes" onPress={()=>{setSearchingExpiredPackages(false);}}/>
@@ -481,6 +678,22 @@ const AdministratePackagesScreen = ({navigation}:{navigation: NavigationProp<Rec
 
 
         <View style={styles.thirdBox}>
+            <View style={styles.editPackageTitleBox}>
+                <Gradient
+                colors={[
+                    '#1DB5BE',
+                    hexToRGBA('#1DB5BE',0.8),
+                    hexToRGBA('#1DB5BE',0.6),
+                    hexToRGBA('#1DB5BE',0.5),
+                    hexToRGBA('#1DB5BE',0.1),
+                  ]}
+                  locations={[0, 0.25, 0.8, 0.9, 1]}
+                  style={styles.linearGradient}
+                >
+
+                    <Text style={styles.editPackageTitle}>Tus Paquetes:</Text>
+                </Gradient>
+            </View>
             <ScrollView style={styles.scrollView} contentContainerStyle = {styles.scrollViewContentContainerStyle}>
 
                 {documents.map((document, index) => (
@@ -505,6 +718,13 @@ export default AdministratePackagesScreen;
 
 const styles = StyleSheet.create({
 
+    linearGradient: {
+        flex: 1,
+        width: '100%',
+        alignItems:'center',
+        justifyContent:'center',
+      },
+
     usingAlbannyVectorBox:{
         position: 'absolute',
         top: 0,
@@ -512,9 +732,11 @@ const styles = StyleSheet.create({
         width: '100%',
         // backgroundColor: 'yellow',
         zIndex: 0.1,
+        marginTop:'-10%',
 
     },
     giantBox:{
+        marginTop:'10%',
         flex: 1,
         // backgroundColor: '#a01d1d',
         // position: 'absolute'
@@ -525,7 +747,7 @@ const styles = StyleSheet.create({
         flex: 10.5,
         // backgroundColor: "black",
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignSelf: 'center',
         // alignContent: 'center',
         alignItems: 'center',
@@ -533,12 +755,23 @@ const styles = StyleSheet.create({
         // height: 80,
         // marginBottom: 50
         // position: 'absolute'
+        // marginRight:'15%',
+        // backgroundColor: 'red',
     },
 
     secondBox:{
         flex: 22.5,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+
+    secondBox2:{
+        // flex: 22.5,
+        flex: 16,
+        // backgroundColor: 'blue',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        // marginTop:'2%',
     },
 
     thirdBox:{
@@ -571,6 +804,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // justifyContent: 'center',
         // height: '73.17%',
+        // backgroundColor:'yellow',
     },
     titleBox:{
         width: '67.5%',
@@ -578,16 +812,22 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         alignItems:'center',
         justifyContent: 'center',
+        // marginLeft:'25%',
         // height: '20%',
+        // backgroundColor: 'green'
     },
     profilePictureBox:{
-        width: 80,
+        // backgroundColor:'red',
+        width: '16.25%',
         // backgroundColor:'black',
-        height: 80,
+        // height: '100%',
         // borderRadius: 50,
         // overflow: 'hidden',
+        // backgroundColor: 'yellow',
         alignItems: 'center',
         justifyContent: 'center',
+
+        // marginLeft:'-5%',
     },
     title:{
         fontFamily: 'Poppins-Medium',
@@ -597,8 +837,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         lineHeight: 30,
         textAlign: 'center',
-        color: 'black',
+        color: 'white',
         // backgroundColor: 'red',
+        
     },
 
     buttonsBox:{
@@ -611,7 +852,7 @@ const styles = StyleSheet.create({
     },
 
     button:{
-        height: '37.72%',
+        height: 35,
         width: '41.35%',
         backgroundColor: '#1881B1',
         borderRadius: 8,
@@ -619,10 +860,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    newbutton:{
+        height: 35,
+        width: '30%',
+        backgroundColor: '#1881B1',
+        borderRadius: 8,
+        marginBottom: '5%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     buttonEraseExpired:{
         height: '37.72%',
         width: '41.35%',
-        backgroundColor: '#0B6087',
+        backgroundColor: '#1881B1',
         borderRadius: 8,
         marginBottom: '8.2%',
         alignItems: 'center',
@@ -639,11 +889,12 @@ const styles = StyleSheet.create({
     },
 
     buttonText:{
-        fontWeight: '700',
+        // fontWeight: '700',
         fontSize: 11,
         lineHeight: 16,
         textAlign: 'center',
         color: '#FFFFFF',
+        fontFamily: 'Poppins-Medium',
     },
 
     cardBox:{
@@ -653,8 +904,8 @@ const styles = StyleSheet.create({
         height: 128,
         // height: '23.79%',
         borderRadius: 20,
-        borderColor: 'black',
-        borderWidth: 2,
+        borderColor: 'rgba(21, 132, 146, 0.5)',
+        borderWidth: 1,
     },
 
     backgroundCard:{
@@ -771,11 +1022,39 @@ const styles = StyleSheet.create({
     },
 
     text:{
+        fontFamily: 'Poppins-Medium',
         color: 'black',
         fontWeight: '500',
         fontSize: 9,
         lineHeight: 14,
         margin: '1%',
+    },
+    normalText:{
+        fontFamily: 'Poppins-SemiBold',
+        color: 'white',
+        fontWeight: '500',
+        fontSize: 12,
+        lineHeight: 14,
+        marginBottom: '5%',
+    },
+
+    editPackageTitle:{
+        fontFamily: 'Poppins-Medium',
+        color: 'white',
+        // fontWeight: '500',
+        fontSize: 12,
+        lineHeight: 14,
+    },
+    editPackageTitleBox:{
+        marginTop:'5%',
+        width:'86.67%',
+        height:'10%',
+        alignItems:'center',
+        justifyContent:'center',
+        // backgroundColor:'#1DB5BE',
+        borderTopStartRadius: 20,
+        borderTopEndRadius: 20,
+        overflow: 'hidden',
     },
 
     profilePictureMiniBox:{
@@ -808,11 +1087,12 @@ const stylesIndividualCard = StyleSheet.create({
 
     card:{
         width: '85%',
-        height: '47.125%',
+        // height: '47.125%',
+        height: 445,
         backgroundColor: 'white',
         borderRadius: 20,
-        borderColor: 'black',
-        borderWidth: 2,
+        borderColor: 'rgba(21, 132, 146, 0.5)',
+        borderWidth: 1,
     },
 
     firstRow: {
@@ -837,6 +1117,16 @@ const stylesIndividualCard = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        // backgroundColor:'red',
+
+    },
+    firstRowLeftBoxUsingCheck:{
+        width: '70%',
+        height: '70%',
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 1)',
         // backgroundColor:'red',
 
     },
@@ -883,7 +1173,7 @@ const stylesIndividualCard = StyleSheet.create({
     },
 
     bigText:{
-        fontFamily: 'Poppins-Regular',
+        fontFamily: 'Poppins-SemiBold',
         color: 'black',
         fontWeight: '500',
         fontSize: 14,
@@ -899,8 +1189,9 @@ const stylesIndividualCard = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         // backgroundColor: 'rgba(255,255,255,0.3)',
-        padding: '2%',
+        // padding: '2%',
         marginVertical: '1%',
+        // overflow: 'hidden',
     },
 
     text:{
@@ -910,6 +1201,41 @@ const stylesIndividualCard = StyleSheet.create({
         fontSize: 12,
         lineHeight: 18,
         display: 'flex',
+    },
+    text1:{
+        fontFamily: 'Poppins-SemiBold',
+        color: 'black',
+        fontWeight: '500',
+        fontSize: 12,
+        lineHeight: 18,
+        display: 'flex',
+    },
+
+    inputText: {
+        // backgroundColor: 'red',
+        color: 'blue',
+        fontFamily: 'Poppins-Regular',
+        fontWeight: '500',
+        fontSize: 12,
+        lineHeight: 18,
+        // height: 'auto',
+        width: 'auto',
+        textAlign: 'right',
+        textAlignVertical: 'bottom',
+        borderBottomColor: 'rgba(40, 92, 99, 0.3)',
+        borderBottomWidth: 1,
+    },
+    
+    pickerStyle:{
+        color: 'black',
+        width: '70%',
+        height: '50%',
+        // fontFamily: 'Poppins-Regular',
+        // fontWeight: '500',
+        // fontSize: 12,
+        // lineHeight: 18,
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        
     },
 
     textBlue:{

@@ -35,7 +35,7 @@ const DetailsScreenUser2 = ({ navigation, route }: detailProps) => {
   const startDay = startDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
   const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
   const startYear = startDate.getFullYear();
-
+  const [resultDef,setResultDef]= useState();
   const endDate = packageIn.endDate.toDate();
   const endDay = endDate.getDate().toString().padStart(2, '0'); // Obtener el día y rellenar con ceros a la izquierda si es necesario
   const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0'); // Obtener el mes (se suma 1 porque los meses en JavaScript son indexados desde 0) y rellenar con ceros a la izquierda si es necesario
@@ -59,7 +59,18 @@ const DetailsScreenUser2 = ({ navigation, route }: detailProps) => {
     const fetchData = async () => {
       // console.log('packageIn?.emailEnterprise: ' ,packageIn.emailEnterprise);
       if (packageIn && packageIn.emailEnterprise) {
+        if (packageIn.rating){
+          const sum = packageIn.rating.reduce((acc, num) => acc + num, 0);
+          const count = packageIn.rating.length;
+          const result = ((sum / (count - 1))).toFixed(1);
+          if (isNaN(result)){
+            setResultDef(0);
+          }
+          else {
+            setResultDef(result);
+          }
 
+        }
         const querySnapshot = await firestore().collection('users').where('email', '==', packageIn.emailEnterprise).get();
 
         querySnapshot.forEach((doc) => {
@@ -79,7 +90,7 @@ const DetailsScreenUser2 = ({ navigation, route }: detailProps) => {
           <View style={styles.containerText}>
             <Text style={styles.textPack}>{packageIn.name}</Text>
             <View style={styles.containerCalification}>
-              <Text style={styles.ratingText}>{packageIn.rating}</Text>
+              <Text style={styles.ratingText}>{resultDef}</Text>
               <SvgXml xml={star} width={22} height={22} />
             </View>
           </View>
@@ -101,24 +112,21 @@ const DetailsScreenUser2 = ({ navigation, route }: detailProps) => {
           />
           <TouchableOpacity>
             {/* <Text style={styles.text}>{packageIn.nameEnterprise}</Text> */}
-            <Text style={styles.text}>{nameEnterprise}</Text>
+            <Text style={styles.textooo}>{nameEnterprise}</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       <View style={styles.contenedorInfo}>
         <View style={styles.contenedorInformacion}>
-          <SvgXml xml={vectorSalida} />
           <Text style={styles.titulo}>Salida</Text>
           <Text style={styles.subtitulo}>{startDay}/{startMonth}/{startYear}</Text>
         </View>
         <View style={styles.contenedorInformacion}>
-          <SvgXml xml={vectorRetorno} />
           <Text style={styles.titulo}>Retorno</Text>
           <Text style={styles.subtitulo}>{endDay}/{endMonth}/{endYear}</Text>
         </View>
         <View style={styles.contenedorInformacion}>
-          <SvgXml xml={vectorPrecio} />
           <Text style={styles.titulo}>Precio</Text>
           <Text style={styles.subtitulo}>${packageIn.price}</Text>
         </View>
@@ -132,24 +140,47 @@ const DetailsScreenUser2 = ({ navigation, route }: detailProps) => {
         <Text style={styles.subtitulo}>Atención personalizada</Text>
       </View>
 
-      <ScrollView style={styles.container}>
+      <View style={styles.container2}>
       {packages[0] !== undefined && (
+        <View style={styles.containerFinale}>
       <Text style={styles.title}>Paquete Reservado Por:</Text>
+      </View>
       )}
       {packages.map((esteitem, index) => (
         <View  key={`${esteitem.id}-${index}`}>
           {esteitem && (
+            <>
+            { esteitem?.status === 'C' && (
             <View style={styles.card}>
-              <Text style={styles.name}>Comprador: {esteitem?.compradorMail}</Text>
-              <Text style={styles.name}>Numero de reserva: {esteitem?.mobilePayment.mobilePaymentRef}</Text>
+              <View style={styles.cardPos}>
               {esteitem?.photoCompradorURL &&
-                <PhotoProfile size={90} imageSource={esteitem?.photoCompradorURL}/>
+                <PhotoProfile size={40} imageSource={esteitem?.photoCompradorURL}/>
               }
+              </View>
+              <Text style={styles.name}>Comprador: </Text>
+              <Text style={styles.name2}>{esteitem?.compradorMail}</Text>
+              <Text style={styles.name}>Numero de reserva:</Text>
+              <Text style={styles.name2}>{esteitem?.mobilePayment.mobilePaymentRef}</Text>
             </View>
+            )}
+            { esteitem?.status === 'QC' && (
+            <View style={styles.card}>
+              <View style={styles.cardPos}>
+              {esteitem?.photoCompradorURL &&
+                <PhotoProfile size={40} imageSource={esteitem?.photoCompradorURL}/>
+              }
+              </View>
+              <Text style={styles.name}>Comprador: </Text>
+              <Text style={styles.name2}>{esteitem?.compradorMail}</Text>
+              <Text style={styles.name}>Numero de reserva:</Text>
+              <Text style={styles.name2}>{esteitem?.mobilePayment.mobilePaymentRef}</Text>
+            </View>
+            )}
+            </>
           )}
         </View>
       ))}
-    </ScrollView>
+    </View>
 
     </ScrollView>
   );
@@ -162,31 +193,37 @@ const styles = StyleSheet.create({
     backgroundColor: '#1DB5BE',
     // backgroundColor: 'red',
   },
-
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    color: '#FFF',
-    textAlign:'center',
-  },
-  card: {
-    backgroundColor: '#FFF',
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 16,
-  },
-  name: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    color: 'black',
-    fontFamily: 'Poppins-Medium',
-  },
-
   container: {
     flex: 1,
     width: '100%',
+    height: 360,
+  },
+  container2: {
+    flex: 1,
+    alignContent:'center',
+    width: '90%',
+    height: '100%',
+  },
+  containerFinale: {
+    flex: 1,
+    marginBottom:'2%',
+    marginTop:'5%',
+    marginLeft:'10%',
+  },
+  tr: {
+    marginTop: '3%',
+    marginBottom: '3%'
+  },
+  containerTransparent: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: '100%',
+    // backgroundColor: 'blackrgba(0, 0, 0, 0.36)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999,
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   containerPhotoPack: {
     width: '100%',
@@ -241,18 +278,28 @@ const styles = StyleSheet.create({
     display: 'flex',
   },
   containerInfoBusiness: {
-    height: 60,
-    margin: 20,
+    height: 46,
+    marginTop: '2%',
+    marginRight: '5%',
+    marginLeft: '5%',
+    backgroundColor: 'rgba(1, 143, 112, 0.5)',
+    borderRadius: 8,
   },
   info: {
     flexDirection: 'row',
-    alignItems: 'center',
     gap: 15,
-    marginTop: 5,
+    marginTop: 3,
     marginLeft: 20,
+    borderRadius: 8,
+    alignItems: 'center',
   },
   text: {
     color: 'black',
+    fontSize: 16,
+    fontFamily: 'Poppins-Medium',
+  },
+  textooo: {
+    color: 'white',
     fontSize: 16,
     fontFamily: 'Poppins-Medium',
   },
@@ -311,5 +358,51 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#1881B1',
+  },
+  buttonReserva2: {
+    marginTop:'10%',
+    width: 160,
+    height: 42,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1881B1',
+  },
+
+  title: {
+    fontSize: 20,
+    color:'white',
+    fontWeight: 'bold',
+    marginVertical: 10,
+    marginLeft: 10,
+  },
+  card: {
+    backgroundColor: 'rgba(1, 143, 112, 0.5)',
+    borderRadius: 10,
+    marginHorizontal: 10,
+    marginTop:'2%',
+    padding: 10,
+    marginLeft:'20%',
+    marginRight:'5%',
+    marginBottom:'10%',
+  },
+  cardPos:{
+    marginTop:'1%',
+    marginBottom:'1%',
+    alignContent:'center',
+    alignItems:'center',
+  },
+  name: {
+    fontSize: 12,
+    marginBottom: 5,
+    color: 'white',
+    fontFamily: 'Poppins-SemiBold'
+  },
+  name2: {
+    fontSize: 11,
+    marginBottom: '5%',
+    marginLeft:'10%',
+    color: 'white',
+    fontFamily: 'Poppins-Medium'
   },
 });

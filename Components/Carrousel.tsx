@@ -221,8 +221,8 @@ const styles = StyleSheet.create({
   },
   texto2: {
     fontFamily: 'Poppins-Medium',
-    fontSize: 11,
-    lineHeight: 18,
+    fontSize: 10,
+    lineHeight: 14,
     textAlign: 'center',
     color: '#FFFFFF',
     opacity: 0.8,

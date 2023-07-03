@@ -39,12 +39,16 @@ export default DetailReservedScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#1DB5BE',
     },
     info: {
         flex: 1,
         display: 'flex',
-        margin: 5
+        alignContent: 'center',
+        alignItems: 'center',
+        width: '90%',
+        justifyContent: 'center',
+        alignSelf: 'center'
     },
     topInfo: {
         marginTop: 80,
@@ -52,12 +56,12 @@ const styles = StyleSheet.create({
         gap: 15,
     },
     txt: {
-        color: 'black',
+        color: 'white',
         fontSize: 20,
         fontFamily: 'Poppins-SemiBold',
     },
     txt2: {
-        color: 'black',
+        color: 'white',
         fontSize: 20,
         fontFamily: 'Poppins-Light',
         textAlign: 'right',

@@ -1,17 +1,27 @@
-import { Text, View, StyleSheet, FlatList, } from 'react-native';
+import { Text, View, StyleSheet, FlatList, Image, } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import FeedbackCard from '../../Components/FeedbackCard';
 import firestore from '@react-native-firebase/firestore';
+import { NavigationProp } from '@react-navigation/native';
 
-const FeedbackScreen = () => {
+interface RaitingScreenProps {
+    navigation: NavigationProp<Record<string, object | undefined>>;
+    route?: any;
+}
 
-    const [data, setData] = useState();
-
+const FeedbackScreen = ({ navigation, route }: RaitingScreenProps) => {
+    const emailEnterprice = route.params.email;
+    const [data, setData] = useState([]);
     let loadData = async () => {
         try {
-            let snapshot = await firestore().collection('raiting').get();
+            let snapshot = await firestore().collection('enterprise')
+                .where('responsibleName', '==', emailEnterprice).get();
             // @ts-ignore
-            setData(snapshot.docs);
+            if (snapshot.docs[0].data().feedback) {
+                setData(snapshot.docs[0].data().feedback);
+            } else {
+                setData([]);
+            }
         } catch (error: any) {
             console.error(error);
         }
@@ -21,24 +31,29 @@ const FeedbackScreen = () => {
         loadData();
     }, []);
 
-    const renderItem = ({item}: any) => {
-        return (<FeedbackCard item={item.data()}/>);
+    const renderItem = ({ item }: any) => {
+        return (<FeedbackCard item={item} />);
     };
 
     return (
-            <View style={styles.container}>
-                {/* <View style={styles.info}> */}
+        <View style={styles.container}>
+            <View style={styles.topInfo}>
+                <Text style={styles.txt}>Calificaciones</Text>
+                {data.length !== 0 ? (
+                <FlatList
+                    data={data}
+                    renderItem={renderItem}
+                />
+                ) : (
                     <View style={styles.topInfo}>
-                        <Text style={styles.txt}>Calificaciones</Text>
-                        <FlatList
-                        data = {data}
-                        renderItem={renderItem}
-                        />
-                        {/* <FeedbackCard item={raitingItems[0]}/> */}
-                        {/* {raitingItems.map( (data) => <FeedbackCard item={data}/>)} */}
+                    <Text style={styles.txt2}> No hay calificaciones</Text>
+                    <Image
+                        style={styles.imageUsed}
+                        source={require('../../images/favorites.png')}/>
                     </View>
-                {/* </View> */}
+                )}
             </View>
+        </View>
     );
 };
 
@@ -47,24 +62,19 @@ export default FeedbackScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: 'white',
-        // backgroundColor: 'green',
+        backgroundColor:'#1DB5BE',
     },
-    // info: {
-        //     flex: 1,
-        //     display: 'flex',
-        //     margin: 5,
-        //     backgroundColor: 'blue',
-        // },
-        topInfo: {
-            flex: 1,
-            marginTop: '20%',
-            // marginBottom: '15%',
-            alignItems: 'center',
-            // gap: 15,
-            // backgroundColor: 'blue',
-        // backgroundColor: 'red',
+    topInfo: {
+        flex: 1,
+        marginTop: '20%',
+        alignItems: 'center',
     },
+    imageUsed: {
+        marginTop: 40,
+        width: 350,
+        height: 350,
+        alignSelf: 'center',
+      },
     info2: {
         flex: 1,
         display: 'flex',
@@ -136,8 +146,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#1881B1',
     },
     txt: {
-        color: 'black',
+        color: 'white',
         fontSize: 20,
+        fontFamily: 'Poppins-SemiBold',
+    },
+    txt2: {
+        color: 'white',
+        fontSize: 12,
         fontFamily: 'Poppins-SemiBold',
     },
     title: {

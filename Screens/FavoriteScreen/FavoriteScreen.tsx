@@ -5,8 +5,11 @@ import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { useUser } from '../../Context/UserContext';
 import { getFavorites,  getPublicPackage, LoadingScreenTransparentBackground } from '../../firebase/Firestore';
 import { Background } from '../../Layouts/Background';
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
 
 const FavoriteScreen = () => {
+  const navigation = useNavigation();
   // const [loadingFavorites, setLoadingFavorites] = useState(true);
   const [favorites, setFavorites] = useState([]);
   // const [loading, setLoading] = useState(true);
@@ -67,11 +70,11 @@ const FavoriteScreen = () => {
 
       <ScrollView style={styles.container}>
         <View style={styles.titleBox}>
-          <Text style={styles.title}>Paquetes favoritos</Text>
+          <Text style={styles.title}>Paquetes Favoritos</Text>
         </View>
-        {favorites.length === 0 ? (
+        {favorites.length === 1 ? (
           <>
-          <Text style={styles.noFavoritesText}>NO TIENES PAQUETES FAVORITOS</Text>
+          <Text style={styles.noFavoritesText}>No tienes paquetes en Favoritos aún</Text>
           <Image
             style={styles.imageUsed}
             source={require('../../images/favorites.png')}
@@ -82,7 +85,9 @@ const FavoriteScreen = () => {
             {favorites.map((esteitem) => {
               if (packages[String(esteitem)]) {
                 return (
-                  <View key={esteitem} style={styles.card}>
+                  <TouchableOpacity key={esteitem} style={styles.card} onPress={() => {
+                    navigation.navigate('DetailsScreenUser', { data: packages[String(esteitem)] });
+                  }}>
                     <Background style={styles.containerPhotoPack} image={{uri: packages[String(esteitem)]?.mainImageUrl}}>
 
                     <View style={styles.layer}>
@@ -119,7 +124,7 @@ const FavoriteScreen = () => {
                         /> */}
                     </View>
                     </Background>
-                  </View>
+                  </TouchableOpacity>
                 );
               }
               return null; // Omitir tarjeta si no se encuentra el índice
@@ -135,34 +140,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1DB5BE',
-    padding: 16,
+    alignContent: 'center',
   },
   titleBox:{
+    marginTop: 80,
     alignItems: 'center',
-    justifyContent: 'center',
-    height: 100,
+    gap: 5,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-SemiBold',
     marginBottom: 16,
     color: '#FFF',
   },
   noFavoritesText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFF',
+    marginTop:'5%',
+    color:'white',
+    fontSize: 16,
+    fontFamily: 'Poppins-Medium',
     textAlign: 'center',
   },
   cardContainer: {
-    marginBottom: 16,
+    // marginBottom: 16,
+    // backgroundColor: 'red',
+    marginVertical: '5%',
+    alignItems: 'center',
+
   },
   card: {
     backgroundColor: '#FFF',
     borderRadius: 20,
     height: 130,
     marginBottom: 16,
+    width: '90%',
     overflow: 'hidden',
+    alignSelf: 'center'
   },
   imageUsed: {
     marginTop: 40,
@@ -171,22 +183,23 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   name: {
-    fontSize: 15,
+    fontSize: 14,
     width: '100%',
     marginTop: 4,
     color: 'black',
     fontFamily: 'Poppins-SemiBold',
   },
   description: {
-    fontSize: 14,
+    fontSize: 7,
     width: '100%',
     height: '115%',
     color: 'black',
     fontFamily: 'Poppins-Regular',
+    // backgroundColor: 'red'
   },
   price: {
     marginTop: 6,
-    fontSize: 15,
+    fontSize: 14,
     alignSelf: 'center',
     width: '100%',
     color: 'black',

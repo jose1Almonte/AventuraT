@@ -2,9 +2,10 @@ import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import Califications from './Califications';
 import { RaitingI } from '../models/raiting.interface';
+import Califications2 from './Califications2';
 
 interface feedbackProps {
-    item: RaitingI
+    item: any
 }
 
 const FeedbackCard = ({ item }: feedbackProps) => {
@@ -16,25 +17,31 @@ const FeedbackCard = ({ item }: feedbackProps) => {
                         <Image
                             style={styles.img}
                             source={{
-                                uri: 'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
+                                uri: item.creator.photoURL//'https://media.meer.com/attachments/71d38e2818914225a1196a8f1d3ae4961c2d75c9/store/fill/1090/613/1e8eb3a92a4ebbf7b825e3a2b30dce85c5c9fdee0eaee9fe889aed2f7299/Parque-Nacional-Morrocoy-Venezuela.jpg',
                             }}
                             alt="photo"
                         />
-                        <Text style={styles.textPack}>{item.idUser}</Text>
-                        <Califications calification={item.raiting} />
+                        <Text style={styles.textPack}>{item.creator.displayName}</Text>
+                        <View style={styles.stars}>
+                        <Califications2  calification={item.stars} />
+                        </View>
                     </View>
-                    <Text style={styles.textPack2}>{item.comment}</Text>
+                    <View style={styles.jojo}>
+                    <Text style={styles.textPack2}>{item.comments}</Text>
+                    </View>
                 </View>
             </View>
         </View>
+
     );
-}
+};
 
 const styles = StyleSheet.create({
     contain: {
         display: 'flex',
         flexDirection: 'row',
-        marginTop: 20,
+        marginTop: '3%',
+        alignItems:'center',
     },
     containerPack: {
         /* height: 130,*/
@@ -45,24 +52,34 @@ const styles = StyleSheet.create({
     containerPack2: {
         display: 'flex',
         justifyContent: 'space-around',
+        marginBottom:'5%',
+    },
+    jojo:{
+        marginLeft: '8%',
+        marginRight: '8%',
     },
     container: {
         flexDirection: 'row',
         gap: 20,
         marginTop: 15,
     },
+    stars: {
+        alignContent:'flex-end',
+        marginRight:'5%',
+    },
     textPack: {
-        marginHorizontal: 30,
+        marginHorizontal: 10,
         color: 'white',
-        fontSize: 18,
+        fontSize:12,
         fontFamily: 'Poppins-Medium',
         marginBottom: 5,
+        flex:1,
     },
     textPack2: {
         marginHorizontal: 15,
         padding: 10,
         color: 'white',
-        fontSize: 15,
+        fontSize: 9,
         fontFamily: 'Poppins-Medium',
     },
     img: {
@@ -71,7 +88,10 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginLeft: 20,
         marginBottom: 5,
-    }
+    },
+    black:{
+        color:'black',
+    },
 });
 
 export default FeedbackCard;

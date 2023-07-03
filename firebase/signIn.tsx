@@ -9,11 +9,11 @@ const SignInInterface = () => {
     const onSignInButton = async () => {
     try {
         await auth().signInWithEmailAndPassword(email, password);
-        Alert.alert('Yea', 'Usuario autenticado exitosamente');
-        console.log('Usuario autenticado exitosamente');
+        Alert.alert('Usuario autenticado exitosamente');
+        // console.log('Usuario autenticado exitosamente');
     } catch (error) {
-        Alert.alert('Nope', 'Error al autenticar usuario');
-        console.log('Error al autenticar usuario: ', error);
+        Alert.alert('Error al autenticar usuario');
+        // console.log('Error al autenticar usuario: ', error);
     }
     };
 
